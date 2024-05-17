@@ -609,7 +609,7 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: ../Fmod/Fmod.fspro
+  sourceProjectPath: ../Fmod/Fmod_VOR.fspro
   sourceBankPath: ../Fmod/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
