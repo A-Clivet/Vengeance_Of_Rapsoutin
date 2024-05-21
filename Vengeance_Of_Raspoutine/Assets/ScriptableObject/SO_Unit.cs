@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Unity_Data", menuName = "ScriptableObjects/UnityData", order = 1)]
-public class SpawnManagerScriptableObject : ScriptableObject
+public class SO_Unit : ScriptableObject
 {
     public string UnitName;
     /* unit stats */

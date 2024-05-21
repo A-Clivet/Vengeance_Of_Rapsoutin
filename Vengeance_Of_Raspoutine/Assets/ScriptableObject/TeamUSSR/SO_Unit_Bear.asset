@@ -15,8 +15,8 @@ MonoBehaviour:
   UnitName: Bear
   attack: 1
   defense: 3
-  sizeX: 0
-  sizeY: 0
+  sizeX: 1
+  sizeY: 1
   unitSprite: {fileID: 0}
   unitType: 0
   unitColor: 0

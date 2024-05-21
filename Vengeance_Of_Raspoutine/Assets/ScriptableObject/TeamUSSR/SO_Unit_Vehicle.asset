@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 698c58cff64e7e54aa70c3aa20e010e7, type: 3}
-  m_Name: SO_Unit_Vehicule
+  m_Name: SO_Unit_Vehicle
   m_EditorClassIdentifier: 
   UnitName: Vehicule
   attack: 3
