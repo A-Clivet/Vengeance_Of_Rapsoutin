@@ -58,24 +58,6 @@ public class Unit : MonoBehaviour
         tile.unit = this;
     }
 
-    //move the ant and update the number of movements left. If none, deselect the ant.
-    public bool MoveToTile(S_Tile tile)
-    {
-
-        m_TilePos = tile.transform.position;
-        //  transform.position = tile.transform.position;
-        m_ActualTile.unit = null;
-        tile.GetComponent<S_Tile>().unit = this;
-        m_ActualTile = tile.GetComponent<S_Tile>();
-        return true;
-    }
-
-    //select the Unit
-    private void OnMouseDown()
-    {
-        m_highlight.SetActive(true);
-    }
-
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
     public void OnAttack(){
         switch (SO_Unit.unitType)
