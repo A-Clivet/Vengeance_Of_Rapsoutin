@@ -25,17 +25,35 @@ public class S_GridManager : MonoBehaviour
 
     // Generate the grid
     private void GenerateGrid(int p_x, int p_y)
-    {     
-        for (int x = p_x; x < width+p_x; x++)
+    {
+        if (height >= 0)
         {
-            gridList.Add(new List<S_Tile>());
-            for (int y = p_y; y < height+p_y; y++)
+            for (int x = 0; x < width; x++)
             {
-                var spawnedTile = Instantiate(_tile, new Vector3(x*_gridScale.x, y*_gridScale.y, 0), Quaternion.identity, transform);
-                gridList[x].Add(spawnedTile);
-                spawnedTile.GetComponent<SpriteRenderer>().sprite=tileSprite;
-                spawnedTile.tileX = x;
-                spawnedTile.tileY = y;
+                gridList.Add(new List<S_Tile>());
+                for (int y = 0; y < height; y++)
+                {
+                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * _gridScale.x, (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    gridList[x].Add(spawnedTile);
+                    spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
+                    spawnedTile.tileX = x;
+                    spawnedTile.tileY = y;
+                }
+            }
+        }
+        else
+        {
+            for (int x = 0; x < width; x++)
+            {
+                gridList.Add(new List<S_Tile>());
+                for (int y = 0;y>height;y--)
+                {
+                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * _gridScale.x, (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    gridList[x].Add(spawnedTile);
+                    spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
+                    spawnedTile.tileX = x;
+                    spawnedTile.tileY = y;
+                }
             }
         }
         //Place the camera at the center of the map
