@@ -15,7 +15,7 @@ public class S_UnitAction : MonoBehaviour
     [SerializeField] private GameObject m_highlight;
     
 
-    //this function execute itself when a ant is spawned
+    
     private void Start()
     {
         speed = 10;
@@ -25,6 +25,8 @@ public class S_UnitAction : MonoBehaviour
     private void Update()
     {
     }
+
+    //this function execute itself when a ant is spawned
     public void Spawn(S_Tile tile)
     {
         m_ActualTile = tile;
