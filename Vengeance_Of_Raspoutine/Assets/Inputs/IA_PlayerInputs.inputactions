@@ -1,0 +1,94 @@
+{
+    "name": "IA_PlayerInputs",
+    "maps": [
+        {
+            "name": "PlayerInputs",
+            "id": "4c63bca9-3caa-4f2e-b76b-b22589a1df68",
+            "actions": [
+                {
+                    "name": "mouseLeft",
+                    "type": "Button",
+                    "id": "9d7908aa-1711-4166-8961-497f12c15a8c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mouseRight",
+                    "type": "Button",
+                    "id": "4fb92ec0-8bf4-4bd9-a270-b51134c04777",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mousePos",
+                    "type": "Value",
+                    "id": "7ba68b13-b708-40b1-9320-105f75398bc3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Show Grid",
+                    "type": "Button",
+                    "id": "32b868b1-5b39-4911-9ab6-116c6d82bffa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1429191c-572e-4674-b10f-e390a2f477cb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c0b806a4-8448-41a3-8707-47402c880342",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "755846aa-bf61-4798-97d1-99772fc515bd",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47a15733-eb12-46b3-921d-483fbdc73c1c",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
