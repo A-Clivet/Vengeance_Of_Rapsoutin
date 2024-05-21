@@ -6,11 +6,27 @@ public class S_Tile : MonoBehaviour
     public int tileX;
     public int tileY;
     
-    // Replace S_UnitAction by the name of the Unit script
-    public S_UnitAction unit;
+    public Unit unit;
+    public S_GridManager grid;
 
+    //get the parent gridManager for future uses
+    private void Awake()
+    {
+        grid=transform.parent.gameObject.GetComponent<S_GridManager>();
+    }
     private void OnMouseOver()
     {
-        //Do Stuff
+        if (grid.unitSelected != null)
+        {
+            grid.unitSelected.VisualizePosition(this);
+        }
+    }
+    //Move the unit if one is selected
+    private void OnMouseDown()
+    {
+        if (grid.unitSelected != null)
+        {
+            grid.unitSelected.MoveToTile(this);
+        }
     }
 }

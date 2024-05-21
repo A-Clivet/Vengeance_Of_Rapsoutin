@@ -6,6 +6,7 @@ public class S_GridManager : MonoBehaviour
 {
 
     public List<List<S_Tile>> gridList = new();
+    public Unit unitSelected;
     //public List<Vector2> m_posToFill = new();
     private Vector3 _gridScale;
 
@@ -15,12 +16,22 @@ public class S_GridManager : MonoBehaviour
     [Header("Differents tile's types :")]
     public Sprite tileSprite;
 
+    [SerializeField]
+    private GameObject pfTest;
 
-    private void Start()
+    private void Awake()
     {
         _gridScale = _tile.transform.localScale;
 
         GenerateGrid(startX,startY);
+        
+    }
+    private void Start()
+    {
+        GameObject test = Instantiate(pfTest, gridList[0][0].transform.position, Quaternion.identity);
+        test.GetComponent<Unit>().OnSpawn(gridList[0][0]);
+        GameObject test2 = Instantiate(pfTest, gridList[1][0].transform.position, Quaternion.identity);
+        test2.GetComponent<Unit>().OnSpawn(gridList[1][0]);
     }
 
     // Generate the grid
@@ -52,7 +63,7 @@ public class S_GridManager : MonoBehaviour
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.tileX = x;
-                    spawnedTile.tileY = y;
+                    spawnedTile.tileY = -y;
                 }
             }
         }
@@ -62,7 +73,7 @@ public class S_GridManager : MonoBehaviour
         //Camera.main.orthographicSize = 7;
     }
 
-    //Change the state of the S_Tile script of the grid, enabling or desabling it.
+    //Change the state of the S_Tile script of the grid, enabling or desabling it alternatively.
     public void ActualizeGrid()
     {
         for (int x = 0; x < gridList.Count; x++)
