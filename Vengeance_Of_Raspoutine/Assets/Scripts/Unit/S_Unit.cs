@@ -29,13 +29,6 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         speed = 10;
-        Debug.Log(SO_Unit.UnitName);
-        Debug.Log(SO_Unit.attack);
-        Debug.Log(SO_Unit.defense);
-        Debug.Log(SO_Unit.sizeX);
-        Debug.Log(SO_Unit.sizeY);
-        Debug.Log(SO_Unit.unitType);
-        
     }
 
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
@@ -44,17 +37,6 @@ public class Unit : MonoBehaviour
     {
         _grid = tile.grid;
         actualTile = tile;
-        tile.unit = this;
-    }
-
-    private void Update()
-    {
-    }
-
-    //this function execute itself when a ant is spawned
-    public void Spawn(S_Tile tile)
-    {
-        m_ActualTile = tile;
         tile.unit = this;
     }
 
