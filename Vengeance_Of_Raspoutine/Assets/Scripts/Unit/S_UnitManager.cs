@@ -8,67 +8,89 @@ public class UnitManager : MonoBehaviour
 {
     public S_GridManager grid;
     [SerializeField] private List<List<S_Tile>> gridList;
+    [SerializeField] List<Unit> unitFormation = new();
 
     public void Start()
     {
         gridList = grid.gridList;
     }
 
-    public void CheckUnitFormation(Unit p_lastUnitMoved) { /* refer to note CheckUnitFormation() */
-        List<Unit> unitFormation = new();
-        unitFormation.Add(p_lastUnitMoved);
+    public void CheckUnitFormation(Unit p_lastUnitMoved) {
+        if(!unitFormation.Contains(p_lastUnitMoved)) unitFormation.Add(p_lastUnitMoved);
 
         //for each( /* multi tiled unit, get its closest tile to the grid’s [0,0] and check certain tiles depending on the size */ )
-        
+
         for (int i = 0; i < unitFormation.Count; i++)
         {
             for (int j = 0; j < 3; j++) { 
                 switch (j)
                 {
-                    case 0: /* Up */
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType 
-                            &&
-                            p_lastUnitMoved.tileY + 1 == grid.height
+                    case 0: /// Up
+                        if (p_lastUnitMoved.tileY + 1 == grid.height) break;
+
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit == null) break;
+
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
                             &&
                             !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit))
                         {
                             unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit);
+                            Debug.Log("up");
+                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit);
                         }
                         break;
+
                     case 1: // right
-                        if(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX+1][p_lastUnitMoved.tileY].unit.SO_Unit.unitType
-                            &&
-                            p_lastUnitMoved.tileY + 1 == grid.width
+
+                        if (p_lastUnitMoved.tileX + 1 == grid.width) break;
+
+                        if (gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit == null) break;
+
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit.SO_Unit.unitType
                             &&
                             !unitFormation.Contains(gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit))
                         {
                             unitFormation.Add(gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit);
+                            Debug.Log("right");
+                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit);
                         }
                         break;
 
                     case 2: // down
+
+                        if (p_lastUnitMoved.tileY - 1 == -1) break;
+
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit == null) break;
+
                         if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit.SO_Unit.unitType
-                            &&
-                            p_lastUnitMoved.tileY + 1 == -1
                             &&
                             !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit))
                         {
                             unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit);
+                            Debug.Log("down");
+                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit);
                         }
                         break;
+
                     case 3: // left
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX-1][p_lastUnitMoved.tileY].unit.SO_Unit.unitType
-                            &&
-                            p_lastUnitMoved.tileY + 1 == -1
+                        if (p_lastUnitMoved.tileX - 1 == -1) break;
+
+                        if (gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit == null) break;
+
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit.SO_Unit.unitType
                             &&
                             !unitFormation.Contains(gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit))
                         {
                             unitFormation.Add(gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit);
+                            Debug.Log("left");
+                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit);
                         }
                         break;
+
                 }
             }
         }
+        Debug.Log(unitFormation.Count);
     }
 
     //if(fusion de multi tiled unit possible ) UnitFusion(Unit bigUnit); 
