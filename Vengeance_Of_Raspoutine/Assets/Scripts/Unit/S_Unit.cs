@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour
     {
         _grid = p_tile.grid;
         _grid.unitList.Add(this);
-        actualTile = _tile;
+        actualTile = p_tile;
         p_tile.unit = this;
         tileX= p_tile.tileX;
         tileY= p_tile.tileY;
