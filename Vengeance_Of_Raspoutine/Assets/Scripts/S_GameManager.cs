@@ -26,6 +26,7 @@ public class S_GameManager : MonoBehaviour
 
     private float _targetTime;
     private int _currentTurnNumber;
+    private int _playerActionNumber;
     private bool _isPlayer1Turn = true;
     
     private int _player1Point;
@@ -43,6 +44,7 @@ public class S_GameManager : MonoBehaviour
     {
         _targetTime = 3f;
         _currentTurnNumber = 1;
+        _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
         _currentMap = mapSelection[_intMap];  // set the current map on start
         _currentSprite.sprite = mapSelection[_intMap]; // set the current sprite on start
@@ -63,7 +65,7 @@ public class S_GameManager : MonoBehaviour
 
         if (_targetTime <= 0.0f) //check if the timer is equal or less to 0
         {
-            TimerEnded();
+            EndTurn();
         }
 
         if(_isPlayer1Turn) 
@@ -110,17 +112,34 @@ public class S_GameManager : MonoBehaviour
         // TODO : Show a UI of defeat to give feedback to the player
     }
 
-    private void TimerEnded() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
+    private void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
     {
         if (_isPlayer1Turn)
         {
             _isPlayer1Turn = false;
+            
         }
         else if (!_isPlayer1Turn)
         {
             _isPlayer1Turn = true;
             _currentTurnNumber += 1;
         }
-        _targetTime = 15.0f;
+        _targetTime = 60.0f;
+        _playerActionNumber = 3;
+    }
+
+    public void ReduceActionPointBy1()
+    {
+        _playerActionNumber -= 1;
+
+        if (_playerActionNumber <= 0)
+        {
+            EndTurn();
+        }
+    }
+
+    public void IncreaseActionPointBy1()
+    {
+        _playerActionNumber += 1;
     }
 }
