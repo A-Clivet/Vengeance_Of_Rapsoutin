@@ -12,7 +12,7 @@ public class Unit : MonoBehaviour
     public S_Tile actualTile;
     public GameObject highlight;
     [SerializeField]
-    private S_GridManager _grid;
+    public S_GridManager _grid;
 
     public int tileX;
     public int tileY;
@@ -76,7 +76,7 @@ public class Unit : MonoBehaviour
                 actualTile.unit = null;
                 actualTile = tile;
                 actualTile.unit = this;
-                transform.position = tile.transform.position;
+                transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y, -1);
                 _grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
@@ -113,17 +113,22 @@ public class Unit : MonoBehaviour
         transform.position = new Vector3(p_tile.transform.position.x, _grid.startY+ _grid.height);
     }
 
+
+    private void OnMouseOver()
+    {
+        highlight.SetActive(true);
+        S_RemoveUnit.Instance.hoveringUnit = this;
+    }
+    private void OnMouseExit()
+    {
+        highlight.SetActive(false);
+        S_RemoveUnit.Instance.hoveringUnit = null;
+    }
     private void OnMouseDown()
     {
         if(_grid.unitSelected==null)
         SelectUnit();
     }
-    private void OnMouseOver()
-    {
-        highlight.SetActive(true);
-    }
-    private void OnMouseExit()
-    {
-        highlight.SetActive(false);
-    }
+    
+
 }
