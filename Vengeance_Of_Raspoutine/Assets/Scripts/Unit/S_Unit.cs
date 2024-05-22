@@ -28,6 +28,7 @@ public class Unit : MonoBehaviour
     public void OnSpawn(S_Tile tile)
     {
         _grid = tile.grid;
+        _grid.unitList.Add(this);
         actualTile = tile;
         tile.unit = this;
         tileX= tile.tileX;
