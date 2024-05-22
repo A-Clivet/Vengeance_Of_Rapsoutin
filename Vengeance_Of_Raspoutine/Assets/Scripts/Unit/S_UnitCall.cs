@@ -7,7 +7,7 @@ public class S_UnitCall : MonoBehaviour
 {
     /*ui variable*/
     public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
-    public int totalUnitAmount = 0;
+ // put this varaible in GridManager
     public S_GridManager grid;
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
@@ -18,7 +18,7 @@ public class S_UnitCall : MonoBehaviour
     }
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
-        if (totalUnitAmount < 48)
+        if (grid.totalUnitAmount < 48)
         {
             for (int i = 0; i < callAmount; i++)
             {
@@ -39,7 +39,7 @@ public class S_UnitCall : MonoBehaviour
                 //function to move the unit on the grid to the right spots
                 unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[p_X][Mathf.Abs(grid.height) - 1]);
                 unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
-                totalUnitAmount++;
+                grid.totalUnitAmount++;
                 Debug.Log("TileX : " + unitToSpawn.GetComponent<Unit>().tileX + "TileY :" + unitToSpawn.GetComponent<Unit>().tileY);
             }
         }
