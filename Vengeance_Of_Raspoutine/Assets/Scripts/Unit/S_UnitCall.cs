@@ -1,27 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class S_UnitCall : MonoBehaviour
 {
     /*ui variable*/
     public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
+    public int totalUnitAmount = 0;
     public S_GridManager grid;
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
 
-    public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
-        for (int i = 0; i < callAmount; i++)
-        {
-            GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
-            unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
-            int X = ColumnSelector();
-            unitToSpawn.GetComponent<Unit>().tileY = X;
+    public void Start()
+    {
+        tile = grid.gridList;
+    }
 
-            //function to move the unit on the grid to the right spots
-            unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height)-1]);
-            unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
-            Debug.Log("TileX : " + unitToSpawn.GetComponent<Unit>().tileX + "TileY :" + unitToSpawn.GetComponent<Unit>().tileY);
+    public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
+        if (totalUnitAmount < 48)
+        {
+            for (int i = 0; i < callAmount; i++)
+            {
+                GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
+                unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
+                int p_X = ColumnSelector();
+                Debug.Log(p_X);
+                Debug.Log(tile[p_X][5].unit);
+                while (tile[p_X][5].unit != null)
+                {
+                    Debug.Log(tile[p_X][5].unit);
+                    Debug.Log(p_X);
+                    p_X = ColumnSelector();
+                }
+
+                unitToSpawn.GetComponent<Unit>().tileX = p_X;
+
+                //function to move the unit on the grid to the right spots
+                unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[p_X][Mathf.Abs(grid.height) - 1]);
+                unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                totalUnitAmount++;
+                Debug.Log("TileX : " + unitToSpawn.GetComponent<Unit>().tileX + "TileY :" + unitToSpawn.GetComponent<Unit>().tileY);
+            }
         }
     }
 

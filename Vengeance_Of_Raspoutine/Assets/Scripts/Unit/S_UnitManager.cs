@@ -9,9 +9,9 @@ public class UnitManager : MonoBehaviour
     [SerializeField] private List<List<S_Tile>> gridList;
 
 
-    public void CheckUnitFormation(Unit lastUnitMoved) { /* refer to note CheckUnitFormation() */
+    public void CheckUnitFormation(Unit p_lastUnitMoved) { /* refer to note CheckUnitFormation() */
         List<Unit> unitFormation = new();
-        unitFormation.Add(lastUnitMoved);
+        unitFormation.Add(p_lastUnitMoved);
 
         //for each( /* multi tiled unit, get its closest tile to the grid’s [0,0] and check certain tiles depending on the size */ )
         
@@ -21,36 +21,36 @@ public class UnitManager : MonoBehaviour
                 switch (j)
                 {
                     case 0: /* Up */
-                        if (gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit.SO_Unit.unitType 
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType 
                             && 
-                            !unitFormation.Contains(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit))
+                            !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit))
                         {
-                            unitFormation.Add(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit);
+                            unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit);
                         }
                         break;
                     case 1:
-                        if(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
+                        if(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
                                                     &&
-                                                    !unitFormation.Contains(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit))
+                                                    !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit))
                         {
-                            unitFormation.Add(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit);
+                            unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit);
                         }
                         break;
 
                     case 2:
-                        if(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
+                        if(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
                                                     &&
-                                                    !unitFormation.Contains(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit))
+                                                    !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit))
                         {
-                            unitFormation.Add(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit);
+                            unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit);
                         }
                         break;
                     case 3:
-                        if (gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
+                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
                             &&
-                            !unitFormation.Contains(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY + 1].unit))
+                            !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit))
                         {
-                            unitFormation.Add(gridList[lastUnitMoved.tileX][lastUnitMoved.tileY].unit);
+                            unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit);
                         }
                         break;
                 }
@@ -61,74 +61,74 @@ public class UnitManager : MonoBehaviour
     //if(fusion de multi tiled unit possible ) UnitFusion(Unit bigUnit); 
     //if(unitFormation.count > 1) UnitActivation(unitFormation[], UOC, UOL);
 
-    public void UnitActivation(List<Unit> UF, UnitOnColumn UOC, UnitOnLine UOL) { /* refer to note UnitActivation */
+    public void UnitActivation(List<Unit> p_UF, UnitOnColumn p_UOC, UnitOnLine p_UOL) { /* refer to note UnitActivation */
         List<Unit> unitToDefend = new();
         List<Unit> unitToAttack = new();
         int currentIndexY;
         int currentIndexX;
-        UOC = new();
-        UOL = new();
+        p_UOC = new();
+        p_UOL = new();
 
         /* add the first, since this fucntion isn’t called if the initial unit is secluded */
-        UOL.Y.Add(UF[0].tileY);
-        UOL.bounds.Add(new Vector2Int(UF[0].tileX, UF[0].tileX));
-        UOC.X.Add(UF[0].tileX);
-        UOC.bounds.Add(new Vector2Int(UF[0].tileY, UF[0].tileY));
+        p_UOL.Y.Add(p_UF[0].tileY);
+        p_UOL.bounds.Add(new Vector2Int(p_UF[0].tileX, p_UF[0].tileX));
+        p_UOC.X.Add(p_UF[0].tileX);
+        p_UOC.bounds.Add(new Vector2Int(p_UF[0].tileY, p_UF[0].tileY));
 
-        for (int i = 1; i < UF.Count; i++) {
+        for (int i = 1; i < p_UF.Count; i++) {
 
-            currentIndexY = UOL.Y.FindIndex(item => item == UF[i].tileY);
-            currentIndexX = UOC.X.FindIndex(item => item == UF[i].tileX);
+            currentIndexY = p_UOL.Y.FindIndex(item => item == p_UF[i].tileY);
+            currentIndexX = p_UOC.X.FindIndex(item => item == p_UF[i].tileX);
 
-            UOC.units.Add(UF[i]);
-            UOL.units.Add(UF[i]);
+            p_UOC.units.Add(p_UF[i]);
+            p_UOL.units.Add(p_UF[i]);
             /* check if a List exists for this Line, then, check if the value of the unit’s Tile position is two far off the bounds, if it is, then a new list can be added since it’s disconnected from the initial one */
-            if (!UOL.Y.Contains(UF[i].tileY) && (UF[i].tileX < UOL.bounds[currentIndexY].x - 1 || UF[i].tileX > UOL.bounds[currentIndexY].y + 1)){
-                UOL.Y.Add(UF[i].tileY);
-                UOL.bounds.Add(new Vector2Int(UF[i].tileX, UF[i].tileX));
+            if (!p_UOL.Y.Contains(p_UF[i].tileY) && (p_UF[i].tileX < p_UOL.bounds[currentIndexY].x - 1 || p_UF[i].tileX > p_UOL.bounds[currentIndexY].y + 1)){
+                p_UOL.Y.Add(p_UF[i].tileY);
+                p_UOL.bounds.Add(new Vector2Int(p_UF[i].tileX, p_UF[i].tileX));
             }
             else
             {
-                if (UOL.bounds[currentIndexY].y > UF[i].tileY)
+                if (p_UOL.bounds[currentIndexY].y > p_UF[i].tileY)
                 {
-                    UOL.bounds[currentIndexY] = new Vector2Int(UF[i].tileY, UOL.bounds[currentIndexY].y);
+                    p_UOL.bounds[currentIndexY] = new Vector2Int(p_UF[i].tileY, p_UOL.bounds[currentIndexY].y);
                 }
-                else if (UOL.bounds[currentIndexY].y < UF[i].tileY)
+                else if (p_UOL.bounds[currentIndexY].y < p_UF[i].tileY)
                 {
-                    UOL.bounds[currentIndexY] = new Vector2Int(UOL.bounds[currentIndexY].y, UF[i].tileY);
+                    p_UOL.bounds[currentIndexY] = new Vector2Int(p_UOL.bounds[currentIndexY].y, p_UF[i].tileY);
                 }
             }
             /* check if a List exists for this Line, then, check if the value of the unit’s Tile position is two far off the bounds, if it is, then a new list can be added since it’s disconnected from the initial one */
-            if (!UOC.X.Contains(UF[i].tileX) && (UF[i].tileY > UOC.bounds[UOC.X.FindIndex(item => item == UF[i].tileX)].y + 1 || UF[i].tileY < UOC.bounds[UOC.X.FindIndex(item => item == UF[i].tileX)].x - 1)) {
-                UOC.X.Add(UF[i].tileY);
-                UOC.bounds.Add(new Vector2Int(UF[i].tileY, UF[i].tileY));
+            if (!p_UOC.X.Contains(p_UF[i].tileX) && (p_UF[i].tileY > p_UOC.bounds[p_UOC.X.FindIndex(item => item == p_UF[i].tileX)].y + 1 || p_UF[i].tileY < p_UOC.bounds[p_UOC.X.FindIndex(item => item == p_UF[i].tileX)].x - 1)) {
+                p_UOC.X.Add(p_UF[i].tileY);
+                p_UOC.bounds.Add(new Vector2Int(p_UF[i].tileY, p_UF[i].tileY));
             }
             else
             {
-                if (UOL.bounds[currentIndexY].x > UF[i].tileX)
+                if (p_UOL.bounds[currentIndexY].x > p_UF[i].tileX)
                 {
-                    UOL.bounds[currentIndexY] = new Vector2Int(UF[i].tileX, UOL.bounds[currentIndexY].x);
+                    p_UOL.bounds[currentIndexY] = new Vector2Int(p_UF[i].tileX, p_UOL.bounds[currentIndexY].x);
                 }
-                else if (UOL.bounds[currentIndexY].x < UF[i].tileX)
+                else if (p_UOL.bounds[currentIndexY].x < p_UF[i].tileX)
                 {
-                    UOL.bounds[currentIndexY] = new Vector2Int(UOL.bounds[currentIndexY].x, UF[i].tileX);
+                    p_UOL.bounds[currentIndexY] = new Vector2Int(p_UOL.bounds[currentIndexY].x, p_UF[i].tileX);
                 }
             }
         }
-        for (int i = 0; i < UOL.Y.Count; i++)
+        for (int i = 0; i < p_UOL.Y.Count; i++)
         {
-            if (UOL.bounds[i].y - UOL.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
-            for (int j = UOL.bounds[i].x; j < UOL.bounds[i].y; j++)
+            if (p_UOL.bounds[i].y - p_UOL.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
+            for (int j = p_UOL.bounds[i].x; j < p_UOL.bounds[i].y; j++)
             {
-                unitToDefend.Add(gridList[UOL.bounds[i].x + j][UOL.Y[i]].unit);
+                unitToDefend.Add(gridList[p_UOL.bounds[i].x + j][p_UOL.Y[i]].unit);
             }
         }
-        for (int i = 0; i < UOC.X.Count; i++)
+        for (int i = 0; i < p_UOC.X.Count; i++)
         {
-            if (UOC.bounds[i].y - UOC.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
-            for (int j = UOC.bounds[i].x; j < UOC.bounds[i].y; j++)
+            if (p_UOC.bounds[i].y - p_UOC.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
+            for (int j = p_UOC.bounds[i].x; j < p_UOC.bounds[i].y; j++)
             {
-                unitToAttack.Add(gridList[UOC.X[i]][UOC.bounds[i].x + j].unit);
+                unitToAttack.Add(gridList[p_UOC.X[i]][p_UOC.bounds[i].x + j].unit);
             }
         }
         Attack(unitToAttack);
