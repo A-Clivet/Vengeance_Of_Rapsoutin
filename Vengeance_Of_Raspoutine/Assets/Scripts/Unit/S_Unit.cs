@@ -77,7 +77,6 @@ public class Unit : MonoBehaviour
                 actualTile = tile;
                 actualTile.unit = this;
                 transform.position = tile.transform.position;
-                highlight.SetActive(false);
                 _grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
@@ -93,7 +92,6 @@ public class Unit : MonoBehaviour
         {
             if(actualTile.tileY== _grid.gridList[actualTile.tileX].Count - 1)
             {
-                highlight.SetActive(true);
                 _grid.unitSelected = this;
             }
             return;
@@ -104,7 +102,6 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            highlight.SetActive(true);
             _grid.unitSelected = this;
         }
         return;
@@ -120,5 +117,13 @@ public class Unit : MonoBehaviour
     {
         if(_grid.unitSelected==null)
         SelectUnit();
+    }
+    private void OnMouseOver()
+    {
+        highlight.SetActive(true);
+    }
+    private void OnMouseExit()
+    {
+        highlight.SetActive(false);
     }
 }
