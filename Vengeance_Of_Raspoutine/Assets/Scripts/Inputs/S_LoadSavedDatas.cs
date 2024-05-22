@@ -9,9 +9,18 @@ public class S_LoadSavedDatas : MonoBehaviour
         //Searches through the bindings of the action map to check for any overrides in PlayerPrefs.
         for (int i=0; i < _actionAsset.actionMaps[0].actions.Count; i++)
         {
-            if (PlayerPrefs.HasKey(_actionAsset.actionMaps[0].actions[i].name))
+            if (PlayerPrefs.HasKey(_actionAsset.actionMaps[0].actions[i].name + "1"))
             {
-                _actionAsset.actionMaps[0].actions[i].ApplyBindingOverride(PlayerPrefs.GetString(_actionAsset.actionMaps[0].actions[i].name));
+                _actionAsset.actionMaps[0].actions[i].ApplyBindingOverride(PlayerPrefs.GetString(_actionAsset.actionMaps[0].actions[i].name + "1"));
+                Debug.Log(_actionAsset.actionMaps[0].actions[i]);
+            }
+        }
+        for (int j = 0; j < _actionAsset.actionMaps[1].actions.Count; j++)
+        {
+            if (PlayerPrefs.HasKey(_actionAsset.actionMaps[1].actions[j].name + "2"))
+            {
+                _actionAsset.actionMaps[1].actions[j].ApplyBindingOverride(PlayerPrefs.GetString(_actionAsset.actionMaps[1].actions[j].name + "2"));
+                Debug.Log(_actionAsset.actionMaps[1].actions[j]);
             }
         }
     }

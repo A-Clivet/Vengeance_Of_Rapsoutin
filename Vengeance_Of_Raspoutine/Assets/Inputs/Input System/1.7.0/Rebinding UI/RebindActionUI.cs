@@ -226,7 +226,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 action.RemoveBindingOverride(bindingIndex);
             }
-            PlayerPrefs.SetString(action.name, action.bindings[0].path);
+            PlayerPrefs.SetString(action.name + _playerNumber.ToString(), action.bindings[0].path);
             PlayerPrefs.Save();
             UpdateBindingDisplay();
         }
@@ -285,7 +285,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                         m_RebindStopEvent?.Invoke(this, operation);
                         UpdateBindingDisplay();
                         CleanUp();
-                        PlayerPrefs.SetString(action.name, action.bindings[0].overridePath);
+                        PlayerPrefs.SetString(action.name + _playerNumber.ToString(), action.bindings[0].overridePath);
                         PlayerPrefs.Save();
 
                         // If there's more composite parts we should bind, initiate a rebind
@@ -372,6 +372,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                     component.UpdateBindingDisplay();
             }
         }
+
+        [SerializeField] private int _playerNumber;
 
         [Tooltip("Reference to action that is to be rebound from the UI.")]
         [SerializeField]
