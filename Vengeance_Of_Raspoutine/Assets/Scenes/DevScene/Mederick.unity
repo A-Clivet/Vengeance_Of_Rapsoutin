@@ -543,7 +543,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1915659193}
+      - m_Target: {fileID: 496482796}
         m_TargetAssemblyTypeName: S_UnitCall, Assembly-CSharp
         m_MethodName: UnitCalling
         m_Mode: 1
@@ -568,6 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   callAmount: 12
+  totalUnitAmount: 0
   grid: {fileID: 1766261682}
   units:
   - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
@@ -801,7 +802,7 @@ Transform:
   m_GameObject: {fileID: 1237300126}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 6, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -891,7 +892,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1915659193}
+      - m_Target: {fileID: 1288306750}
         m_TargetAssemblyTypeName: S_UnitCall, Assembly-CSharp
         m_MethodName: UnitCalling
         m_Mode: 1
@@ -916,6 +917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   callAmount: 12
+  totalUnitAmount: 0
   grid: {fileID: 1554041413}
   units:
   - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
@@ -989,14 +991,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fa836ad322bc54e91c4c6970ec67db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitList: []
   unitSelected: {fileID: 0}
   width: 8
   height: -6
-  startX: 0
-  startY: 5
+  startX: -4
+  startY: -1
   _tile: {fileID: 1797645126133966612, guid: e713ee315edf66841a8db9c120ab8554, type: 3}
   tileSprite: {fileID: 21300000, guid: 8d177a0c0bd825342a66640f3c2a5d21, type: 3}
-  pfTest: {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
 --- !u!4 &1554041414
 Transform:
   m_ObjectHideFlags: 0
@@ -1041,14 +1043,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fa836ad322bc54e91c4c6970ec67db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitList: []
   unitSelected: {fileID: 0}
   width: 8
   height: 6
-  startX: 0
-  startY: 7
+  startX: -4
+  startY: 1
   _tile: {fileID: 1797645126133966612, guid: e713ee315edf66841a8db9c120ab8554, type: 3}
   tileSprite: {fileID: 21300000, guid: 8d177a0c0bd825342a66640f3c2a5d21, type: 3}
-  pfTest: {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
 --- !u!4 &1766261683
 Transform:
   m_ObjectHideFlags: 0
@@ -1094,6 +1096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   callAmount: 10
+  totalUnitAmount: 0
   grid: {fileID: 1554041413}
   units:
   - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
