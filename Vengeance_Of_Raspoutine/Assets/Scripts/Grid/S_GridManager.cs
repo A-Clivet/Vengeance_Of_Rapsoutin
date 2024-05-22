@@ -11,7 +11,8 @@ public class S_GridManager : MonoBehaviour
     //public List<Vector2> m_posToFill = new();
     private Vector3 _gridScale;
 
-    public int width, height, startX, startY;
+    public int width, height;
+    public float startX, startY;
     [SerializeField] private S_Tile _tile;
 
     [Header("Differents tile's types :")]
@@ -33,7 +34,7 @@ public class S_GridManager : MonoBehaviour
     //}
 
     // Generate the grid
-    private void GenerateGrid(int p_x, int p_y)
+    private void GenerateGrid(float p_x, float p_y)
     {
         if (height >= 0)
         {
