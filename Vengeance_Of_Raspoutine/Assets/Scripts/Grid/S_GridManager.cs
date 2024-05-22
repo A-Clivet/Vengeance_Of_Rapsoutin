@@ -26,13 +26,13 @@ public class S_GridManager : MonoBehaviour
         GenerateGrid(startX,startY);
         
     }
-    private void Start()
-    {
-        GameObject test = Instantiate(pfTest, gridList[0][0].transform.position, Quaternion.identity);
-        test.GetComponent<Unit>().OnSpawn(gridList[0][0]);
-        GameObject test2 = Instantiate(pfTest, gridList[1][0].transform.position, Quaternion.identity);
-        test2.GetComponent<Unit>().OnSpawn(gridList[1][0]);
-    }
+    //private void Start()
+    //{
+    //    GameObject test = Instantiate(pfTest, gridList[0][0].transform.position, Quaternion.identity);
+    //    test.GetComponent<Unit>().OnSpawn(gridList[0][0]);
+    //    GameObject test2 = Instantiate(pfTest, gridList[1][0].transform.position, Quaternion.identity);
+    //    test2.GetComponent<Unit>().OnSpawn(gridList[1][0]);
+    //}
 
     // Generate the grid
     private void GenerateGrid(int p_x, int p_y)

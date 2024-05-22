@@ -5,17 +5,9 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
-    public S_Tile m_ActualTile;
     public int speed = 10;
-    private Vector3 m_TilePos;
-
-    [Header("Ant statistics :")]
-
 
     [Header("References :")]
-    [SerializeField] private GameObject m_highlight;
-
-
     public SO_Unit SO_Unit;
     public S_Tile actualTile;
     public GameObject highlight;
@@ -38,6 +30,8 @@ public class Unit : MonoBehaviour
         _grid = tile.grid;
         actualTile = tile;
         tile.unit = this;
+        tileX= tile.tileX;
+        tileY= tile.tileY;
     }
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
@@ -76,14 +70,17 @@ public class Unit : MonoBehaviour
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
+            Debug.Log("Taarget Tile unit : " + tile.unit + " Departing tile unit :" + actualTile.unit);
             if (tile.unit == null || tile.unit==this)
             {
-                tile.unit = this;
                 actualTile.unit = null;
-                actualTile = p_tile;
+                actualTile = tile;
+                actualTile.unit = this;
                 transform.position = tile.transform.position;
                 highlight.SetActive(false);
                 _grid.unitSelected = null;
+                tileX = tile.tileX;
+                tileY = tile.tileY;
                 break;
             }
         }
@@ -94,6 +91,11 @@ public class Unit : MonoBehaviour
     {
         if (actualTile.tileY + 1 > _grid.gridList[actualTile.tileX].Count-1)
         {
+            if(actualTile.tileY== _grid.gridList[actualTile.tileX].Count - 1)
+            {
+                highlight.SetActive(true);
+                _grid.unitSelected = this;
+            }
             return;
         }
         if (_grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
