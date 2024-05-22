@@ -25,14 +25,14 @@ public class Unit : MonoBehaviour
 
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
     //AND THE REFERENCE TO HIS OWN TILE IS KNOWN
-    public void OnSpawn(S_Tile tile)
+    public void OnSpawn(S_Tile p_tile)
     {
-        _grid = tile.grid;
+        _grid = p_tile.grid;
         _grid.unitList.Add(this);
-        actualTile = tile;
-        tile.unit = this;
-        tileX= tile.tileX;
-        tileY= tile.tileY;
+        actualTile = _tile;
+        p_tile.unit = this;
+        tileX= p_tile.tileX;
+        tileY= p_tile.tileY;
     }
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
@@ -71,7 +71,6 @@ public class Unit : MonoBehaviour
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
-            Debug.Log("Taarget Tile unit : " + tile.unit + " Departing tile unit :" + actualTile.unit);
             if (tile.unit == null || tile.unit==this)
             {
                 actualTile.unit = null;
@@ -111,6 +110,7 @@ public class Unit : MonoBehaviour
         return;
     }
 
+    //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
         transform.position = new Vector3(p_tile.transform.position.x, _grid.startY+ _grid.height);

@@ -17,9 +17,6 @@ public class S_GridManager : MonoBehaviour
     [Header("Differents tile's types :")]
     public Sprite tileSprite;
 
-    [SerializeField]
-    private GameObject pfTest;
-
     private void Awake()
     {
         _gridScale = _tile.transform.localScale;
