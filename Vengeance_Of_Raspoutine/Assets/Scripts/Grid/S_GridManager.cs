@@ -8,6 +8,7 @@ public class S_GridManager : MonoBehaviour
     public List<List<S_Tile>> gridList = new();
     public List<Unit> unitList = new();
     public Unit unitSelected;
+    public int totalUnitAmount = 0;
     //public List<Vector2> m_posToFill = new();
     private Vector3 _gridScale;
 
