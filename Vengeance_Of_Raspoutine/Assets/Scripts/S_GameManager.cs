@@ -5,15 +5,26 @@ using UnityEngine.UI;
 
 public class S_GameManager : MonoBehaviour
 {
-    public List<Sprite> mapSelection = new(new Sprite[5]); 
+    [Header("Background references :")]
+    public List<Sprite> mapSelection = new(new Sprite[5]);
+    [SerializeField] private Image _currentSprite; // sprite that display the map 
+
+    [Header("Turn references :")]
+    [SerializeField] private TextMeshProUGUI _timerText;
+    
+    [Header("Character's stats references :")]
+    [SerializeField] S_CharacterStats _character1Stats;
+    [SerializeField] S_CharacterStats _character2Stats;
+
     private float _targetTime;
     private bool _isPlayer1Turn = true;
-    [SerializeField] private TextMeshProUGUI _timerText;
+    
     private int _player1Point;
     private int _player2Point;
     private Sprite _currentMap;
-    [SerializeField] private Image _currentSprite; // sprite that display the map 
+    
     private int _intMap = 2;// int for the current time in the list
+
 
     private void Start()
     {
@@ -21,6 +32,9 @@ public class S_GameManager : MonoBehaviour
         _timerText.text = _targetTime.ToString();
         _currentMap = mapSelection[_intMap];  // set the current map on start
         _currentSprite.sprite = mapSelection[_intMap]; // set the current sprite on start
+
+        S_CharacterManager.Instance.SpawnCharacter(_character1Stats, true);
+        S_CharacterManager.Instance.SpawnCharacter(_character2Stats, false);
     }
 
 
