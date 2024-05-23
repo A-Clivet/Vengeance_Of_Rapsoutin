@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class S_GameManager : MonoBehaviour
 {
+    
+
     public static S_GameManager Instance;
 
     [Header("Background references :")]
@@ -37,7 +40,8 @@ public class S_GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne);
+        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne); 
+        DontDestroyOnLoad(transform.parent);
     }
 
     private void Start()
@@ -108,8 +112,6 @@ public class S_GameManager : MonoBehaviour
 
         _currentMap = mapSelection[_intMap];
         _currentSprite.sprite = mapSelection[_intMap];
-
-        // TODO : Show a UI of defeat to give feedback to the player
     }
 
     private void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
