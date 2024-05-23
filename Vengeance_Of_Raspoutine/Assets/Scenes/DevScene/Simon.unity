@@ -4075,13 +4075,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2223588255517867190, guid: 1a9f898d385d9ea468216d357b6fb59a, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1479381823}
     - target: {fileID: 6128185053800036385, guid: 1a9f898d385d9ea468216d357b6fb59a, type: 3}
       propertyPath: m_Name
       value: GO_LoreCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6128185053800036385, guid: 1a9f898d385d9ea468216d357b6fb59a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8123122164701769137, guid: 1a9f898d385d9ea468216d357b6fb59a, type: 3}
       propertyPath: m_Pivot.x
