@@ -112,6 +112,7 @@ public class S_GameManager : MonoBehaviour
 
         _currentMap = mapSelection[_intMap];
         _currentSprite.sprite = mapSelection[_intMap];
+
     }
 
     private void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
