@@ -30,6 +30,7 @@ public class S_GameManager : MonoBehaviour
     private float _targetTime;
     private int _currentTurnNumber;
     private int _playerActionNumber;
+    private bool _randomTurn;
     private bool _isPlayer1Turn = true;
     
     private int _player1Point;
@@ -92,11 +93,45 @@ public class S_GameManager : MonoBehaviour
         if (p_isPlayer1Dead) 
         {
             _player1Point += 1;
+            if (_player1Point >= 1)
+            {
+                _randomTurn = true;
+            }
+            if (_randomTurn)
+            {
+                int random = Random.Range(0, 1);
+                switch (random)
+                {
+                    case 0:
+                        _isPlayer1Turn = false;
+                        break;
+                    case 1:
+                        _isPlayer1Turn = true;  
+                        break;
+                }
+            }
             _intMap -= 1;
         }
         else
         {
             _player2Point += 1;
+            if (_player2Point >= 1)
+            {
+                _randomTurn = true;
+            }
+            if (_randomTurn)
+            {
+                int random = Random.Range(0, 1);
+                switch (random)
+                {
+                    case 0:
+                        _isPlayer1Turn = false;
+                        break;
+                    case 1:
+                        _isPlayer1Turn = true;
+                        break;
+                }
+            }
             _intMap += 1;
         }
 
