@@ -12,7 +12,6 @@ public class S_LoadSavedDatas : MonoBehaviour
             if (PlayerPrefs.HasKey(_actionAsset.actionMaps[0].actions[i].name + "1"))
             {
                 _actionAsset.actionMaps[0].actions[i].ApplyBindingOverride(PlayerPrefs.GetString(_actionAsset.actionMaps[0].actions[i].name + "1"));
-                Debug.Log(_actionAsset.actionMaps[0].actions[i]);
             }
         }
         for (int j = 0; j < _actionAsset.actionMaps[1].actions.Count; j++)
@@ -20,7 +19,6 @@ public class S_LoadSavedDatas : MonoBehaviour
             if (PlayerPrefs.HasKey(_actionAsset.actionMaps[1].actions[j].name + "2"))
             {
                 _actionAsset.actionMaps[1].actions[j].ApplyBindingOverride(PlayerPrefs.GetString(_actionAsset.actionMaps[1].actions[j].name + "2"));
-                Debug.Log(_actionAsset.actionMaps[1].actions[j]);
             }
         }
     }
