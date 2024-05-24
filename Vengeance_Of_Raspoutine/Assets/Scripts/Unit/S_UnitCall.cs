@@ -7,7 +7,7 @@ public class S_UnitCall : MonoBehaviour
 {
     /*ui variable*/
     public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
- // put this varaible in GridManager
+    public S_UnitManager unitManager;
     public S_GridManager grid;
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
@@ -25,12 +25,8 @@ public class S_UnitCall : MonoBehaviour
                 GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
                 unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 int p_X = ColumnSelector();
-                Debug.Log(p_X);
-                Debug.Log(tile[p_X][5].unit);
                 while (tile[p_X][5].unit != null)
                 {
-                    Debug.Log(tile[p_X][5].unit);
-                    Debug.Log(p_X);
                     p_X = ColumnSelector();
                 }
 
@@ -41,9 +37,14 @@ public class S_UnitCall : MonoBehaviour
                 unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>()._grid.startY + unitToSpawn.GetComponent<Unit>()._grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
                 unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
                 grid.totalUnitAmount++;
-                Debug.Log("TileX : " + unitToSpawn.GetComponent<Unit>().tileX + "TileY :" + unitToSpawn.GetComponent<Unit>().tileY);
+
+                if(i == callAmount - 1)
+                {
+                    unitManager.CheckUnitFormation(unitToSpawn.GetComponent<Unit>());
+                }
             }
         }
+
     }
 
     private int ColumnSelector()

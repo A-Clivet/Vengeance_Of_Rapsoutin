@@ -10,7 +10,9 @@ public class Unit : MonoBehaviour
     private Vector3 _posToMove;
 
     [Header("References :")]
-    public SO_Unit SO_Unit;
+    public SO_Unit SO_Unit; //Unit.SO_Unit.
+    public int attack;
+    public int defense;
     public S_Tile actualTile;
     public GameObject highlight;
     [SerializeField]
@@ -22,6 +24,8 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
+        attack = SO_Unit.attack;
+        defense = SO_Unit.defense;
         speed = 10;
     }
 
