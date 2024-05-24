@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class S_GridManager : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class S_GridManager : MonoBehaviour
 
     [Header("Differents tile's types :")]
     public Sprite tileSprite;
+
+    private Color _spriteColor = new Color(0,0,0,1);
+    private Color _transparentColor = new Color(0,0,0,-1);
+    private bool _isGridVisible = false;
 
     private void Awake()
     {
@@ -47,6 +52,7 @@ public class S_GridManager : MonoBehaviour
                     var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * _gridScale.x, (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
+                    spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
                     spawnedTile.tileX = x;
                     spawnedTile.tileY = y;
                 }
@@ -62,6 +68,7 @@ public class S_GridManager : MonoBehaviour
                     var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * _gridScale.x, (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
+                    spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
                     spawnedTile.tileX = x;
                     spawnedTile.tileY = -y;
                 }
@@ -85,6 +92,35 @@ public class S_GridManager : MonoBehaviour
             }
         }
     }
+
+    public void HighLightGrid(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            _isGridVisible = !_isGridVisible;
+            if (_isGridVisible)
+            {
+                for (int i = 0; i < gridList.Count; i++)
+                {
+                    for (int j = 0; j < gridList[i].Count; j++)
+                    {
+                        gridList[i][j].GetComponent<SpriteRenderer>().color += _spriteColor;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < gridList.Count; i++)
+                {
+                    for (int j = 0; j < gridList[i].Count; j++)
+                    {
+                        gridList[i][j].GetComponent<SpriteRenderer>().color += _transparentColor;
+                    }
+                }
+            }
+        }
+    }
+
     //private void FillAtPosition()
     //{
     //    foreach (Vector2 pos in m_posToFill)
