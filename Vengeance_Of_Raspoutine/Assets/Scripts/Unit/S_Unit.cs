@@ -6,6 +6,8 @@ public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
     public int speed = 10;
+    private bool _isMoving = false;
+    private Vector3 _posToMove;
 
     [Header("References :")]
     public SO_Unit SO_Unit; //Unit.SO_Unit.
@@ -27,6 +29,18 @@ public class Unit : MonoBehaviour
         speed = 10;
     }
 
+    private void Update()
+    {
+        if (_isMoving)
+        {
+            transform.position =Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1),Time.deltaTime*5);
+            if (Vector3.Distance(transform.position, _posToMove) < 0.5)
+            {
+                transform.position=_posToMove;
+                _isMoving = false;
+            }
+        }
+    }
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
     //AND THE REFERENCE TO HIS OWN TILE IS KNOWN
     public void OnSpawn(S_Tile p_tile)
@@ -80,10 +94,15 @@ public class Unit : MonoBehaviour
                 actualTile.unit = null;
                 actualTile = tile;
                 actualTile.unit = this;
-                transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y, -1);
                 _grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
+                _isMoving = true;
+                _posToMove = tile.transform.position;
+                foreach (Unit unit in _grid.unitList)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                }
                 break;
             }
         }
@@ -97,6 +116,10 @@ public class Unit : MonoBehaviour
             if(actualTile.tileY== _grid.gridList[actualTile.tileX].Count - 1)
             {
                 _grid.unitSelected = this;
+                foreach (Unit unit in _grid.unitList)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = false;
+                }
             }
             return;
         }
@@ -107,6 +130,10 @@ public class Unit : MonoBehaviour
         else
         {
             _grid.unitSelected = this;
+            foreach (Unit unit in _grid.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
         }
         return;
     }
@@ -114,7 +141,8 @@ public class Unit : MonoBehaviour
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
-        transform.position = new Vector3(p_tile.transform.position.x, _grid.startY+ _grid.height);
+        _isMoving = true;
+        _posToMove = new Vector3(p_tile.transform.position.x, _grid.startY + _grid.height);
     }
 
 
