@@ -10,6 +10,8 @@ public class S_CharacterManager : MonoBehaviour
     [SerializeField] GameObject _character1Prefab;
     [SerializeField] GameObject _character2Prefab;
     [SerializeField] GameObject _allCharactersParent;
+    [SerializeField] S_SkillPanel _skillPanelP1;
+    [SerializeField] S_SkillPanel _skillPanelP2;
 
     // Created to let other scripts access player1's character and player2's character
     [HideInInspector] public GameObject player1CharacterGameObject { get; private set; }
@@ -76,12 +78,18 @@ public class S_CharacterManager : MonoBehaviour
 
         // Store the GameObject reference of the created character in the corresponding variable
         if (p_isPlayer1Character)
+        {
             player1CharacterGameObject = character;
+            _skillPanelP1.SetDesc(p_characterStats.specialCapacity.capacityDesc);
+        }
         else
+        {
             player2CharacterGameObject = character;
+            _skillPanelP2.SetDesc(p_characterStats.specialCapacity.capacityDesc);
+        }
 
-        #endregion
-    }
+            #endregion
+        }
 
     #endregion
 }

@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "Press(pressPoint=0.15)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Show Skill",
+                    "type": "Button",
+                    "id": "03fb3e2b-fef9-444f-ab93-f1593b04029e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -86,6 +95,17 @@
                     "action": "Show Grid",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4c75487f-fab8-4a5a-9ef4-09eb1d9b816d",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -127,6 +147,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Show Skill",
+                    "type": "Button",
+                    "id": "b36578ef-fc5d-4c44-9b19-accaded8f8a0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -172,6 +201,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Show Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9e268da-8941-4783-8e03-ac21a2376a5d",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Skill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

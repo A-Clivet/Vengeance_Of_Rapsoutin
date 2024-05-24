@@ -15,5 +15,6 @@ MonoBehaviour:
   isUnitsStatChangementSpecialCapacity: 1
   capacityName: Dark magic
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
+  capacityDesc: DarkMagic
   unitStatChanged: 1
   unitStatsChangementValue: 1
