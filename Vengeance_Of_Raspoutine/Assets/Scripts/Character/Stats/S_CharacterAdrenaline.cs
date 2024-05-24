@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static S_CharacterStats;
 
 public class S_CharacterAdrenaline : MonoBehaviour
 {
@@ -8,11 +9,12 @@ public class S_CharacterAdrenaline : MonoBehaviour
     [SerializeField] Image _specialCapacityChargingSprite;
 
     bool _isPlayer1Character;
+    S_SpecialCapacityStats _specialCapacity;
     int _currentAdrenaline = 0;
     int _maxAdrenaline = 50;
 
     #region Getter / Setter
-    public int CurrentAdrenaline
+    public int currentAdrenaline
     {
         get { return _currentAdrenaline; }
         set
@@ -33,7 +35,7 @@ public class S_CharacterAdrenaline : MonoBehaviour
         }
     }
 
-    public int MaxAdrenaline
+    public int maxAdrenaline
     {
         get { return _maxAdrenaline; }
     }
@@ -43,32 +45,28 @@ public class S_CharacterAdrenaline : MonoBehaviour
 
     #region Methods
 
-    public void RecieveCharacterAdrenalineStats(int p_maxAdrenaline, bool p_isPlayer1Character)
+    public void RecieveCharacterAdrenalineStats(int p_maxAdrenaline, S_SpecialCapacityStats p_specialCapacity, bool p_isPlayer1Character)
     {
         // Setting up class variables
         _maxAdrenaline = p_maxAdrenaline;
+        _specialCapacity = p_specialCapacity;
         _isPlayer1Character = p_isPlayer1Character;
 
-        // Setting up character HP to the max
-        CurrentAdrenaline = _maxAdrenaline;
+        // Setting up character Adrenaline to the max
+        currentAdrenaline = _maxAdrenaline;
     }
 
     /// <summary> This function is built to be used when the special capacity's button is pressed,
     /// it checks if the character associated with the button has full adrenaline, if yes then it launch the character's special capacity </summary>
     public void SpecialCapacityButtonPressed()
     {
-        // Check if the turn correspond  player who own of the button
-        if (_isPlayer1Character)
-        {
-
-        }
-
         // Check if the character has full adrenaline
-        if (_currentAdrenaline == _maxAdrenaline)
+        if (currentAdrenaline == _maxAdrenaline)
         {
-            _currentAdrenaline = 0;
+            currentAdrenaline = 0;
 
             // Launch special capacity
+            StartCoroutine(S_SpecialCapacityManager.Instance.LaunchSpecialCapacity(_specialCapacity, _isPlayer1Character));
         }
     }
 
@@ -82,18 +80,15 @@ public class S_CharacterAdrenaline : MonoBehaviour
     }
 
     // -- TO DEBUG -- //
-    private void Start()
-    {
-        CurrentAdrenaline = 0;
-    }
-
+    #region TO DEBUG
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.H))
-            CurrentAdrenaline += 5;
+            currentAdrenaline += 5;
 
         if (Input.GetKeyDown(KeyCode.J))
-            CurrentAdrenaline -= 5;
+            currentAdrenaline -= 5;
     }
+    #endregion
     #endregion
 }

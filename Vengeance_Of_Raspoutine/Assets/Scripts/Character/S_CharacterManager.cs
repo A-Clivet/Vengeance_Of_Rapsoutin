@@ -12,8 +12,8 @@ public class S_CharacterManager : MonoBehaviour
     [SerializeField] GameObject _allCharactersParent;
 
     // Created to let other scripts access player1's character and player2's character
-    [HideInInspector] public GameObject Player1CharacterGameObject { get; private set; }
-    [HideInInspector] public GameObject Player2CharacterGameObject { get; private set; }
+    [HideInInspector] public GameObject player1CharacterGameObject { get; private set; }
+    [HideInInspector] public GameObject player2CharacterGameObject { get; private set; }
     #endregion
 
     #region Methods
@@ -23,8 +23,8 @@ public class S_CharacterManager : MonoBehaviour
     }
 
     /// <summary> Create a new character based on the CharacterStats given </summary>
-    /// <param name = "p_characterStats"> It contains all character's data that will be used in the game </param>
-    /// <param name = "p_isPlayer1Character"> To know if the chracter will be for the player1 or 2 </param>
+    /// <param characterName = "p_characterStats"> It contains all character's data that will be used in the game </param>
+    /// <param characterName = "p_isPlayer1Character"> To know if the chracter will be for the player1 or 2 </param>
     public void SpawnCharacter(S_CharacterStats p_characterStats, bool p_isPlayer1Character)
     {
         #region Securities
@@ -34,7 +34,7 @@ public class S_CharacterManager : MonoBehaviour
             return;
         }
 
-        if (Player1CharacterGameObject != null && p_isPlayer1Character || Player2CharacterGameObject != null && !p_isPlayer1Character) 
+        if (player1CharacterGameObject != null && p_isPlayer1Character || player2CharacterGameObject != null && !p_isPlayer1Character) 
         {
             Debug.LogWarning("WARNING ! Trying to spawn a new character on top of an another character. THE CHARACTER HAS NOT BEEN CREATED");
             return;
@@ -62,23 +62,23 @@ public class S_CharacterManager : MonoBehaviour
         #endregion
 
         #region Settings up character’s caracteristics
-        // Setting name of the character to his correspondant values
-        character.name = p_characterStats.Name;
+        // Setting characterName of the character to his correspondant values
+        character.name = p_characterStats.characterName;
 
         // Assignation of a sprite to the character (WARNING : The object named "CharacterSprite" in the prefab Character1 and 2 must be the first child)
-        character.transform.GetChild(0).GetComponent<Image>().sprite = p_characterStats.Sprite;
+        character.transform.GetChild(0).GetComponent<Image>().sprite = p_characterStats.sprite;
 
         // Transfert health stats
-        character.GetComponent<S_CharacterHealth>().RecieveCharacterHealthStats(p_characterStats.MaxHP, p_isPlayer1Character);
+        character.GetComponent<S_CharacterHealth>().RecieveCharacterHealthStats(p_characterStats.maxHP, p_isPlayer1Character);
 
         // Transfert adrenaline stats
-        character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(p_characterStats.MaxAdrenaline, p_isPlayer1Character);
+        character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(p_characterStats.maxAdrenaline, p_characterStats.specialCapacity, p_isPlayer1Character);
 
         // Store the GameObject reference of the created character in the corresponding variable
         if (p_isPlayer1Character)
-            Player1CharacterGameObject = character;
+            player1CharacterGameObject = character;
         else
-            Player2CharacterGameObject = character;
+            player2CharacterGameObject = character;
 
         #endregion
     }

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class S_GameManager : MonoBehaviour
 {
-    
-
     public static S_GameManager Instance;
+
+    public int player1Point { get; private set; }
+    public int player2Point { get; private set; }
 
     [Header("Background references :")]
     public List<Sprite> mapSelection = new(new Sprite[5]);
@@ -33,8 +33,6 @@ public class S_GameManager : MonoBehaviour
     private bool _randomTurn;
     private bool _isPlayer1Turn = true;
     
-    private int _player1Point;
-    private int _player2Point;
     private Sprite _currentMap;
     
     private int _intMap = 2;    // int for the current time in the list
@@ -92,8 +90,8 @@ public class S_GameManager : MonoBehaviour
     {
         if (p_isPlayer1Dead) 
         {
-            _player1Point += 1;
-            if (_player1Point >= 1)
+            player1Point += 1;
+            if (player1Point >= 1)
             {
                 _randomTurn = true;
             }
@@ -114,8 +112,8 @@ public class S_GameManager : MonoBehaviour
         }
         else
         {
-            _player2Point += 1;
-            if (_player2Point >= 1)
+            player2Point += 1;
+            if (player2Point >= 1)
             {
                 _randomTurn = true;
             }
@@ -135,12 +133,12 @@ public class S_GameManager : MonoBehaviour
             _intMap += 1;
         }
 
-        if (_player1Point >= 3)
+        if (player1Point >= 3)
         {
             _player1EndScreen.SetActive(true);
         }
 
-        if (_player2Point >= 3)
+        if (player2Point >= 3)
         {
             _player2EndScreen.SetActive(true);
         }

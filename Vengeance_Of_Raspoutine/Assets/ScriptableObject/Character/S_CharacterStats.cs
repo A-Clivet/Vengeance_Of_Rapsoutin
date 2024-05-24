@@ -14,9 +14,9 @@ public class S_CharacterStats : ScriptableObject
     // -- Variables -- //
 
     [Header("Statistics :")]
-    public string Name;
-    public Sprite Sprite;
-    public int MaxHP;
-    public int MaxAdrenaline;
-    public SpecialCapacities SpecialCapacity;
+    public string characterName;
+    public Sprite sprite;
+    public int maxHP;
+    public int maxAdrenaline;
+    public S_SpecialCapacityStats specialCapacity;
 }

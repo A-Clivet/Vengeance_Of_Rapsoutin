@@ -5,18 +5,30 @@ using UnityEngine.UI;
 public class S_CharacterHealth : MonoBehaviour
 {
     #region Variables
+    struct ScoreImageGameObjects
+    {
+        GameObject score1Image;
+        GameObject score2Image;
+        GameObject score3Image;
+    }
+
     [Header("References :")]
     [SerializeField] Image _healthBarFillSprite;
     [SerializeField] TextMeshProUGUI _healthText;
+    [SerializeField] ScoreImageGameObjects _scoreImageGameObjects;
 
-    bool _isPlayer1Character; // TO USE WHEN THE FUNCTION "CharacterDie" will be write
+
+
+    bool _isPlayer1Character;
     int _currentHP = 45;
     int _maxHP = 50;
+
+    S_GameManager _gameManager;
 
     #endregion
 
     #region Getter / Setter
-    public int CurrentHP
+    public int currentHP
     {
         get { return _currentHP; }
         set
@@ -38,7 +50,7 @@ public class S_CharacterHealth : MonoBehaviour
         }
     }
 
-    public int MaxHP
+    public int maxHP
     {
         get { return _maxHP; }
     }
@@ -52,7 +64,7 @@ public class S_CharacterHealth : MonoBehaviour
         _isPlayer1Character = p_isPlayer1Character;
 
         // Setting up character HP to the max
-        CurrentHP = _maxHP;
+        currentHP = _maxHP;
     }
 
     void UpdateHealthUIs()
@@ -69,23 +81,24 @@ public class S_CharacterHealth : MonoBehaviour
 
     void CharacterDie()
     {
-        // TODO : End the game + add one victory to the other user
-        // This function will call a GameManager's function
+        S_GameManager.Instance.HandlePlayerLose(_isPlayer1Character);
     }
 
     // -- TO DEBUG -- //
+    #region TO DEBUG
     private void Start()
     {
-        CurrentHP = 25;
+        currentHP = 25;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
-            CurrentHP += 5;
+            currentHP += 5;
 
         if (Input.GetKeyDown(KeyCode.G))
-            CurrentHP -= 5;
+            currentHP -= 5;
     }
+    #endregion
     #endregion
 }
