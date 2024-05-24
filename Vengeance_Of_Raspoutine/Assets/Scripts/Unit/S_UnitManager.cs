@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static S_UnitManager;
 
 public class S_UnitManager : MonoBehaviour
@@ -18,8 +20,16 @@ public class S_UnitManager : MonoBehaviour
     }
 
     public void CheckUnitFormation(Unit p_lastUnitMoved) {
-        if(!unitFormation.Contains(p_lastUnitMoved)) unitFormation.Add(p_lastUnitMoved);
 
+        Vector4 adjUnitList = new Vector4(0, 0, 0, 0);
+
+        int unitPosX = p_lastUnitMoved.tileX;
+        int unitPosY = p_lastUnitMoved.tileY;
+
+        if (!unitFormation.Contains(gridList[unitPosX][unitPosY].unit))
+        {
+            unitFormation.Add(gridList[unitPosX][unitPosY].unit);
+        }
         //for each( /* multi tiled unit, get its closest tile to the grid’s [0,0] and check certain tiles depending on the size */ )
 
         for (int i = 0; i < unitFormation.Count; i++)
@@ -28,71 +38,91 @@ public class S_UnitManager : MonoBehaviour
                 switch (j) // mettre en fonciton
                 {
                     case 0: // Up
-                        if (p_lastUnitMoved.tileY + 1 == grid.height) break;
+                        if (unitPosY + 1 == grid.height) break;
 
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit == null) break;
+                        if (gridList[unitPosX][unitPosY + 1].unit == null) break;
 
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit.SO_Unit.unitType
+                        if (gridList[unitPosX][unitPosY].unit.SO_Unit.unitType == gridList[unitPosX][unitPosY + 1].unit.SO_Unit.unitType
                             &&
-                            !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit))
+                            !unitFormation.Contains(gridList[unitPosX][unitPosY + 1].unit))
                         {
-                            unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit);
-                            Debug.Log("up");
-                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY + 1].unit);
+                            unitFormation.Add(gridList[unitPosX][unitPosY + 1].unit);
+                            adjUnitList.x = 1;
                         }
                         break;
 
                     case 1: // right
 
-                        if (p_lastUnitMoved.tileX + 1 == grid.width) break;
+                        if (unitPosX + 1 == grid.width) break;
 
-                        if (gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit == null) break;
+                        if (gridList[unitPosX + 1][unitPosY].unit == null) break;
 
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit.SO_Unit.unitType
+                        if (gridList[unitPosX][unitPosY].unit.SO_Unit.unitType == gridList[unitPosX + 1][unitPosY].unit.SO_Unit.unitType
                             &&
-                            !unitFormation.Contains(gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit))
+                            !unitFormation.Contains(gridList[unitPosX + 1][unitPosY].unit))
                         {
-                            unitFormation.Add(gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit);
-                            Debug.Log("right");
-                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX + 1][p_lastUnitMoved.tileY].unit);
+                            unitFormation.Add(gridList[unitPosX + 1][unitPosY].unit);
+                            adjUnitList.y = 1;
                         }
                         break;
 
                     case 2: // down
 
-                        if (p_lastUnitMoved.tileY - 1 == -1) break;
+                        if (unitPosY - 1 == -1) break;
 
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit == null) break;
+                        if (gridList[unitPosX][unitPosY - 1].unit == null) break;
 
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit.SO_Unit.unitType
+                        if (gridList[unitPosX][unitPosY].unit.SO_Unit.unitType == gridList[unitPosX][unitPosY - 1].unit.SO_Unit.unitType
                             &&
-                            !unitFormation.Contains(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit))
+                            !unitFormation.Contains(gridList[unitPosX][unitPosY - 1].unit))
                         {
-                            unitFormation.Add(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit);
-                            Debug.Log("down");
-                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY - 1].unit);
+                            unitFormation.Add(gridList[unitPosX][unitPosY - 1].unit);
+                            adjUnitList.z = 1;
                         }
                         break;
 
                     case 3: // left
-                        if (p_lastUnitMoved.tileX - 1 == -1) break;
+                        if (unitPosX - 1 == -1) break;
 
-                        if (gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit == null) break;
+                        if (gridList[unitPosX - 1][unitPosY].unit == null) break;
 
-                        if (gridList[p_lastUnitMoved.tileX][p_lastUnitMoved.tileY].unit.SO_Unit.unitType == gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit.SO_Unit.unitType
+                        if (gridList[unitPosX][unitPosY].unit.SO_Unit.unitType == gridList[unitPosX - 1][unitPosY].unit.SO_Unit.unitType
                             &&
-                            !unitFormation.Contains(gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit))
+                            !unitFormation.Contains(gridList[unitPosX - 1][unitPosY].unit))
                         {
-                            unitFormation.Add(gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit);
-                            Debug.Log("left");
-                            CheckUnitFormation(gridList[p_lastUnitMoved.tileX - 1][p_lastUnitMoved.tileY].unit);
+                            unitFormation.Add(gridList[unitPosX - 1][unitPosY].unit);
+                            adjUnitList.w = 1;
                         }
                         break;
-
+                    default:
+                        break;
                 }
             }
         }
-        UnitActivation(unitFormation);
+        for(int i = 0; i < 4 ; i++) 
+        {
+            if(adjUnitList.x == 1)
+            {
+                CheckUnitFormation(gridList[unitPosX][unitPosY + 1].unit);
+
+            }
+            if (adjUnitList.y == 1)
+            {
+                CheckUnitFormation(gridList[unitPosX + 1][unitPosY].unit);
+            }
+            if (adjUnitList.z == 1)
+            {
+                CheckUnitFormation(gridList[unitPosX][unitPosY - 1].unit);
+            }
+            if (adjUnitList.w == 1)
+            {
+                CheckUnitFormation(gridList[unitPosX -1 ][unitPosY].unit);
+            }
+        }
+        if(p_lastUnitMoved == unitFormation.Last())
+        {
+            UnitActivation(unitFormation);
+        }
     }
 
 
@@ -100,11 +130,12 @@ public class S_UnitManager : MonoBehaviour
     //if(unitFormation.count > 1) UnitActivation(unitFormation[], UOC, UOL);
 
     public void UnitActivation(List<Unit> p_UF) { /* refer to note UnitActivation */
-        List<Unit> unitToDefend = new();
-        List<Unit> unitToAttack = new();
-        
-        int currentIndexY = 0;
-        int currentIndexX = 0;
+
+        //int currentIndexY = 0;
+        //int currentIndexX = 0;
+
+        UnitLine = new();
+        UnitColumn = new();
         
         UnitOnColumn UOC = new();
         UnitOnLine UOL = new();
@@ -117,86 +148,215 @@ public class S_UnitManager : MonoBehaviour
         UOL.Y = new();
         UOL.bounds = new();
 
-        for (int i = 0; i < p_UF.Count; i++) {
+        UOL.units.Insert(0,p_UF[0]);
+        UnitLine.Add(UOL.units[0]);
+        UOL.bounds.Insert(0,new Vector2Int(UOL.units[0].tileX, UOL.units[0].tileX));
 
-            currentIndexX = UOC.X.FindIndex(X => X == p_UF[i].tileX);
-            currentIndexY = UOL.Y.FindIndex(Y => Y == p_UF[i].tileY);
+        UOC.units.Insert(0,p_UF[0]);
+        UnitColumn.Add(UOC.units[0]);
+        UOC.bounds.Insert(0,new Vector2Int(UOL.units[0].tileY, UOL.units[0].tileY));
 
-            //Debug.Log("#######");
-            //Debug.Log(p_UF[i].tileX);
-            //Debug.Log(p_UF[i].tileY);
-            Debug.Log(";;;;;;;;;;");
-            Debug.Log(UOC.bounds[currentIndexX]);
-            Debug.Log(UOL.bounds[currentIndexY]);
-            Debug.Log("/////");
+        int refIndexL = 0;
+        int refIndexC = 0;
 
-            /* check if a List exists for this Line, then, check if the value of the unit’s Tile position is too far off the bounds, if it is, then a new list can be added since it’s disconnected from the initial one */
-            if (!UOL.Y.Contains(p_UF[i].tileY) && (p_UF[i].tileX < UOL.bounds[currentIndexY].x - 1 || p_UF[i].tileX > UOL.bounds[currentIndexY].y + 1)){
-                Debug.Log("Is added Line");
-                UOL.units.Add(p_UF[i]);
-                UOL.Y.Add(p_UF[i].tileY);
-                UOL.bounds.Add(new Vector2Int(p_UF[i].tileX, p_UF[i].tileX));
-            }
-            else
+        for (int i = 1; i < p_UF.Count; i++) {
+
+            if (!UOL.units.Contains(p_UF[i]))
             {
-                if (UOL.bounds[currentIndexY].y > p_UF[i].tileX)
+                Debug.Log("Added unit line");
+
+                UOL.units.Insert(i, p_UF[i]);
+
+                if (!UOL.Y.Contains(p_UF[i].tileY))
                 {
-                    UOL.bounds[currentIndexY] = new Vector2Int(p_UF[i].tileY, UOL.bounds[currentIndexY].y);
+                    UOL.Y.Add(UOL.units[i].tileY);
+                    refIndexL = UOL.Y.FindIndex(item => item == p_UF[i].tileY);
                 }
-                else if (UOL.bounds[currentIndexY].x < p_UF[i].tileX)
+
+                if (UOL.units[refIndexL].tileY != UOL.units[i].tileY)
                 {
-                    UOL.bounds[currentIndexY] = new Vector2Int(UOL.bounds[currentIndexY].y, p_UF[i].tileY);
+                    Debug.Log(refIndexL);
+
+                    UOL.bounds.Add(new Vector2Int(UOL.units[i].tileX, UOL.units[i].tileX));
+                    UnitLine.Add(UOL.units[i]);
+                }
+                else if (UOL.units[refIndexL].tileY == UOL.units[i].tileY)
+                {
+                    if (UOL.Y[refIndexL] == p_UF[i].tileY)
+                    {
+                        if (UOL.bounds[refIndexL].x > p_UF[i].tileX - 1)
+                        {
+                            UOL.bounds.Add(new Vector2Int(UOL.units[i].tileX, UOL.units[i].tileX));
+                        }
+                        if (UOL.bounds[refIndexL].y < p_UF[i].tileX + 1)
+                        {
+                            UOL.bounds.Add(new Vector2Int(UOL.units[i].tileX, UOL.units[i].tileX));
+                        }
+
+
+                        if (UOL.bounds[refIndexL].x == p_UF[i].tileX - 1)
+                        {
+                            UOL.bounds[refIndexL] = new Vector2Int(p_UF[i].tileX, UOL.bounds[refIndexL].y);
+                        }
+                        if (UOL.bounds[refIndexL].y == p_UF[i].tileX + 1)
+                        {
+
+                            UOL.bounds[refIndexL] = new Vector2Int(UOL.bounds[refIndexL].x, p_UF[i].tileX);
+                        }
+                    }
+
+                    Debug.Log(UOL.bounds[refIndexL]);
+
+                    UnitLine.Add(UOL.units[i]);
                 }
             }
-            Debug.Log(currentIndexX);
-            /* check if a List exists for this Line, then, check if the value of the unit’s Tile position is too far off the bounds, if it is, then a new list can be added since it’s disconnected from the initial one */
-            if (!UOC.X.Contains(p_UF[i].tileX) && (p_UF[i].tileY > UOC.bounds[currentIndexX].y + 1 || p_UF[i].tileY < UOC.bounds[currentIndexX].x - 1)) {
-                Debug.Log("Is Added Column");
-                UOC.units.Add(p_UF[i]);
-                UOC.X.Add(p_UF[i ].tileX);
-                UOC.bounds.Add(new Vector2Int(p_UF[i].tileY, p_UF[i].tileY));
-            }
-            else
+
+            if (!UOC.units.Contains(p_UF[i]))
             {
-                if (UOL.bounds[currentIndexX].y > p_UF[i].tileY)
+                Debug.Log("Added unit column");
+
+                UOC.units.Insert(i, p_UF[i]);
+
+                if (!UOC.X.Contains(p_UF[i].tileX))
                 {
-                    UOL.bounds[currentIndexX] = new Vector2Int(p_UF[i].tileX, UOL.bounds[currentIndexX].y);
+                    UOC.X.Add(UOC.units[i].tileX);
+
+                    refIndexC = UOC.X.FindIndex(item => item == p_UF[i].tileX);
                 }
-                else if (UOL.bounds[currentIndexX].x < p_UF[i].tileY)
+
+                if (UOC.units[refIndexC].tileX != UOC.units[i].tileX)
                 {
-                    UOL.bounds[currentIndexX] = new Vector2Int(UOL.bounds[currentIndexX].x, p_UF[i].tileX);
+                    Debug.Log(refIndexC);
+
+                    UOC.bounds.Add(new Vector2Int(UOC.units[i].tileY, UOC.units[i].tileY));
+
+                    UnitColumn.Add(UOC.units[i]);
+
+                } 
+                else if (UOC.units[refIndexC].tileX == UOC.units[i].tileX)
+                {
+
+                    if (UOC.X[refIndexC] == p_UF[i].tileX)
+                    {
+                        if (UOC.bounds[refIndexC].x > p_UF[i].tileY - 1)
+                        {
+                            UOC.bounds.Add(new Vector2Int(UOL.units[i].tileY, UOL.units[i].tileY));
+                        }
+                        if (UOC.bounds[refIndexC].y < p_UF[i].tileY + 1)
+                        {
+                            UOC.bounds.Add(new Vector2Int(UOL.units[i].tileY, UOL.units[i].tileY));
+                        }
+
+                        if (UOC.bounds[refIndexC].x == p_UF[i].tileY - 1)
+                        {
+                            UOC.bounds[refIndexC] = new Vector2Int(p_UF[i].tileY, UOC.bounds[refIndexC].y);
+                        }
+                        if (UOC.bounds[refIndexC].y == p_UF[i].tileY + 1)
+                        {
+                            UOC.bounds[refIndexC] = new Vector2Int(UOC.bounds[refIndexC].x, p_UF[i].tileY);
+                        }
+                    }
+                    Debug.Log(UOC.bounds[refIndexC]);
+
+                    UnitColumn.Add(UOC.units[i]);
                 }
             }
 
+            //    UOC.bounds.Add(new Vector2Int(0,0));
+            //    UOL.bounds.Add(new Vector2Int(0,0));
 
+            //    UOL.Y.Add(p_UF[i].tileY);
+            //    UOC.X.Add(p_UF[i].tileX);
+
+            //    currentIndexX = UOC.X.FindIndex(X => X == p_UF[i].tileX);
+            //    currentIndexY = UOL.Y.FindIndex(Y => Y == p_UF[i].tileY);
+
+
+            //    if (UOC.bounds[currentIndexX] == null)
+            //    {
+            //        UOC.bounds[currentIndexX] = new Vector2Int(p_UF[i].tileY, p_UF[i].tileY);
+            //    }
+            //    if (UOL.bounds[currentIndexY] == null)
+            //    {
+            //        UOL.bounds[currentIndexY] = new Vector2Int(p_UF[i].tileX, p_UF[i].tileX);
+            //    }
+
+
+            //    //Debug.Log("#######");
+            //    //Debug.Log(p_UF[i].tileX);
+            //    //Debug.Log(p_UF[i].tileY);
+            //    Debug.Log(";;;;;;;;;;");
+            //    Debug.Log(UOC.bounds[currentIndexX]);
+            //    Debug.Log(UOL.bounds[currentIndexY]);
+            //    Debug.Log("/////");
+
+
+            //    /* check if a List exists for this Line, then, check if the value of the unit’s Tile position is too far off the bounds, if it is, then a new list can be added since it’s disconnected from the initial one */
+            //    if (!UOL.Y.Contains(p_UF[i].tileY) && (p_UF[i].tileX < UOL.bounds[currentIndexY].x - 1 || p_UF[i].tileX > UOL.bounds[currentIndexY].y + 1)){
+            //        Debug.Log("Is added Line");
+            //        UOL.units.Add(p_UF[i]);
+            //        UOL.bounds.Add(new Vector2Int(p_UF[i].tileX, p_UF[i].tileX));
+            //    }
+            //    else
+            //    {
+            //        if (UOL.bounds[currentIndexY].y > p_UF[i].tileX)
+            //        {
+            //            UOL.bounds[currentIndexY] = new Vector2Int(p_UF[i].tileY, UOL.bounds[currentIndexY].y);
+            //        }
+            //        else if (UOL.bounds[currentIndexY].x < p_UF[i].tileX)
+            //        {
+            //            UOL.bounds[currentIndexY] = new Vector2Int(UOL.bounds[currentIndexY].y, p_UF[i].tileY);
+            //        }
+            //    }
+            //    Debug.Log(currentIndexX);
+            //    /* check if a List exists for this Line, then, check if the value of the unit’s Tile position is too far off the bounds, if it is, then a new list can be added since it’s disconnected from the initial one */
+            //    if (!UOC.X.Contains(p_UF[i].tileX) && (p_UF[i].tileY > UOC.bounds[currentIndexX].y + 1 || p_UF[i].tileY < UOC.bounds[currentIndexX].x - 1)) {
+            //        Debug.Log("Is Added Column");
+            //        UOC.units.Add(p_UF[i]);
+
+            //        UOC.bounds.Add(new Vector2Int(p_UF[i].tileY, p_UF[i].tileY));
+            //    }
+            //    else
+            //    {
+            //        if (UOL.bounds[currentIndexX].y > p_UF[i].tileY)
+            //        {
+            //            UOL.bounds[currentIndexX] = new Vector2Int(p_UF[i].tileX, UOL.bounds[currentIndexX].y);
+            //        }
+            //        else if (UOL.bounds[currentIndexX].x < p_UF[i].tileY)
+            //        {
+            //            UOL.bounds[currentIndexX] = new Vector2Int(UOL.bounds[currentIndexX].x, p_UF[i].tileX);
+            //        }
+            //    }
+
+
+            //}
+
+            //for (int i = 0; i < UOL.Y.Count; i++)
+            //{
+            //    if (UOL.bounds[i].y - UOL.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
+            //    for (int j = UOL.bounds[i].x; j < UOL.bounds[i].y; j++)
+            //    {
+            //        unitToDefend.Add(gridList[UOL.bounds[i].x + j][UOL.Y[i]].unit);
+            //    }
+            //}
+            //for (int i = 0; i < UOC.X.Count; i++)
+            //{
+            //    if (UOC.bounds[i].y - UOC.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
+            //    for (int j = UOC.bounds[i].x; j < UOC.bounds[i].y; j++)
+            //    {
+            //        unitToAttack.Add(gridList[UOC.X[i]][UOC.bounds[i].x + j].unit);
+            //    }
         }
-
-        for (int i = 0; i < UOL.Y.Count; i++)
-        {
-            if (UOL.bounds[i].y - UOL.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
-            for (int j = UOL.bounds[i].x; j < UOL.bounds[i].y; j++)
-            {
-                unitToDefend.Add(gridList[UOL.bounds[i].x + j][UOL.Y[i]].unit);
-            }
-        }
-        for (int i = 0; i < UOC.X.Count; i++)
-        {
-            if (UOC.bounds[i].y - UOC.bounds[i].x < 3) continue; /* if the bounds have a difference of less than 3 then a link cannot be made */
-            for (int j = UOC.bounds[i].x; j < UOC.bounds[i].y; j++)
-            {
-                unitToAttack.Add(gridList[UOC.X[i]][UOC.bounds[i].x + j].unit);
-            }
-        }
-        Attack(unitToAttack);
-        Defend(unitToDefend);
+        Attack(UnitColumn);
+        Defend(UnitLine);
     } 
 
     public void Attack(List<Unit> p_attackingUnit) { /* function for what should be done when units are attacking */
         UnitLine = p_attackingUnit;
         for (int i = 0; i < p_attackingUnit.Count; i++)
         {
-            Debug.Log(p_attackingUnit[i].tileX);
-            Debug.Log(p_attackingUnit[i].tileY);
+            //Debug.Log(p_attackingUnit[i].tileX);
+            //Debug.Log(p_attackingUnit[i].tileY);
         }
     } 
 
@@ -204,8 +364,8 @@ public class S_UnitManager : MonoBehaviour
         UnitColumn = p_defendingUnit;
         for (int i = 0; i < p_defendingUnit.Count; i++)
         {
-            Debug.Log(p_defendingUnit[i].tileX);
-            Debug.Log(p_defendingUnit[i].tileY);
+            //Debug.Log(p_defendingUnit[i].tileX);
+            //Debug.Log(p_defendingUnit[i].tileY);
         }
     }
 

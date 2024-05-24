@@ -576,6 +576,7 @@ GameObject:
   - component: {fileID: 496482798}
   - component: {fileID: 496482797}
   - component: {fileID: 496482796}
+  - component: {fileID: 496482799}
   - component: {fileID: 496482795}
   m_Layer: 5
   m_Name: Button (1)
@@ -673,7 +674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   callAmount: 12
-  unitManager: {fileID: 0}
+  unitManager: {fileID: 1230827706}
   grid: {fileID: 523462555}
   units:
   - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
@@ -718,6 +719,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496482793}
   m_CullTransparentMesh: 1
+--- !u!114 &496482799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496482793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ba90a8d606846409ed736f01717066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  callAmount: 12
+  unitManager: {fileID: 0}
+  grid: {fileID: 523462555}
+  units:
+  - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
+  - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
+  - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
+  - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
 --- !u!1 &523462554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,7 +1132,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1230827706}
-        m_TargetAssemblyTypeName: UnitManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: S_UnitManager, Assembly-CSharp
         m_MethodName: CheckUnitFormation
         m_Mode: 2
         m_Arguments:
@@ -1136,6 +1157,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 523462555}
   unitFormation: []
+  UnitLine: []
+  UnitColumn: []
 --- !u!114 &1230827707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1562,7 +1585,7 @@ SceneRoots:
   - {fileID: 801018241}
   - {fileID: 320021856}
   - {fileID: 61384396}
+  - {fileID: 523462556}
   - {fileID: 1139567575}
   - {fileID: 381971856}
-  - {fileID: 523462556}
   - {fileID: 922506011}
