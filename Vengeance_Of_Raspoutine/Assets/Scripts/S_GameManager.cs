@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class S_GameManager : MonoBehaviour
 {
-    
-
     public static S_GameManager Instance;
+
+    public int player1Point { get; private set; }
+    public int player2Point { get; private set; }
 
     [Header("Background references :")]
     public List<Sprite> mapSelection = new(new Sprite[5]);
@@ -33,8 +33,6 @@ public class S_GameManager : MonoBehaviour
     private bool _randomTurn;
     private bool _isPlayer1Turn = true;
     
-    private int _player1Point;
-    private int _player2Point;
     private Sprite _currentMap;
     
     private int _intMap = 2;    // int for the current time in the list
@@ -90,64 +88,46 @@ public class S_GameManager : MonoBehaviour
     /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
+        int random = Random.Range(0, 1);
+
+        if (player1Point == 0 && player2Point == 0)
+        {
+            switch (random)
+            {
+                case 0:
+                    _isPlayer1Turn = false;
+                    break;
+                case 1:
+                    _isPlayer1Turn = true;
+                    break;
+            }
+        }
+        
         if (p_isPlayer1Dead) 
         {
-            _player1Point += 1;
-            if (_player1Point >= 1)
-            {
-                _randomTurn = true;
-            }
-            if (_randomTurn)
-            {
-                int random = Random.Range(0, 1);
-                switch (random)
-                {
-                    case 0:
-                        _isPlayer1Turn = false;
-                        break;
-                    case 1:
-                        _isPlayer1Turn = true;  
-                        break;
-                }
-            }
+            player1Point += 1;
+            _isPlayer1Turn = true;
             _intMap -= 1;
         }
         else
         {
-            _player2Point += 1;
-            if (_player2Point >= 1)
-            {
-                _randomTurn = true;
-            }
-            if (_randomTurn)
-            {
-                int random = Random.Range(0, 1);
-                switch (random)
-                {
-                    case 0:
-                        _isPlayer1Turn = false;
-                        break;
-                    case 1:
-                        _isPlayer1Turn = true;
-                        break;
-                }
-            }
+            player2Point += 1;
+            _isPlayer1Turn = false;
             _intMap += 1;
         }
 
-        if (_player1Point >= 3)
+        if (player1Point >= 3)
         {
             _player1EndScreen.SetActive(true);
         }
 
-        if (_player2Point >= 3)
+        if (player2Point >= 3)
         {
             _player2EndScreen.SetActive(true);
         }
 
         _currentMap = mapSelection[_intMap];
         _currentSprite.sprite = mapSelection[_intMap];
-
     }
 
     public void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number

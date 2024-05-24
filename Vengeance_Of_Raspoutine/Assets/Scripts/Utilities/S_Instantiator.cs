@@ -17,15 +17,15 @@ public class S_Instantiator : MonoBehaviour
     #region Methods
     private void Awake()
     {
-        Instance = ReturnInstance(this, Instance, InstanceConflictResolutions.WarningAndPause);
+        Instance = ReturnInstance(this, Instance, InstanceConflictResolutions.DestructionOfTheSecondOne);
     }
 
     /// <summary> 
     /// If there is no existing instance, returns the instance of the specified script type,
     /// else it handles the conflict according to the specified resolution type set. 
     /// 
-    /// <para>
-    /// <example> Method utilization example: 
+    /// <para> Method utilization example: </para>
+    /// <example>
     /// <code> 
     /// public class CLASS_NAME : MonoBehaviour
     /// {
@@ -36,23 +36,24 @@ public class S_Instantiator : MonoBehaviour
     ///         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.p_instanceConflictResolution.WarningAndPause);
     ///     }
     /// }
-    /// </code> </example> </para> </summary>
-    /// <typeparam name = "T"> The type of the script to return an instance of. </typeparam>
-    /// <param name = "_className"> The type of the script to instantiate. </param>
-    /// <param name = "_instanceVariable"> The "Instance" variable you have created in your class. </param>
-    /// <param name = "_instanceConflictResolution"> Defines how to resolve conflicts when multiple instances are detected. </param>
+    /// </code> </example> </summary>
+    /// <typeparam characterName = "T"> The type of the script to return an instance of. </typeparam>
+    /// <param characterName = "p_className"> The type of the script to instantiate. </param>
+    /// <param characterName = "p_instanceVariable"> The "Instance" variable you have created in your class. </param>
+    /// <param characterName = "p_instanceConflictResolution"> Defines how to resolve conflicts when multiple instances are detected. </param>
     /// <returns> The instance of the specified script type.</returns>
-    public T ReturnInstance<T>(T _className, T _instanceVariable, InstanceConflictResolutions _instanceConflictResolution) where T : MonoBehaviour
+    public T ReturnInstance<T>(T p_className, T p_instanceVariable, InstanceConflictResolutions p_instanceConflictResolution) where T : MonoBehaviour
     {
-        if (_instanceVariable != null)
-        {
-            HandleInstanceConflict(_className, _instanceConflictResolution);
 
-            return _instanceVariable;
+        if (p_instanceVariable != null)
+        {
+            HandleInstanceConflict(p_className, p_instanceConflictResolution);
+
+            return p_instanceVariable;
         }
         else
         {
-            return _className;
+            return p_className;
         }
     }
 
