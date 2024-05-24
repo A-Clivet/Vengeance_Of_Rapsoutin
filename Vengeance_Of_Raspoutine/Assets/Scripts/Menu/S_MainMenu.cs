@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +9,8 @@ public class S_MainMenu : MonoBehaviour
     [SerializeField] private GameObject _canvasCredits;
     [SerializeField] private GameObject _canvasTuto;
 
+    private S_TutoManager _tutoManager;
+
 
     private void Start()
     {
@@ -18,6 +18,7 @@ public class S_MainMenu : MonoBehaviour
         _canvasOption.SetActive(false);
         _canvasCredits.SetActive(false);
         _canvasTuto.SetActive(false);
+        _tutoManager = S_TutoManager.Instance;
     }
 
     public void OnPlayButton()
@@ -25,31 +26,22 @@ public class S_MainMenu : MonoBehaviour
         SceneManager.LoadScene("MainGame");
     }
 
-    public void OnOptionButton()
-    {
-        _canvasMainMenu.SetActive(false);
-        _canvasOption.SetActive(true);
-    }
-
-    public void OnTutoButton()
-    {
-        _canvasMainMenu.SetActive(false);
-        _canvasTuto.SetActive(true);
-    }
-
-    public void OnCreditsButton()
-    {
-        _canvasMainMenu.SetActive(false);
-        _canvasCredits.SetActive(true);
-    }
-
     public void OnExitGameButton()
     {
         Application.Quit();
     }
 
-    public void OnBackButton()
+    public void BackButton(GameObject _currentCanvas)
     {
+        SwitchCanvas(_canvasMainMenu, _currentCanvas);
+        _tutoManager.intTuto = 0;
+        _tutoManager.ResetTutoOrder(0);
+        _tutoManager.DesactivateButtonTuto();
+    }
 
+    private void SwitchCanvas(GameObject _canvas , GameObject _desactivateCanvas)
+    {
+        _desactivateCanvas.SetActive(false);
+        _canvas.SetActive(true);
     }
 }
