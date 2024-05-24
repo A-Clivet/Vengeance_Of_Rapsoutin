@@ -12,7 +12,7 @@ public class S_TutoManager : MonoBehaviour
     public GameObject buttonPrevious;
     public GameObject buttonNext;
     public List<Sprite> tutoSelection = new(new Sprite[10]);
-    public Image _currentSprite;
+    private Image _currentSprite;
 
     public static S_TutoManager Instance;
 
