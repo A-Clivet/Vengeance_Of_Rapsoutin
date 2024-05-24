@@ -80,6 +80,10 @@ public class Unit : MonoBehaviour
                 _grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
+                foreach (Unit unit in _grid.unitList)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                }
                 break;
             }
         }
@@ -103,6 +107,10 @@ public class Unit : MonoBehaviour
         else
         {
             _grid.unitSelected = this;
+            foreach (Unit unit in _grid.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
         }
         return;
     }
