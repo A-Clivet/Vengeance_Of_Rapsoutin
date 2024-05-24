@@ -88,48 +88,32 @@ public class S_GameManager : MonoBehaviour
     /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
+        int random = Random.Range(0, 1);
+
+        if (player1Point == 0 && player2Point == 0)
+        {
+            switch (random)
+            {
+                case 0:
+                    _isPlayer1Turn = false;
+                    break;
+                case 1:
+                    _isPlayer1Turn = true;
+                    break;
+            }
+        }
+        
+
         if (p_isPlayer1Dead) 
         {
             player1Point += 1;
-            if (player1Point >= 1)
-            {
-                _randomTurn = true;
-            }
-            if (_randomTurn)
-            {
-                int random = Random.Range(0, 1);
-                switch (random)
-                {
-                    case 0:
-                        _isPlayer1Turn = false;
-                        break;
-                    case 1:
-                        _isPlayer1Turn = true;  
-                        break;
-                }
-            }
+            _isPlayer1Turn = true;
             _intMap -= 1;
         }
         else
         {
             player2Point += 1;
-            if (player2Point >= 1)
-            {
-                _randomTurn = true;
-            }
-            if (_randomTurn)
-            {
-                int random = Random.Range(0, 1);
-                switch (random)
-                {
-                    case 0:
-                        _isPlayer1Turn = false;
-                        break;
-                    case 1:
-                        _isPlayer1Turn = true;
-                        break;
-                }
-            }
+            _isPlayer1Turn = false;
             _intMap += 1;
         }
 
