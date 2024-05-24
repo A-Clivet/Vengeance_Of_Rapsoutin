@@ -34,6 +34,7 @@ public class S_RemoveUnit : MonoBehaviour
                         tile.unit.MoveToTile(hoveringUnit.actualTile);
                     }
                 }
+                hoveringUnit._grid.totalUnitAmount -= 1;
                 Destroy(hoveringUnit.gameObject);
                 hoveringUnit = null;
             }
