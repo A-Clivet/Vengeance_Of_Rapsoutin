@@ -138,7 +138,7 @@ public class Unit : MonoBehaviour
     public void VisualizePosition(S_Tile p_tile)
     {
         _isMoving = true;
-        _posToMove = new Vector3(p_tile.transform.position.x, _grid.startY + _grid.height);
+        _posToMove = new Vector3(p_tile.transform.position.x, _grid.startY + _grid.height*actualTile.transform.localScale.y);
     }
 
 
