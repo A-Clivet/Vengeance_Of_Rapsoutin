@@ -150,7 +150,7 @@ public class S_GameManager : MonoBehaviour
 
     }
 
-    private void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
+    public void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
     {
         if (_isPlayer1Turn)
         {
