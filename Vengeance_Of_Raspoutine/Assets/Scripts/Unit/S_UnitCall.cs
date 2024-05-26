@@ -8,17 +8,27 @@ public class S_UnitCall : MonoBehaviour
     /*ui variable*/
     public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
     public S_UnitManager unitManager;
-    public S_GridManager grid;
+    public S_GridManager gridP1;
+    public S_GridManager gridP2;
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
 
-    public void Start()
-    {
-        tile = grid.gridList;
-    }
+
+    private S_GridManager _grid;
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
-        if (grid.totalUnitAmount < 48)
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            tile = gridP1.gridList;
+            _grid = gridP1;
+        }
+        else
+        {
+            tile = gridP2.gridList;
+            _grid = gridP2;
+        }
+        
+        if (_grid.totalUnitAmount < 48)
         {
             for (int i = 0; i < callAmount; i++)
             {
@@ -32,13 +42,13 @@ public class S_UnitCall : MonoBehaviour
 
                 unitToSpawn.GetComponent<Unit>().tileX = p_X;
 
-                //function to move the unit on the grid to the right spots
-                unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[p_X][Mathf.Abs(grid.height) - 1]);
+                //function to move the unit on the _grid to the right spots
+                unitToSpawn.GetComponent<Unit>().OnSpawn(_grid.gridList[p_X][Mathf.Abs(_grid.height) - 1]);
                 unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>()._grid.startY + unitToSpawn.GetComponent<Unit>()._grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
                 unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
-                grid.totalUnitAmount++;
+                _grid.totalUnitAmount++;
 
-                if(i == callAmount - 1)
+                if(i == callAmount - 1) // ca sert a quoi ?? faut commenter clairement !!
                 {
                     unitManager.CheckUnitFormation(unitToSpawn.GetComponent<Unit>());
                 }
@@ -49,7 +59,7 @@ public class S_UnitCall : MonoBehaviour
 
     private int ColumnSelector()
     { /* select which column this unit will go to */
-        return Random.Range(0, grid.width);
+        return Random.Range(0, _grid.width);
     }
     private int TypeSelector()
     { /* select which type is the unit */

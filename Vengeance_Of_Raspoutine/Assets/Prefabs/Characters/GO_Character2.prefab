@@ -282,7 +282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5059417184361413074}
   - component: {fileID: 5336514731613959178}
-  - component: {fileID: 5410301837400688573}
+  - component: {fileID: 6609270878588741390}
   m_Layer: 5
   m_Name: GO_Character2
   m_TagString: Untagged
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarFillSprite: {fileID: 44973858443650695}
   _healthText: {fileID: 5121580977195997721}
---- !u!114 &5410301837400688573
+--- !u!114 &6609270878588741390
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1184922186947913994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 457df283d10d07449a9d444caceae341, type: 3}
+  m_Script: {fileID: 11500000, guid: e28c894d201cece4a9a351fd9004815d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _specialCapacityChargingSprite: {fileID: 4559112265319813189}
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5410301837400688573}
+      - m_Target: {fileID: 6609270878588741390}
         m_TargetAssemblyTypeName: S_CharacterAdrenaline, Assembly-CSharp
         m_MethodName: SpecialCapacityButtonPressed
         m_Mode: 1

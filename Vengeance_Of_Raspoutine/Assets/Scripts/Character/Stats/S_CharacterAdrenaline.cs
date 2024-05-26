@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static S_CharacterStats;
 
 public class S_CharacterAdrenaline : MonoBehaviour
 {

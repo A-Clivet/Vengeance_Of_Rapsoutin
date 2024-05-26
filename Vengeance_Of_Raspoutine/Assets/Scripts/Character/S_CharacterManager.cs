@@ -63,7 +63,7 @@ public class S_CharacterManager : MonoBehaviour
         character.GetComponent<RectTransform>().anchoredPosition = new Vector3(prefabRectTransform.anchoredPosition.x, prefabRectTransform.anchoredPosition.y, 0);
         #endregion
 
-        #region Settings up character’s caracteristics
+        #region Settings up characterï¿½s caracteristics
         // Setting characterName of the character to his correspondant values
         character.name = p_characterStats.characterName;
 
@@ -80,12 +80,12 @@ public class S_CharacterManager : MonoBehaviour
         if (p_isPlayer1Character)
         {
             player1CharacterGameObject = character;
-            _skillPanelP1.SetDesc(p_characterStats.specialCapacity.capacityDesc);
+            //_skillPanelP1.SetDesc(p_characterStats.specialCapacity.capacityDesc);
         }
         else
         {
             player2CharacterGameObject = character;
-            _skillPanelP2.SetDesc(p_characterStats.specialCapacity.capacityDesc);
+            //_skillPanelP2.SetDesc(p_characterStats.specialCapacity.capacityDesc);
         }
 
             #endregion

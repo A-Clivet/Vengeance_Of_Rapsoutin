@@ -9,6 +9,7 @@ public class S_GameManager : MonoBehaviour
 
     public int player1Point { get; private set; }
     public int player2Point { get; private set; }
+    public bool isPlayer1Turn { get; private set; } = true;
 
     [Header("Background references :")]
     public List<Sprite> mapSelection = new(new Sprite[5]);
@@ -31,7 +32,6 @@ public class S_GameManager : MonoBehaviour
     private int _currentTurnNumber;
     private int _playerActionNumber;
     private bool _randomTurn;
-    private bool _isPlayer1Turn = true;
     
     private Sprite _currentMap;
     
@@ -45,7 +45,7 @@ public class S_GameManager : MonoBehaviour
 
     private void Start()
     {
-        _targetTime = 3f;
+        _targetTime = 30f;
         _currentTurnNumber = 1;
         _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
@@ -71,12 +71,12 @@ public class S_GameManager : MonoBehaviour
             EndTurn();
         }
 
-        if(_isPlayer1Turn) 
+        if(isPlayer1Turn) 
         {
             _playerTurnText.text = "Player 1 Turn";
         }
 
-        else if (!_isPlayer1Turn)
+        else if (!isPlayer1Turn)
         { 
             _playerTurnText.text = "Player 2 Turn";
         }
@@ -95,10 +95,10 @@ public class S_GameManager : MonoBehaviour
             switch (random)
             {
                 case 0:
-                    _isPlayer1Turn = false;
+                    isPlayer1Turn = false;
                     break;
                 case 1:
-                    _isPlayer1Turn = true;
+                    isPlayer1Turn = true;
                     break;
             }
         }
@@ -106,13 +106,13 @@ public class S_GameManager : MonoBehaviour
         if (p_isPlayer1Dead) 
         {
             player1Point += 1;
-            _isPlayer1Turn = true;
+            isPlayer1Turn = true;
             _intMap -= 1;
         }
         else
         {
             player2Point += 1;
-            _isPlayer1Turn = false;
+            isPlayer1Turn = false;
             _intMap += 1;
         }
 
@@ -132,17 +132,17 @@ public class S_GameManager : MonoBehaviour
 
     public void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
     {
-        if (_isPlayer1Turn)
+        if (isPlayer1Turn)
         {
-            _isPlayer1Turn = false;
+            isPlayer1Turn = false;
             
         }
-        else if (!_isPlayer1Turn)
+        else if (!isPlayer1Turn)
         {
-            _isPlayer1Turn = true;
+            isPlayer1Turn = true;
             _currentTurnNumber += 1;
         }
-        _targetTime = 60.0f;
+        _targetTime = 30.0f;
         _playerActionNumber = 3;
     }
 
