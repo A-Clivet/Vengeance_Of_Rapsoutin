@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class S_UnitCall : MonoBehaviour
 {
+    public static S_UnitCall Instance;
     /*ui variable*/
     public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
     public S_UnitManager unitManager;
@@ -15,6 +18,19 @@ public class S_UnitCall : MonoBehaviour
 
 
     private S_GridManager _grid;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+    }
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
         if (S_GameManager.Instance.isPlayer1Turn)
@@ -50,7 +66,7 @@ public class S_UnitCall : MonoBehaviour
 
                 if(i == callAmount - 1) // ca sert a quoi ?? faut commenter clairement !!
                 {
-                    unitManager.CheckUnitFormation(unitToSpawn.GetComponent<Unit>());
+                    //unitManager.CheckUnitFormation(unitToSpawn.GetComponent<Unit>());
                 }
             }
         }
