@@ -328,6 +328,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarFillSprite: {fileID: 44973858443650695}
   _healthText: {fileID: 5121580977195997721}
+  _scoreImages:
+    score1Image: {fileID: 0}
+    score2Image: {fileID: 0}
+    score3Image: {fileID: 0}
 --- !u!114 &6609270878588741390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _specialCapacityChargingSprite: {fileID: 4559112265319813189}
+  _speacialCapacityButton: {fileID: 7821264178111561516}
 --- !u!1 &1238967096136647447
 GameObject:
   m_ObjectHideFlags: 0

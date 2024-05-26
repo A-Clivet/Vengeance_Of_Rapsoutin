@@ -6,11 +6,12 @@ public class S_CharacterAdrenaline : MonoBehaviour
     #region Variables
     [Header("References :")]
     [SerializeField] Image _specialCapacityChargingSprite;
+    [SerializeField] Button _speacialCapacityButton;
 
     bool _isPlayer1Character;
     S_SpecialCapacityStats _specialCapacity;
-    int _currentAdrenaline = 0;
-    int _maxAdrenaline = 50;
+    int _currentAdrenaline;
+    int _maxAdrenaline;
 
     #region Getter / Setter
     public int currentAdrenaline
@@ -51,8 +52,22 @@ public class S_CharacterAdrenaline : MonoBehaviour
         _specialCapacity = p_specialCapacity;
         _isPlayer1Character = p_isPlayer1Character;
 
-        // Setting up character Adrenaline to the max
-        currentAdrenaline = _maxAdrenaline;
+        // Setting up character Adrenaline to 0
+        currentAdrenaline = 0;
+    }
+
+
+    /// <summary> Use to enable / disable special capacity button's interaction </summary>
+    public void RecieveNewTurnInfo(bool p_isPlayer1Turn)
+    {
+        if (p_isPlayer1Turn == _isPlayer1Character || !p_isPlayer1Turn == !_isPlayer1Character)
+        {
+            _speacialCapacityButton.interactable = true;
+        }
+        else
+        {
+            _speacialCapacityButton.interactable = false;
+        }
     }
 
     /// <summary> This function is built to be used when the special capacity's button is pressed,

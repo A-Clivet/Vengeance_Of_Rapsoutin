@@ -19,14 +19,19 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _playerTurnText;
     [SerializeField] private TextMeshProUGUI _turnsText;
-    
-    [Header("Character's stats references :")]
+
+    [Header("Character's references :")]
+    [SerializeField] S_CharacterManager _characterManager;
     [SerializeField] S_CharacterStats _character1Stats;
     [SerializeField] S_CharacterStats _character2Stats;
 
     [Header("Player 1 and player 2 end screen :")]
     [SerializeField] private GameObject _player1EndScreen;
     [SerializeField] private GameObject _player2EndScreen;
+
+    // Character's adrenaline script references
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
 
     private float _targetTime;
     private int _currentTurnNumber;
@@ -55,8 +60,24 @@ public class S_GameManager : MonoBehaviour
         _player1EndScreen.SetActive(false);
         _player2EndScreen.SetActive(false);
 
-        S_CharacterManager.Instance.SpawnCharacter(_character1Stats, true);
-        S_CharacterManager.Instance.SpawnCharacter(_character2Stats, false);
+        #region Characters management
+
+        // Setting up character manager reference
+        _characterManager = S_CharacterManager.Instance;
+
+        // Creating the player's character
+        _characterManager.SpawnCharacter(_character1Stats, true);
+        _characterManager.SpawnCharacter(_character2Stats, false);
+
+        // Setting up character's adrenaline script references
+        _player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        _player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+
+        // Enable / disable special capacity button's interaction
+        _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+
+        #endregion
     }
 
 
@@ -83,8 +104,10 @@ public class S_GameManager : MonoBehaviour
     }
 
 
-    /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
-    ///           and checks if the player 1 or 2 wins </summary>
+    /// <summary> 
+    /// Change the map when the player lose a point or win a point and add a point to the player 1 or 2
+    /// and checks if the player 1 or 2 wins 
+    /// </summary>
     /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
@@ -144,6 +167,10 @@ public class S_GameManager : MonoBehaviour
         }
         _targetTime = 30.0f;
         _playerActionNumber = 3;
+
+        // Enable / disable special capacity button's interaction
+        _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
     }
 
     public void ReduceActionPointBy1()

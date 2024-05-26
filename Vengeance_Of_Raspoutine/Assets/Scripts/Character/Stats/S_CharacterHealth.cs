@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,23 +6,21 @@ using UnityEngine.UI;
 public class S_CharacterHealth : MonoBehaviour
 {
     #region Variables
-    struct ScoreImageGameObjects
+    [Serializable] struct ScoreImages
     {
-        GameObject score1Image;
-        GameObject score2Image;
-        GameObject score3Image;
+        public Image score1Image;
+        public Image score2Image;
+        public Image score3Image;
     }
 
     [Header("References :")]
     [SerializeField] Image _healthBarFillSprite;
     [SerializeField] TextMeshProUGUI _healthText;
-    [SerializeField] ScoreImageGameObjects _scoreImageGameObjects;
-
-
+    [SerializeField] ScoreImages _scoreImages;
 
     bool _isPlayer1Character;
-    int _currentHP = 45;
-    int _maxHP = 50;
+    int _maxHP;
+    int _currentHP;
 
     S_GameManager _gameManager;
 
@@ -81,16 +80,13 @@ public class S_CharacterHealth : MonoBehaviour
 
     void CharacterDie()
     {
-        S_GameManager.Instance.HandlePlayerLose(_isPlayer1Character);
+        _gameManager.HandlePlayerLose(_isPlayer1Character);
+
+
     }
 
     // -- TO DEBUG -- //
     #region TO DEBUG
-    private void Start()
-    {
-        currentHP = 25;
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
