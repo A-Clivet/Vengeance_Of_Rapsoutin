@@ -12,7 +12,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(pressPoint=0.15)",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "mouseRight",
@@ -48,6 +48,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "d82cdb2d-1d64-47b4-bc6f-347f43886999",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -104,6 +113,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Show Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7172eb4c-799a-4035-8718-989aa5d52fa3",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
