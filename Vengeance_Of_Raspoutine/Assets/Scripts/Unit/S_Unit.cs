@@ -67,7 +67,7 @@ public class Unit : MonoBehaviour
     {
         if(state == 2) turnCharge--;
 
-        if( turnCharge == 0)
+        if( turnCharge >= 0)
         {
             OnAttack();
         }
@@ -175,8 +175,6 @@ public class Unit : MonoBehaviour
         _isMoving = true;
         _posToMove = new Vector3(p_tile.transform.position.x, _grid.startY + _grid.height*actualTile.transform.localScale.y);
     }
-
-
     private void OnMouseOver()
     {
         highlight.SetActive(true);
