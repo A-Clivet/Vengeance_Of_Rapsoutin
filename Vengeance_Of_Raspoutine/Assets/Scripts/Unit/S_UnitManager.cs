@@ -9,8 +9,8 @@ public class S_UnitManager : MonoBehaviour
     public S_GridManager grid;
     private List<List<S_Tile>> gridList;
     [SerializeField] private List<Unit> unitFormation = new();
-    private List<List<Unit>> UnitLine = new();
-    private List<List<Unit>> UnitColumn = new();
+    public List<List<Unit>> UnitLine = new();
+    public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
 
 
