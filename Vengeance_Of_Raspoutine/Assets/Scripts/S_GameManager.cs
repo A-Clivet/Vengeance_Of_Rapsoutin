@@ -21,6 +21,9 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private GameObject _panelPlayer1;
     [SerializeField] private GameObject _panelPlayer2;
 
+    [Header("UnitCall buttons :")]
+    [SerializeField] private GameObject _player1Unitcall;
+    [SerializeField] private GameObject _player2Unitcall;
 
     [Header("Turn references :")]
     [SerializeField] private TextMeshProUGUI _timerText;
@@ -149,9 +152,11 @@ public class S_GameManager : MonoBehaviour
         {
             case 0:
                 isPlayer1Turn = false;
+                _player1Unitcall.GetComponent<Button>().interactable = false;
                 break;
             case 1:
                 isPlayer1Turn = true;
+                _player2Unitcall.GetComponent<Button>().interactable = false;
                 break;
         }
     }
@@ -213,18 +218,26 @@ public class S_GameManager : MonoBehaviour
             isPlayer1Turn = false;
             _playerTurnText.text = "Player 2 Turn";
             _panelPlayer1.SetActive(true);
+            _player1Unitcall.GetComponent<Button>().interactable = false;
+            _player2Unitcall.GetComponent<Button>().interactable = true;
             StartTurnCheckUnit();
+            Deactivategrid(!isPlayer1Turn);
             _panelPlayer2.SetActive(false);
         }
+
         else if (!isPlayer1Turn)
         {
             isPlayer1Turn = true;
             _currentTurnNumber += 1;
             _playerTurnText.text = "Player 1 Turn";
             _panelPlayer1.SetActive(false);
+            _player1Unitcall.GetComponent<Button>().interactable = true;
+            _player2Unitcall.GetComponent<Button>().interactable = false;
             StartTurnCheckUnit();
+            Deactivategrid(isPlayer1Turn);
             _panelPlayer2.SetActive(true);
         }
+        
         _targetTime = 30.0f;
         _playerActionNumber = 3;
 
@@ -241,6 +254,7 @@ public class S_GameManager : MonoBehaviour
             {
                 for (int j = 0; j < Mathf.Abs(_player1Grid.height); j++)
                 {
+                    if (_player1Grid.gridList[i][j].unit == null) continue;
                     _player1Grid.gridList[i][j].unit.AttackCharge();
                 }
             }
@@ -251,6 +265,7 @@ public class S_GameManager : MonoBehaviour
             {
                 for (int j = 0; j < Mathf.Abs(_player2Grid.height); j++)
                 {
+                    if (_player2Grid.gridList[i][j].unit == null) continue;
                     _player2Grid.gridList[i][j].unit.AttackCharge();
                 }
             }
@@ -288,5 +303,31 @@ public class S_GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(_cooldown);
         _playerInput1.SetActive(true);
         _playerInput2.SetActive(true);
+    }
+
+    public void Deactivategrid(bool p_Playerturn)
+    {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            for (int i = 0; i < _player1Grid.width; i++)
+            {
+                for (int j = 0; j < Mathf.Abs(_player1Grid.height); j++)
+                {
+                    _player1Grid.gridList[i][j].GetComponent<Collider2D>().enabled = true;
+                    _player2Grid.gridList[i][j].GetComponent<Collider2D>().enabled = false;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _player2Grid.width; i++)
+            {
+                for (int j = 0; j < Mathf.Abs(_player2Grid.height); j++)
+                {
+                    _player1Grid.gridList[i][j].GetComponent<Collider2D>().enabled = false;
+                    _player2Grid.gridList[i][j].GetComponent<Collider2D>().enabled = true;
+                }
+            }
+        }
     }
 }

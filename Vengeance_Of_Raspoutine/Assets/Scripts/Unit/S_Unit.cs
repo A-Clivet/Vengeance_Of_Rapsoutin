@@ -110,10 +110,10 @@ public class Unit : MonoBehaviour
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
+                S_GameManager.Instance.ReduceActionPointBy1();
                 break;
             }
         }
-        S_GameManager.Instance.ReduceActionPointBy1();
     }
 
     public void MoveToTileAction(S_Tile p_tile)
