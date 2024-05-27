@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class Unit : MonoBehaviour
     public SO_Unit SO_Unit; //Unit.SO_Unit.
     public int attack;
     public int defense;
+    public bool state;
+    public Sprite unitImg;
     public S_Tile actualTile;
     public GameObject highlight;
     [SerializeField]
@@ -26,6 +27,7 @@ public class Unit : MonoBehaviour
     {
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
+        state = SO_Unit.unitState;
         speed = 10;
     }
 
@@ -41,6 +43,12 @@ public class Unit : MonoBehaviour
             }
         }
     }
+
+    public void spriteChange(Sprite img)
+    {
+        transform.GetComponent<SpriteRenderer>().sprite = img;
+    }
+
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
     //AND THE REFERENCE TO HIS OWN TILE IS KNOWN
     public void OnSpawn(S_Tile p_tile)

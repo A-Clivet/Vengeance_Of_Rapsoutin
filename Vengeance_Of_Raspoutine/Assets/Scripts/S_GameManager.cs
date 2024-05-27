@@ -30,6 +30,8 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] S_CharacterManager _characterManager;
     [SerializeField] S_CharacterStats _character1Stats;
     [SerializeField] S_CharacterStats _character2Stats;
+    [SerializeField] public S_UnitManager unitManagerP1;
+    [SerializeField] public S_UnitManager unitManagerP2;
 
     [Header("Player 1 and player 2 end screen :")]
     [SerializeField] private GameObject _player1EndScreen;
@@ -54,7 +56,7 @@ public class S_GameManager : MonoBehaviour
     private int _currentTurnNumber;
     private int _playerActionNumber;
 
-    
+
     private Sprite _currentMap;
     
     private int _intMap = 2;    // int for the current time in the list
@@ -226,6 +228,14 @@ public class S_GameManager : MonoBehaviour
     public void ReduceActionPointBy1()
     {
         _playerActionNumber -= 1;
+        if (isPlayer1Turn)
+        {
+            unitManagerP1.UnitCombo();
+        }
+        else
+        {
+            unitManagerP2.UnitCombo();
+        }
         StartCoroutine("Cooldown");
         if (_playerActionNumber <= 0)
         {

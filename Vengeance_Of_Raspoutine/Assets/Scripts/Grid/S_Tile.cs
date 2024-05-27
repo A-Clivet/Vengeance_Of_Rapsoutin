@@ -4,7 +4,6 @@ public class S_Tile : MonoBehaviour
 {
     public int tileX;
     public int tileY;
-    
     public Unit unit;
     public S_GridManager grid;
 
@@ -15,7 +14,7 @@ public class S_Tile : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid==S_UnitCall.Instance.gridP1))
+        if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid))
         {
             grid.unitSelected.VisualizePosition(this);
         }
@@ -23,7 +22,7 @@ public class S_Tile : MonoBehaviour
     //Move the unit if one is selected
     private void OnMouseDown()
     {
-        if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid==S_UnitCall.Instance.gridP1))
+        if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid))
         {
             grid.unitSelected.MoveToTile(this);
         }
