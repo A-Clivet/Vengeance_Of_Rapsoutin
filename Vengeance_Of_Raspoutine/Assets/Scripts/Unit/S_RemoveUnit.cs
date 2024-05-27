@@ -38,6 +38,7 @@ public class S_RemoveUnit : MonoBehaviour
                 Destroy(hoveringUnit.gameObject);
                 hoveringUnit = null;
             }
+            S_GameManager.Instance.ReduceActionPointBy1();
         }
     }
 }

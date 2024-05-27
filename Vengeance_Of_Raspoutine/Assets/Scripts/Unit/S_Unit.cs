@@ -106,6 +106,7 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
+        S_GameManager.Instance.ReduceActionPointBy1();
     }
 
     //get the last unit of the row corresponding to the tile clicked

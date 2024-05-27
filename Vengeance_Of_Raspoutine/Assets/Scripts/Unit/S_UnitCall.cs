@@ -69,6 +69,7 @@ public class S_UnitCall : MonoBehaviour
                     //unitManager.CheckUnitFormation(unitToSpawn.GetComponent<Unit>());
                 }
             }
+            S_GameManager.Instance.ReduceActionPointBy1();
         }
 
     }

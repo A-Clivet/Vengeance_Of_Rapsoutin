@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -33,6 +34,13 @@ public class S_GameManager : MonoBehaviour
     [Header("Player 1 and player 2 end screen :")]
     [SerializeField] private GameObject _player1EndScreen;
     [SerializeField] private GameObject _player2EndScreen;
+
+    [Header("Cooldown between actions :")]
+    [SerializeField] private float _cooldown;
+
+    [Header("player Inputs :")]
+    [SerializeField] private GameObject _playerInput1;
+    [SerializeField] private GameObject _playerInput2;
 
     // Character's adrenaline script references
     S_CharacterAdrenaline _player1CharacterAdrenaline;
@@ -218,7 +226,7 @@ public class S_GameManager : MonoBehaviour
     public void ReduceActionPointBy1()
     {
         _playerActionNumber -= 1;
-
+        StartCoroutine("Cooldown");
         if (_playerActionNumber <= 0)
         {
             EndTurn();
@@ -228,5 +236,14 @@ public class S_GameManager : MonoBehaviour
     public void IncreaseActionPointBy1()
     {
         _playerActionNumber += 1;
+    }
+
+    private IEnumerator Cooldown()
+    {
+        _playerInput1.SetActive(false);
+        _playerInput2.SetActive(false);
+        yield return new WaitForSecondsRealtime(_cooldown);
+        _playerInput1.SetActive(true);
+        _playerInput2.SetActive(true);
     }
 }
