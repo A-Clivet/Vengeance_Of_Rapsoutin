@@ -18,25 +18,30 @@ public class S_UnitCall : MonoBehaviour
         {
             tile = grid.gridList;
         }
-        
+
+        if (!S_GameManager.Instance.isPlayer1Turn)
+        {
+            tile = grid.gridList;
+        }
+
         if (grid.totalUnitAmount < 48)
         {
             for (int i = 0; i < callAmount; i++)
             {
-                GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
-                unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
-                int p_X = ColumnSelector();
-                while (tile[p_X][5].unit != null)
+                int X = ColumnSelector();
+                while (tile[X][5].unit != null)
                 {
-                    p_X = ColumnSelector();
+                    X = ColumnSelector();
                 }
 
-                unitToSpawn.GetComponent<Unit>().tileX = p_X;
+                GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
+                unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
+                unitToSpawn.GetComponent<Unit>().tileX = X;
 
                 //function to move the unit on the _grid to the right spots
-                unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[p_X][Mathf.Abs(grid.height) - 1]);
+                unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
                 unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>()._grid.startY + unitToSpawn.GetComponent<Unit>()._grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
-                unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                unitToSpawn.GetComponent<Unit>().MoveToTileAction(unitToSpawn.GetComponent<Unit>().actualTile);
                 grid.totalUnitAmount++;
             }
             S_GameManager.Instance.ReduceActionPointBy1();

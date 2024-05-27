@@ -93,7 +93,7 @@ public class Unit : MonoBehaviour
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
     then deselect the unit*/
-    public void MoveToTile(S_Tile p_tile)
+    public void MoveToTileSwitch(S_Tile p_tile)
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
@@ -115,6 +115,29 @@ public class Unit : MonoBehaviour
             }
         }
         S_GameManager.Instance.ReduceActionPointBy1();
+    }
+
+    public void MoveToTileAction(S_Tile p_tile)
+    {
+        foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
+        {
+            if (tile.unit == null || tile.unit == this)
+            {
+                actualTile.unit = null;
+                actualTile = tile;
+                actualTile.unit = this;
+                _grid.unitSelected = null;
+                tileX = tile.tileX;
+                tileY = tile.tileY;
+                _isMoving = true;
+                _posToMove = tile.transform.position;
+                foreach (Unit unit in _grid.unitList)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                }
+                break;
+            }
+        }
     }
 
     //get the last unit of the row corresponding to the tile clicked

@@ -24,7 +24,7 @@ public class S_Tile : MonoBehaviour
     {
         if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid))
         {
-            grid.unitSelected.MoveToTile(this);
+            grid.unitSelected.MoveToTileSwitch(this);
         }
     }
 }

@@ -21,7 +21,6 @@ public class S_UnitManager : MonoBehaviour
 
     public void UnitCombo()
     {
-        Debug.Log("in UnitCombo()");
 
         int columnCounter = 0;
         int lineCounter = 0;
@@ -30,10 +29,8 @@ public class S_UnitManager : MonoBehaviour
 
         for (int i = 0; i < grid.width; i++) // largeur
         {
-            Debug.Log("checking column in " + i);
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
-                Debug.Log("checking Y = " + j);
                 if (gridList[i][j].unit == null /* && unit state*/ )
                 {
                     columnCounter = 0;
@@ -58,11 +55,7 @@ public class S_UnitManager : MonoBehaviour
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-2].unit);
                     columnCounter = 0;
-                    Debug.Log(gridList[i][j - 2].unit.SO_Unit.UnitName);
-                    Debug.Log(gridList[i][j - 1].unit.SO_Unit.UnitName);
-                    Debug.Log(gridList[i][j].unit.SO_Unit.UnitName);
                 }
-                Debug.Log("columnCounter value : " + columnCounter);
             }
             columnCounter = 0;
         }
@@ -97,11 +90,7 @@ public class S_UnitManager : MonoBehaviour
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
                     lineCounter = 0;
-                    Debug.Log(gridList[j - 2][i].unit.SO_Unit.UnitName);
-                    Debug.Log(gridList[j - 1][i].unit.SO_Unit.UnitName);
-                    Debug.Log(gridList[j][i].unit.SO_Unit.UnitName);
                 }
-                Debug.Log("lineCounter value : " + lineCounter);
             }
             lineCounter = 0;
         }
@@ -464,26 +453,26 @@ public class S_UnitManager : MonoBehaviour
             {
                 p_defendingUnit[i][j].state = true;
                 p_defendingUnit[i][j].spriteChange(defendImg);
-                Debug.Log(p_defendingUnit[i][j].tileX);
-                Debug.Log(p_defendingUnit[i][j].tileY);
                 //if p_defendingUnit position = unitColumn
             }
         }
+        UnitLine.Clear();
+        p_defendingUnit.Clear();
     }
     public void Attack(List<List<Unit>> p_attackingUnit) { /* function for what should be done when units are attacking */
         for (int i = 0; i < p_attackingUnit.Count; i++)
         {
             for (int j = 0; j< p_attackingUnit[i].Count; j++)
             {
+                p_attackingUnit[i][j].transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                 if (!p_attackingUnit[i][j].state)
                 {
-                    p_attackingUnit[i][j].transform.localScale *= .75f;
+                    p_attackingUnit[i][j].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
-                p_attackingUnit[i][j].transform.localScale *= .75f;
-                Debug.Log(p_attackingUnit[i][j].tileX);
-                Debug.Log(p_attackingUnit[i][j].tileY);
             }
         }
+        UnitColumn.Clear();
+        p_attackingUnit.Clear();
     } 
 
 
