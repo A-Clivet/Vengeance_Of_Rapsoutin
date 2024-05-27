@@ -17,5 +17,6 @@ public class SO_Unit : ScriptableObject
     public Image unitSprite;
     public int unitType;
     public int unitColor;
-    public bool unitState;
+    public int unitState;
+    public int unitTurnCharge;
 }

@@ -27,7 +27,7 @@ public class S_CharacterHealth : MonoBehaviour
 
     bool _isPlayer1Character;
     int _maxHP;
-    int _currentHP;
+    public int _currentHP;
 
     Sprite _emptyScorePoint;
     Sprite _scorePointFilled;

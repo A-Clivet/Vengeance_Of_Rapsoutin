@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,13 +45,17 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerInput1;
     [SerializeField] private GameObject _playerInput2;
 
+    [Header("Player's grid :")]
+    [SerializeField] private S_GridManager _player1Grid;
+    [SerializeField] private S_GridManager _player2Grid;
+
     // Character's adrenaline script references
     S_CharacterAdrenaline _player1CharacterAdrenaline;
     S_CharacterAdrenaline _player2CharacterAdrenaline;
 
     // Character's health script references
-    S_CharacterHealth _player1CharacterHealth;
-    S_CharacterHealth _player2CharacterHealth;
+    public S_CharacterHealth _player1CharacterHealth;
+    public S_CharacterHealth _player2CharacterHealth;
 
     private float _targetTime;
     private int _currentTurnNumber;
@@ -69,6 +74,7 @@ public class S_GameManager : MonoBehaviour
 
     private void Start()
     {
+
         _targetTime = 30f;
         _currentTurnNumber = 1;
         _playerActionNumber = 3;
@@ -207,6 +213,7 @@ public class S_GameManager : MonoBehaviour
             isPlayer1Turn = false;
             _playerTurnText.text = "Player 2 Turn";
             _panelPlayer1.SetActive(true);
+            StartTurnCheckUnit();
             _panelPlayer2.SetActive(false);
         }
         else if (!isPlayer1Turn)
@@ -215,6 +222,7 @@ public class S_GameManager : MonoBehaviour
             _currentTurnNumber += 1;
             _playerTurnText.text = "Player 1 Turn";
             _panelPlayer1.SetActive(false);
+            StartTurnCheckUnit();
             _panelPlayer2.SetActive(true);
         }
         _targetTime = 30.0f;
@@ -223,6 +231,31 @@ public class S_GameManager : MonoBehaviour
         // Enable / disable special capacity button's interaction
         _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
         _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+    }
+
+    public void StartTurnCheckUnit()
+    {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            for (int i = 0; i < _player1Grid.width; i++)
+            {
+                for (int j = 0; j < Mathf.Abs(_player1Grid.height); j++)
+                {
+                    _player1Grid.gridList[i][j].unit.AttackCharge();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _player2Grid.width; i++)
+            {
+                for (int j = 0; j < Mathf.Abs(_player2Grid.height); j++)
+                {
+                    _player2Grid.gridList[i][j].unit.AttackCharge();
+                }
+            }
+        }
+
     }
 
     public void ReduceActionPointBy1()

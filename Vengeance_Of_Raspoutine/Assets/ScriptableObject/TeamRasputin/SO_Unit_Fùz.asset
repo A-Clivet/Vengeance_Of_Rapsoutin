@@ -19,4 +19,6 @@ MonoBehaviour:
   sizeY: 1
   unitSprite: {fileID: 0}
   unitType: 1
-  unitColor: 0
+  unitColor: 1
+  unitState: 0
+  unitTurnCharge: 2

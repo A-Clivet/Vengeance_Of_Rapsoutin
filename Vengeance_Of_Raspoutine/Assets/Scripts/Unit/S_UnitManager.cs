@@ -43,13 +43,11 @@ public class S_UnitManager : MonoBehaviour
                 //}
                 else
                 {
-                    Debug.Log("same unit on column");
                     columnCounter++;
                 }
 
                 if(columnCounter == 3)
                 {
-                    Debug.Log("unit combo attack");
                     UnitColumn.Add(new());
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-1].unit);
@@ -62,10 +60,8 @@ public class S_UnitManager : MonoBehaviour
 
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
-            Debug.Log("checking line in " + i);
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                Debug.Log("checking X = " + j);
                 if (gridList[j][i].unit == null)
                 {
                     lineCounter = 0;
@@ -78,13 +74,11 @@ public class S_UnitManager : MonoBehaviour
                 //}
                 else
                 {
-                    Debug.Log("same unit on line");
                     lineCounter++;
                 }
 
                 if (lineCounter == 3)
                 {
-                    Debug.Log("unit combo defence");
                     UnitLine.Add(new());
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
@@ -451,7 +445,7 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
-                p_defendingUnit[i][j].state = true;
+                p_defendingUnit[i][j].state = 1;
                 p_defendingUnit[i][j].spriteChange(defendImg);
                 //if p_defendingUnit position = unitColumn
             }
@@ -464,11 +458,14 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j< p_attackingUnit[i].Count; j++)
             {
-                p_attackingUnit[i][j].transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-                if (!p_attackingUnit[i][j].state)
+                Debug.Log(p_attackingUnit[i][j].state);
+                p_attackingUnit[i][j].transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+                if (p_attackingUnit[i][j].state == 1)
                 {
-                    p_attackingUnit[i][j].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    p_attackingUnit[i][j].transform.localScale = new Vector3(0.5f, 0.5f, 1f);
                 }
+                p_attackingUnit[i][j].state = 2;
+                Debug.Log(p_attackingUnit[i][j].state);
             }
         }
         UnitColumn.Clear();

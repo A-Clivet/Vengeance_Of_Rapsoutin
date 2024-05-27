@@ -46,5 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
   unitFormation: []
-  UnitLine: []
-  UnitColumn: []
+  defendImg: {fileID: 21300000, guid: b2b98d45844fa4d44be2fc3c68bce6ee, type: 3}

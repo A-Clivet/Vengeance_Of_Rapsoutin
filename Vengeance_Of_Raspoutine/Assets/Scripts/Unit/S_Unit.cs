@@ -12,7 +12,8 @@ public class Unit : MonoBehaviour
     public SO_Unit SO_Unit; //Unit.SO_Unit.
     public int attack;
     public int defense;
-    public bool state;
+    public int state;
+    public int turnCharge;
     public Sprite unitImg;
     public S_Tile actualTile;
     public GameObject highlight;
@@ -28,6 +29,7 @@ public class Unit : MonoBehaviour
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
         state = SO_Unit.unitState;
+        turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
     }
 
@@ -61,34 +63,31 @@ public class Unit : MonoBehaviour
         tileY= p_tile.tileY;
     }
 
+    public void AttackCharge()
+    {
+        if(state == 2) turnCharge--;
+
+        if( turnCharge == 0)
+        {
+            OnAttack();
+        }
+    }
+
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
     public void OnAttack(){
-        switch (SO_Unit.unitType)
+        if (S_GameManager.Instance.isPlayer1Turn)
         {
-            case 0:
-                break;
-
-            case 1:
-                break;
-
-            case 2:
-                break;
+            S_GameManager.Instance._player2CharacterHealth._currentHP -=  attack;
+        }
+        else
+        {
+            S_GameManager.Instance._player1CharacterHealth._currentHP -= attack;
         }
     }
 
     /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
     public void OnHit() {
-        switch (SO_Unit.unitType)
-        {
-            case 0:
-                break;
-
-            case 1:
-                break;
-
-            case 2:
-                break;
-        }
+        
     }
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
