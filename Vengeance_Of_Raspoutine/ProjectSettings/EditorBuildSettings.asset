@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/DevScene/loadscenetest.unity
     guid: 00104969407024d47bdaba5b5ac666d1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DevScene/Nicolas-Menu.unity
     guid: 861dc25ea4879054ca336b7cdcec85aa
   m_configObjects: {}
