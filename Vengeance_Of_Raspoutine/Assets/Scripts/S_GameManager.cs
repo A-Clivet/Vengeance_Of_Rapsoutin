@@ -15,6 +15,11 @@ public class S_GameManager : MonoBehaviour
     public List<Sprite> mapSelection = new(new Sprite[5]);
     [SerializeField] private Image _currentSprite; // sprite that display the map 
 
+    [Header("Panel references :")]
+    [SerializeField] private GameObject _panelPlayer1;
+    [SerializeField] private GameObject _panelPlayer2;
+
+
     [Header("Turn references :")]
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _playerTurnText;
@@ -36,7 +41,7 @@ public class S_GameManager : MonoBehaviour
     private float _targetTime;
     private int _currentTurnNumber;
     private int _playerActionNumber;
-    private bool _randomTurn;
+
     
     private Sprite _currentMap;
     
@@ -60,6 +65,8 @@ public class S_GameManager : MonoBehaviour
         _player1EndScreen.SetActive(false);
         _player2EndScreen.SetActive(false);
 
+        RandomStartTurn();
+        
         #region Characters management
 
         // Setting up character manager reference
@@ -78,6 +85,19 @@ public class S_GameManager : MonoBehaviour
         _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
 
         #endregion
+
+        if (isPlayer1Turn)
+        {
+            _playerTurnText.text = "Player 1 Turn";
+            _panelPlayer1.SetActive(false);
+            _panelPlayer2.SetActive(true);
+        }
+        else if (!isPlayer1Turn)
+        {
+            _playerTurnText.text = "Player 2 Turn";
+            _panelPlayer1.SetActive(true);
+            _panelPlayer2.SetActive(false);
+        }
     }
 
 
@@ -91,18 +111,24 @@ public class S_GameManager : MonoBehaviour
         {
             EndTurn();
         }
-
-        if(isPlayer1Turn) 
-        {
-            _playerTurnText.text = "Player 1 Turn";
-        }
-
-        else if (!isPlayer1Turn)
-        { 
-            _playerTurnText.text = "Player 2 Turn";
-        }
     }
 
+
+    private void RandomStartTurn() // Allows to randomise wich player starts at the start of the game
+    {
+        int random = Random.Range(0, 2);
+
+        switch (random)
+        {
+            case 0:
+                isPlayer1Turn = false;
+                break;
+            case 1:
+                isPlayer1Turn = true;
+                break;
+        }
+    }
+    
 
     /// <summary> 
     /// Change the map when the player lose a point or win a point and add a point to the player 1 or 2
@@ -111,20 +137,7 @@ public class S_GameManager : MonoBehaviour
     /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
-        int random = Random.Range(0, 1);
-
-        if (player1Point == 0 && player2Point == 0)
-        {
-            switch (random)
-            {
-                case 0:
-                    isPlayer1Turn = false;
-                    break;
-                case 1:
-                    isPlayer1Turn = true;
-                    break;
-            }
-        }
+        
         
         if (p_isPlayer1Dead) 
         {
@@ -158,12 +171,17 @@ public class S_GameManager : MonoBehaviour
         if (isPlayer1Turn)
         {
             isPlayer1Turn = false;
-            
+            _playerTurnText.text = "Player 2 Turn";
+            _panelPlayer1.SetActive(true);
+            _panelPlayer2.SetActive(false);
         }
         else if (!isPlayer1Turn)
         {
             isPlayer1Turn = true;
             _currentTurnNumber += 1;
+            _playerTurnText.text = "Player 1 Turn";
+            _panelPlayer1.SetActive(false);
+            _panelPlayer2.SetActive(true);
         }
         _targetTime = 30.0f;
         _playerActionNumber = 3;
