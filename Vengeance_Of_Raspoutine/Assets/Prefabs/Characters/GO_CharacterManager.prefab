@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad061255846f4c438f5274c92047865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _emptyScorePoint: {fileID: 21300000, guid: 211928c4868911540bf41ebf7eb33717, type: 3}
+  _scorePointFilled: {fileID: 21300000, guid: c6f124b8c6650a643adf9d48dc031f87, type: 3}
   _character1Prefab: {fileID: 6502254604496220629, guid: c0aa966b929c1f4408de8065c52175f1, type: 3}
   _character2Prefab: {fileID: 1184922186947913994, guid: 8e0f0cb8b7869714da13f323b0240260, type: 3}
   _allCharactersParent: {fileID: 0}
-  Player1CharacterGameObject: {fileID: 0}
-  Player2CharacterGameObject: {fileID: 0}
+  _skillPanelP1: {fileID: 0}
+  _skillPanelP2: {fileID: 0}

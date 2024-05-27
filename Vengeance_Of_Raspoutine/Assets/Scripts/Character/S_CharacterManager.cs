@@ -6,6 +6,10 @@ public class S_CharacterManager : MonoBehaviour
     #region Variables
     public static S_CharacterManager Instance;
 
+    [Header("Score references :")]
+    [SerializeField] Sprite _emptyScorePoint;
+    [SerializeField] Sprite _scorePointFilled;
+
     [Header("References :")]
     [SerializeField] GameObject _character1Prefab;
     [SerializeField] GameObject _character2Prefab;
@@ -71,7 +75,7 @@ public class S_CharacterManager : MonoBehaviour
         character.transform.GetChild(0).GetComponent<Image>().sprite = p_characterStats.sprite;
 
         // Transfert health stats
-        character.GetComponent<S_CharacterHealth>().RecieveCharacterHealthStats(p_characterStats.maxHP, p_isPlayer1Character);
+        character.GetComponent<S_CharacterHealth>().RecieveCharacterHealthStats(p_characterStats.maxHP, p_isPlayer1Character, _emptyScorePoint, _scorePointFilled);
 
         // Transfert adrenaline stats
         character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(p_characterStats.maxAdrenaline, p_characterStats.specialCapacity, p_isPlayer1Character);
@@ -88,8 +92,8 @@ public class S_CharacterManager : MonoBehaviour
             //_skillPanelP2.SetDesc(p_characterStats.specialCapacity.capacityDesc);
         }
 
-            #endregion
-        }
+        #endregion
+    }
 
     #endregion
 }

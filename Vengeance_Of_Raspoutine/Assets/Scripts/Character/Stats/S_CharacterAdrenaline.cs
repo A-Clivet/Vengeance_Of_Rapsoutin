@@ -56,7 +56,6 @@ public class S_CharacterAdrenaline : MonoBehaviour
         currentAdrenaline = 0;
     }
 
-
     /// <summary> Use to enable / disable special capacity button's interaction </summary>
     public void RecieveNewTurnInfo(bool p_isPlayer1Turn)
     {
@@ -79,9 +78,16 @@ public class S_CharacterAdrenaline : MonoBehaviour
         {
             currentAdrenaline = 0;
 
+            S_GameManager.Instance.ReduceActionPointBy1();
+
             // Launch special capacity
             StartCoroutine(S_SpecialCapacityManager.Instance.LaunchSpecialCapacity(_specialCapacity, _isPlayer1Character));
         }
+    }
+
+    public void ResetAdrenalineStats()
+    {
+        currentAdrenaline = 0;
     }
 
     void UpdateAdrenalineUIs()
@@ -92,6 +98,8 @@ public class S_CharacterAdrenaline : MonoBehaviour
         // if that was the case the division can't return us a float
         _specialCapacityChargingSprite.fillAmount = (float)_currentAdrenaline / _maxAdrenaline;
     }
+
+
 
     // -- TO DEBUG -- //
     #region TO DEBUG

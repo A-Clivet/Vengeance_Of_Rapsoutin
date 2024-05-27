@@ -33,6 +33,10 @@ public class S_GameManager : MonoBehaviour
     S_CharacterAdrenaline _player1CharacterAdrenaline;
     S_CharacterAdrenaline _player2CharacterAdrenaline;
 
+    // Character's health script references
+    S_CharacterHealth _player1CharacterHealth;
+    S_CharacterHealth _player2CharacterHealth;
+
     private float _targetTime;
     private int _currentTurnNumber;
     private int _playerActionNumber;
@@ -69,13 +73,20 @@ public class S_GameManager : MonoBehaviour
         _characterManager.SpawnCharacter(_character1Stats, true);
         _characterManager.SpawnCharacter(_character2Stats, false);
 
-        // Setting up character's adrenaline script references
+        // Setting up character's adrenaline and health script references
         _player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
         _player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+
+        _player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+        _player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
 
         // Enable / disable special capacity button's interaction
         _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
         _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+
+        // Updates the character's score visuals
+        _player1CharacterHealth.RecieveScoreInfo(player1Point, true);
+        _player2CharacterHealth.RecieveScoreInfo(player2Point, false);
 
         #endregion
     }
@@ -128,15 +139,15 @@ public class S_GameManager : MonoBehaviour
         
         if (p_isPlayer1Dead) 
         {
-            player1Point += 1;
+            player2Point += 1;
             isPlayer1Turn = true;
-            _intMap -= 1;
+            _intMap += 1;
         }
         else
         {
-            player2Point += 1;
+            player1Point += 1;
             isPlayer1Turn = false;
-            _intMap += 1;
+            _intMap -= 1;
         }
 
         if (player1Point >= 3)
@@ -148,6 +159,19 @@ public class S_GameManager : MonoBehaviour
         {
             _player2EndScreen.SetActive(true);
         }
+
+        #region Characters management
+        // Updates the character's score visuals
+        _player1CharacterHealth.RecieveScoreInfo(player1Point, true);
+        _player2CharacterHealth.RecieveScoreInfo(player2Point, false);
+
+        // Reset players character's stats
+        _player1CharacterHealth.ResetHealthStats();
+        _player2CharacterHealth.ResetHealthStats();
+
+        _player1CharacterAdrenaline.ResetAdrenalineStats();
+        _player2CharacterAdrenaline.ResetAdrenalineStats();
+        #endregion
 
         _currentMap = mapSelection[_intMap];
         _currentSprite.sprite = mapSelection[_intMap];

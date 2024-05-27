@@ -326,12 +326,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed4d2c60ec4d2545bca86b33f5e0fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoreImages:
+    score1Image: {fileID: 101224376045768727}
+    score2Image: {fileID: 3733352607879713953}
+    score3Image: {fileID: 6656626168894625842}
   _healthBarFillSprite: {fileID: 44973858443650695}
   _healthText: {fileID: 5121580977195997721}
-  _scoreImages:
-    score1Image: {fileID: 0}
-    score2Image: {fileID: 0}
-    score3Image: {fileID: 0}
 --- !u!114 &6609270878588741390
 MonoBehaviour:
   m_ObjectHideFlags: 0
