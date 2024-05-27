@@ -278,11 +278,11 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber -= 1;
         if (isPlayer1Turn)
         {
-            unitManagerP1.UnitCombo();
+            unitManagerP1.UnitCombo(3);
         }
         else
         {
-            unitManagerP2.UnitCombo();
+            unitManagerP2.UnitCombo(3);
         }
         StartCoroutine("Cooldown");
         if (_playerActionNumber <= 0)

@@ -9,8 +9,8 @@ public class S_UnitManager : MonoBehaviour
     public S_GridManager grid;
     private List<List<S_Tile>> gridList;
     [SerializeField] private List<Unit> unitFormation = new();
-    private List<List<Unit>> UnitLine = new();
-    private List<List<Unit>> UnitColumn = new();
+    public List<List<Unit>> UnitLine = new();
+    public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
 
 
@@ -19,7 +19,7 @@ public class S_UnitManager : MonoBehaviour
         gridList = grid.gridList;
     }
 
-    public void UnitCombo()
+    public void UnitCombo(int p_formationNumber)
     {
 
         int columnCounter = 0;
@@ -77,7 +77,7 @@ public class S_UnitManager : MonoBehaviour
                     lineCounter++;
                 }
 
-                if (lineCounter == 3)
+                if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
@@ -471,6 +471,8 @@ public class S_UnitManager : MonoBehaviour
         UnitColumn.Clear();
         p_attackingUnit.Clear();
     } 
+
+    
 
 
 
