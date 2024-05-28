@@ -113,6 +113,10 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null || tile.unit==this)
             {
+                if (tileX != tile.tileX)
+                {
+                    S_GameManager.Instance.ReduceActionPointBy1();
+                }
                 actualTile.unit = null;
                 actualTile = tile;
                 actualTile.unit = this;
@@ -129,7 +133,6 @@ public class Unit : MonoBehaviour
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                S_GameManager.Instance.ReduceActionPointBy1();
                 break;
             }
         }
