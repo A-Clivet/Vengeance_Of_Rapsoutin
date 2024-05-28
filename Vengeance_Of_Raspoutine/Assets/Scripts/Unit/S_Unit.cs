@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,18 +33,17 @@ public class Unit : MonoBehaviour
         turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
     }
-
-    private void Update()
+    private IEnumerator LerpMove()
     {
-        if (_isMoving)
-        {
-            transform.position =Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1),Time.deltaTime*5);
-            if (Vector3.Distance(transform.position, _posToMove) < 0.5)
-            {
-                transform.position=_posToMove;
-                _isMoving = false;
-            }
+        while(Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.5)
+        { Debug.Log("aaa " + Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)));
+            transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1),Time.deltaTime*5);
+            yield return new WaitForEndOfFrame();
         }
+        _isMoving = false;
+        transform.position = _posToMove;
+        yield return null;
+        
     }
 
     public void spriteChange(Sprite img)
@@ -104,8 +104,12 @@ public class Unit : MonoBehaviour
                 _grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
-                _isMoving = true;
                 _posToMove = tile.transform.position;
+                if (!_isMoving)
+                {
+                    _isMoving = true;
+                    StartCoroutine(LerpMove());
+                }
                 foreach (Unit unit in _grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
@@ -114,6 +118,7 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
+        
     }
 
     public void MoveToTileAction(S_Tile p_tile)
@@ -128,8 +133,12 @@ public class Unit : MonoBehaviour
                 _grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
-                _isMoving = true;
                 _posToMove = tile.transform.position;
+                if (!_isMoving)
+                {
+                    _isMoving = true;
+                    StartCoroutine(LerpMove());
+                }
                 foreach (Unit unit in _grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
@@ -171,8 +180,12 @@ public class Unit : MonoBehaviour
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
-        _isMoving = true;
         _posToMove = new Vector3(p_tile.transform.position.x, _grid.startY + _grid.height*actualTile.transform.localScale.y);
+        if (!_isMoving)
+        {
+            _isMoving = true;
+            StartCoroutine(LerpMove());
+        }
     }
     private void OnMouseOver()
     {
