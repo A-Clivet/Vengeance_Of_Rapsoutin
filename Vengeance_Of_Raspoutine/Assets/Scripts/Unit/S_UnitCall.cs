@@ -24,12 +24,12 @@ public class S_UnitCall : MonoBehaviour
             tile = grid.gridList;
         }
 
-        if (grid.totalUnitAmount < 48)
+        if (grid.totalUnitAmount + callAmount < 48)
         {
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();
-                while (tile[X][5].unit != null)
+                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
                 {
                     X = ColumnSelector();
                 }

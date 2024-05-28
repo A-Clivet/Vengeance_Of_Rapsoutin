@@ -11,7 +11,6 @@ public class S_RemoveUnit : MonoBehaviour
 
     public Unit hoveringUnit;
 
-
     private void Awake()
     {
         if (Instance == null)

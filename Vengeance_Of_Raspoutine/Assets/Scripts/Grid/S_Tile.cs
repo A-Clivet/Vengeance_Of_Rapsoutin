@@ -14,7 +14,7 @@ public class S_Tile : MonoBehaviour
     }
     private void OnMouseOver()
     {
-        if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid))
+        if (grid.unitSelected != null)
         {
             grid.unitSelected.VisualizePosition(this);
         }
@@ -22,7 +22,7 @@ public class S_Tile : MonoBehaviour
     //Move the unit if one is selected
     private void OnMouseDown()
     {
-        if (grid.unitSelected != null && S_GameManager.Instance.isPlayer1Turn == (grid))
+        if (grid.unitSelected != null)
         {
             grid.unitSelected.MoveToTileSwitch(this);
         }
