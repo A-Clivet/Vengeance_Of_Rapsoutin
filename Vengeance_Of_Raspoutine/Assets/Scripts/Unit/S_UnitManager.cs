@@ -72,15 +72,11 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
-                if (gridList[i][j].unit == null)
+                if (gridList[i][j].unit == null || (gridList[i][j].unit != null && gridList[i][j].unit.state != 0))
                 {
                     columnCounter = 0;
                     continue;
                 } 
-                else if (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
-                {
-
-                }
                 //if (gridList[i][j].unit.SO_Unit != null)
                 //{
                 //    columnCounter = 1;
