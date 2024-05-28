@@ -19,6 +19,10 @@ public class S_GameManager : MonoBehaviour
     public S_CharacterHealth player1CharacterHealth { get; private set; }
     public S_CharacterHealth player2CharacterHealth { get; private set; }
 
+    // Character's adrenaline script references
+    public S_CharacterAdrenaline player1CharacterAdrenaline { get; private set; }
+    public S_CharacterAdrenaline player2CharacterAdrenaline { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
@@ -90,10 +94,6 @@ public class S_GameManager : MonoBehaviour
     // Character manager's reference
     S_CharacterManager _characterManager;
 
-    // Character's adrenaline script references
-    S_CharacterAdrenaline _player1CharacterAdrenaline;
-    S_CharacterAdrenaline _player2CharacterAdrenaline;
-
     private float _targetTime;
     private int _currentRoundNumber;
     private int _playerActionNumber;
@@ -133,15 +133,15 @@ public class S_GameManager : MonoBehaviour
         _characterManager.SpawnCharacter(_character2Stats, false);
 
         // Setting up character's adrenaline and health script references
-        _player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        _player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
         player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
         player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
 
         // Enable / disable special capacity button's interaction
-        _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
 
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
@@ -248,8 +248,8 @@ public class S_GameManager : MonoBehaviour
         player1CharacterHealth.ResetHealthStats();
         player2CharacterHealth.ResetHealthStats();
 
-        _player1CharacterAdrenaline.ResetAdrenalineStats();
-        _player2CharacterAdrenaline.ResetAdrenalineStats();
+        player1CharacterAdrenaline.ResetAdrenalineStats();
+        player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
 
         _currentSprite.sprite = mapSelection[_mapIndex];
@@ -300,8 +300,8 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber = 3;
 
         // Enable / disable special capacity button's interaction
-        _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
     }
 
     public void StartTurnCheckUnit()
