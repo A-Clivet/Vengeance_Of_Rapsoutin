@@ -67,7 +67,7 @@ public class Unit : MonoBehaviour
     {
         if(state == 2) turnCharge--;
 
-        if( turnCharge >= 0)
+        if( turnCharge == 0)
         {
             OnAttack();
         }
@@ -77,11 +77,11 @@ public class Unit : MonoBehaviour
     public void OnAttack(){
         if (S_GameManager.Instance.isPlayer1Turn)
         {
-            S_GameManager.Instance._player2CharacterHealth._currentHP -=  attack;
+            S_GameManager.Instance._player2CharacterHealth.currentHP -=  attack;
         }
         else
         {
-            S_GameManager.Instance._player1CharacterHealth._currentHP -= attack;
+            S_GameManager.Instance._player1CharacterHealth.currentHP -= attack;
         }
     }
 
@@ -166,7 +166,6 @@ public class Unit : MonoBehaviour
                 unit.GetComponent<BoxCollider2D>().enabled = false;
             }
         }
-        return;
     }
 
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
