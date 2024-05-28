@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{2ff09321-5f40-47de-a44e-d98526cced6e}">
+		<property name="assetPath">
+			<value>SFX/soldiers/car-engine-run.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>6.2400000000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{f83661fd-d3d5-4d08-8379-69bf7ed980a5}</destination>
+		</relationship>
+	</object>
+</objects>

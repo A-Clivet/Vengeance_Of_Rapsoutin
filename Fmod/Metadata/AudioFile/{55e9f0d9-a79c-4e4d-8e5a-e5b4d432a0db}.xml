@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{55e9f0d9-a79c-4e4d-8e5a-e5b4d432a0db}">
+		<property name="assetPath">
+			<value>SFX/Monsters/bruit de monstre  (2).mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.52800000000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{f83661fd-d3d5-4d08-8379-69bf7ed980a5}</destination>
+		</relationship>
+	</object>
+</objects>

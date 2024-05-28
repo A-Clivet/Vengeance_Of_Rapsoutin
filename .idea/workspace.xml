@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="41e26bab-003f-4a9f-bb14-f6a7bc0cc172" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Prefabs/Characters/GO_Character1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Prefabs/Characters/GO_Character1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Prefabs/Characters/GO_Character2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Prefabs/Characters/GO_Character2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Prefabs/Characters/GO_CharacterManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Prefabs/Characters/GO_CharacterManager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scenes/DevScene/Alexandre.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scenes/DevScene/Alexandre.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/S_CharacterManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/S_CharacterManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/Stats/S_CharacterAdrenaline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/Stats/S_CharacterAdrenaline.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/Stats/S_CharacterAdrenaline8.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/Stats/S_CharacterAdrenaline8.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/Stats/S_CharacterHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/Character/Stats/S_CharacterHealth.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/S_GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Vengeance_Of_Raspoutine/Assets/Scripts/S_GameManager.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2h2sOVZdAZ80miHdnFqwE0SwAQC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dev"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="41e26bab-003f-4a9f-bb14-f6a7bc0cc172" name="Changes" comment="" />
+      <created>1716803476320</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716803476320</updated>
+    </task>
+    <servers />
+  </component>
+</project>

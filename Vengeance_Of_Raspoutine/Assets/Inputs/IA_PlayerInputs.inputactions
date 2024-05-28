@@ -1,0 +1,242 @@
+{
+    "name": "IA_PlayerInputs",
+    "maps": [
+        {
+            "name": "Player1Inputs",
+            "id": "4c63bca9-3caa-4f2e-b76b-b22589a1df68",
+            "actions": [
+                {
+                    "name": "mouseLeft",
+                    "type": "Button",
+                    "id": "9d7908aa-1711-4166-8961-497f12c15a8c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "mouseRight",
+                    "type": "Button",
+                    "id": "4fb92ec0-8bf4-4bd9-a270-b51134c04777",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mousePos",
+                    "type": "Value",
+                    "id": "7ba68b13-b708-40b1-9320-105f75398bc3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Show Grid",
+                    "type": "Button",
+                    "id": "32b868b1-5b39-4911-9ab6-116c6d82bffa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Show Skill",
+                    "type": "Button",
+                    "id": "03fb3e2b-fef9-444f-ab93-f1593b04029e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "d82cdb2d-1d64-47b4-bc6f-347f43886999",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1429191c-572e-4674-b10f-e390a2f477cb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c0b806a4-8448-41a3-8707-47402c880342",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "755846aa-bf61-4798-97d1-99772fc515bd",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47a15733-eb12-46b3-921d-483fbdc73c1c",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4c75487f-fab8-4a5a-9ef4-09eb1d9b816d",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7172eb4c-799a-4035-8718-989aa5d52fa3",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player2Inputs",
+            "id": "1b76def9-f43a-4af2-971c-6abeec7a4720",
+            "actions": [
+                {
+                    "name": "mouseLeft",
+                    "type": "Button",
+                    "id": "f508a891-56d8-40d1-935b-f12bf07fce9b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mouseRight",
+                    "type": "Button",
+                    "id": "b73d0d67-1b29-47da-9556-50aa581c4887",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mousePos",
+                    "type": "Value",
+                    "id": "f8ad4ae3-1c67-4c70-8f93-ad27633c6a88",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Show Grid",
+                    "type": "Button",
+                    "id": "98106903-013f-4d13-8cf2-ffe9b7d95e22",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Show Skill",
+                    "type": "Button",
+                    "id": "b36578ef-fc5d-4c44-9b19-accaded8f8a0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "492cb142-eb92-4a14-9e31-cfe309ab7330",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf906d95-644f-441f-ae07-fc43ffd46354",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9989bfea-3f3c-42ba-b271-48d870cef3ea",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16400855-5d99-4164-908c-9931cffbaebb",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9e268da-8941-4783-8e03-ac21a2376a5d",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
