@@ -94,6 +94,13 @@ public class S_GameManager : MonoBehaviour
     // Character manager's reference
     S_CharacterManager _characterManager;
 
+    //End Menu ref
+    S_EndMenu _endMenu;
+
+    // Character's adrenaline script references
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
+
     private float _targetTime;
     private int _currentRoundNumber;
     private int _playerActionNumber;
@@ -231,12 +238,14 @@ public class S_GameManager : MonoBehaviour
 
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _player1EndScreen.SetActive(true);
+            _endMenu._player1Win = true;
+            _endMenu.WhoWin();
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _player2EndScreen.SetActive(true);
+            _endMenu._player1Win = false;
+            _endMenu.WhoWin();
         }
 
         #region Characters management
