@@ -22,7 +22,7 @@ public class S_RemoveUnit : MonoBehaviour
     {
         if (context.started)
         {
-            if (hoveringUnit != null)
+            if (hoveringUnit != null && hoveringUnit.state == 0)
             {
                 hoveringUnit._grid.unitList.Remove(hoveringUnit);
                 hoveringUnit.actualTile.unit = null;

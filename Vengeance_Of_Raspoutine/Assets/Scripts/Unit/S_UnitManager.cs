@@ -8,7 +8,6 @@ public class S_UnitManager : MonoBehaviour
 {
     public S_GridManager grid;
     private List<List<S_Tile>> gridList;
-    [SerializeField] private List<Unit> unitFormation = new();
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
@@ -29,6 +28,46 @@ public class S_UnitManager : MonoBehaviour
 
         Debug.Log(grid.name);
 
+
+        for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
+        {
+            for (int j = 0; j < grid.width; j++) // largeur
+            {
+                if (gridList[j][i].unit == null || (gridList[j][i].unit != null && gridList[j][i].unit.state != 0))
+                {
+                    lineCounter = 0;
+                    continue;
+                }
+                //if (gridList[j][i].unit.SO_Unit != null) (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
+                //{
+                //    lineCounter = 1;
+                //    //actualType = gridList[j][i].unit.SO_Unit;
+                //}
+                else 
+                {
+                    lineCounter++;
+                }
+
+                if (lineCounter == p_formationNumber)
+                {
+                    UnitLine.Add(new());
+                    gridList[j][i].unit.state = 1;
+                    gridList[j - 1][i].unit.state = 1;
+                    gridList[j - 2][i].unit.state = 1;
+
+                    Debug.Log("Unité en position : (" + j + "," + i + ")  is in state : " + gridList[j][i].unit.state);
+                    Debug.Log("Unité en position : (" + (j - 1) + "," + i + ")  is in state : " + gridList[j - 1][i].unit.state);
+                    Debug.Log("Unité en position : (" + (j - 2) + "," + i + ")  is in state : " + gridList[j - 2][i].unit.state);
+
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
+
+                    lineCounter = 0;
+                }
+            }
+            lineCounter = 0;
+        }
         for (int i = 0; i < grid.width; i++) // largeur
         {
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
@@ -71,46 +110,6 @@ public class S_UnitManager : MonoBehaviour
                 }
             }
             columnCounter = 0;
-        }
-
-        for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
-        {
-            for (int j = 0; j < grid.width; j++) // largeur
-            {
-                if (gridList[j][i].unit == null || (gridList[j][i].unit != null && gridList[j][i].unit.state != 0))
-                {
-                    lineCounter = 0;
-                    continue;
-                }
-                //if (gridList[j][i].unit.SO_Unit != null) (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
-                //{
-                //    lineCounter = 1;
-                //    //actualType = gridList[j][i].unit.SO_Unit;
-                //}
-                else 
-                {
-                    lineCounter++;
-                }
-
-                if (lineCounter == p_formationNumber)
-                {
-                    UnitLine.Add(new());
-                    gridList[j][i].unit.state = 1;
-                    gridList[j - 1][i].unit.state = 1;
-                    gridList[j - 2][i].unit.state = 1;
-
-                    Debug.Log("Unité en position : (" + j + "," + i + ")  is in state : " + gridList[j][i].unit.state);
-                    Debug.Log("Unité en position : (" + (j - 1) + "," + i + ")  is in state : " + gridList[j - 1][i].unit.state);
-                    Debug.Log("Unité en position : (" + (j - 2) + "," + i + ")  is in state : " + gridList[j - 2][i].unit.state);
-
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
-
-                    lineCounter = 0;
-                }
-            }
-            lineCounter = 0;
         }
 
         if(UnitLine.Count >= 1)
