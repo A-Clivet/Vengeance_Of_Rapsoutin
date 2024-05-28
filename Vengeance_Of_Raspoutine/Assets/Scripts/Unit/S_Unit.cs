@@ -202,6 +202,4 @@ public class Unit : MonoBehaviour
         if(_grid.unitSelected==null)
         SelectUnit();
     }
-    
-
 }

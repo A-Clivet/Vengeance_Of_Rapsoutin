@@ -445,6 +445,7 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
+                if (p_defendingUnit[i][j].state == 2) continue;
                 p_defendingUnit[i][j].state = 1;
                 p_defendingUnit[i][j].spriteChange(defendImg);
                 //if p_defendingUnit position = unitColumn
