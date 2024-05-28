@@ -42,8 +42,15 @@ public class Unit : MonoBehaviour
         }
         _isMoving = false;
         transform.position = _posToMove;
-        yield return null;
-        
+        yield return null;       
+    }
+    private IEnumerator DestroyUnit()
+    {
+        yield return new WaitForSeconds(2);
+        actualTile.unit = null;
+        _grid.unitList.Remove(this);
+        _grid.totalUnitAmount -= 1;
+        Destroy(gameObject);
     }
 
     public void spriteChange(Sprite img)
@@ -70,6 +77,13 @@ public class Unit : MonoBehaviour
         if( turnCharge == 0)
         {
             OnAttack();
+            _posToMove=new Vector3(transform.position.x, -((_grid.startY + _grid.height * actualTile.transform.localScale.y)+transform.position.y),-1);
+            if (!_isMoving)
+            {
+                _isMoving = true;
+                StartCoroutine(LerpMove());
+            }
+            StartCoroutine(DestroyUnit());
         }
     }
 
@@ -77,11 +91,11 @@ public class Unit : MonoBehaviour
     public void OnAttack(){
         if (S_GameManager.Instance.isPlayer1Turn)
         {
-            S_GameManager.Instance._player2CharacterHealth.currentHP -=  attack;
+            S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
         }
         else
         {
-            S_GameManager.Instance._player1CharacterHealth.currentHP -= attack;
+            S_GameManager.Instance.player1CharacterHealth.currentHP -= attack;
         }
     }
 
