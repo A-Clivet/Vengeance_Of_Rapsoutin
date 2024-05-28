@@ -2429,6 +2429,7 @@ GameObject:
   - component: {fileID: 704232859}
   - component: {fileID: 704232858}
   - component: {fileID: 704232857}
+  - component: {fileID: 704232860}
   m_Layer: 5
   m_Name: CanvasSettings
   m_TagString: Untagged
@@ -2513,12 +2514,26 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 5
   m_TargetDisplay: 0
+--- !u!114 &704232860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704232855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03e8aa4df7e91c4d99664c1b95ef4d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _screenSizeDropdown: {fileID: 1424774473}
+  _fullScreenToggle: {fileID: 1318329034}
 --- !u!1 &738832893
 GameObject:
   m_ObjectHideFlags: 0
