@@ -270,6 +270,8 @@ public class S_GameManager : MonoBehaviour
         if (isPlayer1Turn)
         {
             isPlayer1Turn = false;
+            
+            _currentRoundNumber += 1;
 
             _playerTurnText.text = "Player 2 Turn";
 

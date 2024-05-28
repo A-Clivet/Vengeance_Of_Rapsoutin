@@ -64,8 +64,8 @@ MonoBehaviour:
   unitManagerP2: {fileID: 0}
   _player1EndScreen: {fileID: 0}
   _player2EndScreen: {fileID: 0}
-  _cooldown: 0
+  _cooldown: 2
   _playerInput1: {fileID: 0}
   _playerInput2: {fileID: 0}
-  _player1Grid: {fileID: 0}
-  _player2Grid: {fileID: 0}
+  _player1GridManager: {fileID: 0}
+  _player2GridManager: {fileID: 0}
