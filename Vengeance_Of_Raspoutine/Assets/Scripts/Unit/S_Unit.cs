@@ -36,12 +36,12 @@ public class Unit : MonoBehaviour
     private IEnumerator LerpMove()
     {
         while(Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.5)
-        { Debug.Log("aaa " + Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)));
+        { 
             transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1),Time.deltaTime*5);
             yield return new WaitForEndOfFrame();
         }
         _isMoving = false;
-        transform.position = _posToMove;
+        transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
         yield return null;       
     }
     private IEnumerator DestroyUnit()

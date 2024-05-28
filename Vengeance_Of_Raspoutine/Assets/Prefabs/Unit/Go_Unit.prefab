@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 5995191591774840050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.504275, y: 7.695674, z: 1}
+  m_LocalPosition: {x: 3.504275, y: 7.695674, z: -1}
   m_LocalScale: {x: 0.715, y: 0.715, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -187,6 +187,9 @@ MonoBehaviour:
   SO_Unit: {fileID: 11400000, guid: 243e211b752ef35479aff91aabd7d569, type: 2}
   attack: 0
   defense: 0
+  state: 0
+  turnCharge: 0
+  unitImg: {fileID: 0}
   actualTile: {fileID: 0}
   highlight: {fileID: 1401381864322760783}
   _grid: {fileID: 0}

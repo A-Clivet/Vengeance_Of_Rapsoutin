@@ -372,26 +372,18 @@ public class S_GameManager : MonoBehaviour
 
     public void DeactivateGrid()
     {
-        if (isPlayer1Turn)
+        for (int i = 0; i < _player1GridManager.width; i++)
         {
-            for (int i = 0; i < _player1GridManager.width; i++)
+            for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
-                for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
+                _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = !_player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled;
+                _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = !_player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled;
+                if (_player1GridManager.gridList[i][j].unit)
                 {
-                    _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = true;
-                    _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = false;
+                    _player1GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled = !_player1GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled;
                 }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < _player2GridManager.width; i++)
-            {
-                for (int j = 0; j < Mathf.Abs(_player2GridManager.height); j++)
-                {
-                    _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = false;
-                    _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = true;
-                }
+                if(_player2GridManager.gridList[i][j].unit)
+                _player2GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled = !_player2GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled;
             }
         }
     }
