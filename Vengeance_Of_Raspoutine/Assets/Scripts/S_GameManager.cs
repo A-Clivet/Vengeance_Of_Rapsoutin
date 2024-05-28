@@ -229,12 +229,12 @@ public class S_GameManager : MonoBehaviour
 
         _loseCoefficient++;
 
-        if (player1ScorePoint >= 3)
+        if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
             _player1EndScreen.SetActive(true);
         }
 
-        if (player2ScorePoint >= 3)
+        if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
             _player2EndScreen.SetActive(true);
         }
