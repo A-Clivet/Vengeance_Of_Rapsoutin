@@ -76,10 +76,6 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] public S_UnitManager unitManagerP1;
     [SerializeField] public S_UnitManager unitManagerP2;
 
-    [Header("Player 1 and player 2 end screen :")]
-    [SerializeField] private GameObject _player1EndScreen;
-    [SerializeField] private GameObject _player2EndScreen;
-
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldown;
 
@@ -122,11 +118,8 @@ public class S_GameManager : MonoBehaviour
         _currentRoundNumber = 1;
         _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
-        
-        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
-        _player1EndScreen.SetActive(false);
-        _player2EndScreen.SetActive(false);
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
         RandomStartTurn();
         
