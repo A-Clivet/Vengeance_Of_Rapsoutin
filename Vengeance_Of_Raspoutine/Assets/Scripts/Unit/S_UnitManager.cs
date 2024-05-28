@@ -49,9 +49,10 @@ public class S_UnitManager : MonoBehaviour
                 if(columnCounter == p_formationNumber)
                 {
                     UnitColumn.Add(new());
-                    //gridList[i][j].unit.state = 2;
-                    //gridList[i][j - 1].unit.state = 2;
-                    //gridList[i][j - 2].unit.state = 2;
+
+                    gridList[i][j].unit.state = 2;
+                    gridList[i][j - 1].unit.state = 2;
+                    gridList[i][j - 2].unit.state = 2;
 
                     Debug.Log("Unité en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
                     Debug.Log("Unité en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
@@ -88,9 +89,9 @@ public class S_UnitManager : MonoBehaviour
                 if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
-                    //gridList[j][i].unit.state = 1;
-                    //gridList[j - 1][i].unit.state = 1;
-                    //gridList[j - 2][i].unit.state = 1;
+                    gridList[j][i].unit.state = 1;
+                    gridList[j - 1][i].unit.state = 1;
+                    gridList[j - 2][i].unit.state = 1;
 
                     Debug.Log("Unité en position : (" + j + "," + i + ")  is in state : " + gridList[j][i].unit.state);
                     Debug.Log("Unité en position : (" + (j - 1) + "," + i + ")  is in state : " + gridList[j - 1][i].unit.state);
@@ -462,7 +463,6 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
-                p_defendingUnit[i][j].state = 1;
                 p_defendingUnit[i][j].spriteChange(defendImg);
                 //if p_defendingUnit position = unitColumn
             }
@@ -475,7 +475,6 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j< p_attackingUnit[i].Count; j++)
             {
-                p_attackingUnit[i][j].state = 2;
                 p_attackingUnit[i][j].transform.localScale = new Vector3(0.6f, 0.6f, 1f);
             }
         }

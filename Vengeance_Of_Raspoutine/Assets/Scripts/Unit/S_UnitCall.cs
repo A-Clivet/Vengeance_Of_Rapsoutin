@@ -8,10 +8,26 @@ using Random = UnityEngine.Random;
 public class S_UnitCall : MonoBehaviour
 {
     /*ui variable*/
-    public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
+    private int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
     public S_GridManager grid;
+    public int unitCapacity;
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
+
+    public void CallAmountUpdate()
+    {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            tile = grid.gridList;
+        }
+
+        if (!S_GameManager.Instance.isPlayer1Turn)
+        {
+            tile = grid.gridList;
+        }
+
+        callAmount = unitCapacity - grid.totalUnitAmount;
+    }
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
         if (S_GameManager.Instance.isPlayer1Turn)
@@ -24,7 +40,7 @@ public class S_UnitCall : MonoBehaviour
             tile = grid.gridList;
         }
 
-        if (grid.totalUnitAmount + callAmount < 48)
+        if (grid.totalUnitAmount < unitCapacity)
         {
             for (int i = 0; i < callAmount; i++)
             {
