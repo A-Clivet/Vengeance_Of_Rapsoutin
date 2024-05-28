@@ -103,7 +103,7 @@ public class S_GameManager : MonoBehaviour
 
     private float _targetTime;
     private int _currentRoundNumber;
-    private int _playerActionNumber;
+    public int _playerActionNumber;
 
     int _loseCoefficient = 1;
     #endregion

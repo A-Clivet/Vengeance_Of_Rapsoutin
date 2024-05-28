@@ -14,6 +14,14 @@ public class S_UnitCall : MonoBehaviour
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
 
+    public void Start()
+    {
+        CallAmountUpdate();
+        callAmount /= 2;
+        UnitCalling();
+        S_GameManager.Instance._playerActionNumber++;
+    }
+
     public void CallAmountUpdate()
     {
         if (S_GameManager.Instance.isPlayer1Turn)
