@@ -1,39 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class S_GameManager : MonoBehaviour
 {
+    #region Variables
     public static S_GameManager Instance;
 
-    public int player1Point { get; private set; }
-    public int player2Point { get; private set; }
+    #region Getter / Setter
     public bool isPlayer1Turn { get; private set; } = true;
 
+    public int player1ScorePoint { get; private set; }
+    public int player2ScorePoint { get; private set; }
+
+    // Character's health script references
+    public S_CharacterHealth player1CharacterHealth { get; private set; }
+    public S_CharacterHealth player2CharacterHealth { get; private set; }
+
+    // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
+    int __mapIndex = 2;
+
+    /// <summary> Private int variable that when change will actualise the map visuals </summary>
+    private int _mapIndex
+    {
+        get { return __mapIndex; }
+        set
+        {
+            __mapIndex = value;
+
+            if (__mapIndex < 0)
+            {
+                __mapIndex = 0;
+            }
+            else if (__mapIndex > mapSelection.Count - 1)
+            {
+                __mapIndex = mapSelection.Count - 1;
+            }
+
+            // Update the map visual
+            _currentSprite.sprite = mapSelection[_mapIndex];
+        }
+    }
+
+
+    #endregion
+
     [Header("Background references :")]
-    public List<Sprite> mapSelection = new(new Sprite[5]);
     [SerializeField] private Image _currentSprite; // sprite that display the map 
+    public List<Sprite> mapSelection = new(new Sprite[5]);
 
     [Header("Panel references :")]
     [SerializeField] private GameObject _panelPlayer1;
     [SerializeField] private GameObject _panelPlayer2;
 
     [Header("UnitCall buttons :")]
-    [SerializeField] private GameObject _player1Unitcall;
-    [SerializeField] private GameObject _player2Unitcall;
+    [SerializeField] private Button _player1UnitCallButton;
+    [SerializeField] private Button _player2UnitCallButton;
 
     [Header("Turn references :")]
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _playerTurnText;
     [SerializeField] private TextMeshProUGUI _turnsText;
 
-    [Header("Character's references :")]
-    [SerializeField] S_CharacterManager _characterManager;
+    [Header("Characters stats's references :")]
     [SerializeField] S_CharacterStats _character1Stats;
     [SerializeField] S_CharacterStats _character2Stats;
+
+    [Header("Unit manager's references")]
     [SerializeField] public S_UnitManager unitManagerP1;
     [SerializeField] public S_UnitManager unitManagerP2;
 
@@ -44,30 +79,29 @@ public class S_GameManager : MonoBehaviour
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldown;
 
-    [Header("player Inputs :")]
+    [Header("Player inputs :")]
     [SerializeField] private GameObject _playerInput1;
     [SerializeField] private GameObject _playerInput2;
 
     [Header("Player's grid :")]
-    [SerializeField] private S_GridManager _player1Grid;
-    [SerializeField] private S_GridManager _player2Grid;
+    [SerializeField] private S_GridManager _player1GridManager;
+    [SerializeField] private S_GridManager _player2GridManager;
+
+    // Character manager's reference
+    S_CharacterManager _characterManager;
 
     // Character's adrenaline script references
     S_CharacterAdrenaline _player1CharacterAdrenaline;
     S_CharacterAdrenaline _player2CharacterAdrenaline;
 
-    // Character's health script references
-    public S_CharacterHealth _player1CharacterHealth;
-    public S_CharacterHealth _player2CharacterHealth;
-
     private float _targetTime;
-    private int _currentTurnNumber;
+    private int _currentRoundNumber;
     private int _playerActionNumber;
 
+    int _loseCoefficient = 1;
+    #endregion
 
-    private Sprite _currentMap;
-    
-    private int _intMap = 2;    // int for the current time in the list
+    #region Methods
 
     private void Awake()
     {
@@ -77,13 +111,12 @@ public class S_GameManager : MonoBehaviour
 
     private void Start()
     {
-
-        _targetTime = 30f;
-        _currentTurnNumber = 1;
+        _targetTime = 60f;
+        _currentRoundNumber = 1;
         _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
-        _currentMap = mapSelection[_intMap];  // set the current map on start
-        _currentSprite.sprite = mapSelection[_intMap]; // set the current sprite on start
+        
+        _currentSprite.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
         _player1EndScreen.SetActive(false);
         _player2EndScreen.SetActive(false);
@@ -103,142 +136,167 @@ public class S_GameManager : MonoBehaviour
         _player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
         _player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
-        _player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
-        _player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
 
         // Enable / disable special capacity button's interaction
         _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
         _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
 
         // Updates the character's score visuals
-        _player1CharacterHealth.RecieveScoreInfo(player1Point, true);
-        _player2CharacterHealth.RecieveScoreInfo(player2Point, false);
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
 
         #endregion
 
         if (isPlayer1Turn)
         {
-            _playerTurnText.text = "Player 1 Turn";
+            _playerTurnText.text = "Player 1 turn";
+
             _panelPlayer1.SetActive(false);
             _panelPlayer2.SetActive(true);
         }
         else if (!isPlayer1Turn)
         {
-            _playerTurnText.text = "Player 2 Turn";
+            _playerTurnText.text = "Player 2 turn";
+
             _panelPlayer1.SetActive(true);
             _panelPlayer2.SetActive(false);
         }
     }
 
-
     private void Update()
     {
-        _targetTime -= Time.deltaTime; //decrease the timer 
-        _timerText.text = "Remaining Time : " + ((int)_targetTime).ToString(); // display the timer in a text and rounded off in seconds
-        _turnsText.text = "Turns : " + _currentTurnNumber.ToString(); //display the current round number
+        // Decrease of the turn timer
+        _targetTime -= Time.deltaTime;
 
-        if (_targetTime <= 0.0f) //check if the timer is equal or less to 0
+        // Display the rounded timer in seconds in a text
+        _timerText.text = "Remaining Time : " + ((int)_targetTime).ToString();
+
+        // Display the current round number
+        _turnsText.text = "Turns : " + _currentRoundNumber.ToString(); 
+
+        // Check if the timer is equal or less to 0
+        if (_targetTime <= 0.0f)
         {
             EndTurn();
         }
     }
 
-
-    private void RandomStartTurn() // Allows to randomise wich player starts at the start of the game
+    /// <summary> Allows to randomise wich player starts at the start of the game </summary>
+    private void RandomStartTurn() 
     {
-        int random = Random.Range(0, 2);
+        // Take a random number beetween 0 and 2 (2 excluded)
+        int randomNumber = Random.Range(0, 2);
 
-        switch (random)
+        switch (randomNumber)
         {
             case 0:
                 isPlayer1Turn = false;
-                _player1Unitcall.GetComponent<Button>().interactable = false;
+                _player1UnitCallButton.interactable = false;
                 break;
+
             case 1:
                 isPlayer1Turn = true;
-                _player2Unitcall.GetComponent<Button>().interactable = false;
+                _player2UnitCallButton.interactable = false;
                 break;
         }
     }
     
-
-    /// <summary> 
-    /// Change the map when the player lose a point or win a point and add a point to the player 1 or 2
-    /// and checks if the player 1 or 2 wins 
-    /// </summary>
+    /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
+    /// and checks if the player 1 or 2 wins </summary>
     /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
-        
-        
+        // Add a score point to the player who won, let the player who lost play the first in the new round,
+        // change the map progression according to the entire game 
         if (p_isPlayer1Dead) 
         {
-            player2Point += 1;
+            player2ScorePoint++;
+
             isPlayer1Turn = true;
-            _intMap += 1;
+
+            _mapIndex += 1 * _loseCoefficient;
         }
         else
         {
-            player1Point += 1;
+            player1ScorePoint++;
+
             isPlayer1Turn = false;
-            _intMap -= 1;
+
+            _mapIndex -= 1 * _loseCoefficient;
         }
 
-        if (player1Point >= 3)
+        _loseCoefficient++;
+
+        if (player1ScorePoint >= 3)
         {
             _player1EndScreen.SetActive(true);
         }
 
-        if (player2Point >= 3)
+        if (player2ScorePoint >= 3)
         {
             _player2EndScreen.SetActive(true);
         }
 
         #region Characters management
         // Updates the character's score visuals
-        _player1CharacterHealth.RecieveScoreInfo(player1Point, true);
-        _player2CharacterHealth.RecieveScoreInfo(player2Point, false);
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
 
         // Reset players character's stats
-        _player1CharacterHealth.ResetHealthStats();
-        _player2CharacterHealth.ResetHealthStats();
+        player1CharacterHealth.ResetHealthStats();
+        player2CharacterHealth.ResetHealthStats();
 
         _player1CharacterAdrenaline.ResetAdrenalineStats();
         _player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
 
-        _currentMap = mapSelection[_intMap];
-        _currentSprite.sprite = mapSelection[_intMap];
+        _currentSprite.sprite = mapSelection[_mapIndex];
     }
 
-    public void EndTurn() // change the turn of the player and reset the timer to 60s and adds 1 to the current round number
+    /// <summary> End the turn of the player who played and let the other player play, reset the timer to 60s and adds 1 to the current round number </summary>
+    public void EndTurn()
     {
         if (isPlayer1Turn)
         {
             isPlayer1Turn = false;
+
             _playerTurnText.text = "Player 2 Turn";
+
             _panelPlayer1.SetActive(true);
-            _player1Unitcall.GetComponent<Button>().interactable = false;
-            _player2Unitcall.GetComponent<Button>().interactable = true;
+
+            _player1UnitCallButton.interactable = false;
+            _player2UnitCallButton.interactable = true;
+
             StartTurnCheckUnit();
-            Deactivategrid(!isPlayer1Turn);
+
+            DeactivateGrid();
+
             _panelPlayer2.SetActive(false);
         }
 
         else if (!isPlayer1Turn)
         {
             isPlayer1Turn = true;
-            _currentTurnNumber += 1;
+
+            _currentRoundNumber += 1;
+
             _playerTurnText.text = "Player 1 Turn";
+
             _panelPlayer1.SetActive(false);
-            _player1Unitcall.GetComponent<Button>().interactable = true;
-            _player2Unitcall.GetComponent<Button>().interactable = false;
+
+            _player1UnitCallButton.interactable = true;
+            _player2UnitCallButton.interactable = false;
+
             StartTurnCheckUnit();
-            Deactivategrid(isPlayer1Turn);
+
+            DeactivateGrid();
+
             _panelPlayer2.SetActive(true);
         }
-        
-        _targetTime = 30.0f;
+
+        _targetTime = 60.0f;
         _playerActionNumber = 3;
 
         // Enable / disable special capacity button's interaction
@@ -248,34 +306,35 @@ public class S_GameManager : MonoBehaviour
 
     public void StartTurnCheckUnit()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
+        // To avoid having to manage twog grid manager variables
+        // we create a local variable nammed "gridManager" it contain the S_GridManager we will use later,
+        // this variable will change depending if it's player1 turn and vice versa. 
+        S_GridManager gridManager = _player1GridManager;
+
+        if (!isPlayer1Turn)
         {
-            for (int i = 0; i < _player1Grid.width; i++)
-            {
-                for (int j = 0; j < Mathf.Abs(_player1Grid.height); j++)
-                {
-                    if (_player1Grid.gridList[i][j].unit == null) continue;
-                    _player1Grid.gridList[i][j].unit.AttackCharge();
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < _player2Grid.width; i++)
-            {
-                for (int j = 0; j < Mathf.Abs(_player2Grid.height); j++)
-                {
-                    if (_player2Grid.gridList[i][j].unit == null) continue;
-                    _player2Grid.gridList[i][j].unit.AttackCharge();
-                }
-            }
+            gridManager = _player2GridManager;
         }
 
+        // We loop throught all grid's tiles, looking for a unit
+        for (int i = 0; i < gridManager.width; i++)
+        {
+            for (int j = 0; j < Mathf.Abs(gridManager.height); j++)
+            {
+                Unit unit = gridManager.gridList[i][j].unit;
+
+                if (unit != null)
+                {
+                    unit.AttackCharge();
+                }
+            }
+        }
     }
 
     public void ReduceActionPointBy1()
     {
         _playerActionNumber -= 1;
+
         if (isPlayer1Turn)
         {
             unitManagerP1.UnitCombo(3);
@@ -284,7 +343,11 @@ public class S_GameManager : MonoBehaviour
         {
             unitManagerP2.UnitCombo(3);
         }
-        StartCoroutine("Cooldown");
+
+        // Action time cooldown
+        StartCoroutine(LaunchActionCooldown());
+
+        // Ends the player who played's turn if he doeasn't have any action points left
         if (_playerActionNumber <= 0)
         {
             EndTurn();
@@ -296,38 +359,41 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber += 1;
     }
 
-    private IEnumerator Cooldown()
+    private IEnumerator LaunchActionCooldown()
     {
         _playerInput1.SetActive(false);
         _playerInput2.SetActive(false);
+
         yield return new WaitForSecondsRealtime(_cooldown);
+
         _playerInput1.SetActive(true);
         _playerInput2.SetActive(true);
     }
 
-    public void Deactivategrid(bool p_Playerturn)
+    public void DeactivateGrid()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
+        if (isPlayer1Turn)
         {
-            for (int i = 0; i < _player1Grid.width; i++)
+            for (int i = 0; i < _player1GridManager.width; i++)
             {
-                for (int j = 0; j < Mathf.Abs(_player1Grid.height); j++)
+                for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
                 {
-                    _player1Grid.gridList[i][j].GetComponent<Collider2D>().enabled = true;
-                    _player2Grid.gridList[i][j].GetComponent<Collider2D>().enabled = false;
+                    _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = true;
+                    _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = false;
                 }
             }
         }
         else
         {
-            for (int i = 0; i < _player2Grid.width; i++)
+            for (int i = 0; i < _player2GridManager.width; i++)
             {
-                for (int j = 0; j < Mathf.Abs(_player2Grid.height); j++)
+                for (int j = 0; j < Mathf.Abs(_player2GridManager.height); j++)
                 {
-                    _player1Grid.gridList[i][j].GetComponent<Collider2D>().enabled = false;
-                    _player2Grid.gridList[i][j].GetComponent<Collider2D>().enabled = true;
+                    _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = false;
+                    _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = true;
                 }
             }
         }
     }
+    #endregion
 }

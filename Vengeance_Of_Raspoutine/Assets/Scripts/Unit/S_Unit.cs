@@ -91,11 +91,11 @@ public class Unit : MonoBehaviour
     public void OnAttack(){
         if (S_GameManager.Instance.isPlayer1Turn)
         {
-            S_GameManager.Instance._player2CharacterHealth.currentHP -=  attack;
+            S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
         }
         else
         {
-            S_GameManager.Instance._player1CharacterHealth.currentHP -= attack;
+            S_GameManager.Instance.player1CharacterHealth.currentHP -= attack;
         }
     }
 

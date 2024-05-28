@@ -44,17 +44,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03c4f7aaf75650418eb2f7c964fd9b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSelection:
-  - {fileID: 21300000, guid: de74a9e6b3afb0c4e9c3376a29fbf1bc, type: 3}
-  - {fileID: 21300000, guid: e014e6e22c902b54ba0df2ef3aeceacf, type: 3}
-  - {fileID: 21300000, guid: 9f36ee6370fa6674d826c9202065255d, type: 3}
-  - {fileID: 21300000, guid: 50c6ce7e08864a149934bf808c5a941d, type: 3}
-  - {fileID: 21300000, guid: c44e5598e6ad6f549a12cd7769ebae76, type: 3}
   _currentSprite: {fileID: 0}
+  mapSelection:
+  - {fileID: 21300000, guid: 4976052fb88ddf747bf7683122d607a5, type: 3}
+  - {fileID: 21300000, guid: 2fbe87424feeb0d4a81b40f5a0bb13cd, type: 3}
+  - {fileID: 21300000, guid: a7bd4450dc683514d9041c7cb22dc01d, type: 3}
+  - {fileID: 21300000, guid: dc8bc00c827058048a0076cee801441c, type: 3}
+  - {fileID: 21300000, guid: 5e42300c4aa800c4088939fedc52792c, type: 3}
+  _panelPlayer1: {fileID: 0}
+  _panelPlayer2: {fileID: 0}
+  _player1UnitCallButton: {fileID: 0}
+  _player2UnitCallButton: {fileID: 0}
   _timerText: {fileID: 0}
   _playerTurnText: {fileID: 0}
   _turnsText: {fileID: 0}
   _character1Stats: {fileID: 11400000, guid: 4e30370c7edf7cb49aab6c1ed4255a90, type: 2}
   _character2Stats: {fileID: 11400000, guid: 1a2a61745404aa745b13a386bdc79d60, type: 2}
+  unitManagerP1: {fileID: 0}
+  unitManagerP2: {fileID: 0}
   _player1EndScreen: {fileID: 0}
   _player2EndScreen: {fileID: 0}
+  _cooldown: 0
+  _playerInput1: {fileID: 0}
+  _playerInput2: {fileID: 0}
+  _player1Grid: {fileID: 0}
+  _player2Grid: {fileID: 0}
