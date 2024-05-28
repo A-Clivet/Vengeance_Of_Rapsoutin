@@ -27,14 +27,20 @@ public class S_UnitManager : MonoBehaviour
 
         //SO_Unit actualType = null;
 
+        Debug.Log(grid.name);
+
         for (int i = 0; i < grid.width; i++) // largeur
         {
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
-                if (gridList[i][j].unit == null || (gridList[i][j].unit != null && gridList[i][j].unit.state != 0))
+                if (gridList[i][j].unit == null)
                 {
                     columnCounter = 0;
                     continue;
+                } 
+                else if (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
+                {
+
                 }
                 //if (gridList[i][j].unit.SO_Unit != null)
                 //{

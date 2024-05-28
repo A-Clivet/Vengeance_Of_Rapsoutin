@@ -17,9 +17,6 @@ public class S_UnitCall : MonoBehaviour
     public void Start()
     {
         CallAmountUpdate();
-        callAmount /= 2;
-        UnitCalling();
-        S_GameManager.Instance._playerActionNumber++;
     }
 
     public void CallAmountUpdate()
