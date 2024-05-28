@@ -44,7 +44,7 @@ public class S_GameManager : MonoBehaviour
             }
 
             // Update the map visual
-            _currentSprite.sprite = mapSelection[_mapIndex];
+            _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
         }
     }
 
@@ -52,7 +52,7 @@ public class S_GameManager : MonoBehaviour
     #endregion
 
     [Header("Background references :")]
-    [SerializeField] private Image _currentSprite; // sprite that display the map 
+    [SerializeField] private SpriteRenderer _gameBackgroundSpriteRenderer;
     public List<Sprite> mapSelection = new(new Sprite[5]);
 
     [Header("Panel references :")]
@@ -94,6 +94,13 @@ public class S_GameManager : MonoBehaviour
     // Character manager's reference
     S_CharacterManager _characterManager;
 
+    //End Menu ref
+    S_EndMenu _endMenu;
+
+    // Character's adrenaline script references
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
+
     private float _targetTime;
     private int _currentRoundNumber;
     private int _playerActionNumber;
@@ -116,7 +123,7 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
         
-        _currentSprite.sprite = mapSelection[_mapIndex]; // set the current sprite on start
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
         _player1EndScreen.SetActive(false);
         _player2EndScreen.SetActive(false);
@@ -231,12 +238,14 @@ public class S_GameManager : MonoBehaviour
 
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _player1EndScreen.SetActive(true);
+            _endMenu._player1Win = true;
+            _endMenu.WhoWin();
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _player2EndScreen.SetActive(true);
+            _endMenu._player1Win = false;
+            _endMenu.WhoWin();
         }
 
         #region Characters management
@@ -252,7 +261,7 @@ public class S_GameManager : MonoBehaviour
         player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
 
-        _currentSprite.sprite = mapSelection[_mapIndex];
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
     }
 
     /// <summary> End the turn of the player who played and let the other player play, reset the timer to 60s and adds 1 to the current round number </summary>
@@ -261,6 +270,8 @@ public class S_GameManager : MonoBehaviour
         if (isPlayer1Turn)
         {
             isPlayer1Turn = false;
+            
+            _currentRoundNumber += 1;
 
             _playerTurnText.text = "Player 2 Turn";
 
