@@ -22,7 +22,7 @@ public class S_PauseMenu : MonoBehaviour
                 _pauseCanvas.SetActive(false);
                 Time.timeScale = 1.0f;
             }
-            else
+            else if (!_pauseCanvas.activeSelf && !_settingsCanvas.activeSelf)
             {
                 _pauseCanvas.SetActive(true);
                 Time.timeScale = 0f;
