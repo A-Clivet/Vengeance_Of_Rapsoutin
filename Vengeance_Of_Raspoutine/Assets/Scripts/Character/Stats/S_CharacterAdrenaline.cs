@@ -99,8 +99,6 @@ public class S_CharacterAdrenaline : MonoBehaviour
         _specialCapacityChargingSprite.fillAmount = (float)_currentAdrenaline / _maxAdrenaline;
     }
 
-
-
     // -- TO DEBUG -- //
     #region TO DEBUG
     private void Update()

@@ -141,8 +141,6 @@ public class S_CharacterHealth : MonoBehaviour
         S_GameManager.Instance.HandlePlayerLose(_isPlayer1Character);
     }
 
-
-
     // -- TO DEBUG -- //
     #region TO DEBUG
     private void Update()

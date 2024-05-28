@@ -44,7 +44,7 @@ public class S_GameManager : MonoBehaviour
             }
 
             // Update the map visual
-            _currentSprite.sprite = mapSelection[_mapIndex];
+            _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
         }
     }
 
@@ -52,7 +52,7 @@ public class S_GameManager : MonoBehaviour
     #endregion
 
     [Header("Background references :")]
-    [SerializeField] private Image _currentSprite; // sprite that display the map 
+    [SerializeField] private SpriteRenderer _gameBackgroundSpriteRenderer;
     public List<Sprite> mapSelection = new(new Sprite[5]);
 
     [Header("Panel references :")]
@@ -123,7 +123,7 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
         
-        _currentSprite.sprite = mapSelection[_mapIndex]; // set the current sprite on start
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
         _player1EndScreen.SetActive(false);
         _player2EndScreen.SetActive(false);
@@ -261,7 +261,7 @@ public class S_GameManager : MonoBehaviour
         player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
 
-        _currentSprite.sprite = mapSelection[_mapIndex];
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
     }
 
     /// <summary> End the turn of the player who played and let the other player play, reset the timer to 60s and adds 1 to the current round number </summary>
