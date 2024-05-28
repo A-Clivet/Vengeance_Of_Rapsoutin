@@ -30,7 +30,7 @@ public class S_RemoveUnit : MonoBehaviour
                 {
                     if (tile.unit != null)
                     {
-                        tile.unit.MoveToTileAction(hoveringUnit.actualTile);
+                        tile.unit.MoveToTile(hoveringUnit.actualTile);
                     }
                 }
                 hoveringUnit._grid.totalUnitAmount -= 1;

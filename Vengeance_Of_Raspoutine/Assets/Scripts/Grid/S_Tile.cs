@@ -24,7 +24,7 @@ public class S_Tile : MonoBehaviour
     {
         if (grid.unitSelected != null)
         {
-            grid.unitSelected.MoveToTileSwitch(this);
+            grid.unitSelected.ActionMoveToTile(this);
         }
     }
 }

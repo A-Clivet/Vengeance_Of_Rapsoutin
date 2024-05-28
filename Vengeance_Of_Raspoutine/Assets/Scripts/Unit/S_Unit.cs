@@ -47,10 +47,17 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator DestroyUnit()
     {
-        yield return new WaitForSeconds(2);
         actualTile.unit = null;
         _grid.unitList.Remove(this);
         _grid.totalUnitAmount -= 1;
+        for (int i = 0; i < _grid.gridList[tileX].Count; i++)
+        {
+            if (_grid.gridList[tileX][i].unit!=null)
+            {
+                _grid.gridList[tileX][i].unit.MoveToTile(_grid.gridList[tileX][0]);
+            }
+        }
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 
@@ -107,7 +114,7 @@ public class Unit : MonoBehaviour
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
     then deselect the unit*/
-    public void MoveToTileSwitch(S_Tile p_tile)
+    public void ActionMoveToTile(S_Tile p_tile)
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
@@ -139,7 +146,7 @@ public class Unit : MonoBehaviour
         
     }
 
-    public void MoveToTileAction(S_Tile p_tile)
+    public void MoveToTile(S_Tile p_tile)
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
