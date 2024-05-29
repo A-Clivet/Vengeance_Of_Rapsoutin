@@ -62,6 +62,7 @@ public class S_UnitManager : MonoBehaviour
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
+                    grid.UnitPriorityCheck();
 
                     lineCounter = 0;
                 }
@@ -102,6 +103,7 @@ public class S_UnitManager : MonoBehaviour
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-2].unit);
+                    grid.UnitPriorityCheck();
                     columnCounter = 0;
                 }
             }
@@ -481,7 +483,7 @@ public class S_UnitManager : MonoBehaviour
         }
         UnitColumn.Clear();
         p_attackingUnit.Clear();
-    } 
+    }
 
     //public struct UnitOnLine{
     //    public List<Unit> units;

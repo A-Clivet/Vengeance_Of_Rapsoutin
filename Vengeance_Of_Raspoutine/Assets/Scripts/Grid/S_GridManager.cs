@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class S_GridManager : MonoBehaviour
@@ -120,7 +121,43 @@ public class S_GridManager : MonoBehaviour
             }
         }
     }
+    
+    public void UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            List<Unit> StateIdleUnit = new();
+            List<Unit> StateDefendUnit = new();
+            List<Unit> StateAttackUnit = new();
+            List<Unit> OrganizedColumn = new();
+            for (int y = 0; y < Mathf.Abs(height); y++)
+            {
+                if (gridList[x][y].unit == null) continue; 
+                if (gridList[x][y].unit.state == 0) StateIdleUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
+                gridList[x][y].unit.actualTile = null;
+                gridList[x][y].unit = null;
+            }
+            foreach (Unit u in StateDefendUnit)
+            {
+                OrganizedColumn.Add(u);
+            }
+            foreach (Unit u in StateAttackUnit)
+            {
+                OrganizedColumn.Add(u);
+            }
+            foreach (Unit u in StateIdleUnit)
+            {
+                OrganizedColumn.Add(u);
+            }
 
+            for(int y = 0; y < OrganizedColumn.Count; y++)
+            {
+                OrganizedColumn[y].SwitchUnit(gridList[x][y]);
+            }
+        }
+    }
     //private void FillAtPosition()
     //{
     //    foreach (Vector2 pos in m_posToFill)
