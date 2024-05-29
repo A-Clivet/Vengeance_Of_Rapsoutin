@@ -19,7 +19,7 @@ public class S_UnitCall : MonoBehaviour
         CallAmountUpdate();
     }
 
-    public void CallAmountUpdate()
+    public int CallAmountUpdate()
     {
         if (S_GameManager.Instance.isPlayer1Turn)
         {
@@ -31,7 +31,7 @@ public class S_UnitCall : MonoBehaviour
             tile = grid.gridList;
         }
 
-        callAmount = unitCapacity - grid.totalUnitAmount;
+        return callAmount = unitCapacity - grid.totalUnitAmount;
     }
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
