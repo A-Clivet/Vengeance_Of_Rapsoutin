@@ -1787,7 +1787,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _currentSprite: {fileID: 0}
+  _currentSprite: {fileID: 944418753}
 --- !u!114 &434261409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3843,7 +3843,6 @@ GameObject:
   - component: {fileID: 1042288401}
   - component: {fileID: 1042288400}
   - component: {fileID: 1042288399}
-  - component: {fileID: 1042288403}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3937,20 +3936,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1042288403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042288398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a03e8aa4df7e91c4d99664c1b95ef4d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _screenSizeDropdown: {fileID: 881031403}
-  _fullScreenToggle: {fileID: 1446911578}
 --- !u!1 &1077201214
 GameObject:
   m_ObjectHideFlags: 0
