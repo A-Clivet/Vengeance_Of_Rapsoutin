@@ -84,8 +84,8 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerInput2;
 
     [Header("Player's grid :")]
-    [SerializeField] private S_GridManager _player1GridManager;
-    [SerializeField] private S_GridManager _player2GridManager;
+    public S_GridManager _player1GridManager;
+    public S_GridManager _player2GridManager;
 
     // Character manager's reference
     S_CharacterManager _characterManager;
