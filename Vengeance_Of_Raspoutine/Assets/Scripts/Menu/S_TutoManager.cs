@@ -12,7 +12,7 @@ public class S_TutoManager : MonoBehaviour
     public GameObject buttonPrevious;
     public GameObject buttonNext;
     public List<Sprite> tutoSelection = new(new Sprite[10]);
-    private Image _currentSprite;
+    [SerializeField] private Image _currentSprite;
 
     public static S_TutoManager Instance;
 
@@ -80,7 +80,6 @@ public class S_TutoManager : MonoBehaviour
             return;
         }
         _currentTuto = tutoSelection[x];
-        _currentSprite.sprite = tutoSelection[x];
-        
+        _currentSprite.sprite = tutoSelection[x];   
     }
 }
