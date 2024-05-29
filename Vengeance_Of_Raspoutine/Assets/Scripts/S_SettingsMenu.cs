@@ -49,9 +49,12 @@ public class S_SettingsMenu : MonoBehaviour
 
     public void SetResolution()
     {
+        _currentResolutionIndex = _screenSizeDropdown.value;
         Resolution resolution = _filteredResolutions[_currentResolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, true);
         PlayerPrefs.SetInt("Resolution", _currentResolutionIndex);
+        Debug.Log(_currentResolutionIndex);
+
     }
 
     public void SetFullScreen(bool value)
@@ -80,11 +83,10 @@ public class S_SettingsMenu : MonoBehaviour
         {
             _isFullScreen = true;
             Screen.fullScreen = true;
-            _fullScreenToggle.isOn = false;
+            _fullScreenToggle.isOn = true;
         }
 
-        _currentResolutionIndex = PlayerPrefs.GetInt("resolution");
-
+        _currentResolutionIndex = PlayerPrefs.GetInt("Resolution");
         _screenSizeDropdown.value = _currentResolutionIndex;
         _screenSizeDropdown.RefreshShownValue();
 
