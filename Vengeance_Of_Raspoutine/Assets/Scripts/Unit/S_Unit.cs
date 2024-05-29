@@ -237,8 +237,7 @@ public class Unit : MonoBehaviour
                 }
                 break;
             }
-        }
-        
+        } 
     }
 
     public void MoveToTile(S_Tile p_tile)
@@ -260,6 +259,32 @@ public class Unit : MonoBehaviour
                     StartCoroutine(LerpMove());
                 }
                 foreach (Unit unit in grid.unitList)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                }
+                break;
+            }
+        }
+    }
+
+    public void SwitchUnit(S_Tile p_tile)
+    {
+        foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
+        {
+            if (tile.unit == null)
+            {
+                actualTile = tile;
+                actualTile.unit = this;
+                _grid.unitSelected = null;
+                tileX = tile.tileX;
+                tileY = tile.tileY;
+                _posToMove = tile.transform.position;
+                if (!_isMoving)
+                {
+                    _isMoving = true;
+                    StartCoroutine(LerpMove());
+                }
+                foreach (Unit unit in _grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }

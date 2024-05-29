@@ -22,7 +22,7 @@ public class S_RemoveUnit : MonoBehaviour
     {
         if (context.started)
         {
-            if (hoveringUnit != null && hoveringUnit.state == 0)
+            if (hoveringUnit != null && hoveringUnit.state == 0) // remove les unit.state = 1 
             {
                 hoveringUnit.grid.unitList.Remove(hoveringUnit);
                 hoveringUnit.actualTile.unit = null;
@@ -37,8 +37,7 @@ public class S_RemoveUnit : MonoBehaviour
                 Destroy(hoveringUnit.gameObject);
                 hoveringUnit = null;
                 S_GameManager.Instance.ReduceActionPointBy1();
-            }
-            
+            }   
         }
     }
 }

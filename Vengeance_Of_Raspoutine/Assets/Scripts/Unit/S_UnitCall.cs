@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class S_UnitCall : MonoBehaviour
 {
     /*ui variable*/
-    private int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
+    private int callAmount; /* is increased when a unit create a wall, attack or dies */
     public S_GridManager grid;
     public int unitCapacity;
     public List<List<S_Tile>> tile;
