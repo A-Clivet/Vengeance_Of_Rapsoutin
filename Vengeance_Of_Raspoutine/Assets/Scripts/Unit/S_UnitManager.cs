@@ -8,7 +8,6 @@ public class S_UnitManager : MonoBehaviour
 {
     public S_GridManager grid;
     private List<List<S_Tile>> gridList;
-    [SerializeField] private List<Unit> unitFormation = new();
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
@@ -29,49 +28,6 @@ public class S_UnitManager : MonoBehaviour
 
         Debug.Log(grid.name);
 
-        for (int i = 0; i < grid.width; i++) // largeur
-        {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
-            {
-                if (gridList[i][j].unit == null)
-                {
-                    columnCounter = 0;
-                    continue;
-                } 
-                else if (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
-                {
-
-                }
-                //if (gridList[i][j].unit.SO_Unit != null)
-                //{
-                //    columnCounter = 1;
-                //    //tualType = gridList[i][j].unit.SO_Unit;
-                //}
-                else
-                {
-                    columnCounter++;
-                }
-
-                if(columnCounter == p_formationNumber)
-                {
-                    UnitColumn.Add(new());
-
-                    gridList[i][j].unit.state = 2;
-                    gridList[i][j - 1].unit.state = 2;
-                    gridList[i][j - 2].unit.state = 2;
-
-                    Debug.Log("Unité en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
-                    Debug.Log("Unité en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
-                    Debug.Log("Unité en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
-
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-1].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-2].unit);
-                    columnCounter = 0;
-                }
-            }
-            columnCounter = 0;
-        }
 
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
@@ -111,6 +67,45 @@ public class S_UnitManager : MonoBehaviour
                 }
             }
             lineCounter = 0;
+        }
+        for (int i = 0; i < grid.width; i++) // largeur
+        {
+            for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
+            {
+                if (gridList[i][j].unit == null || (gridList[i][j].unit != null && gridList[i][j].unit.state != 0))
+                {
+                    columnCounter = 0;
+                    continue;
+                } 
+                //if (gridList[i][j].unit.SO_Unit != null)
+                //{
+                //    columnCounter = 1;
+                //    //tualType = gridList[i][j].unit.SO_Unit;
+                //}
+                else
+                {
+                    columnCounter++;
+                }
+
+                if(columnCounter == p_formationNumber)
+                {
+                    UnitColumn.Add(new());
+
+                    gridList[i][j].unit.state = 2;
+                    gridList[i][j - 1].unit.state = 2;
+                    gridList[i][j - 2].unit.state = 2;
+
+                    Debug.Log("Unité en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
+                    Debug.Log("Unité en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
+                    Debug.Log("Unité en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
+
+                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
+                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-1].unit);
+                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-2].unit);
+                    columnCounter = 0;
+                }
+            }
+            columnCounter = 0;
         }
 
         if(UnitLine.Count >= 1)

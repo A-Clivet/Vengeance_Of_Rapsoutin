@@ -35,6 +35,9 @@ public class S_UnitCall : MonoBehaviour
     }
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
+
+        CallAmountUpdate();
+
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             tile = grid.gridList;

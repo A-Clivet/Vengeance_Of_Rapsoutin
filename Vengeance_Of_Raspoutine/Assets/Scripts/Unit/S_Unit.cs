@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
     public SO_Unit SO_Unit; //Unit.SO_Unit.
     public int attack;
     public int defense;
-    public int state;
+    public int state = 0;
     public int turnCharge;
     public Sprite unitImg;
     public S_Tile actualTile;
@@ -29,7 +29,6 @@ public class Unit : MonoBehaviour
     {
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
-        state = SO_Unit.unitState;
         turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
     }
