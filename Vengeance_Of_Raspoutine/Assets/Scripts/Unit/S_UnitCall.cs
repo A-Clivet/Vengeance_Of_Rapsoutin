@@ -70,7 +70,6 @@ public class S_UnitCall : MonoBehaviour
             }
             S_GameManager.Instance.ReduceActionPointBy1();
         }
-
     }
 
     private int ColumnSelector()
