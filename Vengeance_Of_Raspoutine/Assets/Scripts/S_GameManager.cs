@@ -93,10 +93,6 @@ public class S_GameManager : MonoBehaviour
     //End Menu ref
     S_EndMenu _endMenu;
 
-    // Character's adrenaline script references
-    S_CharacterAdrenaline _player1CharacterAdrenaline;
-    S_CharacterAdrenaline _player2CharacterAdrenaline;
-
     private float _targetTime;
     private int _currentRoundNumber;
     public int _playerActionNumber;
