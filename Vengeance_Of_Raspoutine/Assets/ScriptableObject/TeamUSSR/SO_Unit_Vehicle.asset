@@ -15,8 +15,9 @@ MonoBehaviour:
   UnitName: Vehicule
   attack: 3
   defense: 1
-  sizeX: 1
-  sizeY: 1
+  sizeX: 2
+  sizeY: 2
   unitSprite: {fileID: 0}
   unitType: 2
   unitColor: 0
+  unitTurnCharge: 0
