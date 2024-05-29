@@ -19,10 +19,10 @@ public class Unit : MonoBehaviour
     public Sprite unitImg;
     public S_Tile actualTile;
     public GameObject highlight;
+    [SerializeField]
     public S_GridManager grid;
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
-
 
     public int tileX;
     public int tileY;
@@ -34,8 +34,6 @@ public class Unit : MonoBehaviour
         defense = SO_Unit.defense;
         turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
-
-        
     }
     private IEnumerator LerpMove()
     {
@@ -65,6 +63,11 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void spriteChange(Sprite img)
+    {
+        transform.GetComponent<SpriteRenderer>().sprite = img;
+    }
+
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
     //AND THE REFERENCE TO HIS OWN TILE IS KNOWN
     public void OnSpawn(S_Tile p_tile)
@@ -73,18 +76,11 @@ public class Unit : MonoBehaviour
         grid.unitList.Add(this);
         actualTile = p_tile;
         p_tile.unit = this;
-        tileX = p_tile.tileX;
-        tileY = p_tile.tileY;
+        tileX= p_tile.tileX;
+        tileY= p_tile.tileY;
         enemyGrid = p_tile.grid.enemyGrid;
         unitManager = p_tile.grid.unitManager;
     }
-
-    public void spriteChange(Sprite img)
-    {
-        transform.GetComponent<SpriteRenderer>().sprite = img;
-    }
-
-    
 
     public void AttackCharge()
     {
@@ -92,26 +88,18 @@ public class Unit : MonoBehaviour
 
         if( turnCharge == 0)
         {
-            for (int j = 0; j < unitManager.UnitColumn.Count; j++)
-            {
-                if (unitManager.UnitColumn[j].Contains(this))
-                {
-
-                    StartCoroutine(AttackAnotherUnit(unitManager.UnitColumn[j]));
-                    break;
-                }   
-            }
+            ReducePlayerHp();
             _posToMove=new Vector3(transform.position.x, -((grid.startY + grid.height * actualTile.transform.localScale.y)+transform.position.y),-1);
             if (!_isMoving)
             {
                 _isMoving = true;
                 StartCoroutine(LerpMove());
             }
-            ReducePlayerHp();
             StartCoroutine(DestroyUnit());
         }
     }
 
+    /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
     public void ReducePlayerHp(){
         if (S_GameManager.Instance.isPlayer1Turn)
         {
@@ -123,17 +111,18 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int p_damage) 
+    /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
+    public void TakeDamage(int p_damage)
     {
         for (int i = 0; i < unitManager.UnitColumn.Count; i++)
         {
-            
+
             if (unitManager.UnitColumn[i].Contains(this))
             {
-                attack-= p_damage;
+                attack -= p_damage;
                 if (attack <= 0)
                 {
-                    for(int j = 0; j < unitManager.UnitColumn[i].Count; j++)
+                    for (int j = 0; j < unitManager.UnitColumn[i].Count; j++)
                     {
                         DestroyUnit();
                     }
@@ -150,14 +139,15 @@ public class Unit : MonoBehaviour
             }
         }
     }
-    public IEnumerator AttackAnotherUnit(List<Unit> p_formation) 
+
+    public IEnumerator AttackAnotherUnit(List<Unit> p_formation)
     {
         if (!_isMoving)
         {
             _isMoving = true;
             StartCoroutine(LerpMove());
         }
-        if (p_formation[0]==this)
+        if (p_formation[0] == this)
         {
             for (int i = 0; i < enemyGrid.gridList[tileX].Count; i++)
             {
@@ -188,15 +178,15 @@ public class Unit : MonoBehaviour
         else
         {
 
-            _posToMove = 
+            _posToMove =
                 new Vector3(
-                p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.x - transform.localScale.x, 
+                p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.x - transform.localScale.x,
                 p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.y - transform.localScale.y,
                 -1);
         }
-        
+
         yield break;
-        
+
     }
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
@@ -207,14 +197,6 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null || tile.unit==this)
             {
-                if (S_GameManager.Instance.isPlayer1Turn)
-                {
-                    S_GameManager.Instance.UnitCallOnOff(1, true);
-                }
-                else
-                {
-                    S_GameManager.Instance.UnitCallOnOff(2, true);
-                }
                 if (tileX != tile.tileX)
                 {
                     S_GameManager.Instance.ReduceActionPointBy1();
@@ -275,7 +257,7 @@ public class Unit : MonoBehaviour
             {
                 actualTile = tile;
                 actualTile.unit = this;
-                _grid.unitSelected = null;
+                grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
@@ -284,7 +266,7 @@ public class Unit : MonoBehaviour
                     _isMoving = true;
                     StartCoroutine(LerpMove());
                 }
-                foreach (Unit unit in _grid.unitList)
+                foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
@@ -297,15 +279,6 @@ public class Unit : MonoBehaviour
     public void SelectUnit()
     {
         if (actualTile.tileY + 1 > grid.gridList[actualTile.tileX].Count-1)
-        if (S_GameManager.Instance.isPlayer1Turn)
-        {
-            S_GameManager.Instance.UnitCallOnOff(1, false);
-        }
-        else
-        {
-            S_GameManager.Instance.UnitCallOnOff(2, false);
-        }
-        if (actualTile.tileY + 1 > _grid.gridList[actualTile.tileX].Count-1)
         {
             if(actualTile.tileY== grid.gridList[actualTile.tileX].Count - 1)
             {
@@ -356,7 +329,6 @@ public class Unit : MonoBehaviour
         if(grid.unitSelected==null)
         SelectUnit();
     }
-
     public bool GetIsMoving()
     {
         return _isMoving;

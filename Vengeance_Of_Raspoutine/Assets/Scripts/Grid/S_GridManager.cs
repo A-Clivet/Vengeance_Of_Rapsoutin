@@ -11,9 +11,6 @@ public class S_GridManager : MonoBehaviour
     public List<Unit> unitList = new();
     public Unit unitSelected;
     public int totalUnitAmount = 0;
-    public S_GridManager enemyGrid;
-    public S_UnitManager unitManager;
-    //public List<Vector2> m_posToFill = new();
     private Vector3 _gridScale;
 
     public int width, height;
@@ -32,15 +29,7 @@ public class S_GridManager : MonoBehaviour
         _gridScale = _tile.transform.localScale;
 
         GenerateGrid(startX,startY);
-        
     }
-    //private void Start()
-    //{
-    //    GameObject test = Instantiate(pfTest, gridList[0][0].transform.position, Quaternion.identity);
-    //    test.GetComponent<Unit>().OnSpawn(gridList[0][0]);
-    //    GameObject test2 = Instantiate(pfTest, gridList[1][0].transform.position, Quaternion.identity);
-    //    test2.GetComponent<Unit>().OnSpawn(gridList[1][0]);
-    //}
 
     // Generate the grid
     private void GenerateGrid(float p_x, float p_y)
@@ -77,10 +66,6 @@ public class S_GridManager : MonoBehaviour
                 }
             }
         }
-        //Place the camera at the center of the map
-        //Camera.main.transform.position = new Vector3((m_Width * m_gridScale.x) / 2, (m_Height * m_gridScale.y) / 2, -10);
-        //FillAtPosition();
-        //Camera.main.orthographicSize = 7;
     }
 
     //Change the state of the S_Tile script of the grid, enabling or desabling it alternatively.
@@ -91,7 +76,6 @@ public class S_GridManager : MonoBehaviour
             for (int y = 0; y < gridList[x].Count; y++)
             {
                 gridList[x][y].GetComponent<S_Tile>().enabled = !gridList[x][y].GetComponent<S_Tile>().enabled;
-
             }
         }
     }
@@ -160,20 +144,4 @@ public class S_GridManager : MonoBehaviour
             }
         }
     }
-    //private void FillAtPosition()
-    //{
-    //    foreach (Vector2 pos in m_posToFill)
-    //    {
-    //        for (int x = 0; x < m_Width; x++)
-    //        {
-    //            for (int y = 0; y < m_Height; y++)
-    //            {
-    //                if (pos.x == m_GridList[x][y].m_TileX && pos.y == m_GridList[x][y].m_TileY)
-    //                {
-    //                    //Do Stuff
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 }
