@@ -194,26 +194,11 @@ public class S_GameManager : MonoBehaviour
             case 0:
                 isPlayer1Turn = false;
                 _player1UnitCallButton.interactable = false;
-                for (int i = 0; i < _player1GridManager.width; i++)
-                {
-                    for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
-                    {
-                        _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
-                    }
-                }
-
                 break;
 
             case 1:
                 isPlayer1Turn = true;
                 _player2UnitCallButton.interactable = false;
-                for (int i = 0; i < _player2GridManager.width; i++)
-                {
-                    for (int j = 0; j < Mathf.Abs(_player2GridManager.height); j++)
-                    {
-                        _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
-                    }
-                }
                 break;
         }
     }
@@ -329,26 +314,6 @@ public class S_GameManager : MonoBehaviour
         // we create a local variable nammed "gridManager" it contain the S_GridManager we will use later,
         // this variable will change depending if it's player1 turn and vice versa. 
         S_GridManager gridManager = _player1GridManager;
-        if (!isPlayer1Turn)
-        {
-            gridManager = _player1GridManager;
-        }
-        else
-        {
-            gridManager = _player2GridManager;
-        }
-        for (int i = 0; i < gridManager.width; i++)
-        {
-            for (int j = 0; j < Mathf.Abs(gridManager.height); j++)
-            {
-                Unit unit = gridManager.gridList[i][j].unit;
-
-                if (unit != null)
-                {
-                    unit.ReturnToBaseTile();
-                }
-            }
-        }
 
         if (!isPlayer1Turn)
         {
@@ -376,10 +341,12 @@ public class S_GameManager : MonoBehaviour
 
         if (isPlayer1Turn)
         {
+            Debug.Log("combo is called P1");
             unitManagerP1.UnitCombo(3);
         }
         else
         {
+            Debug.Log("combo is called P2");
             unitManagerP2.UnitCombo(3);
         }
 
@@ -415,56 +382,15 @@ public class S_GameManager : MonoBehaviour
         {
             for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
-                if (isPlayer1Turn)
+                _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = !_player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled;
+                _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = !_player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled;
+                if (_player1GridManager.gridList[i][j].unit)
                 {
-                    _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
-                    _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
-
+                    _player1GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled = !_player1GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled;
                 }
-                else
-                {
-                    _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
-                    _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
-                }
+                if(_player2GridManager.gridList[i][j].unit)
+                _player2GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled = !_player2GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled;
             }
-        }
-        if(isPlayer1Turn)
-        {
-            foreach (Unit unit in _player2GridManager.unitList)
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = false;
-            }
-            foreach (Unit unit in _player1GridManager.unitList)
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = true;
-            }
-        }
-        else
-        {
-            foreach (Unit unit in _player1GridManager.unitList)
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = false;
-            }
-            foreach (Unit unit in _player2GridManager.unitList)
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = true;
-            }
-        }
-    }
-
-    public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
-    {
-        switch(p_playerNumber)
-        {
-            case 1:
-                _player1UnitCallButton.interactable = p_isActive;
-                break;
-            case 2:
-                _player2UnitCallButton.interactable = p_isActive;
-                break;
-            default:
-                Debug.LogError("Player number incorrect");
-                break;
         }
     }
     #endregion

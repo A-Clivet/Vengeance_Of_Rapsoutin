@@ -33,6 +33,7 @@ public class Unit : MonoBehaviour
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
         turnCharge = SO_Unit.unitTurnCharge;
+
         speed = 10;
     }
     private IEnumerator LerpMove()
@@ -184,9 +185,7 @@ public class Unit : MonoBehaviour
                 p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.y - transform.localScale.y,
                 -1);
         }
-
         yield break;
-
     }
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
@@ -219,7 +218,8 @@ public class Unit : MonoBehaviour
                 }
                 break;
             }
-        } 
+        }
+        unitManager.UnitCombo(3);
     }
 
     public void MoveToTile(S_Tile p_tile)
