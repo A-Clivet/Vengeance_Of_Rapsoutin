@@ -93,6 +93,10 @@ public class S_GameManager : MonoBehaviour
     //End Menu ref
     S_EndMenu _endMenu;
 
+    // Character's adrenaline script references
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
+
     private float _targetTime;
     private int _currentRoundNumber;
     public int _playerActionNumber;
@@ -376,14 +380,14 @@ public class S_GameManager : MonoBehaviour
         {
             for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
-                _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = !_player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled;
-                _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = !_player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled;
+                _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = !_player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled;
+                _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = !_player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled;
                 if (_player1GridManager.gridList[i][j].unit)
                 {
-                    _player1GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled = !_player1GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled;
+                    _player1GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled = !_player1GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled;
                 }
                 if(_player2GridManager.gridList[i][j].unit)
-                _player2GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled = !_player2GridManager.gridList[i][j].unit.GetComponent<Collider2D>().enabled;
+                _player2GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled = !_player2GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled;
             }
         }
     }
