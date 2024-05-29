@@ -11,6 +11,8 @@ public class S_GridManager : MonoBehaviour
     public List<Unit> unitList = new();
     public Unit unitSelected;
     public int totalUnitAmount = 0;
+    public S_GridManager enemyGrid;
+    public S_UnitManager unitManager;
     private Vector3 _gridScale;
 
     public int width, height;
