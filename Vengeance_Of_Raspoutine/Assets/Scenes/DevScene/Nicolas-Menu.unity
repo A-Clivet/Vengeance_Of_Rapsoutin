@@ -1787,6 +1787,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  _currentSprite: {fileID: 0}
 --- !u!114 &434261409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3667,7 +3668,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 434261412}
         m_TargetAssemblyTypeName: S_SettingsMenu, Assembly-CSharp
         m_MethodName: SetResolution
         m_Mode: 1
@@ -4675,7 +4676,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 434261412}
         m_TargetAssemblyTypeName: S_SettingsMenu, Assembly-CSharp
         m_MethodName: SetFullScreen
         m_Mode: 0
