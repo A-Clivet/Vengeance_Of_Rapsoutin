@@ -91,7 +91,7 @@ public class S_GameManager : MonoBehaviour
     S_CharacterManager _characterManager;
 
     //End Menu ref
-    S_EndMenu _endMenu;
+    [SerializeField] private S_EndMenu _endMenu;
 
     // Character's adrenaline script references
     S_CharacterAdrenaline _player1CharacterAdrenaline;
