@@ -122,6 +122,14 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null || tile.unit==this)
             {
+                if (S_GameManager.Instance.isPlayer1Turn)
+                {
+                    S_GameManager.Instance.UnitCallOnOff(1, true);
+                }
+                else
+                {
+                    S_GameManager.Instance.UnitCallOnOff(2, true);
+                }
                 if (tileX != tile.tileX)
                 {
                     S_GameManager.Instance.ReduceActionPointBy1();
@@ -178,6 +186,14 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            S_GameManager.Instance.UnitCallOnOff(1, false);
+        }
+        else
+        {
+            S_GameManager.Instance.UnitCallOnOff(2, false);
+        }
         if (actualTile.tileY + 1 > _grid.gridList[actualTile.tileX].Count-1)
         {
             if(actualTile.tileY== _grid.gridList[actualTile.tileX].Count - 1)
@@ -228,5 +244,15 @@ public class Unit : MonoBehaviour
     {
         if(_grid.unitSelected==null)
         SelectUnit();
+    }
+
+    public bool GetIsMoving()
+    {
+        return _isMoving;
+    }
+
+    public void ReturnToBaseTile()
+    {
+        MoveToTile(actualTile);
     }
 }
