@@ -329,6 +329,26 @@ public class S_GameManager : MonoBehaviour
         // we create a local variable nammed "gridManager" it contain the S_GridManager we will use later,
         // this variable will change depending if it's player1 turn and vice versa. 
         S_GridManager gridManager = _player1GridManager;
+        if (!isPlayer1Turn)
+        {
+            gridManager = _player1GridManager;
+        }
+        else
+        {
+            gridManager = _player2GridManager;
+        }
+        for (int i = 0; i < gridManager.width; i++)
+        {
+            for (int j = 0; j < Mathf.Abs(gridManager.height); j++)
+            {
+                Unit unit = gridManager.gridList[i][j].unit;
+
+                if (unit != null)
+                {
+                    unit.ReturnToBaseTile();
+                }
+            }
+        }
 
         if (!isPlayer1Turn)
         {
@@ -429,6 +449,22 @@ public class S_GameManager : MonoBehaviour
             {
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
+        }
+    }
+
+    public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
+    {
+        switch(p_playerNumber)
+        {
+            case 1:
+                _player1UnitCallButton.interactable = p_isActive;
+                break;
+            case 2:
+                _player2UnitCallButton.interactable = p_isActive;
+                break;
+            default:
+                Debug.LogError("Player number incorrect");
+                break;
         }
     }
     #endregion

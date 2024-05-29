@@ -83,7 +83,7 @@ public class Unit : MonoBehaviour
 
         if( turnCharge == 0)
         {
-            OnAttack();
+           
             _posToMove=new Vector3(transform.position.x, -((_grid.startY + _grid.height * actualTile.transform.localScale.y)+transform.position.y),-1);
             if (!_isMoving)
             {
@@ -94,8 +94,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
-    public void OnAttack(){
+    public void ReducePlayerHp(){
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
@@ -106,9 +105,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
-    public void OnHit() {
+    public void TakeDamage() 
+    {
         
+    }
+    public void AttackAnotherUnit() 
+    { 
+
     }
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
@@ -119,6 +122,14 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null || tile.unit==this)
             {
+                if (S_GameManager.Instance.isPlayer1Turn)
+                {
+                    S_GameManager.Instance.UnitCallOnOff(1, true);
+                }
+                else
+                {
+                    S_GameManager.Instance.UnitCallOnOff(2, true);
+                }
                 if (tileX != tile.tileX)
                 {
                     S_GameManager.Instance.ReduceActionPointBy1();
@@ -200,6 +211,14 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            S_GameManager.Instance.UnitCallOnOff(1, false);
+        }
+        else
+        {
+            S_GameManager.Instance.UnitCallOnOff(2, false);
+        }
         if (actualTile.tileY + 1 > _grid.gridList[actualTile.tileX].Count-1)
         {
             if(actualTile.tileY== _grid.gridList[actualTile.tileX].Count - 1)
@@ -250,5 +269,15 @@ public class Unit : MonoBehaviour
     {
         if(_grid.unitSelected==null)
         SelectUnit();
+    }
+
+    public bool GetIsMoving()
+    {
+        return _isMoving;
+    }
+
+    public void ReturnToBaseTile()
+    {
+        MoveToTile(actualTile);
     }
 }
