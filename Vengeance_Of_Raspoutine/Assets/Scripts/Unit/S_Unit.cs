@@ -83,7 +83,7 @@ public class Unit : MonoBehaviour
 
         if( turnCharge == 0)
         {
-            OnAttack();
+           
             _posToMove=new Vector3(transform.position.x, -((_grid.startY + _grid.height * actualTile.transform.localScale.y)+transform.position.y),-1);
             if (!_isMoving)
             {
@@ -94,8 +94,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
-    public void OnAttack(){
+    public void ReducePlayerHp(){
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
@@ -106,9 +105,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
-    public void OnHit() {
+    public void TakeDamage() 
+    {
         
+    }
+    public void AttackAnotherUnit() 
+    { 
+
     }
 
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
