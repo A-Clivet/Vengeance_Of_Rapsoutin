@@ -41,10 +41,9 @@ public class S_SettingsMenu : MonoBehaviour
         }
 
         _screenSizeDropdown.AddOptions(options);
-        _screenSizeDropdown.value = _currentResolutionIndex;
-        _screenSizeDropdown.RefreshShownValue();
-
         LoadSavedDatas();
+        _screenSizeDropdown.value = _currentResolutionIndex;
+        _screenSizeDropdown.RefreshShownValue(); 
     }
 
     public void SetResolution()
