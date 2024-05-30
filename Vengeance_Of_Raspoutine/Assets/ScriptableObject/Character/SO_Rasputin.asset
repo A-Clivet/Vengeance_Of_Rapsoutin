@@ -17,4 +17,4 @@ MonoBehaviour:
   maxHP: 30
   maxAdrenaline: 50
   specialCapacity: {fileID: 11400000, guid: b4d1f7f0508b1264f96f1879e944ccb0, type: 2}
-  money: 10
+  money: 0
