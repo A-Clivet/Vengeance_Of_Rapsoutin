@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 3052463181262568449}
   - component: {fileID: 8606980364883050880}
   m_Layer: 0
-  m_Name: Go_Unit 1
+  m_Name: Go_Unit 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,7 +161,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: d503a0cdac964ec45972d833a59770b3, type: 3}
-  m_Color: {r: 0.49371064, g: 0.821597, b: 1, a: 1}
+  m_Color: {r: 0.75618523, g: 0.031372547, b: 0.91764706, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  SO_Unit: {fileID: 11400000, guid: 44211fdaff1e4eb4f99023d07c345856, type: 2}
+  SO_Unit: {fileID: 11400000, guid: aa358cdba43acf7478ee25e09aa9b2ff, type: 2}
   attack: 0
   defense: 0
   state: 0
