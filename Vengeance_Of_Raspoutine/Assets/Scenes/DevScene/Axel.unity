@@ -1642,6 +1642,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1706500353}
     - target: {fileID: 8487685897275105572, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: player1Inputs
+      value: 
+      objectReference: {fileID: 272685907}
+    - target: {fileID: 8487685897275105572, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: player2Inputs
+      value: 
+      objectReference: {fileID: 1706500353}
+    - target: {fileID: 8487685897275105572, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: unitManagerP1
       value: 
       objectReference: {fileID: 520161330}
