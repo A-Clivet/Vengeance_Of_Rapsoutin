@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
-    public int speed = 10;
+    public int speed;
+    public bool _isFollowing = false;
     private bool _isMoving = false;
     private Vector3 _posToMove;
 
@@ -16,58 +17,157 @@ public class Unit : MonoBehaviour
     public int defense;
     public int state = 0;
     public int turnCharge;
-    public Sprite unitImg;
+    //UnitDisplay
+    public int unitColor;
+    public Sprite unitSprite;
     public S_Tile actualTile;
     public GameObject highlight;
-    [SerializeField]
     public S_GridManager grid;
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
 
     public int tileX;
     public int tileY;
+    public int sizeX;
+    public int sizeY;
+    public bool isChecked;
+    private bool _willLoseActionPoints = false;
     // Start is called before the first frame update
 
     private void Start()
     {
+        int randomNumber = Random.Range(0, 3);
+        unitColor = randomNumber;
+        unitSprite = SO_Unit.unitSprite[randomNumber];
+        sizeX = SO_Unit.sizeX;
+        sizeY = SO_Unit.sizeY;
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
         turnCharge = SO_Unit.unitTurnCharge;
-
         speed = 10;
-    }
-    private IEnumerator LerpMove()
-    {
-        while(Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.5)
-        
-        {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1),Time.deltaTime*5);
-            yield return new WaitForEndOfFrame();
-        }
-        _isMoving = false;
-        transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
-        yield return null;       
-    }
+    } //Remove the Unit and replace the other units in the column
     private IEnumerator DestroyUnit()
     {
-        actualTile.unit = null;
-        grid.unitList.Remove(this);
-        grid.totalUnitAmount -= 1;
         for (int i = 0; i < grid.gridList[tileX].Count; i++)
         {
-            if (grid.gridList[tileX][i].unit!=null)
+            if (grid.gridList[tileX][i].unit != null)
             {
                 grid.gridList[tileX][i].unit.MoveToTile(grid.gridList[tileX][0]);
             }
         }
         yield return new WaitForSeconds(2);
+        _isFollowing = false;
         Destroy(gameObject);
     }
 
-    public void spriteChange(Sprite img)
+    //used to get the location of the upper member of the formation to follow it correctly
+    private IEnumerator followFormation(List<Unit> p_formation)
     {
-        transform.GetComponent<SpriteRenderer>().sprite = img;
+        _isFollowing = true;
+        while (true)
+        {
+            _posToMove =
+                new Vector3(
+                p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.x,
+                p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.y + transform.localScale.y,
+                -1);
+            if (!_isMoving)
+            {
+                _isMoving = true;
+                StartCoroutine(LerpMove());
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
     }
+    //This function is the lerp from one position to another
+    private IEnumerator LerpMove()
+    {
+        float t = 0;
+        while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1)
+
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), t);
+            yield return new WaitForEndOfFrame();
+            t = t + Time.deltaTime / 5;
+        }
+        _isMoving = false;
+        transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
+        yield return null;
+    }
+
+    public IEnumerator AttackAnotherUnit(List<Unit> p_formation)
+    {
+
+        if (p_formation[0] == this)
+        {
+            for (int i = 0; i < enemyGrid.gridList[tileX].Count; i++)
+            {
+                if (enemyGrid.gridList[tileX][i].unit)
+                {
+                    _posToMove = new Vector3(enemyGrid.gridList[tileX][i].unit.transform.position.x, enemyGrid.gridList[tileX][i].unit.transform.position.y, -1);
+                    if (!_isMoving)
+                    {
+                        _isMoving = true;
+                        StartCoroutine(LerpMove());
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                    attack -= enemyGrid.gridList[tileX][i].unit.defense;
+                    enemyGrid.gridList[tileX][i].unit.TakeDamage(attack + enemyGrid.gridList[tileX][i].unit.defense);
+                    if (attack <= 0)
+                    {
+                        foreach (Unit u in p_formation)
+                        {
+                            Destroy(u.gameObject);
+                            u._isFollowing = false;
+                            for (int k = 0; k < enemyGrid.gridList[tileX].Count; k++)
+                            {
+                                if (enemyGrid.gridList[tileX][k].unit != null)
+                                {
+                                    enemyGrid.gridList[tileX][k].unit.MoveToTile(enemyGrid.gridList[tileX][0]);
+                                }
+                            }
+                        }
+                        yield break;
+                    }
+
+                }
+                yield return new WaitForSeconds(1);
+            }
+            _posToMove = new Vector3(transform.position.x, -((grid.startY + grid.height * transform.localScale.y) + transform.position.y), -1);
+            for (int i = 0; i < grid.gridList[tileX].Count; i++)
+            {
+                if (grid.gridList[tileX][i].unit != null)
+                {
+                    grid.gridList[tileX][i].unit.MoveToTile(grid.gridList[tileX][0]);
+                }
+            }
+            for (int k = 0; k < enemyGrid.gridList[tileX].Count; k++)
+            {
+                if (enemyGrid.gridList[tileX][k].unit != null)
+                {
+                    enemyGrid.gridList[tileX][k].unit.MoveToTile(enemyGrid.gridList[tileX][0]);
+                }
+            }
+            ReducePlayerHp();
+            for (int j = 0; j < p_formation.Count; j++)
+            {
+                p_formation[j].StartCoroutine(DestroyUnit());
+            }
+
+        }
+        else
+        {
+            if (!_isFollowing)
+            {
+                StartCoroutine(followFormation(p_formation));
+            }
+
+        }
+        yield break;
+
+    }
+
 
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
     //AND THE REFERENCE TO HIS OWN TILE IS KNOWN
@@ -85,18 +185,42 @@ public class Unit : MonoBehaviour
 
     public void AttackCharge()
     {
-        if(state == 2) turnCharge--;
+        if (state == 2) turnCharge--;
 
-        if( turnCharge == 0)
+        if (turnCharge == 0)
         {
-            ReducePlayerHp();
-            _posToMove=new Vector3(transform.position.x, -((grid.startY + grid.height * actualTile.transform.localScale.y)+transform.position.y),-1);
-            if (!_isMoving)
+            for (int j = 0; j < unitManager.UnitColumn.Count; j++)
             {
-                _isMoving = true;
-                StartCoroutine(LerpMove());
+
+                if (unitManager.UnitColumn[j].Contains(this))
+                {
+                    for (int i = 0; i < unitManager.UnitColumn[j].Count; i++)
+                    {
+                        unitManager.UnitColumn[j][i].turnCharge = 0;
+                        unitManager.UnitColumn[j][i].actualTile.unit = null;
+                        grid.unitList.Remove(unitManager.UnitColumn[j][i]);
+                        grid.totalUnitAmount -= 1;
+
+
+                    }
+                    for (int k = 0; k < grid.gridList[tileX].Count; k++)
+                    {
+                        if (grid.gridList[tileX][k].unit != null)
+                        {
+                            grid.gridList[tileX][k].unit.MoveToTile(grid.gridList[tileX][0]);
+                        }
+                    }
+                    for (int i = 0; i < unitManager.UnitColumn[j].Count; i++)
+                    {
+                        StartCoroutine(unitManager.UnitColumn[j][i].AttackAnotherUnit(unitManager.UnitColumn[j]));
+                    }
+                    if (unitManager.UnitColumn[j][0] == this)
+                    {
+                        unitManager.UnitColumn.Remove(unitManager.UnitColumn[j]);
+                    }
+                    break;
+                }
             }
-            StartCoroutine(DestroyUnit());
         }
     }
 
@@ -125,80 +249,57 @@ public class Unit : MonoBehaviour
                 {
                     for (int j = 0; j < unitManager.UnitColumn[i].Count; j++)
                     {
-                        DestroyUnit();
-                    }
-                }
-                break;
-            }
-            else
-            {
-                defense -= p_damage;
-                if (attack <= 0)
-                {
-                    DestroyUnit();
-                }
-            }
-        }
-    }
-
-    public IEnumerator AttackAnotherUnit(List<Unit> p_formation)
-    {
-        if (!_isMoving)
-        {
-            _isMoving = true;
-            StartCoroutine(LerpMove());
-        }
-        if (p_formation[0] == this)
-        {
-            for (int i = 0; i < enemyGrid.gridList[tileX].Count; i++)
-            {
-                if (enemyGrid.gridList[tileX][i].unit)
-                {
-
-                    attack -= enemyGrid.gridList[tileX][i].unit.defense;
-                    enemyGrid.gridList[tileX][i].unit.TakeDamage(attack + enemyGrid.gridList[tileX][i].unit.defense);
-                    if (attack <= 0)
-                    {
-                        foreach (Unit u in p_formation)
+                        if (unitManager.UnitColumn[i][j] != this)
                         {
-                            u.actualTile.unit = null;
-                            u.grid.unitList.Remove(u);
-                            u.grid.totalUnitAmount -= 1;
-                            Destroy(u);
+                            unitManager.UnitColumn[i][j].actualTile.unit = null;
+                            grid.unitList.Remove(unitManager.UnitColumn[i][j]);
+                            grid.totalUnitAmount -= 1;
+                            Destroy(unitManager.UnitColumn[i][j].gameObject);
                         }
-                    }
-                    _posToMove = new Vector3(enemyGrid.gridList[tileX][i].unit.transform.position.x, enemyGrid.gridList[tileX][i].unit.transform.position.y, -1);
-                    for (int j = 1; j < p_formation.Count; j++)
-                    {
-                        p_formation[j].AttackAnotherUnit(p_formation);
-                    }
                 }
-                yield return new WaitForSeconds(1);
+                    actualTile.unit = null;
+                    grid.unitList.Remove(this);
+                    grid.totalUnitAmount -= 1;
+
+                    Destroy(gameObject);
+
+                }
+                return;
             }
         }
-        else
+        defense -= p_damage;
+        if (defense <= 0)
         {
-
-            _posToMove =
-                new Vector3(
-                p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.x - transform.localScale.x,
-                p_formation[p_formation.FindIndex(a => a == this) - 1].transform.position.y - transform.localScale.y,
-                -1);
+            actualTile.unit = null;
+            grid.unitList.Remove(this);
+            grid.totalUnitAmount -= 1;
+            Destroy(gameObject);
         }
-        yield break;
+
+        return;
     }
 
-    /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
-    then deselect the unit*/
+
+
+
+    // Same as MoveToTile but use a action point
     public void ActionMoveToTile(S_Tile p_tile)
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
             if (tile.unit == null || tile.unit==this)
             {
+                if (S_GameManager.Instance.isPlayer1Turn)
+                {
+                    S_GameManager.Instance.UnitCallOnOff(1, true);
+                }
+                else
+                {
+                    S_GameManager.Instance.UnitCallOnOff(2, true);
+                }
                 if (tileX != tile.tileX)
                 {
-                    S_GameManager.Instance.ReduceActionPointBy1();
+                    _willLoseActionPoints = true;
                 }
                 actualTile.unit = null;
                 actualTile = tile;
@@ -216,20 +317,18 @@ public class Unit : MonoBehaviour
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                if (S_GameManager.Instance.isPlayer1Turn)
+                if (_willLoseActionPoints)
                 {
-                    S_GameManager.Instance.UnitCallOnOff(1, true);
-                }
-                else
-                {
-                    S_GameManager.Instance.UnitCallOnOff(2, true);
+                    S_GameManager.Instance.ReduceActionPointBy1();
+                    _willLoseActionPoints = false;
                 }
                 break;
             }
         }
         unitManager.UnitCombo(3);
     }
-
+    /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
+  then deselect the unit*/
     public void MoveToTile(S_Tile p_tile)
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
@@ -256,7 +355,7 @@ public class Unit : MonoBehaviour
             }
         }
     }
-
+    //Used to reorganize the Units by state
     public void SwitchUnit(S_Tile p_tile)
     {
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
@@ -286,7 +385,7 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
+            if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.UnitCallOnOff(1, false);
         }
@@ -323,12 +422,27 @@ public class Unit : MonoBehaviour
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
-        _posToMove = new Vector3(p_tile.transform.position.x, grid.startY + grid.height*actualTile.transform.localScale.y);
+        _posToMove = new Vector3(p_tile.transform.position.x, grid.startY + grid.height * actualTile.transform.localScale.y);
         if (!_isMoving)
         {
             _isMoving = true;
             StartCoroutine(LerpMove());
         }
+    }
+    public bool GetIsMoving()
+    {
+        return _isMoving;
+    }
+
+    public void ReturnToBaseTile()
+    {
+        MoveToTile(actualTile);
+    }
+
+    //change sprite of the unit to the wall png
+    public void spriteChange(Sprite img)
+    {
+        transform.GetComponent<SpriteRenderer>().sprite = img;
     }
     private void OnMouseOver()
     {
@@ -342,16 +456,7 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(grid.unitSelected==null)
+        if(grid.unitSelected==null && state != 1 && state != 2)
         SelectUnit();
-    }
-    public bool GetIsMoving()
-    {
-        return _isMoving;
-    }
-
-    public void ReturnToBaseTile()
-    {
-        MoveToTile(actualTile);
     }
 }

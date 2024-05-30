@@ -9,6 +9,7 @@ public class S_GameManager : MonoBehaviour
     #region Variables
     public static S_GameManager Instance;
 
+
     #region Getter / Setter
     public bool isPlayer1Turn { get; private set; } = true;
 
