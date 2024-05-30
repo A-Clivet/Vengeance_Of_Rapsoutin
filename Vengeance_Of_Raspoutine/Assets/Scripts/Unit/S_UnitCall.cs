@@ -8,12 +8,19 @@ using Random = UnityEngine.Random;
 public class S_UnitCall : MonoBehaviour
 {
     /*ui variable*/
-    public int callAmount; /* is increased when a unit [[create a wall,]] attack or dies */
+    private int callAmount; /* is increased when a unit create a wall, attack or dies */
     public S_GridManager grid;
+    public int unitCapacity;
     public List<List<S_Tile>> tile;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
 
-    public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
+    public void Start()
+    {
+        CallAmountUpdate();
+    }
+
+    public int CallAmountUpdate()
+    {
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             tile = grid.gridList;
@@ -24,7 +31,24 @@ public class S_UnitCall : MonoBehaviour
             tile = grid.gridList;
         }
 
-        if (grid.totalUnitAmount + callAmount < 48)
+        return callAmount = unitCapacity - grid.totalUnitAmount;
+    }
+
+    public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
+
+        CallAmountUpdate();
+
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            tile = grid.gridList;
+        }
+
+        if (!S_GameManager.Instance.isPlayer1Turn)
+        {
+            tile = grid.gridList;
+        }
+
+        if (grid.totalUnitAmount < unitCapacity)
         {
             for (int i = 0; i < callAmount; i++)
             {
@@ -40,13 +64,12 @@ public class S_UnitCall : MonoBehaviour
 
                 //function to move the unit on the _grid to the right spots
                 unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
-                unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>()._grid.startY + unitToSpawn.GetComponent<Unit>()._grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
-                unitToSpawn.GetComponent<Unit>().MoveToTileAction(unitToSpawn.GetComponent<Unit>().actualTile);
+                unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>().grid.startY + unitToSpawn.GetComponent<Unit>().grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
+                unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
                 grid.totalUnitAmount++;
             }
             S_GameManager.Instance.ReduceActionPointBy1();
         }
-
     }
 
     private int ColumnSelector()

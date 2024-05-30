@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class S_GridManager : MonoBehaviour
@@ -10,7 +11,8 @@ public class S_GridManager : MonoBehaviour
     public List<Unit> unitList = new();
     public Unit unitSelected;
     public int totalUnitAmount = 0;
-    //public List<Vector2> m_posToFill = new();
+    public S_GridManager enemyGrid;
+    public S_UnitManager unitManager;
     private Vector3 _gridScale;
 
     public int width, height;
@@ -29,15 +31,7 @@ public class S_GridManager : MonoBehaviour
         _gridScale = _tile.transform.localScale;
 
         GenerateGrid(startX,startY);
-        
     }
-    //private void Start()
-    //{
-    //    GameObject test = Instantiate(pfTest, gridList[0][0].transform.position, Quaternion.identity);
-    //    test.GetComponent<Unit>().OnSpawn(gridList[0][0]);
-    //    GameObject test2 = Instantiate(pfTest, gridList[1][0].transform.position, Quaternion.identity);
-    //    test2.GetComponent<Unit>().OnSpawn(gridList[1][0]);
-    //}
 
     // Generate the grid
     private void GenerateGrid(float p_x, float p_y)
@@ -74,10 +68,6 @@ public class S_GridManager : MonoBehaviour
                 }
             }
         }
-        //Place the camera at the center of the map
-        //Camera.main.transform.position = new Vector3((m_Width * m_gridScale.x) / 2, (m_Height * m_gridScale.y) / 2, -10);
-        //FillAtPosition();
-        //Camera.main.orthographicSize = 7;
     }
 
     //Change the state of the S_Tile script of the grid, enabling or desabling it alternatively.
@@ -88,7 +78,6 @@ public class S_GridManager : MonoBehaviour
             for (int y = 0; y < gridList[x].Count; y++)
             {
                 gridList[x][y].GetComponent<S_Tile>().enabled = !gridList[x][y].GetComponent<S_Tile>().enabled;
-
             }
         }
     }
@@ -120,21 +109,41 @@ public class S_GridManager : MonoBehaviour
             }
         }
     }
+    
+    public void UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            List<Unit> StateIdleUnit = new();
+            List<Unit> StateDefendUnit = new();
+            List<Unit> StateAttackUnit = new();
+            List<Unit> OrganizedColumn = new();
+            for (int y = 0; y < Mathf.Abs(height); y++)
+            {
+                if (gridList[x][y].unit == null) continue; 
+                if (gridList[x][y].unit.state == 0) StateIdleUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
+                gridList[x][y].unit.actualTile = null;
+                gridList[x][y].unit = null;
+            }
+            foreach (Unit u in StateDefendUnit)
+            {
+                OrganizedColumn.Add(u);
+            }
+            foreach (Unit u in StateAttackUnit)
+            {
+                OrganizedColumn.Add(u);
+            }
+            foreach (Unit u in StateIdleUnit)
+            {
+                OrganizedColumn.Add(u);
+            }
 
-    //private void FillAtPosition()
-    //{
-    //    foreach (Vector2 pos in m_posToFill)
-    //    {
-    //        for (int x = 0; x < m_Width; x++)
-    //        {
-    //            for (int y = 0; y < m_Height; y++)
-    //            {
-    //                if (pos.x == m_GridList[x][y].m_TileX && pos.y == m_GridList[x][y].m_TileY)
-    //                {
-    //                    //Do Stuff
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+            for(int y = 0; y < OrganizedColumn.Count; y++)
+            {
+                OrganizedColumn[y].SwitchUnit(gridList[x][y]);
+            }
+        }
+    }
 }

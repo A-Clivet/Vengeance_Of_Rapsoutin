@@ -9,6 +9,9 @@ public class S_GameManager : MonoBehaviour
     #region Variables
     public static S_GameManager Instance;
 
+    [SerializeField] private GameObject P1_Win;
+    [SerializeField] private GameObject P2_Win;
+
     #region Getter / Setter
     public bool isPlayer1Turn { get; private set; } = true;
 
@@ -18,6 +21,10 @@ public class S_GameManager : MonoBehaviour
     // Character's health script references
     public S_CharacterHealth player1CharacterHealth { get; private set; }
     public S_CharacterHealth player2CharacterHealth { get; private set; }
+
+    // Character's adrenaline script references
+    public S_CharacterAdrenaline player1CharacterAdrenaline { get; private set; }
+    public S_CharacterAdrenaline player2CharacterAdrenaline { get; private set; }
 
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
@@ -40,7 +47,7 @@ public class S_GameManager : MonoBehaviour
             }
 
             // Update the map visual
-            _currentSprite.sprite = mapSelection[_mapIndex];
+            _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
         }
     }
 
@@ -48,7 +55,7 @@ public class S_GameManager : MonoBehaviour
     #endregion
 
     [Header("Background references :")]
-    [SerializeField] private Image _currentSprite; // sprite that display the map 
+    [SerializeField] private SpriteRenderer _gameBackgroundSpriteRenderer;
     public List<Sprite> mapSelection = new(new Sprite[5]);
 
     [Header("Panel references :")]
@@ -72,10 +79,6 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] public S_UnitManager unitManagerP1;
     [SerializeField] public S_UnitManager unitManagerP2;
 
-    [Header("Player 1 and player 2 end screen :")]
-    [SerializeField] private GameObject _player1EndScreen;
-    [SerializeField] private GameObject _player2EndScreen;
-
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldown;
 
@@ -90,13 +93,16 @@ public class S_GameManager : MonoBehaviour
     // Character manager's reference
     S_CharacterManager _characterManager;
 
+    //End Menu ref
+    [SerializeField] private S_EndMenu _endMenu;
+
     // Character's adrenaline script references
     S_CharacterAdrenaline _player1CharacterAdrenaline;
     S_CharacterAdrenaline _player2CharacterAdrenaline;
 
     private float _targetTime;
     private int _currentRoundNumber;
-    private int _playerActionNumber;
+    public int _playerActionNumber;
 
     int _loseCoefficient = 1;
     #endregion
@@ -115,11 +121,8 @@ public class S_GameManager : MonoBehaviour
         _currentRoundNumber = 1;
         _playerActionNumber = 3;
         _timerText.text = _targetTime.ToString();
-        
-        _currentSprite.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
-        _player1EndScreen.SetActive(false);
-        _player2EndScreen.SetActive(false);
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
         RandomStartTurn();
         
@@ -133,15 +136,15 @@ public class S_GameManager : MonoBehaviour
         _characterManager.SpawnCharacter(_character2Stats, false);
 
         // Setting up character's adrenaline and health script references
-        _player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        _player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
         player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
         player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
 
         // Enable / disable special capacity button's interaction
-        _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
 
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
@@ -231,12 +234,16 @@ public class S_GameManager : MonoBehaviour
 
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _player1EndScreen.SetActive(true);
+            P1_Win.SetActive(true);
+            // _endMenu._player1Win = true;
+            // _endMenu.WhoWin();
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _player2EndScreen.SetActive(true);
+            P2_Win.SetActive(true);
+            // _endMenu._player1Win = false;
+            // _endMenu.WhoWin();
         }
 
         #region Characters management
@@ -248,11 +255,11 @@ public class S_GameManager : MonoBehaviour
         player1CharacterHealth.ResetHealthStats();
         player2CharacterHealth.ResetHealthStats();
 
-        _player1CharacterAdrenaline.ResetAdrenalineStats();
-        _player2CharacterAdrenaline.ResetAdrenalineStats();
+        player1CharacterAdrenaline.ResetAdrenalineStats();
+        player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
 
-        _currentSprite.sprite = mapSelection[_mapIndex];
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
     }
 
     /// <summary> End the turn of the player who played and let the other player play, reset the timer to 60s and adds 1 to the current round number </summary>
@@ -261,6 +268,8 @@ public class S_GameManager : MonoBehaviour
         if (isPlayer1Turn)
         {
             isPlayer1Turn = false;
+            
+            _currentRoundNumber += 1;
 
             _playerTurnText.text = "Player 2 Turn";
 
@@ -300,8 +309,8 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber = 3;
 
         // Enable / disable special capacity button's interaction
-        _player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        _player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
     }
 
     public void StartTurnCheckUnit()
@@ -337,10 +346,12 @@ public class S_GameManager : MonoBehaviour
 
         if (isPlayer1Turn)
         {
+            Debug.Log("combo is called P1");
             unitManagerP1.UnitCombo(3);
         }
         else
         {
+            Debug.Log("combo is called P2");
             unitManagerP2.UnitCombo(3);
         }
 
@@ -372,26 +383,43 @@ public class S_GameManager : MonoBehaviour
 
     public void DeactivateGrid()
     {
-        if (isPlayer1Turn)
+        for (int i = 0; i < _player1GridManager.width; i++)
         {
-            for (int i = 0; i < _player1GridManager.width; i++)
+            for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
-                for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
+                if (isPlayer1Turn)
                 {
-                    _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = true;
-                    _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = false;
+                    _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
+                    _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
+
                 }
+                else
+                {
+                    _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
+                    _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
+                }
+            }
+        }
+        if(isPlayer1Turn)
+        {
+            foreach (Unit unit in _player2GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            foreach (Unit unit in _player1GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
             }
         }
         else
         {
-            for (int i = 0; i < _player2GridManager.width; i++)
+            foreach (Unit unit in _player1GridManager.unitList)
             {
-                for (int j = 0; j < Mathf.Abs(_player2GridManager.height); j++)
-                {
-                    _player1GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = false;
-                    _player2GridManager.gridList[i][j].GetComponent<Collider2D>().enabled = true;
-                }
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            foreach (Unit unit in _player2GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
             }
         }
     }

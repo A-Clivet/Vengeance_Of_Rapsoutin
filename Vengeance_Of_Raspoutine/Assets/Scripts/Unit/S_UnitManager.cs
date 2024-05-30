@@ -8,7 +8,6 @@ public class S_UnitManager : MonoBehaviour
 {
     public S_GridManager grid;
     private List<List<S_Tile>> gridList;
-    [SerializeField] private List<Unit> unitFormation = new();
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
@@ -27,15 +26,58 @@ public class S_UnitManager : MonoBehaviour
 
         //SO_Unit actualType = null;
 
+        Debug.Log(grid.name);
+
+
+        for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
+        {
+            for (int j = 0; j < grid.width; j++) // largeur
+            {
+                if (gridList[j][i].unit == null || (gridList[j][i].unit != null && gridList[j][i].unit.state != 0))
+                {
+                    lineCounter = 0;
+                    continue;
+                }
+                //if (gridList[j][i].unit.SO_Unit != null) (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
+                //{
+                //    lineCounter = 1;
+                //    //actualType = gridList[j][i].unit.SO_Unit;
+                //}
+                else 
+                {
+                    lineCounter++;
+                }
+
+                if (lineCounter == p_formationNumber)
+                {
+                    UnitLine.Add(new());
+                    gridList[j][i].unit.state = 1;
+                    gridList[j - 1][i].unit.state = 1;
+                    gridList[j - 2][i].unit.state = 1;
+
+                    Debug.Log("Unité en position : (" + j + "," + i + ")  is in state : " + gridList[j][i].unit.state);
+                    Debug.Log("Unité en position : (" + (j - 1) + "," + i + ")  is in state : " + gridList[j - 1][i].unit.state);
+                    Debug.Log("Unité en position : (" + (j - 2) + "," + i + ")  is in state : " + gridList[j - 2][i].unit.state);
+
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
+                    grid.UnitPriorityCheck();
+
+                    lineCounter = 0;
+                }
+            }
+            lineCounter = 0;
+        }
         for (int i = 0; i < grid.width; i++) // largeur
         {
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
-                if (gridList[i][j].unit == null /* && unit state*/ )
+                if (gridList[i][j].unit == null || (gridList[i][j].unit != null && gridList[i][j].unit.state != 0))
                 {
                     columnCounter = 0;
                     continue;
-                }
+                } 
                 //if (gridList[i][j].unit.SO_Unit != null)
                 //{
                 //    columnCounter = 1;
@@ -46,47 +88,26 @@ public class S_UnitManager : MonoBehaviour
                     columnCounter++;
                 }
 
-                if(columnCounter == 3)
+                if(columnCounter == p_formationNumber)
                 {
                     UnitColumn.Add(new());
+
+                    gridList[i][j].unit.state = 2;
+                    gridList[i][j - 1].unit.state = 2;
+                    gridList[i][j - 2].unit.state = 2;
+
+                    Debug.Log("Unité en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
+                    Debug.Log("Unité en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
+                    Debug.Log("Unité en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
+
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j-2].unit);
+                    grid.UnitPriorityCheck();
                     columnCounter = 0;
                 }
             }
             columnCounter = 0;
-        }
-
-        for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
-        {
-            for (int j = 0; j < grid.width; j++) // largeur
-            {
-                if (gridList[j][i].unit == null)
-                {
-                    lineCounter = 0;
-                    continue;
-                }
-                //if (gridList[j][i].unit.SO_Unit != null)
-                //{
-                //    lineCounter = 1;
-                //    //actualType = gridList[j][i].unit.SO_Unit;
-                //}
-                else
-                {
-                    lineCounter++;
-                }
-
-                if (lineCounter == p_formationNumber)
-                {
-                    UnitLine.Add(new());
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
-                    lineCounter = 0;
-                }
-            }
-            lineCounter = 0;
         }
 
         if(UnitLine.Count >= 1)
@@ -445,7 +466,6 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
-                p_defendingUnit[i][j].state = 1;
                 p_defendingUnit[i][j].spriteChange(defendImg);
                 //if p_defendingUnit position = unitColumn
             }
@@ -458,33 +478,22 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j< p_attackingUnit[i].Count; j++)
             {
-                Debug.Log(p_attackingUnit[i][j].state);
                 p_attackingUnit[i][j].transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-                if (p_attackingUnit[i][j].state == 1)
-                {
-                    p_attackingUnit[i][j].transform.localScale = new Vector3(0.5f, 0.5f, 1f);
-                }
-                p_attackingUnit[i][j].state = 2;
-                Debug.Log(p_attackingUnit[i][j].state);
             }
         }
         UnitColumn.Clear();
         p_attackingUnit.Clear();
-    } 
-
-    
-
-
-
-    public struct UnitOnLine{
-        public List<Unit> units;
-        public List<int> Y; // 3
-        public List<Vector2Int> bounds; // (3,6) 
     }
 
-    public struct UnitOnColumn{
-        public List<Unit> units;
-        public List<int> X;
-        public List<Vector2Int> bounds;
-    }
+    //public struct UnitOnLine{
+    //    public List<Unit> units;
+    //    public List<int> Y; // 3
+    //    public List<Vector2Int> bounds; // (3,6) 
+    //}
+
+    //public struct UnitOnColumn{
+    //    public List<Unit> units;
+    //    public List<int> X;
+    //    public List<Vector2Int> bounds;
+    //}
 }

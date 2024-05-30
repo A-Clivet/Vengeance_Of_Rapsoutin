@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 public class S_PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _pauseCanvas;
-
+    [SerializeField] private GameObject _settingsCanvas;
 
     private void Start()
     {
         _pauseCanvas.SetActive(false);
+        _settingsCanvas.SetActive(false);
     }
 
     public void OnEscapeButton(InputAction.CallbackContext p_ctx) // open or close the canvas with escape button
@@ -21,7 +22,7 @@ public class S_PauseMenu : MonoBehaviour
                 _pauseCanvas.SetActive(false);
                 Time.timeScale = 1.0f;
             }
-            else
+            else if (!_pauseCanvas.activeSelf && !_settingsCanvas.activeSelf)
             {
                 _pauseCanvas.SetActive(true);
                 Time.timeScale = 0f;
@@ -35,11 +36,6 @@ public class S_PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         _pauseCanvas.SetActive(false);
-    }
-
-    public void SettingsButton()
-    {
-
     }
 
     public void LeaveButton()
