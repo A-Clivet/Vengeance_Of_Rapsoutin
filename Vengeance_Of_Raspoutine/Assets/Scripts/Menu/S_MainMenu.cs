@@ -31,17 +31,17 @@ public class S_MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void BackButton(GameObject _currentCanvas)
+    public void BackButton(GameObject p_currentCanvas)
     {
-        SwitchCanvas(_canvasMainMenu, _currentCanvas);
+        SwitchCanvas(_canvasMainMenu, p_currentCanvas);
         _tutoManager.intTuto = 0;
         _tutoManager.ResetTutoOrder(0);
         _tutoManager.DesactivateButtonTuto();
     }
 
-    private void SwitchCanvas(GameObject _canvas , GameObject _desactivateCanvas)
+    private void SwitchCanvas(GameObject p_canvas , GameObject p_desactivateCanvas)
     {
-        _desactivateCanvas.SetActive(false);
-        _canvas.SetActive(true);
+        p_desactivateCanvas.SetActive(false);
+        p_canvas.SetActive(true);
     }
 }
