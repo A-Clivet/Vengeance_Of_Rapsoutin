@@ -51,8 +51,11 @@ public class S_GameManager : MonoBehaviour
         }
     }
 
-
     #endregion
+
+    [Header("Player's inputs GameObject references :")]
+    public GameObject player1Inputs;
+    public GameObject player2Inputs;
 
     [Header("Background references :")]
     [SerializeField] private SpriteRenderer _gameBackgroundSpriteRenderer;
@@ -82,10 +85,6 @@ public class S_GameManager : MonoBehaviour
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldown;
 
-    [Header("Player inputs :")]
-    [SerializeField] private GameObject _playerInput1;
-    [SerializeField] private GameObject _playerInput2;
-
     [Header("Player's grid :")]
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
@@ -94,78 +93,85 @@ public class S_GameManager : MonoBehaviour
     S_CharacterManager _characterManager;
 
     //End Menu ref
+    [Header("End menu reference :")]
     [SerializeField] private S_EndMenu _endMenu;
-
-    // Character's adrenaline script references
-    S_CharacterAdrenaline _player1CharacterAdrenaline;
-    S_CharacterAdrenaline _player2CharacterAdrenaline;
 
     private float _targetTime;
     private int _currentRoundNumber;
-    public int _playerActionNumber;
+    private int _playerActionNumber;
 
     int _loseCoefficient = 1;
+
+    bool _isInMainMenuScene = true;
     #endregion
 
     #region Methods
 
     private void Awake()
     {
-        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne); 
+        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne);
         DontDestroyOnLoad(transform.parent);
     }
 
     private void Start()
     {
-        _targetTime = 60f;
-        _currentRoundNumber = 1;
-        _playerActionNumber = 3;
-        _timerText.text = _targetTime.ToString();
+        //if (_isInMainMenuScene)
+        //{
+        //
+        //}
+        //// If we are in the MainGame Scene
+        //else
+        //{
+            _targetTime = 60f;
+            _currentRoundNumber = 1;
+            _playerActionNumber = 3;
+            _timerText.text = _targetTime.ToString();
 
-        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
+            _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
-        RandomStartTurn();
-        
-        #region Characters management
+            RandomStartTurn();
 
-        // Setting up character manager reference
-        _characterManager = S_CharacterManager.Instance;
+            #region Characters management
 
-        // Creating the player's character
-        _characterManager.SpawnCharacter(_character1Stats, true);
-        _characterManager.SpawnCharacter(_character2Stats, false);
+            // Setting up character manager reference
+            _characterManager = S_CharacterManager.Instance;
 
-        // Setting up character's adrenaline and health script references
-        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+            // Creating the player's character
+            _characterManager.SpawnCharacter(_character1Stats, true);
+            _characterManager.SpawnCharacter(_character2Stats, false);
 
-        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
-        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+            // Setting up character's adrenaline and health script references
+            player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+            player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
-        // Enable / disable special capacity button's interaction
-        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+            player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+            player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
 
-        // Updates the character's score visuals
-        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
-        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+            // Enable / disable special capacity button's interaction
+            player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+            player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
 
-        #endregion
+            // Updates the character's score visuals
+            player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+            player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
 
-        if (isPlayer1Turn)
-        {
-            _playerTurnText.text = "Player 1 turn";
+            #endregion
 
-            _panelPlayer1.SetActive(false);
-            _panelPlayer2.SetActive(true);
-        }
-        else if (!isPlayer1Turn)
-        {
-            _playerTurnText.text = "Player 2 turn";
+            if (isPlayer1Turn)
+            {
+                _playerTurnText.text = "Player 1 turn";
 
-            _panelPlayer1.SetActive(true);
-            _panelPlayer2.SetActive(false);
-        }
+                _panelPlayer1.SetActive(false);
+                _panelPlayer2.SetActive(true);
+            }
+            else if (!isPlayer1Turn)
+            {
+                _playerTurnText.text = "Player 2 turn";
+
+                _panelPlayer1.SetActive(true);
+                _panelPlayer2.SetActive(false);
+            }
+        //}
     }
 
     private void Update()
@@ -177,7 +183,7 @@ public class S_GameManager : MonoBehaviour
         _timerText.text = "Remaining Time : " + ((int)_targetTime).ToString();
 
         // Display the current round number
-        _turnsText.text = "Turns : " + _currentRoundNumber.ToString(); 
+        _turnsText.text = "Turns : " + _currentRoundNumber.ToString();
 
         // Check if the timer is equal or less to 0
         if (_targetTime <= 0.0f)
@@ -187,7 +193,7 @@ public class S_GameManager : MonoBehaviour
     }
 
     /// <summary> Allows to randomise wich player starts at the start of the game </summary>
-    private void RandomStartTurn() 
+    private void RandomStartTurn()
     {
         // Take a random number beetween 0 and 2 (2 excluded)
         int randomNumber = Random.Range(0, 2);
@@ -205,7 +211,7 @@ public class S_GameManager : MonoBehaviour
                 break;
         }
     }
-    
+
     /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
     /// and checks if the player 1 or 2 wins </summary>
     /// <param name="p_isPlayer1Dead"></param>
@@ -213,7 +219,7 @@ public class S_GameManager : MonoBehaviour
     {
         // Add a score point to the player who won, let the player who lost play the first in the new round,
         // change the map progression according to the entire game 
-        if (p_isPlayer1Dead) 
+        if (p_isPlayer1Dead)
         {
             player2ScorePoint++;
 
@@ -235,15 +241,17 @@ public class S_GameManager : MonoBehaviour
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
             P1_Win.SetActive(true);
-            // _endMenu._player1Win = true;
-            // _endMenu.WhoWin();
+
+            // TODO : UNCOMMENT WHEN END MENU IS SET
+            //endMenu.WhoWin(true);
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
             P2_Win.SetActive(true);
-            // _endMenu._player1Win = false;
-            // _endMenu.WhoWin();
+
+            // TODO : UNCOMMENT WHEN END MENU IS SET
+            //_endMenu.WhoWin(false);
         }
 
         #region Characters management
@@ -268,7 +276,7 @@ public class S_GameManager : MonoBehaviour
         if (isPlayer1Turn)
         {
             isPlayer1Turn = false;
-            
+
             _currentRoundNumber += 1;
 
             _playerTurnText.text = "Player 2 Turn";
@@ -372,13 +380,13 @@ public class S_GameManager : MonoBehaviour
 
     private IEnumerator LaunchActionCooldown()
     {
-        _playerInput1.SetActive(false);
-        _playerInput2.SetActive(false);
+        player1Inputs.SetActive(false);
+        player2Inputs.SetActive(false);
 
         yield return new WaitForSecondsRealtime(_cooldown);
 
-        _playerInput1.SetActive(true);
-        _playerInput2.SetActive(true);
+        player1Inputs.SetActive(true);
+        player2Inputs.SetActive(true);
     }
 
     public void DeactivateGrid()
@@ -400,7 +408,7 @@ public class S_GameManager : MonoBehaviour
                 }
             }
         }
-        if(isPlayer1Turn)
+        if (isPlayer1Turn)
         {
             foreach (Unit unit in _player2GridManager.unitList)
             {
