@@ -9,9 +9,6 @@ public class S_GameManager : MonoBehaviour
     #region Variables
     public static S_GameManager Instance;
 
-    [SerializeField] private GameObject P1_Win;
-    [SerializeField] private GameObject P2_Win;
-
     #region Getter / Setter
     public bool isPlayer1Turn { get; private set; } = true;
 
@@ -240,18 +237,12 @@ public class S_GameManager : MonoBehaviour
 
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            P1_Win.SetActive(true);
-
-            // TODO : UNCOMMENT WHEN END MENU IS SET
-            //endMenu.WhoWin(true);
+            _endMenu.WhoWin(true);
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            P2_Win.SetActive(true);
-
-            // TODO : UNCOMMENT WHEN END MENU IS SET
-            //_endMenu.WhoWin(false);
+            _endMenu.WhoWin(false);
         }
 
         #region Characters management
