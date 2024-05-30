@@ -216,6 +216,14 @@ public class Unit : MonoBehaviour
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
+                if (S_GameManager.Instance.isPlayer1Turn)
+                {
+                    S_GameManager.Instance.UnitCallOnOff(1, true);
+                }
+                else
+                {
+                    S_GameManager.Instance.UnitCallOnOff(2, true);
+                }
                 break;
             }
         }
