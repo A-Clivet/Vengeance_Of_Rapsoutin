@@ -83,6 +83,9 @@ public class S_CharacterManager : MonoBehaviour
         // Transfert adrenaline stats
         character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(p_characterStats.maxAdrenaline, p_characterStats.specialCapacity, p_isPlayer1Character);
 
+        //Transfert money stats
+        character.GetComponent<S_CharacterMoney>().RecieveCharacterMoneyStats(p_characterStats.money);
+
         // Transfert special capacity stats
         S_CharacterSpecialCapacity characterSpecialCapacity = character.GetComponent<S_CharacterSpecialCapacity>();
 

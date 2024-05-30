@@ -23,6 +23,9 @@ public class S_GameManager : MonoBehaviour
     public S_CharacterAdrenaline player1CharacterAdrenaline { get; private set; }
     public S_CharacterAdrenaline player2CharacterAdrenaline { get; private set; }
 
+    public S_CharacterMoney player1CharacterMoney { get; private set; }
+    public S_CharacterMoney player2CharacterMoney { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
@@ -137,12 +140,16 @@ public class S_GameManager : MonoBehaviour
             _characterManager.SpawnCharacter(_character1Stats, true);
             _characterManager.SpawnCharacter(_character2Stats, false);
 
-            // Setting up character's adrenaline and health script references
+            // Setting up character's adrenaline and health and money script references
             player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
             player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
             player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
             player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+
+            player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
+            player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
+
 
             // Enable / disable special capacity button's interaction
             player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
@@ -186,6 +193,22 @@ public class S_GameManager : MonoBehaviour
         if (_targetTime <= 0.0f)
         {
             EndTurn();
+        }
+    }
+
+    public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
+    {
+        switch (p_playerNumber)
+        {
+            case 1:
+                _player1UnitCallButton.interactable = p_isActive;
+                break;
+            case 2:
+                _player2UnitCallButton.interactable = p_isActive;
+                break;
+            default:
+                Debug.LogError("Player number incorrect");
+                break;
         }
     }
 
@@ -321,7 +344,33 @@ public class S_GameManager : MonoBehaviour
 
         if (!isPlayer1Turn)
         {
+            gridManager = _player1GridManager;
+        }
+        else
+        {
             gridManager = _player2GridManager;
+        }
+
+        for (int i = 0; i < gridManager.width; i++)
+        {
+            for (int j = 0; j < Mathf.Abs(gridManager.height); j++)
+            {
+                Unit unit = gridManager.gridList[i][j].unit;
+
+                if (unit != null)
+                {
+                    unit.ReturnToBaseTile();
+                }
+            }
+        }
+
+        if (!isPlayer1Turn)
+        {
+            gridManager = _player2GridManager;
+        }
+        else
+        {
+            gridManager = _player1GridManager;
         }
 
         // We loop throught all grid's tiles, looking for a unit

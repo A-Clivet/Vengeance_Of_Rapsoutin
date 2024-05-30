@@ -485,6 +485,34 @@ public class S_UnitManager : MonoBehaviour
         p_attackingUnit.Clear();
     }
 
+    public void AttackBuff()
+    {
+        for (int i = 0; i < grid.width; i++)
+        {
+            for (int j = 0; j < Mathf.Abs(grid.height); j++)
+            {
+                if (gridList[i][j].unit != null)
+                {
+                    gridList[i][j].unit.attack += 5;
+                }
+            }
+        }
+    }
+
+    public void DefenseBuff()
+    {
+        for (int i = 0; i < grid.width; i++)
+        {
+            for (int j = 0; j < Mathf.Abs(grid.height); j++)
+            {
+                if (gridList[i][j].unit != null)
+                {
+                    gridList[i][j].unit.defense += 5;
+                }
+            }
+        }
+    }
+
     //public struct UnitOnLine{
     //    public List<Unit> units;
     //    public List<int> Y; // 3

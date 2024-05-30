@@ -278,6 +278,14 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            S_GameManager.Instance.UnitCallOnOff(1, false);
+        }
+        else
+        {
+            S_GameManager.Instance.UnitCallOnOff(2, false);
+        }
         if (actualTile.tileY + 1 > grid.gridList[actualTile.tileX].Count-1)
         {
             if(actualTile.tileY== grid.gridList[actualTile.tileX].Count - 1)

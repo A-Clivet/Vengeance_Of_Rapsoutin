@@ -1256,6 +1256,7 @@ GameObject:
   - component: {fileID: 2285567992504091558}
   - component: {fileID: -5472020910148696738}
   - component: {fileID: 844947499022625155}
+  - component: {fileID: 8017665139961762935}
   m_Layer: 5
   m_Name: GO_Character1
   m_TagString: Untagged
@@ -1336,6 +1337,19 @@ MonoBehaviour:
   _capacityNameTextUI: {fileID: 7602054564654488694}
   _capacityDescriptionTextUI: {fileID: 7037256835489324915}
   _capacityEffectTextUI: {fileID: 7386956666798131629}
+--- !u!114 &8017665139961762935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6502254604496220629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb2a8e95684f9c44b1e08bd60e484c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ammount: 0
 --- !u!1 &6512140528454007220
 GameObject:
   m_ObjectHideFlags: 0
