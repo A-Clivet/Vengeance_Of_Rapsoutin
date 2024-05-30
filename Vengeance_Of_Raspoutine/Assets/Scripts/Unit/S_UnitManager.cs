@@ -165,32 +165,14 @@ public class S_UnitManager : MonoBehaviour
         }
     }
 
-    public void AttackBuff()
+    public void AttackBuff(Unit unit)
     {
-        for (int i = 0; i < grid.width; i++)
-        {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++)
-            {
-                if (gridList[i][j].unit != null)
-                {
-                    gridList[i][j].unit.attack += 5;
-                }
-            }
-        }
+        unit.attack += 5;
     }
 
-    public void DefenseBuff()
+    public void DefenseBuff(Unit unit)
     {
-        for (int i = 0; i < grid.width; i++)
-        {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++)
-            {
-                if (gridList[i][j].unit != null)
-                {
-                    gridList[i][j].unit.defense += 5;
-                }
-            }
-        }
+        unit.defense += 5;
     }
 
     //public struct UnitOnLine{
