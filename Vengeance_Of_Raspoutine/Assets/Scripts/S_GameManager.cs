@@ -9,6 +9,9 @@ public class S_GameManager : MonoBehaviour
     #region Variables
     public static S_GameManager Instance;
 
+    [SerializeField] private GameObject P1_Win;
+    [SerializeField] private GameObject P2_Win;
+
     #region Getter / Setter
     public bool isPlayer1Turn { get; private set; } = true;
 
@@ -231,14 +234,16 @@ public class S_GameManager : MonoBehaviour
 
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _endMenu._player1Win = true;
-            _endMenu.WhoWin();
+            P1_Win.SetActive(true);
+            // _endMenu._player1Win = true;
+            // _endMenu.WhoWin();
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
-            _endMenu._player1Win = false;
-            _endMenu.WhoWin();
+            P2_Win.SetActive(true);
+            // _endMenu._player1Win = false;
+            // _endMenu.WhoWin();
         }
 
         #region Characters management
@@ -382,14 +387,39 @@ public class S_GameManager : MonoBehaviour
         {
             for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
-                _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = !_player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled;
-                _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = !_player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled;
-                if (_player1GridManager.gridList[i][j].unit)
+                if (isPlayer1Turn)
                 {
-                    _player1GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled = !_player1GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled;
+                    _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
+                    _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
+
                 }
-                if(_player2GridManager.gridList[i][j].unit)
-                _player2GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled = !_player2GridManager.gridList[i][j].unit.GetComponent<BoxCollider2D>().enabled;
+                else
+                {
+                    _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
+                    _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
+                }
+            }
+        }
+        if(isPlayer1Turn)
+        {
+            foreach (Unit unit in _player2GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            foreach (Unit unit in _player1GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
+            }
+        }
+        else
+        {
+            foreach (Unit unit in _player1GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            foreach (Unit unit in _player2GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
             }
         }
     }
