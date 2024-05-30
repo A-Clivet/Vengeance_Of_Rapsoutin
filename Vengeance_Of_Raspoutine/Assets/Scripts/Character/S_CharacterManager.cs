@@ -1,10 +1,16 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class S_CharacterManager : MonoBehaviour
 {
     #region Variables
     public static S_CharacterManager Instance;
+
+    // Created to let other scripts access player1's character and player2's character
+    [HideInInspector] public GameObject player1CharacterGameObject { get; private set; }
+    [HideInInspector] public GameObject player2CharacterGameObject { get; private set; }
 
     [Header("Score references :")]
     [SerializeField] Sprite _emptyScorePoint;
@@ -14,18 +20,15 @@ public class S_CharacterManager : MonoBehaviour
     [SerializeField] GameObject _character1Prefab;
     [SerializeField] GameObject _character2Prefab;
     [SerializeField] GameObject _allCharactersParent;
-    [SerializeField] S_SkillPanel _skillPanelP1;
-    [SerializeField] S_SkillPanel _skillPanelP2;
 
-    // Created to let other scripts access player1's character and player2's character
-    [HideInInspector] public GameObject player1CharacterGameObject { get; private set; }
-    [HideInInspector] public GameObject player2CharacterGameObject { get; private set; }
+    S_GameManager _gameManager;
     #endregion
 
     #region Methods
     private void Awake()
     {
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndPause);
+        _gameManager = S_GameManager.Instance;
     }
 
     /// <summary> Create a new character based on the CharacterStats given </summary>
@@ -40,7 +43,7 @@ public class S_CharacterManager : MonoBehaviour
             return;
         }
 
-        if (player1CharacterGameObject != null && p_isPlayer1Character || player2CharacterGameObject != null && !p_isPlayer1Character) 
+        if (player1CharacterGameObject != null && p_isPlayer1Character || player2CharacterGameObject != null && !p_isPlayer1Character)
         {
             Debug.LogWarning("WARNING ! Trying to spawn a new character on top of an another character. THE CHARACTER HAS NOT BEEN CREATED");
             return;
@@ -67,7 +70,7 @@ public class S_CharacterManager : MonoBehaviour
         character.GetComponent<RectTransform>().anchoredPosition = new Vector3(prefabRectTransform.anchoredPosition.x, prefabRectTransform.anchoredPosition.y, 0);
         #endregion
 
-        #region Settings up character�s caracteristics
+        #region Settings up characters caracteristics
         // Setting characterName of the character to his correspondant values
         character.name = p_characterStats.characterName;
 
@@ -80,16 +83,32 @@ public class S_CharacterManager : MonoBehaviour
         // Transfert adrenaline stats
         character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(p_characterStats.maxAdrenaline, p_characterStats.specialCapacity, p_isPlayer1Character);
 
+        //Transfert money stats
+        character.GetComponent<S_CharacterMoney>().RecieveCharacterMoneyStats(p_characterStats.money);
+
+        // Transfert special capacity stats
+        S_CharacterSpecialCapacity characterSpecialCapacity = character.GetComponent<S_CharacterSpecialCapacity>();
+
+        characterSpecialCapacity.RecieveSpecialCapacityStats(
+            p_characterStats.specialCapacity.capacityName,
+            p_characterStats.specialCapacity.capacityDescription,
+            p_characterStats.specialCapacity.capacityEffectDescription
+        );
+
         // Store the GameObject reference of the created character in the corresponding variable
+        // and linking the method "ShowSpecialCapacityDescriptionUIs" to the Show Skill Description action
+        // (this event is performed when the player press Alt)
         if (p_isPlayer1Character)
         {
             player1CharacterGameObject = character;
-            //_skillPanelP1.SetDesc(p_characterStats.specialCapacity.capacityDesc);
+
+            _gameManager.player1Inputs.GetComponent<PlayerInput>().actions["Show Special Capacity Description"].performed += characterSpecialCapacity.ShowSpecialCapacityDescriptionUIs;
         }
         else
         {
             player2CharacterGameObject = character;
-            //_skillPanelP2.SetDesc(p_characterStats.specialCapacity.capacityDesc);
+
+            _gameManager.player2Inputs.GetComponent<PlayerInput>().actions["Show Special Capacity Description"].performed += characterSpecialCapacity.ShowSpecialCapacityDescriptionUIs;
         }
 
         #endregion

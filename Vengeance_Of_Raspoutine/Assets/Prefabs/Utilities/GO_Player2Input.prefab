@@ -93,7 +93,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: S_RemoveUnit, Assembly-CSharp
-        m_MethodName: DestroyUnit
+        m_MethodName: RemoveUnit
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -125,6 +125,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 98106903-013f-4d13-8cf2-ffe9b7d95e22
     m_ActionName: Player2Inputs/Show Grid[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 03fb3e2b-fef9-444f-ab93-f1593b04029e
+    m_ActionName: Player1Inputs/Show Skill[/Keyboard/alt]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b36578ef-fc5d-4c44-9b19-accaded8f8a0
+    m_ActionName: Player2Inputs/Show Skill[/Keyboard/alt]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d82cdb2d-1d64-47b4-bc6f-347f43886999
+    m_ActionName: Player1Inputs/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player2Inputs

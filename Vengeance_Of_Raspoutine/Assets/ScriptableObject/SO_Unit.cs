@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class SO_Unit : ScriptableObject
     public int sizeY;
 
     /*unit display and match variable*/
-    public Image unitSprite;
+    public List<Sprite> unitSprite;
     public int unitType;
     public int unitColor;
     public int unitTurnCharge;

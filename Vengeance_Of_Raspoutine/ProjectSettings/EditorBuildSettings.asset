@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainGame.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/DevScene/Nicolas-Menu.unity
     guid: 861dc25ea4879054ca336b7cdcec85aa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DevScene/Axel.unity
     guid: 9c6b7e260bbba714c84e0c1f37c3b5b0
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 45084f7dc690205459057cf44bc4ac80
   m_configObjects: {}

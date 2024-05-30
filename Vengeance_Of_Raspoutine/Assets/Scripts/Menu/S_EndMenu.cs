@@ -4,19 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class S_EndMenu : MonoBehaviour
 {
-
-    [HideInInspector] public bool _player1Win = true;
     [SerializeField] private TextMeshProUGUI _timerText;
 
-
-    private void Start()
+    public void WhoWin(bool p_isPlayer1Win)
     {
-        WhoWin();  
-    }
-
-    public void WhoWin()
-    {
-        if (_player1Win)
+        if (p_isPlayer1Win)
         {
             _timerText.text = "Player 1 ";
         }

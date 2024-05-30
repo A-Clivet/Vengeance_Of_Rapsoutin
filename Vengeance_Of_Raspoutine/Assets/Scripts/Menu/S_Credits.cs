@@ -1,18 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class S_Credits : MonoBehaviour
 {
-    [SerializeField] private Animator m_animatorCredits;
-    public string m_AnimationName;
+    [SerializeField] private Animator animatorCredits;
+    public string animationName;
 
     // Update is called once per frame
     void Update()
     {
 
-        AnimatorStateInfo stateInfo = m_animatorCredits.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animatorCredits.GetCurrentAnimatorStateInfo(0);
 
-        if (stateInfo.IsName(m_AnimationName))
+        if (stateInfo.IsName(animationName))
         {
             // check if the animation is finish
             if (stateInfo.normalizedTime >= 1f)
