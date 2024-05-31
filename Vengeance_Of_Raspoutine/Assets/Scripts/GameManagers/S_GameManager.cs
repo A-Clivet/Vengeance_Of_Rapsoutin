@@ -9,7 +9,6 @@ public class S_GameManager : MonoBehaviour
     #region Variables
     public static S_GameManager Instance;
 
-
     #region Getter / Setter
     public bool isPlayer1Turn { get; private set; } = true;
 
@@ -30,7 +29,7 @@ public class S_GameManager : MonoBehaviour
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
-    /// <summary> Private int variable that when change will actualise the map visuals </summary>
+    /// <summary> Private int variable that when change will see if we go outside a mapSelection </summary>
     private int _mapIndex
     {
         get { return __mapIndex; }
@@ -46,9 +45,6 @@ public class S_GameManager : MonoBehaviour
             {
                 __mapIndex = mapSelection.Count - 1;
             }
-
-            // Update the map visual
-            _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
         }
     }
 
@@ -102,37 +98,27 @@ public class S_GameManager : MonoBehaviour
     private int _playerActionNumber;
 
     int _loseCoefficient = 1;
-
-    bool _isInMainMenuScene = true;
     #endregion
 
     #region Methods
 
     private void Awake()
     {
-        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne);
-        DontDestroyOnLoad(transform.parent);
+        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndDestructionOfTheSecondOne);
     }
 
     private void Start()
     {
-        //if (_isInMainMenuScene)
-        //{
-        //
-        //}
-        //// If we are in the MainGame Scene
-        //else
-        //{
-            _targetTime = 60f;
-            _currentRoundNumber = 1;
-            _playerActionNumber = 3;
-            _timerText.text = _targetTime.ToString();
+        _targetTime = 60f;
+        _currentRoundNumber = 1;
+        _playerActionNumber = 3;
+        _timerText.text = _targetTime.ToString();
 
-            _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
+        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
 
-            RandomStartTurn();
+        RandomStartTurn();
 
-            #region Characters management
+        #region Characters management
 
             // Setting up character manager reference
             _characterManager = S_CharacterManager.Instance;
@@ -162,34 +148,33 @@ public class S_GameManager : MonoBehaviour
 
             #endregion
 
-            if (isPlayer1Turn)
-            {
-                _playerTurnText.text = "Player 1 turn";
+        if (isPlayer1Turn)
+        {
+            _playerTurnText.text = "Player 1 turn";
 
-                _panelPlayer1.SetActive(false);
-                _panelPlayer2.SetActive(true);
-            }
-            else if (!isPlayer1Turn)
-            {
-                _playerTurnText.text = "Player 2 turn";
+            _panelPlayer1.SetActive(false);
+            _panelPlayer2.SetActive(true);
+        }
+        else if (!isPlayer1Turn)
+        {
+            _playerTurnText.text = "Player 2 turn";
 
-                _panelPlayer1.SetActive(true);
-                _panelPlayer2.SetActive(false);
-            }
-        //}
+            _panelPlayer1.SetActive(true);
+            _panelPlayer2.SetActive(false);
+        }
     }
 
     private void Update()
     {
         // Decrease of the turn timer
         _targetTime -= Time.deltaTime;
-
+       
         // Display the rounded timer in seconds in a text
         _timerText.text = "Remaining Time : " + ((int)_targetTime).ToString();
-
+       
         // Display the current round number
         _turnsText.text = "Turns : " + _currentRoundNumber.ToString();
-
+       
         // Check if the timer is equal or less to 0
         if (_targetTime <= 0.0f)
         {
@@ -262,11 +247,13 @@ public class S_GameManager : MonoBehaviour
         if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
             _endMenu.WhoWin(true);
+            return;
         }
 
         if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
         {
             _endMenu.WhoWin(false);
+            return;
         }
 
         #region Characters management

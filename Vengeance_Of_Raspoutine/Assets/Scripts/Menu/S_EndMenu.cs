@@ -1,30 +1,27 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class S_EndMenu : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _timerText;
-
     public void WhoWin(bool p_isPlayer1Win)
     {
         if (p_isPlayer1Win)
         {
-            _timerText.text = "Player 1 ";
+            SceneManager.LoadSceneAsync("EndMenuPlayer1");
         }
         else
         {
-            _timerText.text = "Player 2 ";
+            SceneManager.LoadSceneAsync("EndMenuPlayer2");
         }
     }
 
     public void OnRematchButton()
     {
-        SceneManager.LoadScene("MainGame"); 
+        SceneManager.LoadSceneAsync("MainGame"); 
     }
 
-    public void OnLeaveButton()
+    public void OnMainMenuButton()
     {
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 }
