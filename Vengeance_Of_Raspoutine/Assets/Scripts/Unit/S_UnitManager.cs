@@ -24,10 +24,11 @@ public class S_UnitManager : MonoBehaviour
         int columnCounter = 0;
         int lineCounter = 0;
 
+        int currentColorColumn = -1;
+        int currentColorLine = -1;
 
         //SO_Unit actualType = null;
 
-        Debug.Log(grid.name);
         //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
 
         for (int i = 0; i < grid.width; i++)//check list largeur
@@ -83,21 +84,21 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                if (gridList[j][i].unit == null || (gridList[j][i].unit != null && gridList[j][i].unit.state != 0))
+                if(gridList[j][i].unit == null)
                 {
+                    Debug.Log("unit is null at (" + j + "," + i + ")");
+                    currentColorLine = -1; // -1 is not a value that a unitColor will be 
                     lineCounter = 0;
                     continue;
                 }
-                if (gridList[j][i].unit != null && gridList[j][i].unit.state != 0)
+                if (gridList[j][i].unit.state != 0 || gridList[j][i].unit.unitColor != currentColorLine)
                 {
-                    lineCounter = 0;
+                    currentColorLine = gridList[j][i].unit.unitColor;
+                    Debug.Log("Unit color : " + gridList[j][i].unit.unitColor + " at Tile(" + gridList[j][i].unit.tileX + "," + gridList[j][i].unit.tileY + ")");
+                    Debug.Log("current Line color = " + currentColorLine);
+                    lineCounter = 1;
                     continue;
                 }
-                //if (gridList[j][i].unit.SO_Unit != null) (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
-                //{
-                //    lineCounter = 1;
-                //    //actualType = gridList[j][i].unit.SO_Unit;
-                //}
                 else
                 {
                     lineCounter++;
@@ -110,12 +111,11 @@ public class S_UnitManager : MonoBehaviour
                     gridList[j - 1][i].unit.state = 1;
                     gridList[j - 2][i].unit.state = 1;
 
-                   
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-
+                    currentColorLine = -1;
                     lineCounter = 0;
                 }
                 if (UnitLine.Count >= 1)
@@ -124,27 +124,27 @@ public class S_UnitManager : MonoBehaviour
                 }
                 UnitLine.Clear();
             }
+            currentColorLine = -1;
             lineCounter = 0;
         }
+
         for (int i = 0; i < grid.width; i++) // largeur
         {
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
-                if (gridList[i][j].unit == null || (gridList[i][j].unit != null && gridList[i][j].unit.state != 0))
+
+                if (gridList[i][j].unit == null)
                 {
+                    currentColorColumn = -1; // -1 is not a value that a unitColor will be 
                     columnCounter = 0;
                     continue;
                 }
-                if(gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
+                if (gridList[i][j].unit.state != 0 || gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
                 {
-                    columnCounter = 0;
+                    currentColorColumn = gridList[i][j].unit.unitColor;
+                    columnCounter = 1;
                     continue;
                 }
-                //if (gridList[i][j].unit.SO_Unit != null)
-                //{
-                //    columnCounter = 1;
-                //    //tualType = gridList[i][j].unit.SO_Unit;
-                //}
                 else
                 {
                     columnCounter++;
@@ -163,14 +163,12 @@ public class S_UnitManager : MonoBehaviour
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
                     columnCounter = 0;
+                    currentColorColumn = -1;
                 }
             }
+            currentColorColumn = -1;
             columnCounter = 0;
         }
-        //if(UnitColumn.Count >= 1)
-        //{
-        //    Attack(UnitColumn);
-        //}
     }
 
 

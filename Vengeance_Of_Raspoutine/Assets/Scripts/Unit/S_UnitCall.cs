@@ -53,13 +53,13 @@ public class S_UnitCall : MonoBehaviour
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();
-                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                while (tile[X][5].unit != null) // peut crash Ã  casue du nombre d'unitÃ© sur le board non dÃ©finie 
                 {
                     X = ColumnSelector();
                 }
 
                 GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
-                unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
+                //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 unitToSpawn.GetComponent<Unit>().tileX = X;
 
                 //function to move the unit on the _grid to the right spots
