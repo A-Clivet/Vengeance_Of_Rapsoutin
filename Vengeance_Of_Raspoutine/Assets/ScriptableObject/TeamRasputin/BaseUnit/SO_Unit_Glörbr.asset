@@ -20,5 +20,5 @@ MonoBehaviour:
   unitSprite:
   - {fileID: 21300000, guid: 60555f92fff1d804f9ee5680a84e796f, type: 3}
   unitType: 1
-  unitColor: 0
+  unitColor: 1
   unitTurnCharge: 2
