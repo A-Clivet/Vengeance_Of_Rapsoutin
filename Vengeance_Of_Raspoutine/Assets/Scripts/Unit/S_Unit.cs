@@ -36,7 +36,7 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        int randomNumber = Random.Range(0, 3);
+        int randomNumber = Random.Range(0, 1);
         unitColor = randomNumber;
         unitSprite = SO_Unit.unitSprite[randomNumber];
         sizeX = SO_Unit.sizeX;
