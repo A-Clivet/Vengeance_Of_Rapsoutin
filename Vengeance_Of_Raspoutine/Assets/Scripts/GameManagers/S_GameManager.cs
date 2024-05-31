@@ -54,6 +54,10 @@ public class S_GameManager : MonoBehaviour
     public GameObject player1Inputs;
     public GameObject player2Inputs;
 
+    [Header("UnitCall buttons :")]
+    public Button player1UnitCallButton;
+    public Button player2UnitCallButton;
+
     [Header("Background references :")]
     [SerializeField] private SpriteRenderer _gameBackgroundSpriteRenderer;
     public List<Sprite> mapSelection = new(new Sprite[5]);
@@ -61,10 +65,6 @@ public class S_GameManager : MonoBehaviour
     [Header("Panel references :")]
     [SerializeField] private GameObject _panelPlayer1;
     [SerializeField] private GameObject _panelPlayer2;
-
-    [Header("UnitCall buttons :")]
-    [SerializeField] private Button _player1UnitCallButton;
-    [SerializeField] private Button _player2UnitCallButton;
 
     [Header("Turn references :")]
     [SerializeField] private TextMeshProUGUI _timerText;
@@ -187,10 +187,10 @@ public class S_GameManager : MonoBehaviour
         switch (p_playerNumber)
         {
             case 1:
-                _player1UnitCallButton.interactable = p_isActive;
+                player1UnitCallButton.interactable = p_isActive;
                 break;
             case 2:
-                _player2UnitCallButton.interactable = p_isActive;
+                player2UnitCallButton.interactable = p_isActive;
                 break;
             default:
                 Debug.LogError("Player number incorrect");
@@ -208,19 +208,18 @@ public class S_GameManager : MonoBehaviour
         {
             case 0:
                 isPlayer1Turn = false;
-                _player1UnitCallButton.interactable = false;
+                player1UnitCallButton.interactable = false;
                 break;
 
             case 1:
                 isPlayer1Turn = true;
-                _player2UnitCallButton.interactable = false;
+                player2UnitCallButton.interactable = false;
                 break;
         }
     }
 
     /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
     /// and checks if the player 1 or 2 wins </summary>
-    /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
         // Add a score point to the player who won, let the player who lost play the first in the new round,
@@ -285,8 +284,8 @@ public class S_GameManager : MonoBehaviour
 
             _panelPlayer1.SetActive(true);
 
-            _player1UnitCallButton.interactable = false;
-            _player2UnitCallButton.interactable = true;
+            player1UnitCallButton.interactable = false;
+            player2UnitCallButton.interactable = true;
 
             StartTurnCheckUnit();
 
@@ -305,8 +304,8 @@ public class S_GameManager : MonoBehaviour
 
             _panelPlayer1.SetActive(false);
 
-            _player1UnitCallButton.interactable = true;
-            _player2UnitCallButton.interactable = false;
+            player1UnitCallButton.interactable = true;
+            player2UnitCallButton.interactable = false;
 
             StartTurnCheckUnit();
 

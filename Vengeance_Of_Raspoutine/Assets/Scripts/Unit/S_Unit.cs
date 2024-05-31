@@ -34,18 +34,24 @@ public class Unit : MonoBehaviour
     private bool _willLoseActionPoints = false;
     // Start is called before the first frame update
 
-    private void Start()
+    private void Update()
+    {
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = Mathf.Abs(grid.height) - tileY;
+    }
+
+    private void Awake()
     {
         int randomNumber = Random.Range(0, 1);
-        unitColor = randomNumber;
-        unitSprite = SO_Unit.unitSprite[randomNumber];
+        unitColor = SO_Unit.unitColor;
+        gameObject.GetComponent<SpriteRenderer>().sprite = SO_Unit.unitSprite[randomNumber];
         sizeX = SO_Unit.sizeX;
         sizeY = SO_Unit.sizeY;
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
         turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
-    } //Remove the Unit and replace the other units in the column
+    }
+
     private IEnumerator DestroyUnit()
     {
         for (int i = 0; i < grid.gridList[tileX].Count; i++)
