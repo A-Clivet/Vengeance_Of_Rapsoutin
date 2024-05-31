@@ -192,7 +192,7 @@ MonoBehaviour:
   unitImg: {fileID: 0}
   actualTile: {fileID: 0}
   highlight: {fileID: 1401381864322760783}
-  _grid: {fileID: 0}
+  grid: {fileID: 0}
   tileX: 0
   tileY: 0
 --- !u!61 &8606980364883050880

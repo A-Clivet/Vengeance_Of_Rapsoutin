@@ -15,6 +15,7 @@ MonoBehaviour:
   isUnitsStatChangementSpecialCapacity: 1
   capacityName: Vodka sprinklers
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDesc: Vodka Sprinklers
+  capacityDescription: DESCRIPTION
+  capacityEffectDescription: EFFECTS
   unitStatChanged: 0
   unitStatsChangementValue: 1

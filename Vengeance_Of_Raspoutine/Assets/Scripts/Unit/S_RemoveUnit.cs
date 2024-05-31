@@ -18,11 +18,10 @@ public class S_RemoveUnit : MonoBehaviour
             Instance = this;
         }
     }
-    public void DestroyUnit(InputAction.CallbackContext context)
+    public void RemoveUnit(InputAction.CallbackContext p_context)
     {
-        if (context.started)
+        if (p_context.started)
         {
-            Debug.Log(hoveringUnit.state);
             if (hoveringUnit != null && (hoveringUnit.state == 0 || hoveringUnit.state == 1)) // remove les unit.state = 1 
             {
                 hoveringUnit.grid.unitList.Remove(hoveringUnit);

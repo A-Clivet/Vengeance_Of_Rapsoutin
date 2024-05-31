@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,11 +12,19 @@ public class S_UnitCall : MonoBehaviour
     private int callAmount; /* is increased when a unit create a wall, attack or dies */
     public S_GridManager grid;
     public int unitCapacity;
+    public bool firstUnitCalled = false;
     public List<List<S_Tile>> tile;
+    public TextMeshProUGUI text;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
 
+    private void Update()
+    {
+        TextUpdate();
+    }
+    
     public void Start()
     {
+        UnitCalling();
         CallAmountUpdate();
     }
 
@@ -36,8 +45,12 @@ public class S_UnitCall : MonoBehaviour
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
 
-        CallAmountUpdate();
-
+        if (!firstUnitCalled)
+        {
+            CallAmountUpdate();
+            callAmount /= 2;
+        }
+        
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             tile = grid.gridList;
@@ -53,13 +66,13 @@ public class S_UnitCall : MonoBehaviour
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();
-                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                while (tile[X][5].unit != null) // peut crash Ã  casue du nombre d'unitÃ© sur le board non dÃ©finie 
                 {
                     X = ColumnSelector();
                 }
 
                 GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
-                unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
+                //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 unitToSpawn.GetComponent<Unit>().tileX = X;
 
                 //function to move the unit on the _grid to the right spots
@@ -68,8 +81,24 @@ public class S_UnitCall : MonoBehaviour
                 unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
                 grid.totalUnitAmount++;
             }
-            S_GameManager.Instance.ReduceActionPointBy1();
+
+            if (firstUnitCalled)
+            {
+                S_GameManager.Instance.ReduceActionPointBy1();
+            }
+            else
+            {
+                firstUnitCalled = true;
+            }
         }
+        grid.unitManager.UnitCombo(3);
+        TextUpdate();
+    }
+    
+    public void TextUpdate()
+    {
+        string buttonText = CallAmountUpdate().ToString();
+        text.SetText(buttonText);
     }
 
     private int ColumnSelector()

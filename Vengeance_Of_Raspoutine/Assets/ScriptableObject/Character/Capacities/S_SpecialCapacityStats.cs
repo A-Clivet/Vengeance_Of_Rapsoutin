@@ -15,7 +15,8 @@ public class S_SpecialCapacityStats : ScriptableObject
     [Header("Basic statistics :")]
     public string capacityName;
     public Sprite capacitySprite;
-    public string capacityDesc;
+    public string capacityDescription;
+    public string capacityEffectDescription;
 
     [Header("Unit stats changement capacity's statistics :")]
     [ShowCondition("isUnitsStatChangementSpecialCapacity")]
