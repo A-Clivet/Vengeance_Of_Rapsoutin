@@ -53,28 +53,28 @@ public class AudioManager : MonoBehaviour
         _sfxBus.setVolume(SFXVolume);
     }
 
-    private void InitializeMusic(EventReference musicEventReference)
+    private void InitializeMusic(EventReference p_musicEventReference)
     {
-        _musicEventInstance = CreateInstance(musicEventReference);
+        _musicEventInstance = CreateInstance(p_musicEventReference);
         _musicEventInstance.start();
     }
 
-    public void PlayOneShot(EventReference sound, Vector3 worldPos)
+    public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos)
     {
-        RuntimeManager.PlayOneShot(sound, worldPos);
+        RuntimeManager.PlayOneShot(p_sound, p_worldPos);
     }
 
-    public EventInstance CreateInstance(EventReference eventReference)
+    public EventInstance CreateInstance(EventReference p_eventReference)
     {
-        EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
+        EventInstance eventInstance = RuntimeManager.CreateInstance(p_eventReference);
         _eventInstances.Add(eventInstance);
         return eventInstance;
     }
 
-    public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterGameObject)
+    public StudioEventEmitter InitializeEventEmitter(EventReference p_eventReference, GameObject p_emitterGameObject)
     {
-        StudioEventEmitter emitter = emitterGameObject.GetComponent<StudioEventEmitter>();
-        emitter.EventReference = eventReference;
+        StudioEventEmitter emitter = p_emitterGameObject.GetComponent<StudioEventEmitter>();
+        emitter.EventReference = p_eventReference;
         _eventEmitters.Add(emitter);
         return emitter;
     }
