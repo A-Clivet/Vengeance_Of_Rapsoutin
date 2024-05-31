@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 698c58cff64e7e54aa70c3aa20e010e7, type: 3}
-  m_Name: "SO_Unit_F\xF9z"
+  m_Name: SO_Unit_Sniper
   m_EditorClassIdentifier: 
-  UnitName: "F\xF9z"
-  attack: 2
-  defense: 2
+  UnitName: Sniper
+  attack: 3
+  defense: 1
   sizeX: 1
   sizeY: 1
-  unitSprite: {fileID: 0}
-  unitType: 1
-  unitColor: 1
-  unitState: 0
+  unitSprite:
+  - {fileID: 21300000, guid: 7128e9fea5b4fe24caa7e99b2a18bba4, type: 3}
+  unitType: 3
+  unitColor: 0
   unitTurnCharge: 2

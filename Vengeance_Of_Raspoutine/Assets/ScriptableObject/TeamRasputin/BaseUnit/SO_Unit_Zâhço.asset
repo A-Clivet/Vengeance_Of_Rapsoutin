@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 698c58cff64e7e54aa70c3aa20e010e7, type: 3}
-  m_Name: SO_Unit_Comrade
+  m_Name: "SO_Unit_Z\xE2h\xE7o"
   m_EditorClassIdentifier: 
-  UnitName: Comrade
-  attack: 2
-  defense: 2
+  UnitName: "Z\xE2h\xE7o"
+  attack: 3
+  defense: 1
   sizeX: 1
   sizeY: 1
-  unitSprite: {fileID: 0}
-  unitType: 1
+  unitSprite:
+  - {fileID: 21300000, guid: 8566a7818cfd00e47947097bf6589b0f, type: 3}
+  unitType: 3
   unitColor: 0
+  unitTurnCharge: 2
