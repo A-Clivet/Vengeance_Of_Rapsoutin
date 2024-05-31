@@ -24,36 +24,54 @@ public class S_UnitManager : MonoBehaviour
         int columnCounter = 0;
         int lineCounter = 0;
 
+
         //SO_Unit actualType = null;
 
         Debug.Log(grid.name);
-        //for pour la grille, tu check si une untiÈ ‡ Áa sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
+        //for pour la grille, tu check si une unti√© √† √ßa sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
 
-        for (int i = 0; i < grid.width; i++)//largeur
+        for (int i = 0; i < grid.width; i++)//check list largeur
         {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++)//hauteur
+            for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
             {
-                if (gridList[i][j].unit == null)
+                if (gridList[i][j].unit == null) //si la case est vide, continue
                 {
                     continue;
                 }
-                else
+                else // si la case contient une unit√©
                 {
-                    if (gridList[i][j].unit.sizeY > 1)
+                    if (gridList[i][j].unit.sizeY > 1)// si l'unit√© prends plus d'une case de hauteur ce n'est pas un mur
                     {
-                        if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false)
+                        if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unit√© en prends qu'une ( case )
                         {
-                            //l'unite est une petite
-                            gridList[i][j].unit.isChecked = true;
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null))
+                            gridList[i][j].unit.isChecked = true; // met le boolean √† true pour dire qu'elle √† √©t√© check et ne pas repasser dessus
+
+                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour √©viter le Out of Index
                             {
-                                // j+3 case la plus ÈloignÈe possible, doit Ítre dans l'index
-                                if (gridList[i][j].unit.SO_Unit.unitColor == gridList[i][j + 2].unit.SO_Unit.unitColor && gridList[i][j].unit.SO_Unit.unitColor == gridList[i][j + 3].unit.SO_Unit.unitColor) gridList[i][j].unit.state = 2;
+                                if (columnCounter == p_formationNumber) // mode attack 
+                                {
+                                    UnitColumn.Add(new());
+
+                                    gridList[i][j].unit.state = 2;
+                                    gridList[i][j - 1].unit.state = 2;
+                                    gridList[i][j - 2].unit.state = 2;
+
+                                    Debug.Log("Unit√© en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
+                                    Debug.Log("Unit√© en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
+                                    Debug.Log("Unit√© en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
+
+                                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
+                                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
+                                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
+                                    grid.UnitPriorityCheck();
+                                    columnCounter = 0;
+                                }
+                                
                             }
                         }
-                        else
+                        else // ici l'unit√© en prends 2 ( case )
                         {
-                            //l'unitÈ est une Èlite
+                            //l'unit√© est une √©lite
                         }
                     }
                 }
@@ -66,6 +84,11 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < grid.width; j++) // largeur
             {
                 if (gridList[j][i].unit == null || (gridList[j][i].unit != null && gridList[j][i].unit.state != 0))
+                {
+                    lineCounter = 0;
+                    continue;
+                }
+                if (gridList[j][i].unit != null && gridList[j][i].unit.state != 0)
                 {
                     lineCounter = 0;
                     continue;
@@ -87,14 +110,11 @@ public class S_UnitManager : MonoBehaviour
                     gridList[j - 1][i].unit.state = 1;
                     gridList[j - 2][i].unit.state = 1;
 
-                    Debug.Log("UnitÈ en position : (" + j + "," + i + ")  is in state : " + gridList[j][i].unit.state);
-                    Debug.Log("UnitÈ en position : (" + (j - 1) + "," + i + ")  is in state : " + gridList[j - 1][i].unit.state);
-                    Debug.Log("UnitÈ en position : (" + (j - 2) + "," + i + ")  is in state : " + gridList[j - 2][i].unit.state);
-
+                   
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    grid.UnitPriorityCheck();
+                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
 
                     lineCounter = 0;
                 }
@@ -115,6 +135,11 @@ public class S_UnitManager : MonoBehaviour
                     columnCounter = 0;
                     continue;
                 }
+                if(gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
+                {
+                    columnCounter = 0;
+                    continue;
+                }
                 //if (gridList[i][j].unit.SO_Unit != null)
                 //{
                 //    columnCounter = 1;
@@ -125,7 +150,7 @@ public class S_UnitManager : MonoBehaviour
                     columnCounter++;
                 }
 
-                if (columnCounter == p_formationNumber)
+                if (columnCounter == p_formationNumber) // mode attack 
                 {
                     UnitColumn.Add(new());
 
@@ -133,14 +158,10 @@ public class S_UnitManager : MonoBehaviour
                     gridList[i][j - 1].unit.state = 2;
                     gridList[i][j - 2].unit.state = 2;
 
-                    Debug.Log("UnitÈ en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
-                    Debug.Log("UnitÈ en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
-                    Debug.Log("UnitÈ en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
-
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                    grid.UnitPriorityCheck();
+                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
                     columnCounter = 0;
                 }
             }

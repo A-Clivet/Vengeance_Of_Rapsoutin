@@ -9,6 +9,7 @@ public class S_GridManager : MonoBehaviour
 
     public List<List<S_Tile>> gridList = new();
     public List<Unit> unitList = new();
+    public List<List<Unit>> AllUnitPerColumn = new();
     public Unit unitSelected;
     public int totalUnitAmount = 0;
     public S_GridManager enemyGrid;
@@ -110,14 +111,19 @@ public class S_GridManager : MonoBehaviour
         }
     }
     
-    public void UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
+    public List<List<Unit>> UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
     {
+
+        List<List<Unit>> GridUnit = new();
+
         for (int x = 0; x < width; x++)
         {
             List<Unit> StateIdleUnit = new();
             List<Unit> StateDefendUnit = new();
             List<Unit> StateAttackUnit = new();
             List<Unit> OrganizedColumn = new();
+
+
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
                 if (gridList[x][y].unit == null) continue; 
@@ -140,10 +146,14 @@ public class S_GridManager : MonoBehaviour
                 OrganizedColumn.Add(u);
             }
 
+            GridUnit.Add(OrganizedColumn);
+
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
                 OrganizedColumn[y].SwitchUnit(gridList[x][y]);
             }
         }
+
+        return GridUnit; 
     }
 }
