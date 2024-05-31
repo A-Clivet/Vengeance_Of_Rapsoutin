@@ -34,11 +34,6 @@ public class Unit : MonoBehaviour
     private bool _willLoseActionPoints = false;
     // Start is called before the first frame update
 
-    private void Update()
-    {
-        gameObject.GetComponent<SpriteRenderer>().sortingOrder = Mathf.Abs(grid.height) - tileY;
-    }
-
     private void Awake()
     {
         int randomNumber = Random.Range(0, 1);

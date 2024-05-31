@@ -18,7 +18,7 @@ MonoBehaviour:
   sizeX: 1
   sizeY: 1
   unitSprite:
-  - {fileID: 21300000, guid: 7128e9fea5b4fe24caa7e99b2a18bba4, type: 3}
+  - {fileID: 21300000, guid: 140ee8b0cef0a124d97ab64bb5bde3a0, type: 3}
   unitType: 0
   unitColor: 0
   unitTurnCharge: 2

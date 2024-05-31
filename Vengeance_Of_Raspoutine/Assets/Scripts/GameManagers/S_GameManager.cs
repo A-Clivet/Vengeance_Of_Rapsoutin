@@ -70,6 +70,7 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _playerTurnText;
     [SerializeField] private TextMeshProUGUI _turnsText;
+    [SerializeField] private TextMeshProUGUI _actionsText;
 
     [Header("Characters stats's references :")]
     [SerializeField] S_CharacterStats _character1Stats;
@@ -111,7 +112,7 @@ public class S_GameManager : MonoBehaviour
     {
         _targetTime = 60f;
         _currentRoundNumber = 1;
-        _playerActionNumber = 3;
+        ResetActionPoint();
         _timerText.text = _targetTime.ToString();
 
         _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
@@ -163,6 +164,7 @@ public class S_GameManager : MonoBehaviour
             _panelPlayer2.SetActive(false);
         }
     }
+    
 
     private void Update()
     {
@@ -174,7 +176,9 @@ public class S_GameManager : MonoBehaviour
        
         // Display the current round number
         _turnsText.text = "Turns : " + _currentRoundNumber.ToString();
-       
+
+        _actionsText.text = "Actions restantes : " + _playerActionNumber;
+        
         // Check if the timer is equal or less to 0
         if (_targetTime <= 0.0f)
         {
@@ -216,6 +220,8 @@ public class S_GameManager : MonoBehaviour
                 player2UnitCallButton.interactable = false;
                 break;
         }
+        
+
     }
 
     /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
@@ -315,7 +321,7 @@ public class S_GameManager : MonoBehaviour
         }
 
         _targetTime = 60.0f;
-        _playerActionNumber = 3;
+        ResetActionPoint();
 
         // Enable / disable special capacity button's interaction
         player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
@@ -381,12 +387,10 @@ public class S_GameManager : MonoBehaviour
 
         if (isPlayer1Turn)
         {
-            Debug.Log("combo is called P1");
             unitManagerP1.UnitCombo(3);
         }
         else
         {
-            Debug.Log("combo is called P2");
             unitManagerP2.UnitCombo(3);
         }
 
@@ -403,6 +407,11 @@ public class S_GameManager : MonoBehaviour
     public void IncreaseActionPointBy1()
     {
         _playerActionNumber += 1;
+    }
+    
+    public void ResetActionPoint()
+    {
+        _playerActionNumber = 3;
     }
 
     private IEnumerator LaunchActionCooldown()

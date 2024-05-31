@@ -22,12 +22,12 @@ public class S_UnitSelectorMenu : MonoBehaviour
     {
         if (IntSelectedUnit > 0 && IntSelectedUnit <= 3)
         {
-            UssrSelectedUnits = 
+            //UssrSelectedUnits =  Coomenté car pas fini
             IntSelectedUnit = 0;
         }
         else if (IntSelectedUnit > 3 )
         {
-            RasputinSelectedUnits = 
+            //RasputinSelectedUnits =  Coomenté car pas fini
             IntSelectedUnit = 0;
         }
         else
