@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class S_UpgradeMenu : MonoBehaviour
 {
+    [SerializeField] private int _playerNumber;
     [SerializeField] private S_UnitManager _unitManager;
     [SerializeField] private TextMeshProUGUI _moneyDisplay;
     [SerializeField] private int _upgradeLimit;
     [SerializeField] private Button _attBuffButton;
     [SerializeField] private Button _defBuffButton;
-    [SerializeField] private List<Unit> _units;
+    private List<Unit> _units = new List<Unit>();
     [SerializeField] private SpriteRenderer _UnitDisplay;
     private int _unitInd = 0;
     private int _attBuffIncrement = 0;
@@ -18,6 +20,7 @@ public class S_UpgradeMenu : MonoBehaviour
 
     private void Start()
     {
+        UnitListInit();
         MoneyDisplayUpdate();
         UnitDisplayUpdate();
     }
@@ -34,7 +37,7 @@ public class S_UpgradeMenu : MonoBehaviour
         }
         else
         {
-            _attBuffButton.enabled = false;
+            _attBuffButton.interactable = false;
         }
     }
 
@@ -51,7 +54,7 @@ public class S_UpgradeMenu : MonoBehaviour
         }
         else
         {
-            _defBuffButton.enabled = false;
+            _defBuffButton.interactable = false;
         }
     }
 
@@ -80,6 +83,27 @@ public class S_UpgradeMenu : MonoBehaviour
 
     private void UnitDisplayUpdate()
     {
-        _UnitDisplay.sprite = _units[_unitInd].unitSprite;
+        _UnitDisplay.sprite = _units[_unitInd].GetComponent<SpriteRenderer>().sprite;
+    }
+
+    private void UnitListInit()
+    {
+        switch(_playerNumber)
+        {
+            case 1:
+                for (int i=0; i < S_GameManager.Instance.player1UnitCallButton.GetComponent<S_UnitCall>().GetUnits().Count; i++)
+                {
+                    _units.Add(S_GameManager.Instance.player1UnitCallButton.GetComponent<S_UnitCall>().GetUnits()[i].GetComponent<Unit>());
+                }
+                break;
+            case 2:
+                for (int i = 0; i < S_GameManager.Instance.player2UnitCallButton.GetComponent<S_UnitCall>().GetUnits().Count; i++)
+                {
+                    _units.Add(S_GameManager.Instance.player2UnitCallButton.GetComponent<S_UnitCall>().GetUnits()[i].GetComponent<Unit>());
+                }
+                break;
+            default: 
+                break;
+        }
     }
 }
