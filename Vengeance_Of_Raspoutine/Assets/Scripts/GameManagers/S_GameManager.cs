@@ -163,6 +163,8 @@ public class S_GameManager : MonoBehaviour
             _panelPlayer1.SetActive(true);
             _panelPlayer2.SetActive(false);
         }
+
+        DeactivateGrid();
     }
     
 
@@ -234,6 +236,9 @@ public class S_GameManager : MonoBehaviour
         {
             player2ScorePoint++;
 
+            player2CharacterMoney.AddMoney(10);
+            player1CharacterMoney.AddMoney(5);
+
             isPlayer1Turn = true;
 
             _mapIndex += 1 * _loseCoefficient;
@@ -241,6 +246,9 @@ public class S_GameManager : MonoBehaviour
         else
         {
             player1ScorePoint++;
+
+            player1CharacterMoney.AddMoney(10);
+            player2CharacterMoney.AddMoney(5);
 
             isPlayer1Turn = false;
 
@@ -435,6 +443,7 @@ public class S_GameManager : MonoBehaviour
                 {
                     _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
+
 
                 }
                 else

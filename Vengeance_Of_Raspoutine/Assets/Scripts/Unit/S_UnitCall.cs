@@ -113,4 +113,8 @@ public class S_UnitCall : MonoBehaviour
     { /* select which color is the unit */
         return Random.Range(0, 3);
     }
+    public List<GameObject> GetUnits()
+    {
+        return units;
+    }
 }

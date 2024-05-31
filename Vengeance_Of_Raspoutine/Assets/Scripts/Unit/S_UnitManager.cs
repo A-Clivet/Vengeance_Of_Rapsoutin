@@ -90,7 +90,13 @@ public class S_UnitManager : MonoBehaviour
                     lineCounter = 0;
                     continue;
                 }
-                if (gridList[j][i].unit.state != 0 || gridList[j][i].unit.unitColor != currentColorLine)
+                if (gridList[j][i].unit.state != 0)
+                {
+                    currentColorLine = -1;
+                    lineCounter = 0;
+                    continue;
+                }
+                if(gridList[j][i].unit.unitColor != currentColorLine)
                 {
                     currentColorLine = gridList[j][i].unit.unitColor;
                     lineCounter = 1;
@@ -136,7 +142,13 @@ public class S_UnitManager : MonoBehaviour
                     columnCounter = 0;
                     continue;
                 }
-                if (gridList[i][j].unit.state != 0 || gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
+                if (gridList[i][j].unit.state != 0)
+                {
+                    currentColorColumn = -1; 
+                    columnCounter = 0;
+                    continue;
+                }
+                if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
                 {
                     currentColorColumn = gridList[i][j].unit.unitColor;
                     columnCounter = 1;
