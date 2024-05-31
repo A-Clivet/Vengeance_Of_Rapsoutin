@@ -9687,8 +9687,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f81a54b88b79384195584acbec72304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animatorCredits: {fileID: 0}
-  animationName: 
+  animatorCredits: {fileID: 1243026564}
+  animationName: CreditUp
 --- !u!114 &2051962782
 MonoBehaviour:
   m_ObjectHideFlags: 0
