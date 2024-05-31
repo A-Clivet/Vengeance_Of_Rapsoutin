@@ -31,53 +31,49 @@ public class S_UnitManager : MonoBehaviour
 
         //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
 
-        // for (int i = 0; i < grid.width; i++)//check list largeur
-        // {
-        //     for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
-        //     {
-        //         if (gridList[i][j].unit == null) //si la case est vide, continue
-        //         {
-        //             continue;
-        //         }
-        //         else // si la case contient une unité
-        //         {
-        //             if (gridList[i][j].unit.sizeY > 1)// si l'unité prends plus d'une case de hauteur ce n'est pas un mur
-        //             {
-        //                 if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
-        //                 {
-        //                     gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire qu'elle à été check et ne pas repasser dessus
-        //
-        //                     if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
-        //                     {
-        //                         if (columnCounter == p_formationNumber) // mode attack 
-        //                         {
-        //                             UnitColumn.Add(new());
-        //
-        //                             gridList[i][j].unit.state = 2;
-        //                             gridList[i][j - 1].unit.state = 2;
-        //                             gridList[i][j - 2].unit.state = 2;
-        //
-        //                             Debug.Log("Unité en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
-        //                             Debug.Log("Unité en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
-        //                             Debug.Log("Unité en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
-        //
-        //                             UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
-        //                             UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
-        //                             UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-        //                             grid.UnitPriorityCheck();
-        //                             columnCounter = 0;
-        //                         }
-        //                         
-        //                     }
-        //                 }
-        //                 else // ici l'unité en prends 2 ( case )
-        //                 {
-        //                     //l'unité est une élite
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        for (int i = 0; i < grid.width; i++)//check list largeur
+        {
+            for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
+            {
+                if (gridList[i][j].unit == null) //si la case est vide, continue
+                {
+                    continue;
+                }
+                else // si la case contient une unité
+                {
+                    if (gridList[i][j].unit.sizeY > 1)// si l'unité prends plus d'une case de hauteur ce n'est pas un mur
+                    {
+                        if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
+                        {
+                            gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire que l'unité à été check et ne pas repasser dessus
+
+                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+                            {
+                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
+                                {
+                                    if (columnCounter == p_formationNumber) // mode attack 
+                                    {
+                                        UnitColumn.Add(new());
+
+                                        gridList[i][j].unit.state = 2;
+                                        gridList[i][j + 2].unit.DestroyUnit();
+                                        gridList[i][j + 3].unit.DestroyUnit();
+
+                                        grid.UnitPriorityCheck();
+                                        columnCounter = 0;
+                                    }
+                                }
+
+                            }
+                        }
+                        else // size x = 2
+                        {
+
+                        }
+                    }
+                }
+            }
+        }
 
 
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur

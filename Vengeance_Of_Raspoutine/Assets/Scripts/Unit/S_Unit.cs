@@ -47,7 +47,7 @@ public class Unit : MonoBehaviour
         speed = 10;
     }
 
-    private IEnumerator DestroyUnit()
+    public IEnumerator DestroyUnit()
     {
         for (int i = 0; i < grid.gridList[tileX].Count; i++)
         {
