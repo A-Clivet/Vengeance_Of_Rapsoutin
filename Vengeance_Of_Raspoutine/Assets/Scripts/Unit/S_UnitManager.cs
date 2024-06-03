@@ -13,7 +13,7 @@ public class S_UnitManager : MonoBehaviour
     public Sprite defendImg;
 
 
-    public void Start()
+    public void Awake()
     {
         gridList = grid.gridList;
     }
@@ -24,10 +24,11 @@ public class S_UnitManager : MonoBehaviour
         int columnCounter = 0;
         int lineCounter = 0;
 
+        int currentColorColumn = -1;
+        int currentColorLine = -1;
 
         //SO_Unit actualType = null;
 
-        Debug.Log(grid.name);
         //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
 
         for (int i = 0; i < grid.width; i++)//check list largeur
@@ -44,34 +45,30 @@ public class S_UnitManager : MonoBehaviour
                     {
                         if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
                         {
-                            gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire qu'elle à été check et ne pas repasser dessus
+                            gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire que l'unité à été check et ne pas repasser dessus
 
                             if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
                             {
-                                if (columnCounter == p_formationNumber) // mode attack 
+                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
                                 {
-                                    UnitColumn.Add(new());
+                                    if (columnCounter == p_formationNumber) // mode attack 
+                                    {
+                                        UnitColumn.Add(new());
 
-                                    gridList[i][j].unit.state = 2;
-                                    gridList[i][j - 1].unit.state = 2;
-                                    gridList[i][j - 2].unit.state = 2;
+                                        gridList[i][j].unit.state = 2;
+                                        gridList[i][j + 2].unit.DestroyUnit();
+                                        gridList[i][j + 3].unit.DestroyUnit();
 
-                                    Debug.Log("Unité en position : (" + i + "," + j + ")  is in state : " + gridList[i][j].unit.state);
-                                    Debug.Log("Unité en position : (" + i + "," + (j - 1) + ")  is in state : " + gridList[i][j - 1].unit.state);
-                                    Debug.Log("Unité en position : (" + i + "," + (j - 2) + ")  is in state : " + gridList[i][j - 2].unit.state);
-
-                                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
-                                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
-                                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                                    grid.UnitPriorityCheck();
-                                    columnCounter = 0;
+                                        grid.UnitPriorityCheck();
+                                        columnCounter = 0;
+                                    }
                                 }
-                                
+
                             }
                         }
-                        else // ici l'unité en prends 2 ( case )
+                        else // size x = 2
                         {
-                            //l'unité est une élite
+
                         }
                     }
                 }
@@ -83,21 +80,24 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                if (gridList[j][i].unit == null || (gridList[j][i].unit != null && gridList[j][i].unit.state != 0))
+                if(gridList[j][i].unit == null)
                 {
+                    currentColorLine = -1; // -1 is not a value that a unitColor will be 
                     lineCounter = 0;
                     continue;
                 }
-                if (gridList[j][i].unit != null && gridList[j][i].unit.state != 0)
+                if (gridList[j][i].unit.state != 0)
                 {
+                    currentColorLine = -1;
                     lineCounter = 0;
                     continue;
                 }
-                //if (gridList[j][i].unit.SO_Unit != null) (gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
-                //{
-                //    lineCounter = 1;
-                //    //actualType = gridList[j][i].unit.SO_Unit;
-                //}
+                if(gridList[j][i].unit.unitColor != currentColorLine)
+                {
+                    currentColorLine = gridList[j][i].unit.unitColor;
+                    lineCounter = 1;
+                    continue;
+                }
                 else
                 {
                     lineCounter++;
@@ -110,12 +110,11 @@ public class S_UnitManager : MonoBehaviour
                     gridList[j - 1][i].unit.state = 1;
                     gridList[j - 2][i].unit.state = 1;
 
-                   
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-
+                    currentColorLine = -1;
                     lineCounter = 0;
                 }
                 if (UnitLine.Count >= 1)
@@ -124,27 +123,33 @@ public class S_UnitManager : MonoBehaviour
                 }
                 UnitLine.Clear();
             }
+            currentColorLine = -1;
             lineCounter = 0;
         }
+
         for (int i = 0; i < grid.width; i++) // largeur
         {
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
-                if (gridList[i][j].unit == null || (gridList[i][j].unit != null && gridList[i][j].unit.state != 0))
+
+                if (gridList[i][j].unit == null)
                 {
+                    currentColorColumn = -1; // -1 is not a value that a unitColor will be 
                     columnCounter = 0;
                     continue;
                 }
-                if(gridList[i][j].unit != null && gridList[i][j].unit.state != 0)
+                if (gridList[i][j].unit.state != 0)
                 {
+                    currentColorColumn = -1; 
                     columnCounter = 0;
                     continue;
                 }
-                //if (gridList[i][j].unit.SO_Unit != null)
-                //{
-                //    columnCounter = 1;
-                //    //tualType = gridList[i][j].unit.SO_Unit;
-                //}
+                if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
+                {
+                    currentColorColumn = gridList[i][j].unit.unitColor;
+                    columnCounter = 1;
+                    continue;
+                }
                 else
                 {
                     columnCounter++;
@@ -157,20 +162,25 @@ public class S_UnitManager : MonoBehaviour
                     gridList[i][j].unit.state = 2;
                     gridList[i][j - 1].unit.state = 2;
                     gridList[i][j - 2].unit.state = 2;
+                    
+                    //temporary visual change to notices attacking units
 
+                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
+                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
+                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
+                    
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
                     columnCounter = 0;
+                    currentColorColumn = -1;
                 }
             }
+            currentColorColumn = -1;
             columnCounter = 0;
         }
-        //if(UnitColumn.Count >= 1)
-        //{
-        //    Attack(UnitColumn);
-        //}
+        
     }
 
 

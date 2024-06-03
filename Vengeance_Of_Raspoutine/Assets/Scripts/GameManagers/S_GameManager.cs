@@ -26,10 +26,15 @@ public class S_GameManager : MonoBehaviour
     public S_CharacterMoney player1CharacterMoney { get; private set; }
     public S_CharacterMoney player2CharacterMoney { get; private set; }
 
+    //public S_CharacterXP player1CharacterXP { get; private set; }
+    //public S_CharacterXP player2CharacterXP { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
-    /// <summary> Private int variable that when change will see if we go outside a mapSelection </summary>
+    /// <summary> Private int variable that when change will manage if we go outside mapSelection's range,
+    /// will launch the end of the game if any player won,
+    /// and will update the game background sprite according to the players points </summary>
     private int _mapIndex
     {
         get { return __mapIndex; }
@@ -37,6 +42,7 @@ public class S_GameManager : MonoBehaviour
         {
             __mapIndex = value;
 
+            // Check if we go outside mapSelection's range
             if (__mapIndex < 0)
             {
                 __mapIndex = 0;
@@ -45,6 +51,22 @@ public class S_GameManager : MonoBehaviour
             {
                 __mapIndex = mapSelection.Count - 1;
             }
+
+            // Check if any player won
+            if (player1ScorePoint >= _pointsNeededToWin)
+            {
+                _endMenu.WhoWin(true);
+                return;
+            }
+
+            if (player2ScorePoint >= _pointsNeededToWin)
+            {
+                _endMenu.WhoWin(false);
+                return;
+            }
+
+            // Updating the map according to the players points
+            _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
         }
     }
 
@@ -54,6 +76,14 @@ public class S_GameManager : MonoBehaviour
     public GameObject player1Inputs;
     public GameObject player2Inputs;
 
+    [Header("UnitCall buttons :")]
+    public Button player1UnitCallButton;
+    public Button player2UnitCallButton;
+
+    [Header("Unit manager's references")]
+    public S_UnitManager unitManagerP1;
+    public S_UnitManager unitManagerP2;
+
     [Header("Background references :")]
     [SerializeField] private SpriteRenderer _gameBackgroundSpriteRenderer;
     public List<Sprite> mapSelection = new(new Sprite[5]);
@@ -62,22 +92,15 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private GameObject _panelPlayer1;
     [SerializeField] private GameObject _panelPlayer2;
 
-    [Header("UnitCall buttons :")]
-    [SerializeField] private Button _player1UnitCallButton;
-    [SerializeField] private Button _player2UnitCallButton;
-
     [Header("Turn references :")]
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _playerTurnText;
     [SerializeField] private TextMeshProUGUI _turnsText;
+    [SerializeField] private TextMeshProUGUI _actionsText;
 
     [Header("Characters stats's references :")]
     [SerializeField] S_CharacterStats _character1Stats;
     [SerializeField] S_CharacterStats _character2Stats;
-
-    [Header("Unit manager's references")]
-    [SerializeField] public S_UnitManager unitManagerP1;
-    [SerializeField] public S_UnitManager unitManagerP2;
 
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldown;
@@ -93,9 +116,14 @@ public class S_GameManager : MonoBehaviour
     [Header("End menu reference :")]
     [SerializeField] private S_EndMenu _endMenu;
 
-    private float _targetTime;
-    private int _currentRoundNumber;
-    private int _playerActionNumber;
+    // Game's game mode
+    S_GameModeInvoker.GameModes _currentGameMode;
+
+    int _pointsNeededToWin = 1;
+
+    float _targetTime;
+    int _currentRoundNumber;
+    int _playerActionNumber;
 
     int _loseCoefficient = 1;
     #endregion
@@ -109,9 +137,35 @@ public class S_GameManager : MonoBehaviour
 
     private void Start()
     {
+        #region Game mode management
+
+        // Getting the game mode chosen by the player
+        _currentGameMode = S_CrossSceneDataManager.Instance.gameMode;
+
+        // Setting up the number of round needed to win the game for one player
+        switch (_currentGameMode)
+        {
+            case S_GameModeInvoker.GameModes.Classic:
+                _pointsNeededToWin = 3;
+                break;
+
+            // NOTE : The _pointsNeededToWin is not constant in this game mode, it will be updated each time a player lose a round
+            case S_GameModeInvoker.GameModes.Domination:
+                _pointsNeededToWin = 3;
+                break;
+
+            case S_GameModeInvoker.GameModes.SuddenDeath:
+                _pointsNeededToWin = 3;
+                player1ScorePoint = 2;
+                player2ScorePoint = 2;
+                break;
+        }
+
+        #endregion
+
         _targetTime = 60f;
         _currentRoundNumber = 1;
-        _playerActionNumber = 3;
+        ResetActionPoint();
         _timerText.text = _targetTime.ToString();
 
         _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
@@ -120,33 +174,35 @@ public class S_GameManager : MonoBehaviour
 
         #region Characters management
 
-            // Setting up character manager reference
-            _characterManager = S_CharacterManager.Instance;
+        // Setting up character manager reference
+        _characterManager = S_CharacterManager.Instance;
 
-            // Creating the player's character
-            _characterManager.SpawnCharacter(_character1Stats, true);
-            _characterManager.SpawnCharacter(_character2Stats, false);
+        // Creating the player's character
+        _characterManager.SpawnCharacter(_character1Stats, true);
+        _characterManager.SpawnCharacter(_character2Stats, false);
 
-            // Setting up character's adrenaline and health and money script references
-            player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-            player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        // Setting up character's adrenaline, health, money and xp script references
+        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
-            player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
-            player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
 
-            player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
-            player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
+        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
+        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
 
+        //player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
+        //player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
 
-            // Enable / disable special capacity button's interaction
-            player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-            player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        // Enable / disable special capacity button's interaction
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
 
-            // Updates the character's score visuals
-            player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
-            player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+        // Updates the character's score visuals
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
 
-            #endregion
+        #endregion
 
         if (isPlayer1Turn)
         {
@@ -162,7 +218,10 @@ public class S_GameManager : MonoBehaviour
             _panelPlayer1.SetActive(true);
             _panelPlayer2.SetActive(false);
         }
+
+        DeactivateGrid();
     }
+    
 
     private void Update()
     {
@@ -174,7 +233,9 @@ public class S_GameManager : MonoBehaviour
        
         // Display the current round number
         _turnsText.text = "Turns : " + _currentRoundNumber.ToString();
-       
+
+        _actionsText.text = "Actions restantes : " + _playerActionNumber;
+        
         // Check if the timer is equal or less to 0
         if (_targetTime <= 0.0f)
         {
@@ -187,10 +248,10 @@ public class S_GameManager : MonoBehaviour
         switch (p_playerNumber)
         {
             case 1:
-                _player1UnitCallButton.interactable = p_isActive;
+                player1UnitCallButton.interactable = p_isActive;
                 break;
             case 2:
-                _player2UnitCallButton.interactable = p_isActive;
+                player2UnitCallButton.interactable = p_isActive;
                 break;
             default:
                 Debug.LogError("Player number incorrect");
@@ -208,52 +269,95 @@ public class S_GameManager : MonoBehaviour
         {
             case 0:
                 isPlayer1Turn = false;
-                _player1UnitCallButton.interactable = false;
+                player1UnitCallButton.interactable = false;
                 break;
 
             case 1:
                 isPlayer1Turn = true;
-                _player2UnitCallButton.interactable = false;
+                player2UnitCallButton.interactable = false;
                 break;
         }
     }
 
     /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
     /// and checks if the player 1 or 2 wins </summary>
-    /// <param name="p_isPlayer1Dead"></param>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
         // Add a score point to the player who won, let the player who lost play the first in the new round,
         // change the map progression according to the entire game 
-        if (p_isPlayer1Dead)
+
+
+        if (_currentGameMode == S_GameModeInvoker.GameModes.Domination)
         {
-            player2ScorePoint++;
+            // If player2 won
+            if (p_isPlayer1Dead)
+            {
+                // If the player2 have the advantage
+                if (player1ScorePoint > 0)
+                {
+                    player1ScorePoint--;
+                }
+                else
+                {
+                    player2ScorePoint++;
+                }
 
-            isPlayer1Turn = true;
+                isPlayer1Turn = true;
 
-            _mapIndex += 1 * _loseCoefficient;
+                _mapIndex += 1;
+                
+                player2CharacterMoney.AddMoney(10);
+                player1CharacterMoney.AddMoney(5);
+            }
+            // If player1 won
+            else
+            {
+                // If the player1 have the advantage and player2 won
+                if (player2ScorePoint > 0)
+                {
+                    player2ScorePoint--;
+                }
+                else
+                {
+                    player1ScorePoint++;
+                }
+
+                isPlayer1Turn = false;
+
+                _mapIndex -= 1;
+                
+                player2CharacterMoney.AddMoney(5);
+                player1CharacterMoney.AddMoney(10);
+            }
         }
+        // If we are in other game mode "Classic", "Sudden Death"
         else
         {
-            player1ScorePoint++;
+            if (p_isPlayer1Dead)
+            {
+                player2ScorePoint++;
 
-            isPlayer1Turn = false;
+                isPlayer1Turn = true;
 
-            _mapIndex -= 1 * _loseCoefficient;
-        }
+                _mapIndex += 1 * _loseCoefficient;
 
-        _loseCoefficient++;
+                player2CharacterMoney.AddMoney(10);
+                player1CharacterMoney.AddMoney(5);
+            }
+            else
+            {
+                player1ScorePoint++;
 
-        if (player1ScorePoint >= 1) // mettre a 3 pour les builds suivantes
-        {
-            _endMenu.WhoWin(true);
-            return;
-        }
+                isPlayer1Turn = false;
 
-        if (player2ScorePoint >= 1) // mettre a 3 pour les builds suivantes
-        {
-            _endMenu.WhoWin(false);
-            return;
+                _mapIndex -= 1 * _loseCoefficient;
+
+                player2CharacterMoney.AddMoney(5);
+                player1CharacterMoney.AddMoney(10);
+            }
+
+            if (_currentGameMode == S_GameModeInvoker.GameModes.Classic)
+                _loseCoefficient++;
         }
 
         #region Characters management
@@ -268,8 +372,6 @@ public class S_GameManager : MonoBehaviour
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
-
-        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex];
     }
 
     /// <summary> End the turn of the player who played and let the other player play, reset the timer to 60s and adds 1 to the current round number </summary>
@@ -285,8 +387,8 @@ public class S_GameManager : MonoBehaviour
 
             _panelPlayer1.SetActive(true);
 
-            _player1UnitCallButton.interactable = false;
-            _player2UnitCallButton.interactable = true;
+            player1UnitCallButton.interactable = false;
+            player2UnitCallButton.interactable = true;
 
             StartTurnCheckUnit();
 
@@ -305,8 +407,8 @@ public class S_GameManager : MonoBehaviour
 
             _panelPlayer1.SetActive(false);
 
-            _player1UnitCallButton.interactable = true;
-            _player2UnitCallButton.interactable = false;
+            player1UnitCallButton.interactable = true;
+            player2UnitCallButton.interactable = false;
 
             StartTurnCheckUnit();
 
@@ -316,7 +418,7 @@ public class S_GameManager : MonoBehaviour
         }
 
         _targetTime = 60.0f;
-        _playerActionNumber = 3;
+        ResetActionPoint();
 
         // Enable / disable special capacity button's interaction
         player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
@@ -382,12 +484,10 @@ public class S_GameManager : MonoBehaviour
 
         if (isPlayer1Turn)
         {
-            Debug.Log("combo is called P1");
             unitManagerP1.UnitCombo(3);
         }
         else
         {
-            Debug.Log("combo is called P2");
             unitManagerP2.UnitCombo(3);
         }
 
@@ -404,6 +504,11 @@ public class S_GameManager : MonoBehaviour
     public void IncreaseActionPointBy1()
     {
         _playerActionNumber += 1;
+    }
+    
+    public void ResetActionPoint()
+    {
+        _playerActionNumber = 3;
     }
 
     private IEnumerator LaunchActionCooldown()

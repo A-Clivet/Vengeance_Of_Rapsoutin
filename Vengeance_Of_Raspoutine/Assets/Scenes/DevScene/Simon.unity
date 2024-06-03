@@ -2244,6 +2244,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1324102318}
     - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: player1UnitCallButton
+      value: 
+      objectReference: {fileID: 181977631}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: player2UnitCallButton
+      value: 
+      objectReference: {fileID: 181977629}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: _player1UnitCallButton
       value: 
       objectReference: {fileID: 181977631}
@@ -2848,6 +2856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef09838037d3c6c49800403a54dc6734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerNumber: 2
   _unitManager: {fileID: 196064945}
   _moneyDisplay: {fileID: 1943172411}
   _upgradeLimit: 3
@@ -4941,7 +4950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1901522495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5038,6 +5047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef09838037d3c6c49800403a54dc6734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerNumber: 1
   _unitManager: {fileID: 1146219215}
   _moneyDisplay: {fileID: 1495834433}
   _upgradeLimit: 3
