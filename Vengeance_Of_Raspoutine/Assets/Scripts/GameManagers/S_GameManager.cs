@@ -288,13 +288,13 @@ public class S_GameManager : MonoBehaviour
             if (p_isPlayer1Dead)
             {
                 // If the player2 have the advantage
-                if (player2ScorePoint > 0)
+                if (player1ScorePoint > 0)
                 {
-                    player2ScorePoint--;
+                    player1ScorePoint--;
                 }
                 else
                 {
-                    player1ScorePoint++;
+                    player2ScorePoint++;
                 }
 
                 isPlayer1Turn = true;
@@ -308,13 +308,13 @@ public class S_GameManager : MonoBehaviour
             else
             {
                 // If the player1 have the advantage and player2 won
-                if (player1ScorePoint > 0)
+                if (player2ScorePoint > 0)
                 {
-                    player1ScorePoint--;
+                    player2ScorePoint--;
                 }
                 else
                 {
-                    player2ScorePoint++;
+                    player1ScorePoint++;
                 }
 
                 isPlayer1Turn = false;
@@ -335,6 +335,9 @@ public class S_GameManager : MonoBehaviour
                 isPlayer1Turn = true;
 
                 _mapIndex += 1 * _loseCoefficient;
+
+                player2CharacterMoney.AddMoney(10);
+                player1CharacterMoney.AddMoney(5);
             }
             else
             {
@@ -343,6 +346,9 @@ public class S_GameManager : MonoBehaviour
                 isPlayer1Turn = false;
 
                 _mapIndex -= 1 * _loseCoefficient;
+
+                player2CharacterMoney.AddMoney(5);
+                player1CharacterMoney.AddMoney(10);
             }
 
             if (_currentGameMode == S_GameModeInvoker.GameModes.Classic)
