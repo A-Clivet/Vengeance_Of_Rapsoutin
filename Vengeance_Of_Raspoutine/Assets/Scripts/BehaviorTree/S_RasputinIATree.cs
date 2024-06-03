@@ -6,13 +6,13 @@ public class S_RasputinIATree : BehaviorTree.Tree
 {
     public S_GameManager gameManager;
     public S_UnitManager unitManager;
+    public S_GridManager gridManager;
     public S_UnitCall unitCall;
     public S_UnitCall unit;
+    public S_RemoveUnit removeUnit;
     public S_SpecialCapacityManager abilityManager;
     public S_SpecialCapacityStats abilityStats;
     public S_CharacterAdrenaline characterAdrenaline;
-    public GameObject gridManagerPlayer1;
-    public GameObject gridManagerPlayer2;
     public List<S_Tile> m_Path;
 
     protected override Node SetupTree()
@@ -23,11 +23,11 @@ public class S_RasputinIATree : BehaviorTree.Tree
             new S_Sequencer(new List<Node>
                 {
                 new S_CheckCanComboNode(unitManager),
-                new S_CheckLoneUnit(unitManager),
+                new S_CheckLoneUnit(gridManager),
                 new S_Selector(new List<Node>
                 {
-                    new S_CheckShouldMoveUnit(gridManagerPlayer2, unit),
-                    new S_CheckShouldRemoveUnit(gridManagerPlayer2, unit),
+                    new S_ShouldMoveUnit(gridManager),
+                    new S_ShouldRemoveUnit(gridManager, removeUnit),
                 }),
                 }
             ),
@@ -44,8 +44,8 @@ public class S_RasputinIATree : BehaviorTree.Tree
             new S_Sequencer(
                 new List<Node>
                 {
-                    new S_CanUseAbility(abilityManager,characterAdrenaline),
-                    new S_EnoughAttackingUnit(gridManagerPlayer2),
+                    new S_CanUseAbility(characterAdrenaline),
+                    new S_EnoughAttackingUnitRasputin(unitManager),
                     new S_UseAbility(abilityManager, abilityStats),
                 }),
 

@@ -6,11 +6,13 @@ public class S_USSRAITree : BehaviorTree.Tree
 {
     public S_GameManager gameManager;
     public S_UnitManager unitManager;
+    public S_GridManager gridManager;
     public S_UnitCall unitCall;
     public S_UnitCall unit;
+    public S_RemoveUnit removeUnit;
     public S_SpecialCapacityManager abilityManager;
-    public GameObject gridManagerPlayer1;
-    public GameObject gridManagerPlayer2;
+    public S_SpecialCapacityStats abilityStats;
+    public S_CharacterAdrenaline characterAdrenaline;
     public List<S_Tile> m_Path;
 
     protected override Node SetupTree()
@@ -23,8 +25,8 @@ public class S_USSRAITree : BehaviorTree.Tree
                 new S_CheckCanComboNode(unitManager),
                 new S_Selector(new List<Node>
                 {
-                    new S_CheckShouldMoveUnit(gridManagerPlayer2, unitManager),
-                    new S_CheckShouldRemoveUnit(gridManagerPlayer2, unitManager),
+                    new S_ShouldMoveUnit(gridManager),
+                    new S_ShouldRemoveUnit(gridManager, removeUnit),
                 }),
                 }
             ),
@@ -41,9 +43,9 @@ public class S_USSRAITree : BehaviorTree.Tree
             new S_Sequencer(
                 new List<Node>
                 {
-                    new S_CanUseAbility(gridManagerPlayer2),
-                    new S_EnoughAttackingUnit(gridManagerPlayer2),
-                    new S_UseAbility(abilityManager),
+                    new S_CanUseAbility(characterAdrenaline),
+                    new S_EnoughAttackingUnitUSSR(gridManager),
+                    new S_UseAbility(abilityManager, abilityStats),
                 }
              ),
 

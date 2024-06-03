@@ -6,30 +6,71 @@ using UnityEngine.InputSystem;
 
 public class S_CheckLoneUnit : Node
 {
-    private S_UnitManager _unitManager;
+    private S_GridManager _gridManager;
+    private Unit _loneUnit;
 
-    public S_CheckLoneUnit(S_UnitManager p_unitManager)
+    public S_CheckLoneUnit(S_GridManager p_gridManager)
     {
-        _unitManager = p_unitManager;
+        _gridManager = p_gridManager;
     }
 
     public override NodeState Evaluate()
     {
-        _unitManager.grid;
-        _unitManager.UnitCombo(1);
-        if (_unitManager.UnitColumn.Count > 0 || _unitManager.UnitLine.Count > 1)
+        bool _foundLoneUnitColumn = false;
+        bool _foundLoneUnitLine = false;
+        
+        
+        for(int i = 0; i < _gridManager.AllUnitPerColumn.Count; i++)
+        {
+            _foundLoneUnitColumn = false;
+            _foundLoneUnitLine = false;
+
+            for (int j = 2; j < 4; j++)
+            {
+                if (_gridManager.AllUnitPerColumn[i].Count - j < 0)
+                {
+                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].SO_Unit.unitType)
+                    {
+                        continue;
+                    }
+                    _foundLoneUnitColumn = true;
+                }
+            }
+
+            for(int j = 2; j < 4; j++) 
+            {
+                if (_gridManager.gridList[i - j].Count - 2 < 0 || _gridManager.gridList[i + j].Count - 2 > _gridManager.gridList.Count - 1 || _gridManager.gridList[i - j][_gridManager.AllUnitPerColumn.Count - 2].unit != null || _gridManager.gridList[i + j][_gridManager.AllUnitPerColumn.Count - 2].unit != null)
+                {
+                    if (_gridManager.AllUnitPerColumn[i - j][_gridManager.AllUnitPerColumn[i].Count - 2].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType)
+                    {
+                        continue;
+                    }
+
+                    if (_gridManager.AllUnitPerColumn[i + j][_gridManager.AllUnitPerColumn[i].Count - 2].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType)
+                    {
+                        continue;
+                    }
+
+                    _foundLoneUnitLine = true;
+                }
+            }
+
+            if (_foundLoneUnitColumn == true && _foundLoneUnitLine == true)
+            {
+                _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];
+            }
+        }
+            
+        if (_foundLoneUnitColumn == true && _foundLoneUnitLine == true)
         {
             pr_state = NodeState.SUCCESS;
+            SetData("k_LoneUnit", _loneUnit);
             return pr_state;
         }
 
         pr_state = NodeState.FAILURE;
-
         return pr_state;
     }
 
-    public void SetData(string p_keyLoneUnit, _unitManager)
-    {
-        pr_dataContext[p_keyLoneUnit] = _unitManager.;
-    }
+    
 }

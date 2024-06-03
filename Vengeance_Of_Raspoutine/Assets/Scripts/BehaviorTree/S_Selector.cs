@@ -17,7 +17,7 @@ namespace BehaviorTree
                         continue;
                     case NodeState.SUCCESS:
                         pr_state = NodeState.SUCCESS;
-                        return state;
+                        return pr_state;
                     case NodeState.RUNNING:
                         pr_state = NodeState.RUNNING;
                         return pr_state;
