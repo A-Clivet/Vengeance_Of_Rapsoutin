@@ -26,6 +26,9 @@ public class S_GameManager : MonoBehaviour
     public S_CharacterMoney player1CharacterMoney { get; private set; }
     public S_CharacterMoney player2CharacterMoney { get; private set; }
 
+    //public S_CharacterXP player1CharacterXP { get; private set; }
+    //public S_CharacterXP player2CharacterXP { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
@@ -178,7 +181,7 @@ public class S_GameManager : MonoBehaviour
         _characterManager.SpawnCharacter(_character1Stats, true);
         _characterManager.SpawnCharacter(_character2Stats, false);
 
-        // Setting up character's adrenaline and health and money script references
+        // Setting up character's adrenaline, health, money and xp script references
         player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
         player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
 
@@ -188,6 +191,8 @@ public class S_GameManager : MonoBehaviour
         player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
         player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
 
+        //player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
+        //player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
 
         // Enable / disable special capacity button's interaction
         player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
