@@ -17,11 +17,11 @@ public class S_EndMenu : MonoBehaviour
 
     public void OnRematchButton()
     {
-        SceneManager.LoadSceneAsync("MainGame"); 
+        SceneManager.LoadScene("MainGame"); 
     }
 
     public void OnMainMenuButton()
     {
-        SceneManager.LoadSceneAsync("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 }
