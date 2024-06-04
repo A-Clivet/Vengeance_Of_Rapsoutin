@@ -10,13 +10,21 @@ public class S_USSRAITree : BehaviorTree.Tree
     public S_UnitCall unitCall;
     public S_UnitCall unit;
     public S_RemoveUnit removeUnit;
-    public S_SpecialCapacityManager abilityManager;
-    public S_SpecialCapacityStats abilityStats;
-    public S_CharacterAdrenaline characterAdrenaline;
-    public List<S_Tile> m_Path;
+
+    protected S_SpecialCapacityManager pr_abilityManager;
+    protected S_SpecialCapacityStats pr_abilityStats;
+    protected S_CharacterAdrenaline pr_characterAdrenaline;
+
+    private GameObject _player2CharacterGameObject;
 
     protected override Node SetupTree()
     {
+        _player2CharacterGameObject = S_CharacterManager.Instance.player2CharacterGameObject;
+
+        pr_abilityManager = _player2CharacterGameObject.GetComponent<S_SpecialCapacityManager>();
+        pr_abilityStats = _player2CharacterGameObject.GetComponent<S_SpecialCapacityStats>();
+        pr_characterAdrenaline = _player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+
         Node root = new S_Selector(new List<Node>
         {
             //Allows the AI to check if it can do a combo with the units and if it can it will remove or move a unit
@@ -43,9 +51,9 @@ public class S_USSRAITree : BehaviorTree.Tree
             new S_Sequencer(
                 new List<Node>
                 {
-                    new S_CanUseAbility(characterAdrenaline),
-                    new S_EnoughAttackingUnitUSSR(gridManager),
-                    new S_UseAbility(abilityManager, abilityStats),
+                    new S_CanUseAbility(pr_characterAdrenaline),
+                    new S_EnoughAttackingUnitRasputin(unitManager),
+                    new S_UseAbility(pr_abilityManager, pr_abilityStats),
                 }
              ),
 
