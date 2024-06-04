@@ -1,15 +1,117 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.WSA;
 
 public class S_GameManager : MonoBehaviour
 {
+    #region Enum
+    public enum TurnEmun
+    {
+        Player1Turn,
+        Player2Turn,
+
+        // Used to let the visuels, animations finished
+        TransitionTurn,
+    }
+    #endregion
+
     #region Variables
     public static S_GameManager Instance;
 
     #region Getter / Setter
+    TurnEmun _currentTurn;
+
+    /// <summary> Manages the transition between player turns when a new value is set. 
+    /// Adjusts the interactability of player unit call buttons, updates the player action preventer panels, 
+    /// and changes the displayed player turn text. </summary>
+    public TurnEmun currentTurn 
+    { 
+        get { return _currentTurn; }
+        private set 
+        {
+            _currentTurn = value;
+
+            if (_currentTurn == TurnEmun.Player1Turn)
+            {
+                // Set the boolean variable "isPlayer1Turn" to the corresponding value so that other functions dependent on this value function correctly
+                isPlayer1Turn = true;
+
+                // Add one to the total number of turn passed in the round
+                _currentRoundNumber++;
+
+                // Change the interactability of the unit call's buttons to the corresponding value
+                player1UnitCallButton.interactable = true;
+                player2UnitCallButton.interactable = false;
+
+                // Enable / disable the two player's action preventer panel
+                _player1ActionPreventerPanel.SetActive(false);
+                _player2ActionPreventerPanel.SetActive(true);
+
+                // Change the player turn text to the corresponding value
+                _playerTurnText.text = "Player 1 turn";
+
+                StartTurnCheckUnit();
+
+                DeactivateGrid();
+
+                ResetActionPoint();
+            }
+            else if (_currentTurn == TurnEmun.Player2Turn)
+            {
+                // Same as for the player1 but for the player2
+
+                isPlayer1Turn = false;
+
+                _currentRoundNumber++;
+
+                player1UnitCallButton.interactable = false;
+                player2UnitCallButton.interactable = true;
+
+                _player1ActionPreventerPanel.SetActive(true);
+                _player2ActionPreventerPanel.SetActive(false);
+
+                _playerTurnText.text = "Player 2 turn";
+
+                StartTurnCheckUnit();
+
+                DeactivateGrid();
+
+                ResetActionPoint();
+            }
+            else if (_currentTurn == TurnEmun.TransitionTurn)
+            {
+                // In case if this turn is too long we diseable all possible interactions for all players
+
+                player1UnitCallButton.interactable = false;
+                player2UnitCallButton.interactable = false;
+
+                // NOTE : You can uncomment the code below if you see that the player can, for exemple, grap a unit after he finish his turn
+                // (WARNING THO : That make the screen flash thats why it's currently commented)
+
+                //_player1ActionPreventerPanel.SetActive(true);
+                //_player2ActionPreventerPanel.SetActive(true);
+
+                // When the TransitionTurn is finished it launch automaticaly the Player1Turn
+                currentTurn = TurnEmun.Player1Turn;
+            }
+            else
+            {
+                Debug.LogError(
+                    "ERROR ! You tryed to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
+                    "' but it's not planned into the variable's code. UNITY IS PAUSED !"
+                );
+                Debug.Break();
+                return;
+            }
+
+            _targetTime = 60.0f;
+        }
+    }
+
     public bool isPlayer1Turn { get; private set; } = true;
 
     public int player1ScorePoint { get; private set; }
@@ -89,8 +191,8 @@ public class S_GameManager : MonoBehaviour
     public List<Sprite> mapSelection = new(new Sprite[5]);
 
     [Header("Panel references :")]
-    [SerializeField] private GameObject _panelPlayer1;
-    [SerializeField] private GameObject _panelPlayer2;
+    [SerializeField] private GameObject _player1ActionPreventerPanel;
+    [SerializeField] private GameObject _player2ActionPreventerPanel;
 
     [Header("Turn references :")]
     [SerializeField] private TextMeshProUGUI _timerText;
@@ -119,10 +221,10 @@ public class S_GameManager : MonoBehaviour
     // Game's game mode
     S_GameModeInvoker.GameModes _currentGameMode;
 
-    int _pointsNeededToWin = 1;
+    int _pointsNeededToWin = 3;
 
     float _targetTime;
-    int _currentRoundNumber;
+    int _currentRoundNumber = 0;
     int _playerActionNumber;
 
     int _loseCoefficient = 1;
@@ -145,11 +247,13 @@ public class S_GameManager : MonoBehaviour
         // Setting up the number of round needed to win the game for one player
         switch (_currentGameMode)
         {
+            // NOTE : For this only three game modes the number of points needed to win is the same, maybe that will change if we add others game modes
+            // that is why there is the variable set to 3 in every case
+
             case S_GameModeInvoker.GameModes.Classic:
                 _pointsNeededToWin = 3;
                 break;
 
-            // NOTE : The _pointsNeededToWin is not constant in this game mode, it will be updated each time a player lose a round
             case S_GameModeInvoker.GameModes.Domination:
                 _pointsNeededToWin = 3;
                 break;
@@ -163,14 +267,15 @@ public class S_GameManager : MonoBehaviour
 
         #endregion
 
-        _targetTime = 60f;
-        _currentRoundNumber = 1;
-        ResetActionPoint();
-        _timerText.text = _targetTime.ToString();
+        #region First turn management
 
-        _gameBackgroundSpriteRenderer.sprite = mapSelection[_mapIndex]; // set the current sprite on start
-
+        // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
+
+        // Setting the initial map sprite index to the middle of the available maps
+        _mapIndex = (int)(mapSelection.Count/ 2f);
+
+        #endregion
 
         #region Characters management
 
@@ -203,25 +308,7 @@ public class S_GameManager : MonoBehaviour
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
 
         #endregion
-
-        if (isPlayer1Turn)
-        {
-            _playerTurnText.text = "Player 1 turn";
-
-            _panelPlayer1.SetActive(false);
-            _panelPlayer2.SetActive(true);
-        }
-        else if (!isPlayer1Turn)
-        {
-            _playerTurnText.text = "Player 2 turn";
-
-            _panelPlayer1.SetActive(true);
-            _panelPlayer2.SetActive(false);
-        }
-
-        DeactivateGrid();
     }
-    
 
     private void Update()
     {
@@ -229,18 +316,151 @@ public class S_GameManager : MonoBehaviour
         _targetTime -= Time.deltaTime;
        
         // Display the rounded timer in seconds in a text
-        _timerText.text = "Remaining Time : " + ((int)_targetTime).ToString();
+        _timerText.text = "Remaining time : " + ((int)_targetTime).ToString();
        
         // Display the current round number
-        _turnsText.text = "Turns : " + _currentRoundNumber.ToString();
+        _turnsText.text = "Turn : " + _currentRoundNumber.ToString();
 
-        _actionsText.text = "Actions restantes : " + _playerActionNumber;
+        // Display the player's number of action left he have 
+        _actionsText.text = "Remaining actions : " + _playerActionNumber;
         
-        // Check if the timer is equal or less to 0
+        // Check if the timer is equal or less to 0, if yes then end the turn
         if (_targetTime <= 0.0f)
         {
             EndTurn();
         }
+    }
+
+    /// <summary> Randomly determine the player who will play first in the initial turn. </summary>
+    private void RandomStartTurn()
+    {
+        // Take a random number beetween 0 and 2 (2 excluded)
+        int randomNumber = Random.Range(0, 2);
+
+        switch (randomNumber)
+        {
+            case 0:
+                currentTurn = TurnEmun.Player1Turn;
+                break;
+
+            case 1:
+                currentTurn = TurnEmun.Player2Turn;
+                break;
+        }
+    }
+
+    /// <summary> End the turn of the player who played and let the other player play,
+    /// reset the timer to 60s and adds 1 to the current round number </summary>
+    public void EndTurn()
+    {
+        if (currentTurn == TurnEmun.Player1Turn)
+        {
+            currentTurn = TurnEmun.Player2Turn;
+        }
+        else if (currentTurn == TurnEmun.Player2Turn)
+        {
+            // When the TransitionTurn is finished it launch automaticaly the Player1Turn
+            currentTurn = TurnEmun.TransitionTurn;
+        }
+
+        // Enable / disable special capacity button's interaction
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+    }
+
+    /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
+    /// and checks if the player 1 or 2 wins </summary>
+    public void HandlePlayerLose(bool p_isPlayer1Dead)
+    {
+        // Add a score point to the player who won, let the player who lost play the first in the new round,
+        // change the map progression according to the entire game 
+
+        if (_currentGameMode == S_GameModeInvoker.GameModes.Domination)
+        {
+            // If player2 won
+            if (p_isPlayer1Dead)
+            {
+                // If the player2 have the advantage
+                if (player1ScorePoint > 0)
+                {
+                    player1ScorePoint--;
+                }
+                else
+                {
+                    player2ScorePoint++;
+                }
+
+                currentTurn = TurnEmun.Player1Turn;
+
+                _mapIndex += 1;
+
+                player2CharacterMoney.AddMoney(10);
+                player1CharacterMoney.AddMoney(5);
+            }
+            // If player1 won
+            else
+            {
+                // If the player1 have the advantage and player2 won
+                if (player2ScorePoint > 0)
+                {
+                    player2ScorePoint--;
+                }
+                else
+                {
+                    player1ScorePoint++;
+                }
+
+                currentTurn = TurnEmun.Player2Turn;
+
+                _mapIndex -= 1;
+
+                player2CharacterMoney.AddMoney(5);
+                player1CharacterMoney.AddMoney(10);
+            }
+        }
+        // If we are in other game mode "Classic", "Sudden Death"
+        else
+        {
+            if (p_isPlayer1Dead)
+            {
+                player2ScorePoint++;
+
+                currentTurn = TurnEmun.Player1Turn;
+
+                _mapIndex += 1 * _loseCoefficient;
+
+                player2CharacterMoney.AddMoney(10);
+                player1CharacterMoney.AddMoney(5);
+            }
+            else
+            {
+                player1ScorePoint++;
+
+                currentTurn = TurnEmun.Player2Turn;
+
+                _mapIndex -= 1 * _loseCoefficient;
+
+                player2CharacterMoney.AddMoney(5);
+                player1CharacterMoney.AddMoney(10);
+            }
+
+            if (_currentGameMode == S_GameModeInvoker.GameModes.Classic)
+                _loseCoefficient++;
+        }
+
+        #region Characters management
+
+        // Updates the character's score visuals
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+
+        // Reset players character's stats
+        player1CharacterHealth.ResetHealthStats();
+        player2CharacterHealth.ResetHealthStats();
+
+        player1CharacterAdrenaline.ResetAdrenalineStats();
+        player2CharacterAdrenaline.ResetAdrenalineStats();
+        #endregion
     }
 
     public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
@@ -259,180 +479,14 @@ public class S_GameManager : MonoBehaviour
         }
     }
 
-    /// <summary> Allows to randomise wich player starts at the start of the game </summary>
-    private void RandomStartTurn()
-    {
-        // Take a random number beetween 0 and 2 (2 excluded)
-        int randomNumber = Random.Range(0, 2);
-
-        switch (randomNumber)
-        {
-            case 0:
-                isPlayer1Turn = false;
-                player1UnitCallButton.interactable = false;
-                break;
-
-            case 1:
-                isPlayer1Turn = true;
-                player2UnitCallButton.interactable = false;
-                break;
-        }
-    }
-
-    /// <summary> Change the map when the player lose a point or win a point and add a point to the player 1 or 2
-    /// and checks if the player 1 or 2 wins </summary>
-    public void HandlePlayerLose(bool p_isPlayer1Dead)
-    {
-        // Add a score point to the player who won, let the player who lost play the first in the new round,
-        // change the map progression according to the entire game 
-
-
-        if (_currentGameMode == S_GameModeInvoker.GameModes.Domination)
-        {
-            // If player2 won
-            if (p_isPlayer1Dead)
-            {
-                // If the player2 have the advantage
-                if (player1ScorePoint > 0)
-                {
-                    player1ScorePoint--;
-                }
-                else
-                {
-                    player2ScorePoint++;
-                }
-
-                isPlayer1Turn = true;
-
-                _mapIndex += 1;
-                
-                player2CharacterMoney.AddMoney(10);
-                player1CharacterMoney.AddMoney(5);
-            }
-            // If player1 won
-            else
-            {
-                // If the player1 have the advantage and player2 won
-                if (player2ScorePoint > 0)
-                {
-                    player2ScorePoint--;
-                }
-                else
-                {
-                    player1ScorePoint++;
-                }
-
-                isPlayer1Turn = false;
-
-                _mapIndex -= 1;
-                
-                player2CharacterMoney.AddMoney(5);
-                player1CharacterMoney.AddMoney(10);
-            }
-        }
-        // If we are in other game mode "Classic", "Sudden Death"
-        else
-        {
-            if (p_isPlayer1Dead)
-            {
-                player2ScorePoint++;
-
-                isPlayer1Turn = true;
-
-                _mapIndex += 1 * _loseCoefficient;
-
-                player2CharacterMoney.AddMoney(10);
-                player1CharacterMoney.AddMoney(5);
-            }
-            else
-            {
-                player1ScorePoint++;
-
-                isPlayer1Turn = false;
-
-                _mapIndex -= 1 * _loseCoefficient;
-
-                player2CharacterMoney.AddMoney(5);
-                player1CharacterMoney.AddMoney(10);
-            }
-
-            if (_currentGameMode == S_GameModeInvoker.GameModes.Classic)
-                _loseCoefficient++;
-        }
-
-        #region Characters management
-        // Updates the character's score visuals
-        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
-        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
-
-        // Reset players character's stats
-        player1CharacterHealth.ResetHealthStats();
-        player2CharacterHealth.ResetHealthStats();
-
-        player1CharacterAdrenaline.ResetAdrenalineStats();
-        player2CharacterAdrenaline.ResetAdrenalineStats();
-        #endregion
-    }
-
-    /// <summary> End the turn of the player who played and let the other player play, reset the timer to 60s and adds 1 to the current round number </summary>
-    public void EndTurn()
-    {
-        if (isPlayer1Turn)
-        {
-            isPlayer1Turn = false;
-
-            _currentRoundNumber += 1;
-
-            _playerTurnText.text = "Player 2 Turn";
-
-            _panelPlayer1.SetActive(true);
-
-            player1UnitCallButton.interactable = false;
-            player2UnitCallButton.interactable = true;
-
-            StartTurnCheckUnit();
-
-            DeactivateGrid();
-
-            _panelPlayer2.SetActive(false);
-        }
-
-        else if (!isPlayer1Turn)
-        {
-            isPlayer1Turn = true;
-
-            _currentRoundNumber += 1;
-
-            _playerTurnText.text = "Player 1 Turn";
-
-            _panelPlayer1.SetActive(false);
-
-            player1UnitCallButton.interactable = true;
-            player2UnitCallButton.interactable = false;
-
-            StartTurnCheckUnit();
-
-            DeactivateGrid();
-
-            _panelPlayer2.SetActive(true);
-        }
-
-        _targetTime = 60.0f;
-        ResetActionPoint();
-
-        // Enable / disable special capacity button's interaction
-        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-    }
-
     public void StartTurnCheckUnit()
     {
-        // To avoid having to manage twog grid manager variables
+        // To avoid having to manage two grid manager variables
         // we create a local variable nammed "gridManager" it contain the S_GridManager we will use later,
         // this variable will change depending if it's player1 turn and vice versa. 
         S_GridManager gridManager = _player1GridManager;
 
-        if (!isPlayer1Turn)
+        if (currentTurn == TurnEmun.Player2Turn)
         {
             gridManager = _player1GridManager;
         }
@@ -454,7 +508,7 @@ public class S_GameManager : MonoBehaviour
             }
         }
 
-        if (!isPlayer1Turn)
+        if (currentTurn == TurnEmun.Player2Turn)
         {
             gridManager = _player2GridManager;
         }
@@ -478,11 +532,16 @@ public class S_GameManager : MonoBehaviour
         }
     }
 
+    public void ResetActionPoint()
+    {
+        _playerActionNumber = 3;
+    }
+
     public void ReduceActionPointBy1()
     {
         _playerActionNumber -= 1;
 
-        if (isPlayer1Turn)
+        if (currentTurn == TurnEmun.Player1Turn)
         {
             unitManagerP1.UnitCombo(3);
         }
@@ -505,11 +564,6 @@ public class S_GameManager : MonoBehaviour
     {
         _playerActionNumber += 1;
     }
-    
-    public void ResetActionPoint()
-    {
-        _playerActionNumber = 3;
-    }
 
     private IEnumerator LaunchActionCooldown()
     {
@@ -528,7 +582,7 @@ public class S_GameManager : MonoBehaviour
         {
             for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
-                if (isPlayer1Turn)
+                if (currentTurn == TurnEmun.Player1Turn)
                 {
                     _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
@@ -541,7 +595,7 @@ public class S_GameManager : MonoBehaviour
                 }
             }
         }
-        if (isPlayer1Turn)
+        if (currentTurn == TurnEmun.Player1Turn)
         {
             foreach (Unit unit in _player2GridManager.unitList)
             {
@@ -552,7 +606,7 @@ public class S_GameManager : MonoBehaviour
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
         }
-        else
+        else if (currentTurn == TurnEmun.Player2Turn)
         {
             foreach (Unit unit in _player1GridManager.unitList)
             {
