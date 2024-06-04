@@ -25,6 +25,7 @@ public class S_RemoveUnit : MonoBehaviour
             if (hoveringUnit != null && (hoveringUnit.state == 0 || hoveringUnit.state == 1)) // remove les unit.state = 1 
             {
                 hoveringUnit.grid.unitList.Remove(hoveringUnit);
+                hoveringUnit.grid.AllUnitPerColumn[hoveringUnit.tileX].Remove(hoveringUnit);
                 hoveringUnit.actualTile.unit = null;
                 foreach (S_Tile tile in hoveringUnit.grid.gridList[hoveringUnit.tileX])
                 {

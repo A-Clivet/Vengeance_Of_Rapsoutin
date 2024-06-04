@@ -25,7 +25,7 @@ public class S_UnitCall : MonoBehaviour
     public void Start()
     {
         UnitCalling();
-        CallAmountUpdate();
+        CallAmountUpdate(); 
     }
 
     public int CallAmountUpdate()
@@ -49,6 +49,7 @@ public class S_UnitCall : MonoBehaviour
         {
             CallAmountUpdate();
             callAmount /= 2;
+            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         }
         
         if (S_GameManager.Instance.isPlayer1Turn)

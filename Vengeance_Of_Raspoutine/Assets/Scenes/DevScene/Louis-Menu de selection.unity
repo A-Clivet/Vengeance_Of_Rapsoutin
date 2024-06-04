@@ -662,6 +662,14 @@ MonoBehaviour:
   - {fileID: 5995191591774840050, guid: 34a118a2f3d71b24181cb65d67a95ff7, type: 3}
   - {fileID: 5995191591774840050, guid: 653d174044ef6b0418fb246495051973, type: 3}
   - {fileID: 5995191591774840050, guid: df7fdcd124c4e864492c1be373e55c93, type: 3}
+  UssrSelectedUnits:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  RasputinSelectedUnits:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &288404498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1018,7 +1026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5448377068992043726, guid: 269d8d7106584484d92e240ad101a716, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1042,7 +1050,7 @@ GameObject:
   - component: {fileID: 694525705}
   - component: {fileID: 694525704}
   m_Layer: 5
-  m_Name: Image
+  m_Name: UssrImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1694,7 +1702,7 @@ GameObject:
   - component: {fileID: 926151836}
   - component: {fileID: 926151835}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: RasputinImage (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2810,7 +2818,7 @@ GameObject:
   - component: {fileID: 1391714282}
   - component: {fileID: 1391714281}
   m_Layer: 5
-  m_Name: Image (4)
+  m_Name: RasputinImage (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2885,7 +2893,7 @@ GameObject:
   - component: {fileID: 1412338705}
   - component: {fileID: 1412338704}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: UssrImage (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3168,7 +3176,7 @@ GameObject:
   - component: {fileID: 1550998114}
   - component: {fileID: 1550998113}
   m_Layer: 5
-  m_Name: Image (5)
+  m_Name: RasputinImage (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3645,7 +3653,7 @@ GameObject:
   - component: {fileID: 2081498417}
   - component: {fileID: 2081498416}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: UssrImage (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
