@@ -1,8 +1,8 @@
-using BehaviorTree;
+using S_BehaviorTree;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class S_RasputinIATree : BehaviorTree.Tree
+public class S_RasputinIATree : S_BehaviorTree.S_Tree
 {
     public S_GameManager gameManager;
     public S_UnitManager unitManager;
@@ -22,8 +22,8 @@ public class S_RasputinIATree : BehaviorTree.Tree
         _player2CharacterGameObject = S_CharacterManager.Instance.player2CharacterGameObject;
 
         pr_abilityManager = _player2CharacterGameObject.GetComponent<S_SpecialCapacityManager>();
-        pr_abilityStats = _player2CharacterGameObject.GetComponent<S_SpecialCapacityStats>();
         pr_characterAdrenaline = _player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        pr_abilityStats = pr_characterAdrenaline.
 
 
         Node root = new S_Selector(new List<Node>

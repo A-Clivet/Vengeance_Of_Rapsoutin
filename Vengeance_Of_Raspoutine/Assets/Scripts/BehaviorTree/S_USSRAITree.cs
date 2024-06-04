@@ -1,8 +1,8 @@
-using BehaviorTree;
+using S_BehaviorTree;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class S_USSRAITree : BehaviorTree.Tree
+public class S_USSRAITree : S_BehaviorTree.S_Tree
 {
     public S_GameManager gameManager;
     public S_UnitManager unitManager;

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace BehaviorTree
+namespace S_BehaviorTree
 {
-    public abstract class Tree : MonoBehaviour
+    public abstract class S_Tree : MonoBehaviour
     {
         private Node _root = null;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BehaviorTree
+namespace S_BehaviorTree
 {
     public class S_Selector : Node
     {
