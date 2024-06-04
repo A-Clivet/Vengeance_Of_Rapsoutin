@@ -88,15 +88,14 @@ public class S_GameManager : MonoBehaviour
 
                 player1UnitCallButton.interactable = false;
                 player2UnitCallButton.interactable = false;
-
+                DeactivateGrid();
+                StartTurnCheckUnit();
+                
                 // NOTE : You can uncomment the code below if you see that the player can, for exemple, grap a unit after he finish his turn
                 // (WARNING THO : That make the screen flash thats why it's currently commented)
 
                 //_player1ActionPreventerPanel.SetActive(true);
                 //_player2ActionPreventerPanel.SetActive(true);
-
-                // When the TransitionTurn is finished it launch automaticaly the Player1Turn
-                currentTurn = TurnEmun.Player1Turn;
             }
             else
             {
@@ -312,22 +311,25 @@ public class S_GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Decrease of the turn timer
-        _targetTime -= Time.deltaTime;
-       
-        // Display the rounded timer in seconds in a text
-        _timerText.text = "Remaining time : " + ((int)_targetTime).ToString();
-       
-        // Display the current round number
-        _turnsText.text = "Turn : " + _currentRoundNumber.ToString();
-
-        // Display the player's number of action left he have 
-        _actionsText.text = "Remaining actions : " + _playerActionNumber;
-        
-        // Check if the timer is equal or less to 0, if yes then end the turn
-        if (_targetTime <= 0.0f)
+        if (currentTurn != TurnEmun.TransitionTurn)
         {
-            EndTurn();
+            // Decrease of the turn timer
+            _targetTime -= Time.deltaTime;
+
+            // Display the rounded timer in seconds in a text
+            _timerText.text = "Remaining time : " + ((int)_targetTime).ToString();
+
+            // Display the current round number
+            _turnsText.text = "Turn : " + _currentRoundNumber.ToString();
+
+            // Display the player's number of action left he have 
+            _actionsText.text = "Remaining actions : " + _playerActionNumber;
+
+            // Check if the timer is equal or less to 0, if yes then end the turn
+            if (_targetTime <= 0.0f)
+            {
+                EndTurn();
+            }
         }
     }
 
@@ -353,13 +355,19 @@ public class S_GameManager : MonoBehaviour
     /// reset the timer to 60s and adds 1 to the current round number </summary>
     public void EndTurn()
     {
-        if (currentTurn == TurnEmun.Player1Turn)
+        if (currentTurn == TurnEmun.TransitionTurn)
         {
-            currentTurn = TurnEmun.Player2Turn;
+            if (isPlayer1Turn)
+            {
+                currentTurn = TurnEmun.Player2Turn;
+            }
+            else
+            {
+                currentTurn=TurnEmun.Player1Turn;
+            }
         }
-        else if (currentTurn == TurnEmun.Player2Turn)
+        else
         {
-            // When the TransitionTurn is finished it launch automaticaly the Player1Turn
             currentTurn = TurnEmun.TransitionTurn;
         }
 
@@ -486,7 +494,8 @@ public class S_GameManager : MonoBehaviour
         // this variable will change depending if it's player1 turn and vice versa. 
         S_GridManager gridManager = _player1GridManager;
 
-        if (currentTurn == TurnEmun.Player2Turn)
+
+        if (isPlayer1Turn)
         {
             gridManager = _player1GridManager;
         }
@@ -494,40 +503,37 @@ public class S_GameManager : MonoBehaviour
         {
             gridManager = _player2GridManager;
         }
-
-        for (int i = 0; i < gridManager.width; i++)
+        if (currentTurn == TurnEmun.TransitionTurn)
         {
-            for (int j = 0; j < Mathf.Abs(gridManager.height); j++)
+            for (int i = 0; i < gridManager.AllUnitPerColumn.Count; i++)
             {
-                Unit unit = gridManager.gridList[i][j].unit;
-
-                if (unit != null)
+                for (int j = 0; j < Mathf.Abs(gridManager.AllUnitPerColumn[i].Count); j++)
                 {
+                    Unit unit = gridManager.AllUnitPerColumn[i][j];
+
                     unit.ReturnToBaseTile();
+
                 }
             }
-        }
-
-        if (currentTurn == TurnEmun.Player2Turn)
-        {
-            gridManager = _player2GridManager;
-        }
-        else
-        {
-            gridManager = _player1GridManager;
-        }
-
-        // We loop throught all grid's tiles, looking for a unit
-        for (int i = 0; i < gridManager.width; i++)
-        {
-            for (int j = 0; j < Mathf.Abs(gridManager.height); j++)
+            bool formationAttacking = false;
+            // We loop throught all grid's tiles, looking for a unit
+            for (int i = 0; i < gridManager.unitManager.UnitColumn.Count; i++)
             {
-                Unit unit = gridManager.gridList[i][j].unit;
-
-                if (unit != null)
+                for (int j = 0; j < Mathf.Abs(gridManager.unitManager.UnitColumn[i].Count); j++)
                 {
+                    Unit unit = gridManager.unitManager.UnitColumn[i][j];
+
                     unit.AttackCharge();
+                    if (unit.mustAttack)
+                    {
+                        formationAttacking = true;
+                    }
+
                 }
+            }
+            if (!formationAttacking)
+            {
+                EndTurn();
             }
         }
     }
@@ -611,6 +617,17 @@ public class S_GameManager : MonoBehaviour
             foreach (Unit unit in _player1GridManager.unitList)
             {
                 unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            foreach (Unit unit in _player2GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
+            }
+        }
+        else
+        {
+            foreach (Unit unit in _player1GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
             }
             foreach (Unit unit in _player2GridManager.unitList)
             {
