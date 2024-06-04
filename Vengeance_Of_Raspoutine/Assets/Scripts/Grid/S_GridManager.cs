@@ -44,7 +44,7 @@ public class S_GridManager : MonoBehaviour
                 gridList.Add(new List<S_Tile>());
                 for (int y = 0; y < height; y++)
                 {
-                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * _gridScale.x, (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * (_gridScale.x + 0.1f), (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
@@ -60,7 +60,7 @@ public class S_GridManager : MonoBehaviour
                 gridList.Add(new List<S_Tile>());
                 for (int y = 0;y>height;y--)
                 {
-                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * _gridScale.x, (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * (_gridScale.x + 0.1f), (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;

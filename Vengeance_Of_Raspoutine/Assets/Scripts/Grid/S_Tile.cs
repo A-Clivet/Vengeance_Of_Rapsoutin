@@ -22,7 +22,7 @@ public class S_Tile : MonoBehaviour
     //Move the unit if one is selected
     private void OnMouseDown()
     {
-        if (grid.unitSelected != null)
+        if (grid.unitSelected != null && S_GameManager.Instance.currentTurn!=S_GameManager.TurnEmun.TransitionTurn)
         {
             grid.unitSelected.ActionMoveToTile(this);
         }
