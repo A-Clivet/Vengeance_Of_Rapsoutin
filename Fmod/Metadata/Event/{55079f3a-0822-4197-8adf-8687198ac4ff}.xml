@@ -5,7 +5,7 @@
 			<value>Rifle Shoot</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{12f0d41e-ce45-42d6-94a1-efac62413053}</destination>
@@ -82,7 +82,11 @@
 			<destination>{8393208c-7926-497a-aac7-d2a90115d742}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{2e8b56ad-1abb-48bd-a3c8-db63bc823ece}" />
+	<object class="MultiSound" id="{2e8b56ad-1abb-48bd-a3c8-db63bc823ece}">
+		<relationship name="sounds">
+			<destination>{f771a18e-5fa2-44e2-b958-ab2444519622}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{31d3fc30-fadd-420f-8803-a7e9e4a58d4f}">
 		<relationship name="effects">
 			<destination>{34db946b-6b14-477b-b979-afe4a5227036}</destination>
@@ -95,6 +99,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9cdf4525-1580-4882-9fa7-c4ba7d0b8daa}" />
+	<object class="SingleSound" id="{f771a18e-5fa2-44e2-b958-ab2444519622}">
+		<relationship name="audioFile">
+			<destination>{3edd3afc-578d-4c4b-9bab-a0f0ef63a13e}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{34db946b-6b14-477b-b979-afe4a5227036}" />
 	<object class="MixerBusFader" id="{1233d36d-6d49-4f1a-8446-29ac5151270f}" />
 </objects>
