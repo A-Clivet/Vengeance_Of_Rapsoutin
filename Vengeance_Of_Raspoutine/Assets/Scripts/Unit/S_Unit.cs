@@ -82,7 +82,6 @@ public class Unit : MonoBehaviour
         {
             AttackPlayer();
         }
-        yield break;
     }
 
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
@@ -118,8 +117,8 @@ public class Unit : MonoBehaviour
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         S_GameManager.Instance.EndTurn();
     }
-    //launch the attack of all formation and begin the recursion of the attack
 
+    //launch the attack of all formation and begin the recursion of the attack
     public void AttackCharge()
     {
         if (state == 2) turnCharge--;
@@ -136,7 +135,6 @@ public class Unit : MonoBehaviour
                 actualFormation[i].turnCharge = 0;
                 actualFormation[i].actualTile.unit = null;
                 grid.unitList.Remove(actualFormation[i]);
-                grid.totalUnitAmount -= 1;
                 actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y*i, -1);
                 actualFormation[i].StartCoroutine(LerpMove());
             }
@@ -145,10 +143,10 @@ public class Unit : MonoBehaviour
 
     public void AttackPlayer()
     {
-        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-        grid.enemyGrid.AllUnitPerColumn = grid.UnitPriorityCheck();
         ReducePlayerHp();
         DestroyFormation();
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+        grid.enemyGrid.AllUnitPerColumn = grid.UnitPriorityCheck();
     }
     // Used to check where the attacking formation needs to go if an adversary unit is found and deals damage to them.
     //public void AttackAnotherUnit()
@@ -209,7 +207,7 @@ public class Unit : MonoBehaviour
     //}
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
-    public void ReducePlayerHp(){
+    public void ReducePlayerHp(){ // needs rework
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
@@ -223,7 +221,6 @@ public class Unit : MonoBehaviour
     /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
     public void TakeDamage(int p_damage)
     {
-
         if (actualFormation != null)
         {
             attack -= p_damage;
@@ -235,18 +232,15 @@ public class Unit : MonoBehaviour
                     {
                         actualFormation[j].actualTile.unit = null;
                         grid.unitList.Remove(actualFormation[j]);
-                        grid.totalUnitAmount -= 1;
                         grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
                         Destroy(actualFormation[j].gameObject);
                     }
                 }
                 actualTile.unit = null;
                 grid.unitList.Remove(this);
-                grid.totalUnitAmount -= 1;
                 grid.AllUnitPerColumn[tileX].Remove(this);
                 unitManager.UnitColumn.Remove(actualFormation);
                 Destroy(gameObject);
-
             }
             return;
         }
@@ -255,14 +249,9 @@ public class Unit : MonoBehaviour
         {
             actualTile.unit = null;
             grid.unitList.Remove(this);
-            grid.totalUnitAmount -= 1;
             Destroy(gameObject);
         }
-        return;
     }
-
-
-
 
     // Same as MoveToTile but use a action point
     public void ActionMoveToTile(S_Tile p_tile)
@@ -458,7 +447,6 @@ public class Unit : MonoBehaviour
                 Destroy(gameObject);
                 StopAllCoroutines();
                 grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                return;
             }
         }
     }
