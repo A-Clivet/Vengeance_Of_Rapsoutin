@@ -100,7 +100,7 @@ public class S_GameManager : MonoBehaviour
             else
             {
                 Debug.LogError(
-                    "ERROR ! You tryed to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
+                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
                     "' but it's not planned into the variable's code. UNITY IS PAUSED !"
                 );
                 Debug.Break();
@@ -168,6 +168,8 @@ public class S_GameManager : MonoBehaviour
 
             // Updating the map according to the players points
             _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
+
+            S_WeatherEvent.Instance.EventProbability();
         }
     }
 
@@ -227,6 +229,7 @@ public class S_GameManager : MonoBehaviour
     int _playerActionNumber;
 
     int _loseCoefficient = 1;
+    int _playersPlayed = 0;
     #endregion
 
     #region Methods
@@ -349,6 +352,7 @@ public class S_GameManager : MonoBehaviour
                 currentTurn = TurnEmun.Player2Turn;
                 break;
         }
+        S_WeatherEvent.Instance.EventProbability();
     }
 
     /// <summary> End the turn of the player who played and let the other player play,
@@ -357,6 +361,13 @@ public class S_GameManager : MonoBehaviour
     {
         if (currentTurn == TurnEmun.TransitionTurn)
         {
+            _playersPlayed++;
+            if (_playersPlayed >= 2) 
+            {
+                if(S_WeatherEvent.Instance.currentEvent!=null)
+                S_WeatherEvent.Instance.currentEvent();
+
+            }
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
@@ -365,6 +376,7 @@ public class S_GameManager : MonoBehaviour
             {
                 currentTurn=TurnEmun.Player1Turn;
             }
+
         }
         else
         {
@@ -512,6 +524,10 @@ public class S_GameManager : MonoBehaviour
                     Unit unit = gridManager.AllUnitPerColumn[i][j];
 
                     unit.ReturnToBaseTile();
+                    if (unit.state == 3)
+                    {
+                        unit.state = 0;
+                    }
 
                 }
             }
@@ -551,7 +567,7 @@ public class S_GameManager : MonoBehaviour
         {
             unitManagerP1.UnitCombo(3);
         }
-        else
+        else if(currentTurn == TurnEmun.Player2Turn)
         {
             unitManagerP2.UnitCombo(3);
         }
@@ -594,7 +610,7 @@ public class S_GameManager : MonoBehaviour
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
 
                 }
-                else
+                else if(currentTurn==TurnEmun.Player2Turn)
                 {
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
                     _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;

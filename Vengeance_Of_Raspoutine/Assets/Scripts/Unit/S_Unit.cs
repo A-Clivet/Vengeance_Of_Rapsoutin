@@ -82,7 +82,6 @@ public class Unit : MonoBehaviour
         {
             AttackPlayer();
         }
-        yield break;
     }
 
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
@@ -367,7 +366,7 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
-            if (S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.UnitCallOnOff(1, false);
         }
@@ -477,7 +476,7 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(grid.unitSelected==null && state != 1 && state != 2 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
+        if(grid.unitSelected==null && state==0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
         SelectUnit();
     }
 }
