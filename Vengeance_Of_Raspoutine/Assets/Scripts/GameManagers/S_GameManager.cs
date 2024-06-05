@@ -497,7 +497,7 @@ public class S_GameManager : MonoBehaviour
         // To avoid having to manage two grid manager variables
         // we create a local variable nammed "gridManager" it contain the S_GridManager we will use later,
         // this variable will change depending if it's player1 turn and vice versa. 
-        S_GridManager gridManager = _player1GridManager;
+        S_GridManager gridManager;
 
 
         if (isPlayer1Turn)
@@ -536,6 +536,10 @@ public class S_GameManager : MonoBehaviour
                     if (unit.mustAttack)
                     {
                         formationAttacking = true;
+                    }
+                    else
+                    {
+                        formationAttacking = false;
                     }
 
                 }
