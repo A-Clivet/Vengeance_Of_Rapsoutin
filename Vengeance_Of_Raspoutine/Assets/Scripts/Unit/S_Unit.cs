@@ -117,8 +117,9 @@ public class Unit : MonoBehaviour
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         S_GameManager.Instance.EndTurn();
     }
-
+    
     //launch the attack of all formation and begin the recursion of the attack
+
     public void AttackCharge()
     {
         if (state == 2) turnCharge--;
@@ -135,6 +136,7 @@ public class Unit : MonoBehaviour
                 actualFormation[i].turnCharge = 0;
                 actualFormation[i].actualTile.unit = null;
                 grid.unitList.Remove(actualFormation[i]);
+                grid.totalUnitAmount -= 1;
                 actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y*i, -1);
                 actualFormation[i].StartCoroutine(LerpMove());
             }
@@ -143,10 +145,10 @@ public class Unit : MonoBehaviour
 
     public void AttackPlayer()
     {
-        ReducePlayerHp();
-        DestroyFormation();
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         grid.enemyGrid.AllUnitPerColumn = grid.UnitPriorityCheck();
+        ReducePlayerHp();
+        DestroyFormation();
     }
     // Used to check where the attacking formation needs to go if an adversary unit is found and deals damage to them.
     //public void AttackAnotherUnit()
@@ -356,7 +358,7 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
-            if (S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.UnitCallOnOff(1, false);
         }
@@ -465,7 +467,9 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(grid.unitSelected==null && state != 1 && state != 2 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
-        SelectUnit();
+        if(grid.unitSelected==null && state==0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
+        {
+            SelectUnit();
+        }
     }
 }
