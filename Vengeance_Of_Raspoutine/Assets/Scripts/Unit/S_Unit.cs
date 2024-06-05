@@ -117,6 +117,7 @@ public class Unit : MonoBehaviour
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         S_GameManager.Instance.EndTurn();
     }
+    
     //launch the attack of all formation and begin the recursion of the attack
 
     public void AttackCharge()
@@ -208,7 +209,7 @@ public class Unit : MonoBehaviour
     //}
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
-    public void ReducePlayerHp(){
+    public void ReducePlayerHp(){ // needs rework
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
@@ -222,7 +223,6 @@ public class Unit : MonoBehaviour
     /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
     public void TakeDamage(int p_damage)
     {
-
         if (actualFormation != null)
         {
             attack -= p_damage;
@@ -234,18 +234,15 @@ public class Unit : MonoBehaviour
                     {
                         actualFormation[j].actualTile.unit = null;
                         grid.unitList.Remove(actualFormation[j]);
-                        grid.totalUnitAmount -= 1;
                         grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
                         Destroy(actualFormation[j].gameObject);
                     }
                 }
                 actualTile.unit = null;
                 grid.unitList.Remove(this);
-                grid.totalUnitAmount -= 1;
                 grid.AllUnitPerColumn[tileX].Remove(this);
                 unitManager.UnitColumn.Remove(actualFormation);
                 Destroy(gameObject);
-
             }
             return;
         }
@@ -254,14 +251,9 @@ public class Unit : MonoBehaviour
         {
             actualTile.unit = null;
             grid.unitList.Remove(this);
-            grid.totalUnitAmount -= 1;
             Destroy(gameObject);
         }
-        return;
     }
-
-
-
 
     // Same as MoveToTile but use a action point
     public void ActionMoveToTile(S_Tile p_tile)
@@ -457,7 +449,6 @@ public class Unit : MonoBehaviour
                 Destroy(gameObject);
                 StopAllCoroutines();
                 grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                return;
             }
         }
     }
@@ -477,6 +468,8 @@ public class Unit : MonoBehaviour
     private void OnMouseDown()
     {
         if(grid.unitSelected==null && state==0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
-        SelectUnit();
+        {
+            SelectUnit();
+        }
     }
 }

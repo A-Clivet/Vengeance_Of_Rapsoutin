@@ -174,7 +174,6 @@ public class S_GameManager : MonoBehaviour
     }
 
     #endregion
-
     [Header("Player's inputs GameObject references :")]
     public GameObject player1Inputs;
     public GameObject player2Inputs;
@@ -268,9 +267,7 @@ public class S_GameManager : MonoBehaviour
         }
 
         #endregion
-
         #region First turn management
-
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
 
@@ -278,9 +275,7 @@ public class S_GameManager : MonoBehaviour
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         #endregion
-
         #region Characters management
-
         // Setting up character manager reference
         _characterManager = S_CharacterManager.Instance;
 
@@ -308,7 +303,6 @@ public class S_GameManager : MonoBehaviour
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
-
         #endregion
     }
 
@@ -469,7 +463,6 @@ public class S_GameManager : MonoBehaviour
         }
 
         #region Characters management
-
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
@@ -610,7 +603,7 @@ public class S_GameManager : MonoBehaviour
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
 
                 }
-                else if(currentTurn==TurnEmun.Player2Turn)
+                else if (currentTurn == TurnEmun.Player2Turn)
                 {
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
                     _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
