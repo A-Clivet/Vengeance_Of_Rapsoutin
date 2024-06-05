@@ -138,17 +138,136 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e40f5dfc276473b49984e1389a1570e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <music>k__BackingField:
+  <Music>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  <X_SFX>k__BackingField:
+      Data1: 1651442917
+      Data2: 1335403193
+      Data3: -1812480870
+      Data4: 1589161302
+    Path: event:/Music Event/Musics
+  <Claws>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1901997926
+      Data2: 1308408838
+      Data3: 2036538017
+      Data4: -622561773
+    Path: event:/SFX Events/Both sides/Claws
+  <Impact>k__BackingField:
+    Guid:
+      Data1: -1369295599
+      Data2: 1107305539
+      Data3: 1679216274
+      Data4: 909160993
+    Path: event:/SFX Events/Both sides/Impact
+  <Earthquake>k__BackingField:
+    Guid:
+      Data1: -1854386244
+      Data2: 1280062036
+      Data3: -1164742495
+      Data4: -2037082264
+    Path: event:/SFX Events/Environment/Earthquake
+  <Fogg>k__BackingField:
+    Guid:
+      Data1: -190291977
+      Data2: 1328274047
+      Data3: 255222462
+      Data4: 1375395689
+    Path: event:/SFX Events/Environment/Fogg
+  <SnowStorm>k__BackingField:
+    Guid:
+      Data1: 1566419057
+      Data2: 1210947708
+      Data3: -383061347
+      Data4: 1237259589
+    Path: event:/SFX Events/Environment/Snow Storm
+  <DarkMagic>k__BackingField:
+    Guid:
+      Data1: 1291828059
+      Data2: 1339743797
+      Data3: -703455860
+      Data4: 1334990591
+    Path: event:/SFX Events/Monsters/Dark Magic
+  <MonsterNoise>k__BackingField:
+    Guid:
+      Data1: 1322055153
+      Data2: 1229315799
+      Data3: -1386283376
+      Data4: 307390275
+    Path: event:/SFX Events/Monsters/Monster Noise
+  <MonsterWarHorn>k__BackingField:
+    Guid:
+      Data1: 92875241
+      Data2: 1182002291
+      Data3: 865809336
+      Data4: -146046526
+    Path: event:/SFX Events/Monsters/Monster War Horn
+  <ClickUI_SFX>k__BackingField:
+    Guid:
+      Data1: 772327285
+      Data2: 1084763396
+      Data3: 373976981
+      Data4: 604915023
+    Path: event:/SFX Events/UI/Click UI
+  <UnitDeployed>k__BackingField:
+    Guid:
+      Data1: 1168122736
+      Data2: 1123557001
+      Data3: -845703247
+      Data4: 1320742241
+    Path: "event:/SFX Events/UI/troupe d\xE9ploy\xE9e"
+  <UnitSelected>k__BackingField:
+    Guid:
+      Data1: -76693672
+      Data2: 1333184276
+      Data3: 1459728264
+      Data4: 601483656
+    Path: "event:/SFX Events/UI/troupe s\xE9lection\xE9e"
+  <Bear>k__BackingField:
+    Guid:
+      Data1: 1056789560
+      Data2: 1306789937
+      Data3: 103516342
+      Data4: 595540665
+    Path: event:/SFX Events/USSR/Bear
+  <CarRun>k__BackingField:
+    Guid:
+      Data1: -320800030
+      Data2: 1130441597
+      Data3: -1084260714
+      Data4: -513141402
+    Path: event:/SFX Events/USSR/Car Engine Run
+  <CarStart>k__BackingField:
+    Guid:
+      Data1: 1128025693
+      Data2: 1226827477
+      Data3: 244211634
+      Data4: 1866428158
+    Path: event:/SFX Events/USSR/Car Engine Start
+  <RifleReload>k__BackingField:
+    Guid:
+      Data1: 867779573
+      Data2: 1227970324
+      Data3: 277976254
+      Data4: -584236146
+    Path: event:/SFX Events/USSR/Rifle Reload
+  <RifleShoot>k__BackingField:
+    Guid:
+      Data1: 1426562874
+      Data2: 1100417058
+      Data3: -2021204086
+      Data4: -3896807
+    Path: event:/SFX Events/USSR/Rifle Shoot
+  <UssrWarHorn>k__BackingField:
+    Guid:
+      Data1: -292149199
+      Data2: 1120284604
+      Data3: 502186685
+      Data4: -49105919
+    Path: event:/SFX Events/USSR/USSR War Horn
+  <VodkaSprinklers>k__BackingField:
+    Guid:
+      Data1: -526369537
+      Data2: 1136323150
+      Data3: 1015422652
+      Data4: -577941681
+    Path: event:/SFX Events/USSR/vodka sprinklers

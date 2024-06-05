@@ -43,7 +43,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeMusic(FMODEvents.instance.BattleMusic);
+        InitializeMusic(FMODEvents.instance.Music);
     }
 
     private void Update()
@@ -57,6 +57,18 @@ public class AudioManager : MonoBehaviour
     {
         _musicEventInstance = CreateInstance(p_musicEventReference);
         _musicEventInstance.start();
+    }
+
+    public void SetMusic(int p_Music)
+    {
+        //set p_Music to 0 for the main menu music and 1 for the battle music
+        _musicEventInstance.setParameterByName("Crossfade", p_Music);
+    }
+    public void SetAdaptativeMusic(int p_Music)
+    {
+        //set p_Music to 0 for the short loop, 1 for the tense loop (only in domination)
+        //set p_Music to 2 for the long loop 
+        _musicEventInstance.setParameterByName("AdaptativeMusic", p_Music);
     }
 
     public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos)
