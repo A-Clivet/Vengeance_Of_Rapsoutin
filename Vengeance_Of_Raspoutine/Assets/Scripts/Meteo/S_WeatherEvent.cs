@@ -72,33 +72,36 @@ public class S_WeatherEvent : MonoBehaviour
         if (nbTurn < 0)
         {
             nbTurn = 8;
-            foreach (Unit u in _player1GridManager.unitList)
+            List<Unit> unitToRemove = new List<Unit>();
+            foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 1))
             {
-                if (u.state == 1)
-                {
-
-                    u.actualTile.unit = null;
-                    _player1GridManager.unitList.Remove(u);
-                    _player1GridManager.totalUnitAmount -= 1;
-                    _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
-                    Destroy(u.gameObject);
-                    u.StopAllCoroutines();
-
-                }
+                unitToRemove.Add(u);
             }
-            foreach (Unit u in _player2GridManager.unitList)
+            foreach (Unit u in unitToRemove)
             {
-                if (u.state == 1)
-                {
+                
+                u.actualTile.unit = null;
+                _player1GridManager.unitList.Remove(u);
+                _player1GridManager.totalUnitAmount -= 1;
+                _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
+                Destroy(u.gameObject);
+                u.StopAllCoroutines();
+            }
+            unitToRemove.Clear();
 
-                    u.actualTile.unit = null;
-                    _player2GridManager.unitList.Remove(u);
-                    _player2GridManager.totalUnitAmount -= 1;
-                    _player2GridManager.AllUnitPerColumn[u.tileX].Remove(u);
-                    Destroy(u.gameObject);
-                    u.StopAllCoroutines();
+            foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 1))
+            {
+                unitToRemove.Add(u);  
+            }
+            foreach (Unit u in unitToRemove)
+            {
 
-                }
+                u.actualTile.unit = null;
+                _player1GridManager.unitList.Remove(u);
+                _player1GridManager.totalUnitAmount -= 1;
+                _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
+                Destroy(u.gameObject);
+                u.StopAllCoroutines();
             }
             _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
             _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
