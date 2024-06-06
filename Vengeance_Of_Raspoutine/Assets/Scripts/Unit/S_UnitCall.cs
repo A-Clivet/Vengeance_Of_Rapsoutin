@@ -51,6 +51,7 @@ public class S_UnitCall : MonoBehaviour
             CallAmountUpdate();
             callAmount /= 2;
             grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+            S_GameManager.Instance.DeactivateGrid();
         }
 
         if (grid.totalUnitAmount < unitCapacity)
