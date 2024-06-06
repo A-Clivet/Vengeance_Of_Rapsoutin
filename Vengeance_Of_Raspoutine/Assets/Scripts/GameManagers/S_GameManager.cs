@@ -537,11 +537,6 @@ public class S_GameManager : MonoBehaviour
                     {
                         formationAttacking = true;
                     }
-                    else
-                    {
-                        formationAttacking = false;
-                    }
-
                 }
             }
             if (!formationAttacking)
