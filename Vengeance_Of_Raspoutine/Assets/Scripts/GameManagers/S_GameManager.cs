@@ -427,13 +427,13 @@ public class S_GameManager : MonoBehaviour
     {
         if (currentTurn == TurnEmun.TransitionTurn)
         {
-            _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
-            _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
+            player1GridManager.AllUnitPerColumn = player1GridManager.UnitPriorityCheck();
+            player2GridManager.AllUnitPerColumn = player2GridManager.UnitPriorityCheck();
             _playersPlayed++;
             if (_playersPlayed >= 2) 
             {
                 if(S_WeatherEvent.Instance.currentEvent!=null)
-                S_WeatherEvent.Instance.currentEvent();
+                    S_WeatherEvent.Instance.currentEvent();
 
             }
             if (isPlayer1Turn)
