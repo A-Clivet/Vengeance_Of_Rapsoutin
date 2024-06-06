@@ -434,7 +434,7 @@ public class S_GameManager : MonoBehaviour
             player1GridManager.AllUnitPerColumn = player1GridManager.UnitPriorityCheck();
             player2GridManager.AllUnitPerColumn = player2GridManager.UnitPriorityCheck();
 
-            #region Weather handling
+            #region Weather event handling
 
             _playersPlayed++;
 
