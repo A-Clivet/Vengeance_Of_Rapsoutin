@@ -33,6 +33,7 @@ public class S_WeatherEvent : MonoBehaviour
     }
 
     private int nbTurn = 0;
+    private int fogOpacityState=1;
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
@@ -111,17 +112,21 @@ public class S_WeatherEvent : MonoBehaviour
     }
     public void FogEvent()
     {
-        if (nbTurn <= 2)
+            nbTurn+=fogOpacityState;
+
+        if (nbTurn <= 0) 
         {
-            nbTurn++;
+            fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0);
+            fogOpacityState=-fogOpacityState;
         }
         if (nbTurn == 1)
         {
             fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0.5f);
         }
-        if (nbTurn == 2)
+        if (nbTurn >= 2)
         {
             fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 1);
+            fogOpacityState=-fogOpacityState;
         }
         return;
     }
