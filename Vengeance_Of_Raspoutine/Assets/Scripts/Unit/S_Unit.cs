@@ -116,8 +116,6 @@ public class Unit : MonoBehaviour
         {
             if (unitManager.UnitColumn[i][0].turnCharge <= 0)
             {
-                grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                grid.enemyGrid.AllUnitPerColumn = grid.enemyGrid.UnitPriorityCheck();
                 Destroy(gameObject);
                 return;
             }
@@ -126,8 +124,6 @@ public class Unit : MonoBehaviour
         {
             if (grid.enemyGrid.unitManager.UnitColumn[i][0].turnCharge <= 0)
             {
-                grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                grid.enemyGrid.AllUnitPerColumn = grid.enemyGrid.UnitPriorityCheck();
                 Destroy(gameObject);
                 return;
             }
@@ -137,7 +133,11 @@ public class Unit : MonoBehaviour
         
 
     }
-    
+
+    private void OnDestroy()
+    {
+        grid.totalUnitAmount -= 1;
+    }
     //launch the attack of all formation and begin the recursion of the attack
 
     public void AttackCharge()
@@ -154,7 +154,6 @@ public class Unit : MonoBehaviour
                 actualFormation[i].turnCharge = 0;
                 actualFormation[i].actualTile.unit = null;
                 grid.unitList.Remove(actualFormation[i]);
-                grid.totalUnitAmount -= 1;
                 actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
                 actualFormation[i].StartCoroutine(LerpMove());
             }
@@ -321,6 +320,7 @@ public class Unit : MonoBehaviour
   then deselect the unit*/
     public void MoveToTile(S_Tile p_tile)
     {
+        // We iterate throw the column of the given tile
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
             if (tile.unit == null || tile.unit == this)
@@ -332,11 +332,8 @@ public class Unit : MonoBehaviour
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
-                if (!_isMoving)
-                {
-                    _isMoving = true;
-                    StartCoroutine(LerpMove());
-                }
+
+                StartCoroutine(LerpMove());
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
@@ -436,23 +433,30 @@ public class Unit : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Unit>().grid != grid)
+        Unit unit = collision.gameObject.GetComponent<Unit>();
+
+        if (unit.grid != grid)
         {
-            if (collision.gameObject.GetComponent<Unit>().mustAttack)
+            if (!unit.mustAttack)
             {
-                if (collision.gameObject.GetComponent<Unit>().actualFormation == null)
+                if (unit.actualFormation == null)
                 {
-                    attack -= collision.gameObject.GetComponent<Unit>().defense;
-                    collision.gameObject.GetComponent<Unit>().TakeDamage(attack + collision.gameObject.GetComponent<Unit>().defense);
+                    attack -= unit.defense;
+                    unit.TakeDamage(attack + unit.defense);
 
                 }
-                else if (collision.gameObject.GetComponent<Unit>().turnCharge > 0)
+                else if (unit.turnCharge > 0)
                 {
-                    attack -= collision.gameObject.GetComponent<Unit>().attack;
-                    collision.gameObject.GetComponent<Unit>().TakeDamage(attack + collision.gameObject.GetComponent<Unit>().attack);
+                    attack -= unit.attack;
+                    unit.TakeDamage(attack + unit.attack);
 
+                }
+                if(attack <= 0)
+                {
+                    actualFormation[0].DestroyFormation();
                 }
             }
+
         }
     }
     private void OnMouseOver()

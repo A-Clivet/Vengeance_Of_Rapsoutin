@@ -355,6 +355,8 @@ public class S_GameManager : MonoBehaviour
     {
         if (currentTurn == TurnEmun.TransitionTurn)
         {
+            _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
+            _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
             _playersPlayed++;
             if (_playersPlayed >= 2) 
             {
@@ -592,7 +594,7 @@ public class S_GameManager : MonoBehaviour
 
     public void DeactivateGrid()
     {
-        for (int i = 0; i < _player1GridManager.width; i++)
+        /*for (int i = 0; i < _player1GridManager.width; i++)
         {
             for (int j = 0; j < Mathf.Abs(_player1GridManager.height); j++)
             {
@@ -608,7 +610,7 @@ public class S_GameManager : MonoBehaviour
                     _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
                 }
             }
-        }
+        }*/
         if (currentTurn == TurnEmun.Player1Turn)
         {
             foreach (Unit unit in _player2GridManager.unitList)
@@ -637,8 +639,10 @@ public class S_GameManager : MonoBehaviour
             {
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
+
             foreach (Unit unit in _player2GridManager.unitList)
             {
+
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
         }

@@ -1,5 +1,4 @@
 /*
- * 
 05/06/2024 :
     soleil, min 13° moyenne 26° max 27°
 
