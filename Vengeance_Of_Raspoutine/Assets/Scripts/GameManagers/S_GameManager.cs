@@ -246,6 +246,7 @@ public class S_GameManager : MonoBehaviour
     int _moneyToHadToPlayer1WhenHeLose;
     int _moneyToHadToPlayer2WhenHeLose;
 
+    /// <summary> Number of turn between each weather event (will launch a weather event when it reach is goal) </summary>
     int _playersPlayed = 0;
     #endregion
 
@@ -333,6 +334,7 @@ public class S_GameManager : MonoBehaviour
         }
 
         #endregion
+
         #region First turn management
 
         _playerActionNumber = _startingPlayerActionNumber;
@@ -345,6 +347,7 @@ public class S_GameManager : MonoBehaviour
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         #endregion
+
         #region Characters management
         // Setting up character manager reference
         _characterManager = S_CharacterManager.Instance;
@@ -427,15 +430,21 @@ public class S_GameManager : MonoBehaviour
     {
         if (currentTurn == TurnEmun.TransitionTurn)
         {
+            // Re-organize all the unit in each player grid (removes gaps in grids)
             player1GridManager.AllUnitPerColumn = player1GridManager.UnitPriorityCheck();
             player2GridManager.AllUnitPerColumn = player2GridManager.UnitPriorityCheck();
+
+            #region Weather handling
+
             _playersPlayed++;
+
+            // When the twos player have played
             if (_playersPlayed >= 2) 
             {
-                if(S_WeatherEvent.Instance.currentEvent!=null)
-                    S_WeatherEvent.Instance.currentEvent();
-
+                S_WeatherEvent.Instance.currentEvent?.Invoke();
             }
+            #endregion
+
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
@@ -444,7 +453,6 @@ public class S_GameManager : MonoBehaviour
             {
                 currentTurn = TurnEmun.Player1Turn;
             }
-
         }
         else
         {
