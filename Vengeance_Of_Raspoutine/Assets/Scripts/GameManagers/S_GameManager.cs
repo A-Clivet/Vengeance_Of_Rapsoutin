@@ -185,6 +185,8 @@ public class S_GameManager : MonoBehaviour
 
             // Updating the map according to the players points
             _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
+
+            S_WeatherEvent.Instance.EventProbability();
         }
     }
     #endregion
@@ -231,6 +233,7 @@ public class S_GameManager : MonoBehaviour
     // -- Score management -- //
     // ("_loseCoefficient" is used to manage score point on the Classic game mode)
     int _loseCoefficient = 1;
+
     int _pointsNeededToWin = 3;
 
     // -- End menu manager's reference -- //
@@ -242,6 +245,8 @@ public class S_GameManager : MonoBehaviour
     // -- Money management -- //
     int _moneyToHadToPlayer1WhenHeLose;
     int _moneyToHadToPlayer2WhenHeLose;
+
+    int _playersPlayed = 0;
     #endregion
 
     #endregion
@@ -328,10 +333,10 @@ public class S_GameManager : MonoBehaviour
         }
 
         #endregion
-
         #region First turn management
 
         _playerActionNumber = _startingPlayerActionNumber;
+
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
@@ -340,9 +345,7 @@ public class S_GameManager : MonoBehaviour
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         #endregion
-
         #region Characters management
-
         // Setting up character manager reference
         _characterManager = S_CharacterManager.Instance;
 
@@ -370,7 +373,6 @@ public class S_GameManager : MonoBehaviour
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
-
         #endregion
     }
 
@@ -416,6 +418,7 @@ public class S_GameManager : MonoBehaviour
                 currentTurn = TurnEmun.Player2Turn;
                 break;
         }
+        S_WeatherEvent.Instance.EventProbability();
     }
 
     /// <summary> End the turn of the player who played and let the other player play,
@@ -424,6 +427,15 @@ public class S_GameManager : MonoBehaviour
     {
         if (currentTurn == TurnEmun.TransitionTurn)
         {
+            _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
+            _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
+            _playersPlayed++;
+            if (_playersPlayed >= 2) 
+            {
+                if(S_WeatherEvent.Instance.currentEvent!=null)
+                S_WeatherEvent.Instance.currentEvent();
+
+            }
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
@@ -432,6 +444,7 @@ public class S_GameManager : MonoBehaviour
             {
                 currentTurn = TurnEmun.Player1Turn;
             }
+
         }
         else
         {
@@ -512,7 +525,6 @@ public class S_GameManager : MonoBehaviour
             _loseCoefficient++;
 
         #region Characters management
-
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
@@ -573,6 +585,10 @@ public class S_GameManager : MonoBehaviour
                     Unit unit = gridManager.AllUnitPerColumn[i][j];
 
                     unit.ReturnToBaseTile();
+                    if (unit.state == 3)
+                    {
+                        unit.state = 0;
+                    }
                 }
             }
             bool formationAttacking = false;
@@ -588,7 +604,6 @@ public class S_GameManager : MonoBehaviour
                     {
                         formationAttacking = true;
                     }
-
                 }
             }
             if (!formationAttacking)
