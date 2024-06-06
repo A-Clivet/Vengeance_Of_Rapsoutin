@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2248576298887187862}
   - component: {fileID: 5561449987849808534}
   m_Layer: 0
-  m_Name: GO_EndMenu
+  m_Name: GO_EndMenuManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
