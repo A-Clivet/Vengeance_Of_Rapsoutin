@@ -25,7 +25,7 @@ public class S_UnitCall : MonoBehaviour
     
     public void Start()
     {
-        UnitCalling();
+        
         CallAmountUpdate(); 
     }
 
@@ -51,7 +51,7 @@ public class S_UnitCall : MonoBehaviour
             CallAmountUpdate();
             callAmount /= 2;
             grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-            S_GameManager.Instance.DeactivateGrid();
+            
         }
 
         if (grid.totalUnitAmount < unitCapacity)
@@ -87,7 +87,7 @@ public class S_UnitCall : MonoBehaviour
         grid.unitManager.UnitCombo(3);
         TextUpdate();
     }
-    
+
     public void TextUpdate()
     {
         string buttonText = CallAmountUpdate().ToString();

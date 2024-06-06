@@ -339,6 +339,9 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
+        // Call the start units for all players
+        player1UnitCallButton.gameObject.GetComponent<S_UnitCall>().UnitCalling();
+        player2UnitCallButton.gameObject.GetComponent<S_UnitCall>().UnitCalling();
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
@@ -421,6 +424,7 @@ public class S_GameManager : MonoBehaviour
                 currentTurn = TurnEmun.Player2Turn;
                 break;
         }
+
         S_WeatherEvent.Instance.EventProbability();
     }
 

@@ -368,10 +368,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1869549173}
-    - target: {fileID: 144692201654916165, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      propertyPath: m_SortingOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 1215639307098938880, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -450,14 +446,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1215639307098938880, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4632102236783951331, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4632102236783951331, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5617965077257230250, guid: a147602cd33660d46bd54aac7266579f, type: 3}
