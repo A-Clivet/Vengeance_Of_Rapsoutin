@@ -1153,7 +1153,7 @@ GameObject:
   - component: {fileID: 375911354}
   - component: {fileID: 375911356}
   - component: {fileID: 375911355}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7210,7 +7210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1735936123}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7844,7 +7844,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1831709368}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SettingsScreen&AudioUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}

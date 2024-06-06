@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class S_GameBackgroundSizeUpdaterManager : MonoBehaviour
 {
-    S_GameBackgroundSizeUpdaterManager Instance;
+    public static S_GameBackgroundSizeUpdaterManager Instance;
 
     private SpriteRenderer _spriteRenderer;
 
