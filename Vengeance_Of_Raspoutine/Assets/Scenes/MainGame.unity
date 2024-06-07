@@ -273,7 +273,8 @@ PrefabInstance:
       value: GO_OnDestroyOnLoad
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4535618538634781844, guid: d5b8ac66ea3393b4dab2bf125f821513, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5b8ac66ea3393b4dab2bf125f821513, type: 3}
