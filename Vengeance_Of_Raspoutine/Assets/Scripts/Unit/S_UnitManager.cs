@@ -173,6 +173,16 @@ public class S_UnitManager : MonoBehaviour
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+
+                    if (S_GameManager.Instance.isPlayer1Turn)
+                    {
+                        S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                    }
+                    else
+                    {
+                        S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                    }
+
                     columnCounter = 0;
                     currentColorColumn = -1;
                 }

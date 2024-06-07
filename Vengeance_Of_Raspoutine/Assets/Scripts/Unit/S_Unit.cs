@@ -188,7 +188,7 @@ public class Unit : MonoBehaviour
     {
         if (state == 2) turnCharge--;
 
-        if (turnCharge == 0)
+        if (turnCharge >= 0)
         {
             for (int j = 0; j < unitManager.UnitColumn.Count; j++)
             {
@@ -261,7 +261,6 @@ public class Unit : MonoBehaviour
                     actualTile.unit = null;
                     grid.unitList.Remove(this);
                     grid.totalUnitAmount -= 1;
-
                     Destroy(gameObject);
 
                 }
@@ -274,6 +273,14 @@ public class Unit : MonoBehaviour
             actualTile.unit = null;
             grid.unitList.Remove(this);
             grid.totalUnitAmount -= 1;
+            if (S_GameManager.Instance.isPlayer1Turn)
+            {
+                S_GameManager.Instance.player1CharacterXP.GainXP(5);
+            }
+            else
+            {
+                S_GameManager.Instance.player2CharacterXP.GainXP(5);
+            }
             Destroy(gameObject);
         }
 
