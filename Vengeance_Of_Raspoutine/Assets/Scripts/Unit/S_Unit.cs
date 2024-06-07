@@ -320,6 +320,34 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
+        switch (sizeX, sizeY)
+        {
+            case (1, 1):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+
+                break;
+            case (1, 2):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+
+
+                break;
+            case (2, 2):
+
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+
+                break;
+
+            default:
+
+                break;
+        }
         actualTile.unit = null;
         actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
         actualTile.unit = this;
