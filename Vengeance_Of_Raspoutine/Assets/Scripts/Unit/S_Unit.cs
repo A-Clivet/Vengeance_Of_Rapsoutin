@@ -320,6 +320,10 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
+
+        actualTile.unit = null;
+        actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
+        actualTile.unit = this;
         switch (sizeX, sizeY)
         {
             case (1, 1):
@@ -348,9 +352,6 @@ public class Unit : MonoBehaviour
 
                 break;
         }
-        actualTile.unit = null;
-        actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
-        actualTile.unit = this;
         p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
