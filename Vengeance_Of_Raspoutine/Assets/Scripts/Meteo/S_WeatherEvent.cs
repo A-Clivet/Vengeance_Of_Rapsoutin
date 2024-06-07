@@ -12,6 +12,7 @@ public class S_WeatherEvent : MonoBehaviour
 
     public enum Event
     {
+        None,
         Earthquake,
         Fog,
         Blizzard
@@ -63,6 +64,10 @@ public class S_WeatherEvent : MonoBehaviour
                 ManageEvent = Event.Blizzard;
             }
             return;
+        }
+        else
+        {
+            ManageEvent = Event.None;
         }
         return;
     }
@@ -191,6 +196,12 @@ public class EventStocker
         }
         else if(p_wantedEvent == S_WeatherEvent.Event.Blizzard)
         {
+            _eventToStore = p_classRef.BlizzardEvent;
+            return _eventToStore;
+        }
+        else if (p_wantedEvent == S_WeatherEvent.Event.Blizzard)
+        {
+            _eventToStore = null;
             return _eventToStore;
         }
         Debug.LogError("the event given in parameter does not exist");
