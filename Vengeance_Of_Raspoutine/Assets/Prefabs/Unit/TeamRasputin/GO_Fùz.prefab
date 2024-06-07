@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 4800004908068926941}
   - component: {fileID: 3052463181262568449}
   - component: {fileID: 8606980364883050880}
+  - component: {fileID: 5592624148813818367}
   m_Layer: 0
   m_Name: "GO_F\xF9z"
   m_TagString: Untagged
@@ -113,7 +114,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.504275, y: 7.695674, z: -1}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.715, y: 0.715, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4001540988264094615}
@@ -184,12 +185,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  _isFollowing: 0
   SO_Unit: {fileID: 11400000, guid: 243e211b752ef35479aff91aabd7d569, type: 2}
   attack: 0
   defense: 0
   state: 0
   turnCharge: 0
+  actualFormation: []
+  formationIndex: 0
   unitColor: 0
   unitSprite: {fileID: 0}
   actualTile: {fileID: 0}
@@ -200,6 +202,7 @@ MonoBehaviour:
   sizeX: 0
   sizeY: 0
   isChecked: 0
+  mustAttack: 0
 --- !u!61 &8606980364883050880
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -229,7 +232,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -245,3 +248,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &5592624148813818367
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995191591774840050}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7

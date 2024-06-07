@@ -44,7 +44,7 @@ public class S_GridManager : MonoBehaviour
                 gridList.Add(new List<S_Tile>());
                 for (int y = 0; y < height; y++)
                 {
-                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * _gridScale.x, (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * (_gridScale.x + 0.1f), (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
@@ -60,7 +60,7 @@ public class S_GridManager : MonoBehaviour
                 gridList.Add(new List<S_Tile>());
                 for (int y = 0;y>height;y--)
                 {
-                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * _gridScale.x, (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * (_gridScale.x + 0.1f), (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
@@ -127,7 +127,7 @@ public class S_GridManager : MonoBehaviour
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
                 if (gridList[x][y].unit == null) continue; 
-                if (gridList[x][y].unit.state == 0) StateIdleUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
                 gridList[x][y].unit.actualTile = null;

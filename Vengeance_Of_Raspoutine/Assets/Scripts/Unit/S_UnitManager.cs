@@ -56,8 +56,8 @@ public class S_UnitManager : MonoBehaviour
                                         UnitColumn.Add(new());
 
                                         gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyUnit();
-                                        gridList[i][j + 3].unit.DestroyUnit();
+                                        gridList[i][j + 2].unit.DestroyFormation();
+                                        gridList[i][j + 3].unit.DestroyFormation();
 
                                         grid.UnitPriorityCheck();
                                         columnCounter = 0;
@@ -68,7 +68,29 @@ public class S_UnitManager : MonoBehaviour
                         }
                         else // size x = 2
                         {
+                            gridList[i][j].unit.isChecked = true;
 
+                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+                            {
+                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
+                                {
+                                    if (columnCounter == p_formationNumber) // mode attack 
+                                    {
+                                        UnitColumn.Add(new());
+
+                                        gridList[i][j].unit.state = 2;
+                                        gridList[i][j + 2].unit.DestroyFormation();
+                                        gridList[i][j + 3].unit.DestroyFormation();
+                                        gridList[i + 1][j + 2].unit.DestroyFormation();
+                                        gridList[i + 1][j + 3].unit.DestroyFormation();
+
+                                        grid.UnitPriorityCheck();
+                                        columnCounter = 0;
+                                    }
+                                }
+
+
+                            }
                         }
                     }
                 }
@@ -172,6 +194,11 @@ public class S_UnitManager : MonoBehaviour
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
+                    for (int k=0;k< UnitColumn[UnitColumn.Count-1].Count;k++)
+                    {
+                        UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
+                        UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
+                    }
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
 
                     if (S_GameManager.Instance.isPlayer1Turn)

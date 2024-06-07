@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{51608e32-1078-4ea7-8cb2-bb3c2eed7ee9}">
 		<property name="name">
-			<value>Adaptative Battle Music test</value>
+			<value>Adaptative Battle Music</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -32,6 +32,9 @@
 		</relationship>
 		<relationship name="timeline">
 			<destination>{62408b83-2eb8-4fad-a16d-12020014548f}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{2db4a083-1d53-44d4-830a-8d03a27bd36b}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{96e11c27-2710-4e90-82f0-572267e3d0b7}">
