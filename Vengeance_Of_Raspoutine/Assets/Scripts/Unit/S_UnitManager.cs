@@ -62,7 +62,7 @@ public class S_UnitManager : MonoBehaviour
                         {
                             gridList[i][j].unit.isChecked = true;
 
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null) && (gridList[i + 1][j + 2].unit != null && gridList[i + 1][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
                             {
                                 if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
                                 {

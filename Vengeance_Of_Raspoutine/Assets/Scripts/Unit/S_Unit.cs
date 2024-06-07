@@ -307,7 +307,7 @@ public class Unit : MonoBehaviour
     public void MoveToTile(S_Tile p_tile)
     {
         int lineToGoTo = 0;
-        for (int i = (Mathf.Abs(grid.height) - 1); i >= 0; i--) // p_tile.grid.gridList[Mathf.Abs(p_tile.grid.height) - p_tile.tileX - 1]) 
+        for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // p_tile.grid.gridList[Mathf.Abs(p_tile.grid.height) - p_tile.tileX - 1]) 
         {
             Debug.Log(i);
             if (p_tile.grid.gridList[tileX][i].unit == null || p_tile.grid.gridList[tileX][i].unit == this)
@@ -321,7 +321,7 @@ public class Unit : MonoBehaviour
             }
         }
         actualTile.unit = null;
-        actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
+        actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
         actualTile.unit = this;
         p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
         grid.unitSelected = null;
@@ -342,10 +342,11 @@ public class Unit : MonoBehaviour
     public void EliteMoveToTile(S_Tile p_tile)
     {
         int lineToGoTo = 0;
-        for (int i = (Mathf.Abs(grid.height) - 1); i >= 0; i--) // check columns from the end to get the first time it would hit a unit 
+        for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
         {
             Debug.Log(i);
-            if ((p_tile.grid.gridList[tileX][i].unit == null || p_tile.grid.gridList[tileX][i].unit == this) && (p_tile.grid.gridList[tileX + 1][i].unit == null || p_tile.grid.gridList[tileX + 1][i].unit == this))
+            Debug.Log("p_tile.x value : " + p_tile.tileX);
+            if ((p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this) && (p_tile.grid.gridList[p_tile.tileX + 1][i].unit == null || p_tile.grid.gridList[p_tile.tileX + 1][i].unit == this))
             {
                 lineToGoTo = i;
                 continue;
@@ -356,7 +357,7 @@ public class Unit : MonoBehaviour
             }
         }
         actualTile.unit = null;
-        actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
+        actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
         actualTile.unit = this;
         switch (sizeX, sizeY)
         {

@@ -41,17 +41,6 @@ public class S_UnitCall : MonoBehaviour
             grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         }
 
-        if (S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
-        }
-
-        if (!S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
-        }
-
-
         if (grid.totalUnitAmount < unitCapacity)
         {
             for (int i = 0; i < callAmount; i++)
@@ -62,22 +51,23 @@ public class S_UnitCall : MonoBehaviour
                     unitType = Random.Range(0,3);
                 }
                 GameObject unitToSpawn = Instantiate(units[unitType]); /* unit that will be spawned onto the grid */
+                Unit unitSpawned = unitToSpawn.GetComponent<Unit>();
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 int X = ColumnSelector();
 
-                if (unitToSpawn.GetComponent<Unit>().sizeY == 2)
+                if (unitSpawned.sizeY == 2)
                 {
                     eliteAmount++;
-                    if (unitToSpawn.GetComponent<Unit>().sizeX == 2)
+                    if (unitSpawned.sizeX == 2)
                     {
-                        while (X == 7 && tile[X][4].unit != null)
+                        while (X >= 7 || grid.gridList[X][4].unit != null || grid.gridList[X][5].unit != null)
                         {
                             X = ColumnSelector();        
                         }
                     }
                     else 
                     {
-                        while (tile[X][4].unit != null)
+                        while (grid.gridList[X][4].unit != null)
                         {
                             X = ColumnSelector();
                         }
@@ -85,24 +75,25 @@ public class S_UnitCall : MonoBehaviour
                 }
                 else
                 {
-                    while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    while (grid.gridList[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
                     {
                         X = ColumnSelector();
                     }
                 }
 
-                unitToSpawn.GetComponent<Unit>().tileX = X;
+                unitSpawned.tileX = X;
                 //function to move the unit on the _grid to the right spots
-                unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
-                unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>().grid.startY + unitToSpawn.GetComponent<Unit>().grid.height + unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
+                unitSpawned.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
+
+                unitToSpawn.transform.position = new Vector3(unitSpawned.actualTile.transform.position.x, unitSpawned.grid.startY + unitSpawned.grid.height + unitSpawned.actualTile.transform.position.y);
                 
-                if(unitToSpawn.GetComponent<Unit>().sizeX == 1)
+                if(unitSpawned.sizeX == 1)
                 {
-                    unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                    unitSpawned.MoveToTile(unitSpawned.actualTile);
                 }
-                else if(unitToSpawn.GetComponent<Unit>().sizeX == 2)
+                else if(unitSpawned.sizeX == 2)
                 {
-                    unitToSpawn.GetComponent<Unit>().EliteMoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                    unitSpawned.EliteMoveToTile(unitSpawned.actualTile);
                 }
                 grid.totalUnitAmount++;
             }
