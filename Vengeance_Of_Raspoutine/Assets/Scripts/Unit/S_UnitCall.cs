@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -16,16 +13,17 @@ public class S_UnitCall : MonoBehaviour
     public List<List<S_Tile>> tile;
     public TextMeshProUGUI text;
     [SerializeField] private List<GameObject> units = new List<GameObject>();
+    public int eliteAmount = 0;
 
     private void Update()
-    {
+    {   
         TextUpdate();
     }
-    
+
     public void Start()
     {
         UnitCalling();
-        CallAmountUpdate(); 
+        CallAmountUpdate();
     }
 
     public int CallAmountUpdate()
@@ -43,7 +41,8 @@ public class S_UnitCall : MonoBehaviour
         return callAmount = unitCapacity - grid.totalUnitAmount;
     }
 
-    public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
+    public void UnitCalling()
+    { /* function that will call other functions, will be referenced in the button UI OnClick */
 
         if (!firstUnitCalled)
         {
@@ -51,7 +50,7 @@ public class S_UnitCall : MonoBehaviour
             callAmount /= 2;
             grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         }
-        
+
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             tile = grid.gridList;
@@ -62,24 +61,71 @@ public class S_UnitCall : MonoBehaviour
             tile = grid.gridList;
         }
 
+
         if (grid.totalUnitAmount < unitCapacity)
         {
             for (int i = 0; i < callAmount; i++)
             {
+                int unitType = TypeSelector();
+                if (eliteAmount == 3)
+                {   
+                    unitType = Random.Range(0,3);
+                }
+                GameObject unitToSpawn = Instantiate(units[unitType]); /* unit that will get its value changed */
+                //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 int X = ColumnSelector();
-                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+
+
+                if (unitToSpawn.GetComponent<Unit>().sizeY == 2)
                 {
-                    X = ColumnSelector();
+                    eliteAmount++;
+                    if (unitToSpawn.GetComponent<Unit>().sizeX == 2)
+                    {
+                        while (X == 7) // peut crash à casue du nombre d'unité sur le board non définie 
+                        {
+                            //if (tile != null && tile == null)
+                            //{
+                            X = ColumnSelector();        
+                            //}                                                                             
+                        }
+                    }
+                    else 
+                    {
+                        while (tile[X][4].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                        {
+                            //if (tile != null && tile == null)
+                            //{
+                            X = ColumnSelector();
+                           // }
+
+                        }
+     
+                    }
+
                 }
 
-                GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
-                //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
-                unitToSpawn.GetComponent<Unit>().tileX = X;
+                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                {
+                    //if (tile != null && tile == null)
+                    // {
+                    X = ColumnSelector();
+                    // }
 
+                }
+                
+                unitToSpawn.GetComponent<Unit>().tileX = X;
                 //function to move the unit on the _grid to the right spots
                 unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
-                unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>().grid.startY + unitToSpawn.GetComponent<Unit>().grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
-                unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>().grid.startY + unitToSpawn.GetComponent<Unit>().grid.height + unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
+                
+                if(unitToSpawn.GetComponent<Unit>().sizeX == 1)
+                {
+                    unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                }
+                else if(unitToSpawn.GetComponent<Unit>().sizeX == 2)
+                {
+                    unitToSpawn.GetComponent<Unit>().EliteMoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                }
                 grid.totalUnitAmount++;
             }
 
@@ -95,7 +141,7 @@ public class S_UnitCall : MonoBehaviour
         grid.unitManager.UnitCombo(3);
         TextUpdate();
     }
-    
+
     public void TextUpdate()
     {
         string buttonText = CallAmountUpdate().ToString();
@@ -108,7 +154,7 @@ public class S_UnitCall : MonoBehaviour
     }
     private int TypeSelector()
     { /* select which type is the unit */
-        return Random.Range(0, 3);
+        return Random.Range(0, 5);
     }
     private int ColorSelector()
     { /* select which color is the unit */

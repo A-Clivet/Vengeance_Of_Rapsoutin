@@ -18,7 +18,7 @@ public class S_RemoveUnit : MonoBehaviour
             Instance = this;
         }
     }
-    public void RemoveUnit(InputAction.CallbackContext p_context)
+    public void RemoveUnit(InputAction.CallbackContext p_context)   
     {
         if (p_context.started)
         {

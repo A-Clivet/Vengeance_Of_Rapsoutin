@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class S_UnitManager : MonoBehaviour
@@ -51,19 +48,14 @@ public class S_UnitManager : MonoBehaviour
                             {
                                 if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
                                 {
-                                    if (columnCounter == p_formationNumber) // mode attack 
-                                    {
-                                        UnitColumn.Add(new());
+                                    UnitColumn.Add(new());
 
-                                        gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyFormation();
-                                        gridList[i][j + 3].unit.DestroyFormation();
+                                    gridList[i][j].unit.state = 2;
+                                    gridList[i][j + 2].unit.DestroyFormation();
+                                    gridList[i][j + 3].unit.DestroyFormation();
 
-                                        grid.UnitPriorityCheck();
-                                        columnCounter = 0;
-                                    }
+                                    grid.UnitPriorityCheck();
                                 }
-
                             }
                         }
                         else // size x = 2
@@ -74,24 +66,19 @@ public class S_UnitManager : MonoBehaviour
                             {
                                 if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
                                 {
-                                    if (columnCounter == p_formationNumber) // mode attack 
-                                    {
-                                        UnitColumn.Add(new());
+                                    UnitColumn.Add(new());
 
-                                        gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyFormation();
-                                        gridList[i][j + 3].unit.DestroyFormation();
-                                        gridList[i + 1][j + 2].unit.DestroyFormation();
-                                        gridList[i + 1][j + 3].unit.DestroyFormation();
+                                    gridList[i][j].unit.state = 2;
+                                    gridList[i][j + 2].unit.DestroyFormation();
+                                    gridList[i][j + 3].unit.DestroyFormation();
+                                    gridList[i + 1][j + 2].unit.DestroyFormation();
+                                    gridList[i + 1][j + 3].unit.DestroyFormation();
 
-                                        grid.UnitPriorityCheck();
-                                        columnCounter = 0;
-                                    }
+                                    grid.UnitPriorityCheck();
                                 }
-
-
                             }
                         }
+                        return;
                     }
                 }
             }
@@ -102,7 +89,7 @@ public class S_UnitManager : MonoBehaviour
         {
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                if(gridList[j][i].unit == null)
+                if (gridList[j][i].unit == null)
                 {
                     currentColorLine = -1; // -1 is not a value that a unitColor will be 
                     lineCounter = 0;
@@ -114,7 +101,7 @@ public class S_UnitManager : MonoBehaviour
                     lineCounter = 0;
                     continue;
                 }
-                if(gridList[j][i].unit.unitColor != currentColorLine)
+                if (gridList[j][i].unit.unitColor != currentColorLine)
                 {
                     currentColorLine = gridList[j][i].unit.unitColor;
                     lineCounter = 1;
@@ -162,7 +149,7 @@ public class S_UnitManager : MonoBehaviour
                 }
                 if (gridList[i][j].unit.state != 0)
                 {
-                    currentColorColumn = -1; 
+                    currentColorColumn = -1;
                     columnCounter = 0;
                     continue;
                 }
@@ -184,17 +171,17 @@ public class S_UnitManager : MonoBehaviour
                     gridList[i][j].unit.state = 2;
                     gridList[i][j - 1].unit.state = 2;
                     gridList[i][j - 2].unit.state = 2;
-                    
+
                     //temporary visual change to notices attacking units
 
-                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    
+                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                    for (int k=0;k< UnitColumn[UnitColumn.Count-1].Count;k++)
+                    for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)
                     {
                         UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
                         UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
@@ -207,7 +194,7 @@ public class S_UnitManager : MonoBehaviour
             currentColorColumn = -1;
             columnCounter = 0;
         }
-        
+
     }
 
 
