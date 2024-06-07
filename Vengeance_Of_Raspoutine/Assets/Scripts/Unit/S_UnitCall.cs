@@ -123,7 +123,7 @@ public class S_UnitCall : MonoBehaviour
     }
     private int TypeSelector()
     { /* select which type is the unit */
-        return Random.Range(0, units.Count-1);
+        return Random.Range(0, units.Count);
     }
     private int ColorSelector()
     { /* select which color is the unit */
