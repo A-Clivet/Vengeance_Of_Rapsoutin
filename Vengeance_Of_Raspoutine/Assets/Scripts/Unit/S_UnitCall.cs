@@ -28,16 +28,6 @@ public class S_UnitCall : MonoBehaviour
 
     public int CallAmountUpdate()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
-        }
-
-        if (!S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
-        }
-
         return callAmount = unitCapacity - grid.totalUnitAmount;
     }
 
@@ -71,48 +61,36 @@ public class S_UnitCall : MonoBehaviour
                 {   
                     unitType = Random.Range(0,3);
                 }
-                GameObject unitToSpawn = Instantiate(units[unitType]); /* unit that will get its value changed */
+                GameObject unitToSpawn = Instantiate(units[unitType]); /* unit that will be spawned onto the grid */
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 int X = ColumnSelector();
-
 
                 if (unitToSpawn.GetComponent<Unit>().sizeY == 2)
                 {
                     eliteAmount++;
                     if (unitToSpawn.GetComponent<Unit>().sizeX == 2)
                     {
-                        while (X == 7) // peut crash à casue du nombre d'unité sur le board non définie 
+                        while (X == 7 && tile[X][4].unit != null)
                         {
-                            //if (tile != null && tile == null)
-                            //{
                             X = ColumnSelector();        
-                            //}                                                                             
                         }
                     }
                     else 
                     {
-                        while (tile[X][4].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                        while (tile[X][4].unit != null)
                         {
-                            //if (tile != null && tile == null)
-                            //{
                             X = ColumnSelector();
-                           // }
-
                         }
-     
                     }
-
                 }
-
-                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                else
                 {
-                    //if (tile != null && tile == null)
-                    // {
-                    X = ColumnSelector();
-                    // }
-
+                    while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    {
+                        X = ColumnSelector();
+                    }
                 }
-                
+
                 unitToSpawn.GetComponent<Unit>().tileX = X;
                 //function to move the unit on the _grid to the right spots
                 unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
@@ -154,7 +132,7 @@ public class S_UnitCall : MonoBehaviour
     }
     private int TypeSelector()
     { /* select which type is the unit */
-        return Random.Range(0, 5);
+        return Random.Range(0, units.Count-1);
     }
     private int ColorSelector()
     { /* select which color is the unit */

@@ -348,21 +348,21 @@ public class Unit : MonoBehaviour
 
                         break;
                 }
-                grid.unitSelected = null;
-                tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
-                tileY = p_tile.grid.gridList[tileX][lineToGoTo].tileY;
-                _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
+                break;
             }
-            if (!_isMoving)
-            {
-                _isMoving = true;
-                StartCoroutine(LerpMove());
-            }
-            foreach (Unit unit in grid.unitList)
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = true;
-            }
-            break;
+        }
+        grid.unitSelected = null;
+        tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
+        tileY = p_tile.grid.gridList[tileX][lineToGoTo].tileY;
+        _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
+        if (!_isMoving)
+        {
+            _isMoving = true;
+            StartCoroutine(LerpMove());
+        }
+        foreach (Unit unit in grid.unitList)
+        {
+            unit.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
@@ -410,18 +410,19 @@ public class Unit : MonoBehaviour
                         break;
                 }
             }
-            grid.unitSelected = null;
-            tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
-            _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
-            if (!_isMoving)
-            {
-                _isMoving = true;
-                StartCoroutine(LerpMove());
-            }
-            foreach (Unit unit in grid.unitList)
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = true;
-            }
+            break;
+        }
+        grid.unitSelected = null;
+        tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
+        _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
+        if (!_isMoving)
+        {
+            _isMoving = true;
+            StartCoroutine(LerpMove());
+        }
+        foreach (Unit unit in grid.unitList)
+        {
+            unit.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
