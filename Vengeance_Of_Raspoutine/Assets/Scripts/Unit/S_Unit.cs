@@ -317,39 +317,39 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                actualTile.unit = null;
-                actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
-                actualTile.unit = this;
-                switch (sizeX, sizeY)
-                {
-                    case (1, 1):
-
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-
-                        break;
-
-                    case (1, 2):
-
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-
-                        break;
-
-                    case (2, 2):
-
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
-
-                        break;
-
-                    default:
-
-                        break;
-                }
                 break;
             }
+        }
+        actualTile.unit = null;
+        actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
+        actualTile.unit = this;
+        switch (sizeX, sizeY)
+        {
+            case (1, 1):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+
+                break;
+
+            case (1, 2):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+
+                break;
+
+            case (2, 2):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+
+                break;
+
+            default:
+
+                break;
         }
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
@@ -375,45 +375,47 @@ public class Unit : MonoBehaviour
             if ((p_tile.grid.gridList[tileX][i].unit == null || p_tile.grid.gridList[tileX][i].unit == this) && (p_tile.grid.gridList[tileX + 1][i].unit == null || p_tile.grid.gridList[tileX + 1][i].unit == this))
             {
                 lineToGoTo = i;
+                continue;
             }
-            else
+            else 
             {
-                actualTile.unit = null;
-                actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
-                actualTile.unit = this;
-                switch (sizeX, sizeY)
-                {
-                    case (1, 1):
-
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-
-                        break;
-                    case (1, 2):
-
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-
-
-                        break;
-                    case (2, 2):
-
-
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-                        p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
-
-                        break;
-
-                    default:
-
-                        break;
-                }
+                break;
             }
-            break;
+        }
+        actualTile.unit = null;
+        actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
+        actualTile.unit = this;
+        switch (sizeX, sizeY)
+        {
+            case (1, 1):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+
+                break;
+            case (1, 2):
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+
+
+                break;
+            case (2, 2):
+
+
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
+                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+
+                break;
+
+            default:
+
+                break;
         }
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
+        tileY = p_tile.grid.gridList[tileX][lineToGoTo].tileY;
         _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
         if (!_isMoving)
         {
