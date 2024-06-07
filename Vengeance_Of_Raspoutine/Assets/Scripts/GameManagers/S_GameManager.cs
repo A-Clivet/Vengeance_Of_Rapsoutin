@@ -479,7 +479,7 @@ public class S_GameManager : MonoBehaviour
         bool _isDominationGameMode = false;
 
         // Set in our temporary variable is we are in Domination game mode
-        if (_currentGameMode != S_GameModeInvoker.GameModes.Domination)
+        if (_currentGameMode == S_GameModeInvoker.GameModes.Domination)
             _isDominationGameMode = true;
 
         if (!_isDominationGameMode)
@@ -533,8 +533,7 @@ public class S_GameManager : MonoBehaviour
 
         currentTurn = TurnEmun.TransitionTurn;
 
-        if (_isDominationGameMode)
-            _loseCoefficient++;
+        _loseCoefficient++;
 
         #region Characters management
         // Updates the character's score visuals
