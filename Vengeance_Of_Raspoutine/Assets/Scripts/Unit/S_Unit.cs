@@ -323,34 +323,7 @@ public class Unit : MonoBehaviour
         actualTile.unit = null;
         actualTile = p_tile.grid.gridList[tileX][lineToGoTo];
         actualTile.unit = this;
-        switch (sizeX, sizeY)
-        {
-            case (1, 1):
-
-                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-
-                break;
-
-            case (1, 2):
-
-                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-
-                break;
-
-            case (2, 2):
-
-                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
-                p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-                p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
-
-                break;
-
-            default:
-
-                break;
-        }
+        p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
         tileY = p_tile.grid.gridList[tileX][lineToGoTo].tileY;
