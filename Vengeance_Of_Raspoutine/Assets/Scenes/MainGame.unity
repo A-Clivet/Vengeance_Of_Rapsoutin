@@ -834,6 +834,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1787634140}
     - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
+      propertyPath: weatherInfo
+      value: 
+      objectReference: {fileID: 1855625399}
+    - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
       propertyPath: _player1GridManager
       value: 
       objectReference: {fileID: 19176966}
@@ -917,6 +921,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1855625399 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7850615960891767614, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+  m_PrefabInstance: {fileID: 664087875}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1869549172

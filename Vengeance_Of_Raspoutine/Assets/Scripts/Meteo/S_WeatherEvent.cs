@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,6 +39,7 @@ public class S_WeatherEvent : MonoBehaviour
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
+    [SerializeField] private TextMeshProUGUI weatherInfo;
 
 
     private void Awake()
@@ -47,6 +49,8 @@ public class S_WeatherEvent : MonoBehaviour
 
     public void EventProbability()
     {
+        nbTurn = 0;
+        fogOpacityState = 1;
         int rndProb=UnityEngine.Random.Range(0, 101);
         if (rndProb > 80)
         {
@@ -63,12 +67,15 @@ public class S_WeatherEvent : MonoBehaviour
             {
                 ManageEvent = Event.Blizzard;
             }
+            weatherInfo.text = "Weather : " + ManageEvent;
             return;
+
         }
         else
         {
             ManageEvent = Event.None;
         }
+        weatherInfo.text = "Weather : " + ManageEvent;
         return;
     }
 
@@ -91,7 +98,6 @@ public class S_WeatherEvent : MonoBehaviour
                 _player1GridManager.totalUnitAmount -= 1;
                 _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
-                u.StopAllCoroutines();
             }
             unitToRemove.Clear();
 
@@ -103,11 +109,10 @@ public class S_WeatherEvent : MonoBehaviour
             {
 
                 u.actualTile.unit = null;
-                _player1GridManager.unitList.Remove(u);
-                _player1GridManager.totalUnitAmount -= 1;
-                _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
+                _player2GridManager.unitList.Remove(u);
+                _player2GridManager.totalUnitAmount -= 1;
+                _player2GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
-                u.StopAllCoroutines();
             }
             _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
             _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
@@ -142,38 +147,35 @@ public class S_WeatherEvent : MonoBehaviour
         if (nbTurn < 0)
         {
             nbTurn = 5;
-            int listOfIdle = _player1GridManager.unitList.Where(a => a.state == 0).Count();
-            int UnitFrozen = 0;
-            while (UnitFrozen <= listOfIdle)
+            List<Unit> listOfIdle;
+            listOfIdle = new List<Unit>();
+            foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 0))
             {
-                foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 0))
-                {
-                    int spawnProbability = UnityEngine.Random.Range(0, 101);
-                    if (UnitFrozen >= listOfIdle && spawnProbability <= 25)
-                    {
-                        u.state = 3;
-                        UnitFrozen++;
-                    }
-                }
+                listOfIdle.Add(u);
+            } 
+            
+            int nbMaxOfUnitFrozen = listOfIdle.Count() / 2;
+            for (int i = 0; i < nbMaxOfUnitFrozen; i++)
+            {
+                int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
+                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0, 0, 1, 1);
+                listOfIdle[unitToFreeze].state = 3;
+
             }
 
-            listOfIdle = _player2GridManager.unitList.Where(a => a.state == 0).Count();
-            UnitFrozen = 0;
-            while (UnitFrozen <= listOfIdle)
+            listOfIdle.Clear();
+            foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 0))
             {
-                foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 0))
-                {
-                    int spawnProbability = UnityEngine.Random.Range(0, 101);
-                    if (UnitFrozen <= listOfIdle && spawnProbability <= 25)
-                    {
-                        u.state = 3;
-                        UnitFrozen++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                listOfIdle.Add(u);
+            }
+
+            nbMaxOfUnitFrozen = listOfIdle.Count() / 2;
+            for (int i = 0; i < nbMaxOfUnitFrozen; i++)
+            {
+                int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
+                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0,0, 1, 1);
+                listOfIdle[unitToFreeze].state = 3;
+
             }
         }
         return;
