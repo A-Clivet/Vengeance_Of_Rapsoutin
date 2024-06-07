@@ -199,7 +199,7 @@ public class EventStocker
             _eventToStore = p_classRef.BlizzardEvent;
             return _eventToStore;
         }
-        else if (p_wantedEvent == S_WeatherEvent.Event.Blizzard)
+        else if (p_wantedEvent == S_WeatherEvent.Event.None)
         {
             _eventToStore = null;
             return _eventToStore;
