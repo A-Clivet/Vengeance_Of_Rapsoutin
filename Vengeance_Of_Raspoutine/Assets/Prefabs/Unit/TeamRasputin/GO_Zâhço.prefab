@@ -186,7 +186,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   SO_Unit: {fileID: 11400000, guid: ac69197e323b57543b0027cf0bc6df59, type: 2}
+  baseAttack: 3
   attack: 3
+  baseDefense: 1
   defense: 1
   state: 0
   turnCharge: 2

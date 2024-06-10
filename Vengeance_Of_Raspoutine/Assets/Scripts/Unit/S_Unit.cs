@@ -440,6 +440,12 @@ public class Unit : MonoBehaviour
     {
         transform.GetComponent<SpriteRenderer>().sprite = img;
     }
+
+    public void ResetBuffs()
+    {
+        attack = SO_Unit.attack;
+        defense = SO_Unit.defense;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Unit unit = collision.gameObject.GetComponent<Unit>();

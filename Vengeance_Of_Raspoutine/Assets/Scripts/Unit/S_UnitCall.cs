@@ -22,11 +22,19 @@ public class S_UnitCall : MonoBehaviour
     {
         TextUpdate();
     }
-    
+
+    private void Awake()
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].GetComponent<Unit>().ResetBuffs();
+        }
+    }
+
     public void Start()
     {
         
-        CallAmountUpdate(); 
+        CallAmountUpdate();
     }
 
     public int CallAmountUpdate()
