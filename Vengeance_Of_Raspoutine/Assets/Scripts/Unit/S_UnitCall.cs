@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static S_GameManager;
 using Random = UnityEngine.Random;
@@ -59,11 +60,20 @@ public class S_UnitCall : MonoBehaviour
             CallAmountUpdate();
             callAmount /= 2;
             grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-            
         }
 
         if (grid.totalUnitAmount < unitCapacity)
         {
+            if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
+            {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.UssrWarHorn, this.transform.position);
+                Debug.Log("1");
+            }
+            else if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+            {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.MonsterWarHorn, this.transform.position);
+                Debug.Log("2");
+            }
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();

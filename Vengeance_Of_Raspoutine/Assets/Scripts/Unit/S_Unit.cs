@@ -225,6 +225,9 @@ public class Unit : MonoBehaviour
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
     public void ReducePlayerHp(){ // needs rework
+
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Impact, this.transform.position);
+
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
