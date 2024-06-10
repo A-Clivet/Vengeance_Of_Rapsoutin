@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static S_GameManager;
 using Random = UnityEngine.Random;
 
 public class S_UnitCall : MonoBehaviour
@@ -24,18 +25,18 @@ public class S_UnitCall : MonoBehaviour
     
     public void Start()
     {
-        UnitCalling();
+        
         CallAmountUpdate(); 
     }
 
     public int CallAmountUpdate()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
         {
             tile = grid.gridList;
         }
 
-        if (!S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
         {
             tile = grid.gridList;
         }
@@ -50,16 +51,7 @@ public class S_UnitCall : MonoBehaviour
             CallAmountUpdate();
             callAmount /= 2;
             grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-        }
-        
-        if (S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
-        }
-
-        if (!S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
+            
         }
 
         if (grid.totalUnitAmount < unitCapacity)
@@ -95,7 +87,7 @@ public class S_UnitCall : MonoBehaviour
         grid.unitManager.UnitCombo(3);
         TextUpdate();
     }
-    
+
     public void TextUpdate()
     {
         string buttonText = CallAmountUpdate().ToString();

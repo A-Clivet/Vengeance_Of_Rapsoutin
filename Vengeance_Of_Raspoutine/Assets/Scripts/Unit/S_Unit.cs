@@ -82,7 +82,6 @@ public class Unit : MonoBehaviour
         {
             AttackPlayer();
         }
-        yield break;
     }
 
     //IS ABSOLUTELY NEEDED TO BE CALLED WHEN A UNIT IS INSTANTIATED
@@ -113,10 +112,31 @@ public class Unit : MonoBehaviour
             }
         }
         grid.AllUnitPerColumn[tileX].Remove(this);
-        Destroy(gameObject);
-        StopAllCoroutines();
-        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+        for (int i = 0; i < unitManager.UnitColumn.Count; i++)
+        {
+            if (unitManager.UnitColumn[i][0].turnCharge <= 0)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+        for (int i = 0; i < grid.enemyGrid.unitManager.UnitColumn.Count; i++)
+        {
+            if (grid.enemyGrid.unitManager.UnitColumn[i][0].turnCharge <= 0)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
         S_GameManager.Instance.EndTurn();
+        Destroy(gameObject);
+        
+
+    }
+
+    private void OnDestroy()
+    {
+        grid.totalUnitAmount -= 1;
     }
     //launch the attack of all formation and begin the recursion of the attack
 
@@ -125,19 +145,16 @@ public class Unit : MonoBehaviour
         if (state == 2) turnCharge--;
 
         if (turnCharge <= 0)
-        {           
+        {
             //remove virtually the units from their own grid and tile, they do not exists anymore for their grid and respective tiles.
             for (int i = 0; i < actualFormation.Count; i++)
             {
-                if (actualFormation[0] == actualFormation[i])
-                {
-                    actualFormation[i].mustAttack = true;
-                }
+
+                actualFormation[i].mustAttack = true;
                 actualFormation[i].turnCharge = 0;
                 actualFormation[i].actualTile.unit = null;
                 grid.unitList.Remove(actualFormation[i]);
-                grid.totalUnitAmount -= 1;
-                actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y*i, -1);
+                actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
                 actualFormation[i].StartCoroutine(LerpMove());
             }
         }
@@ -145,10 +162,8 @@ public class Unit : MonoBehaviour
 
     public void AttackPlayer()
     {
-        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-        grid.enemyGrid.AllUnitPerColumn = grid.UnitPriorityCheck();
         ReducePlayerHp();
-        DestroyFormation();
+        actualFormation[0].DestroyFormation();
     }
     // Used to check where the attacking formation needs to go if an adversary unit is found and deals damage to them.
     //public void AttackAnotherUnit()
@@ -209,7 +224,7 @@ public class Unit : MonoBehaviour
     //}
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
-    public void ReducePlayerHp(){
+    public void ReducePlayerHp(){ // needs rework
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -=  attack;
@@ -223,7 +238,6 @@ public class Unit : MonoBehaviour
     /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
     public void TakeDamage(int p_damage)
     {
-
         if (actualFormation != null)
         {
             attack -= p_damage;
@@ -235,18 +249,15 @@ public class Unit : MonoBehaviour
                     {
                         actualFormation[j].actualTile.unit = null;
                         grid.unitList.Remove(actualFormation[j]);
-                        grid.totalUnitAmount -= 1;
                         grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
                         Destroy(actualFormation[j].gameObject);
                     }
                 }
                 actualTile.unit = null;
                 grid.unitList.Remove(this);
-                grid.totalUnitAmount -= 1;
                 grid.AllUnitPerColumn[tileX].Remove(this);
                 unitManager.UnitColumn.Remove(actualFormation);
                 Destroy(gameObject);
-
             }
             return;
         }
@@ -255,14 +266,10 @@ public class Unit : MonoBehaviour
         {
             actualTile.unit = null;
             grid.unitList.Remove(this);
-            grid.totalUnitAmount -= 1;
+            grid.AllUnitPerColumn[tileX].Remove(this);
             Destroy(gameObject);
         }
-        return;
     }
-
-
-
 
     // Same as MoveToTile but use a action point
     public void ActionMoveToTile(S_Tile p_tile)
@@ -313,6 +320,7 @@ public class Unit : MonoBehaviour
   then deselect the unit*/
     public void MoveToTile(S_Tile p_tile)
     {
+        // We iterate throw the column of the given tile
         foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
         {
             if (tile.unit == null || tile.unit == this)
@@ -324,11 +332,8 @@ public class Unit : MonoBehaviour
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
-                if (!_isMoving)
-                {
-                    _isMoving = true;
-                    StartCoroutine(LerpMove());
-                }
+
+                StartCoroutine(LerpMove());
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
@@ -367,7 +372,7 @@ public class Unit : MonoBehaviour
     //get the last unit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
-            if (S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.UnitCallOnOff(1, false);
         }
@@ -428,38 +433,30 @@ public class Unit : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Unit>().grid != grid)
+        Unit unit = collision.gameObject.GetComponent<Unit>();
+
+        if (unit.grid != grid)
         {
-            if (collision.gameObject.GetComponent<Unit>().actualFormation == null)
+            if (!unit.mustAttack)
             {
-                attack -= collision.gameObject.GetComponent<Unit>().defense;
-                collision.gameObject.GetComponent<Unit>().TakeDamage(attack + collision.gameObject.GetComponent<Unit>().defense);
-
-            }
-            else
-            {
-                attack -= collision.gameObject.GetComponent<Unit>().attack;
-                collision.gameObject.GetComponent<Unit>().TakeDamage(attack + collision.gameObject.GetComponent<Unit>().attack);
-            }
-            if (attack <= 0)
-            {
-                unitManager.UnitColumn.Remove(actualFormation);
-                foreach (Unit u in actualFormation)
+                if (unit.actualFormation == null)
                 {
-                    if (u != this)
-                    {
-                        grid.AllUnitPerColumn[u.tileX].Remove(u);
-                        Destroy(u.gameObject);
-                        u.StopAllCoroutines();
+                    attack -= unit.defense;
+                    unit.TakeDamage(attack + unit.defense);
 
-                    }
                 }
-                grid.AllUnitPerColumn[tileX].Remove(this);
-                Destroy(gameObject);
-                StopAllCoroutines();
-                grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                return;
+                else if (unit.turnCharge > 0)
+                {
+                    attack -= unit.attack;
+                    unit.TakeDamage(attack + unit.attack);
+
+                }
+                if(attack <= 0)
+                {
+                    actualFormation[0].DestroyFormation();
+                }
             }
+
         }
     }
     private void OnMouseOver()
@@ -477,7 +474,9 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(grid.unitSelected==null && state != 1 && state != 2 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
-        SelectUnit();
+        if(grid.unitSelected==null && state==0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
+        {
+            SelectUnit();
+        }
     }
 }

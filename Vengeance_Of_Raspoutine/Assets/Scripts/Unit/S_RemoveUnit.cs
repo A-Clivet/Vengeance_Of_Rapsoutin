@@ -22,11 +22,12 @@ public class S_RemoveUnit : MonoBehaviour
     {
         if (p_context.started)
         {
-            if (hoveringUnit != null && (hoveringUnit.state == 0 || hoveringUnit.state == 1)) // remove les unit.state = 1 
+            if (hoveringUnit != null  && (hoveringUnit.state == 0 || hoveringUnit.state == 1)) // remove les unit.state = 1 
             {
                 hoveringUnit.grid.unitList.Remove(hoveringUnit);
                 hoveringUnit.grid.AllUnitPerColumn[hoveringUnit.tileX].Remove(hoveringUnit);
                 hoveringUnit.actualTile.unit = null;
+
                 foreach (S_Tile tile in hoveringUnit.grid.gridList[hoveringUnit.tileX])
                 {
                     if (tile.unit != null)
@@ -34,7 +35,7 @@ public class S_RemoveUnit : MonoBehaviour
                         tile.unit.MoveToTile(hoveringUnit.actualTile);
                     }
                 }
-                hoveringUnit.grid.totalUnitAmount -= 1;
+                
                 Destroy(hoveringUnit.gameObject);
                 hoveringUnit = null;
                 S_GameManager.Instance.ReduceActionPointBy1();
