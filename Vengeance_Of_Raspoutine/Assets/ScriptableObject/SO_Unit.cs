@@ -9,6 +9,7 @@ public class SO_Unit : ScriptableObject
     /* unit stats */
     public int attack;
     public int defense;
+    [SerializeField] public bool isElite;
 
     /*grid variable*/
     public int sizeX;

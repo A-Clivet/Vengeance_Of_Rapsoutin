@@ -15,6 +15,7 @@ MonoBehaviour:
   UnitName: Commando
   attack: 1
   defense: 3
+  isElite: 0
   sizeX: 1
   sizeY: 1
   unitSprite:
