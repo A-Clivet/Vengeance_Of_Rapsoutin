@@ -128,13 +128,16 @@ public class S_UnitManager : MonoBehaviour
                 if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
-                    gridList[j][i].unit.state = 1;
-                    gridList[j - 1][i].unit.state = 1;
-                    gridList[j - 2][i].unit.state = 1;
+                    for(int h  = 0; h < p_formationNumber; h++)
+                    {
+                        gridList[j - h][i].unit.state = 1;
+                    }
 
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
+                    for(int h = p_formationNumber - 1; h >= 0; h--)
+                    {
+                        UnitLine[UnitLine.Count - 1].Add(gridList[j - h][i].unit);
+                    }
+
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
                     currentColorLine = -1;
                     lineCounter = 0;
@@ -181,19 +184,17 @@ public class S_UnitManager : MonoBehaviour
                 {
                     UnitColumn.Add(new());
 
-                    gridList[i][j].unit.state = 2;
-                    gridList[i][j - 1].unit.state = 2;
-                    gridList[i][j - 2].unit.state = 2;
+                    for (int h = 0; h < p_formationNumber; h++) 
+                    {
+                        gridList[i][j - h].unit.state = 2;
+                        gridList[i][j - h].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);  //temporary visual change to notices attacking units
+                    }
                     
-                    //temporary visual change to notices attacking units
+                    for (int h = p_formationNumber - 1; h >= 0; h--)
+                    {
+                        UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - h].unit);
+                    }
 
-                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     for (int k=0;k< UnitColumn[UnitColumn.Count-1].Count;k++)
                     {
                         UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];

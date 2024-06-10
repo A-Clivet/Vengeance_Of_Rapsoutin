@@ -23,7 +23,7 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
 
         pr_abilityManager = _player2CharacterGameObject.GetComponent<S_SpecialCapacityManager>();
         pr_characterAdrenaline = _player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        pr_abilityStats = pr_characterAdrenaline.
+        pr_abilityStats = pr_characterAdrenaline.specialCapacity;
 
 
         Node root = new S_Selector(new List<Node>

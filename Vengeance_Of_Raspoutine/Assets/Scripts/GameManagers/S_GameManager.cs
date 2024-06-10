@@ -62,6 +62,8 @@ public class S_GameManager : MonoBehaviour
             }
             else if (_currentTurn == TurnEmun.Player2Turn)
             {
+                gameObject.GetComponent<S_RasputinIATree>().CallTree();
+
                 // Same as for the player1 but for the player2
 
                 isPlayer1Turn = false;
@@ -553,6 +555,11 @@ public class S_GameManager : MonoBehaviour
         }
         else
         {
+            if (_playerActionNumber > 0)
+            {
+                gameObject.GetComponent<S_RasputinIATree>().CallTree();
+            }
+
             unitManagerP2.UnitCombo(3);
         }
 
