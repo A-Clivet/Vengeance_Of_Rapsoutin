@@ -280,10 +280,11 @@ public class Unit : MonoBehaviour
         {
             _willLoseActionPoints = true;
         }
+
         int lineToGoTo = 0;
+
         for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // p_tile.grid.gridList[Mathf.Abs(p_tile.grid.height) - p_tile.tileX - 1]) 
         {
-            Debug.Log(i);
             if (p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this)
             {
                 lineToGoTo = i;
@@ -294,6 +295,7 @@ public class Unit : MonoBehaviour
             }
         }
         actualTile.unit = null;
+
         for (int j = 0; j < actualTiles.Count; j++)
         {
             if (actualTiles[j] != null)
@@ -301,8 +303,10 @@ public class Unit : MonoBehaviour
                 actualTiles[j] = null;
             }
         }
+
         actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
         actualTile.unit = this;
+
         switch (sizeX, sizeY)
         {
             case (1, 1):
@@ -343,10 +347,12 @@ public class Unit : MonoBehaviour
 
                 break;
         }
+
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[p_tile.tileX][lineToGoTo].tileX;
         tileY = p_tile.grid.gridList[p_tile.tileX][lineToGoTo].tileY;
         _posToMove = p_tile.grid.gridList[p_tile.tileX][lineToGoTo].transform.position;
+
         if (!_isMoving)
         {
             _isMoving = true;
@@ -361,6 +367,7 @@ public class Unit : MonoBehaviour
             S_GameManager.Instance.ReduceActionPointBy1();
             _willLoseActionPoints = false;
         }
+
         unitManager.UnitCombo(3);
     }
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
@@ -368,9 +375,9 @@ public class Unit : MonoBehaviour
     public void MoveToTile(S_Tile p_tile)
     {
         int lineToGoTo = 0;
+
         for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // p_tile.grid.gridList[Mathf.Abs(p_tile.grid.height) - p_tile.tileX - 1]) 
         {
-            Debug.Log(i);
             if (p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this)
             {
                 lineToGoTo = i;
@@ -389,8 +396,10 @@ public class Unit : MonoBehaviour
                 actualTiles[j] = null;
             }
         }
+
         actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
         actualTile.unit = this;
+
         switch (sizeX, sizeY)
         {
             case (1, 1):
@@ -430,10 +439,12 @@ public class Unit : MonoBehaviour
 
                 break;
         }
+
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
         tileY = p_tile.grid.gridList[tileX][lineToGoTo].tileY;
         _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
+
         if (!_isMoving)
         {
             _isMoving = true;
@@ -448,10 +459,9 @@ public class Unit : MonoBehaviour
     public void EliteMoveToTile(S_Tile p_tile)
     {
         int lineToGoTo = 0;
+
         for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
         {
-            Debug.Log(i);
-            Debug.Log("p_tile.x value : " + p_tile.tileX);
             if ((p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this) && (p_tile.grid.gridList[p_tile.tileX + 1][i].unit == null || p_tile.grid.gridList[p_tile.tileX + 1][i].unit == this))
             {
                 lineToGoTo = i;
@@ -461,7 +471,9 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
+
         actualTile.unit = null;
+
         for (int j = 0; j < actualTiles.Count; j++)
         {
             if (actualTiles[j] != null)
@@ -469,8 +481,10 @@ public class Unit : MonoBehaviour
                 actualTiles[j] = null;
             }
         }
+
         actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
         actualTile.unit = this;
+
         switch (sizeX, sizeY)
         {
             case (1, 1):
@@ -510,10 +524,12 @@ public class Unit : MonoBehaviour
 
                 break;
         }
+
         grid.unitSelected = null;
         tileX = p_tile.grid.gridList[tileX][lineToGoTo].tileX;
         tileY = p_tile.grid.gridList[tileX][lineToGoTo].tileY;
         _posToMove = p_tile.grid.gridList[tileX][lineToGoTo].transform.position;
+
         if (!_isMoving)
         {
             _isMoving = true;
@@ -538,6 +554,7 @@ public class Unit : MonoBehaviour
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
+
                 if (!_isMoving)
                 {
                     _isMoving = true;
@@ -612,7 +629,9 @@ public class Unit : MonoBehaviour
                     }
                     break;
             }
+
             grid.unitSelected = this;
+
             foreach (Unit unit in grid.unitList)
             {
                 unit.GetComponent<BoxCollider2D>().enabled = false;
@@ -624,6 +643,7 @@ public class Unit : MonoBehaviour
     public void VisualizePosition(S_Tile p_tile)
     {
         _posToMove = new Vector3(p_tile.transform.position.x, grid.startY + grid.height * actualTile.transform.localScale.y);
+
         if (!_isMoving)
         {
             _isMoving = true;
@@ -663,6 +683,7 @@ public class Unit : MonoBehaviour
             if (attack <= 0)
             {
                 unitManager.UnitColumn.Remove(actualFormation);
+
                 foreach (Unit u in actualFormation)
                 {
                     if (u != this)
@@ -673,6 +694,7 @@ public class Unit : MonoBehaviour
 
                     }
                 }
+
                 grid.AllUnitPerColumn[tileX].Remove(this);
                 Destroy(gameObject);
                 StopAllCoroutines();
