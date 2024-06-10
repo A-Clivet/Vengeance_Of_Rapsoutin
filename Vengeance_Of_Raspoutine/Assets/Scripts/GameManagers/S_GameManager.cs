@@ -502,6 +502,14 @@ public class S_GameManager : MonoBehaviour
         {
             isGameRunning = false;
             Time.timeScale = 0;
+            foreach (Unit unit in player1GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            foreach (Unit unit in player2GridManager.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = false;
+            }
             S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
             return;
         }
