@@ -145,6 +145,11 @@ public class S_GameManager : MonoBehaviour
     public S_CharacterXP player1CharacterXP { get; private set; }
     public S_CharacterXP player2CharacterXP { get; private set; }
 
+    // Pause management
+    public bool isGameRunning { get; set; } = true;
+
+    public bool isLastPlayerDeadIsPlayer1 { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
@@ -241,8 +246,8 @@ public class S_GameManager : MonoBehaviour
     SpriteRenderer _gameBackgroundSpriteRenderer;
 
     // -- Money management -- //
-    int _moneyToHadToPlayer1WhenHeLose;
-    int _moneyToHadToPlayer2WhenHeLose;
+    int _moneyToGiveToPlayer1;
+    int _moneyToGiveToPlayer2;
 
     /// <summary> Number of turn between each weather event (will launch a weather event when it reach is goal) </summary>
     int _playersPlayed = 0;
@@ -303,6 +308,36 @@ public class S_GameManager : MonoBehaviour
         _gameBackgroundSpriteRenderer = S_GameBackgroundSizeUpdaterManager.Instance.GetComponent<SpriteRenderer>();
         #endregion
 
+        #region Characters management
+        // Setting up character manager reference
+        _characterManager = S_CharacterManager.Instance;
+
+        // Creating the player's character
+        _characterManager.SpawnCharacter(_character1Stats, true);
+        _characterManager.SpawnCharacter(_character2Stats, false);
+
+        // Setting up character's adrenaline, health, money and xp script references
+        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+
+        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+
+        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
+        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
+
+        player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
+        player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
+
+        // Enable / disable special capacity button's interaction
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+
+        // Updates the character's score visuals
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+        #endregion
+
         #endregion
 
         #region Game mode management
@@ -347,36 +382,6 @@ public class S_GameManager : MonoBehaviour
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
-        #endregion
-
-        #region Characters management
-        // Setting up character manager reference
-        _characterManager = S_CharacterManager.Instance;
-
-        // Creating the player's character
-        _characterManager.SpawnCharacter(_character1Stats, true);
-        _characterManager.SpawnCharacter(_character2Stats, false);
-
-        // Setting up character's adrenaline, health, money and xp script references
-        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-
-        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
-        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
-
-        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
-        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
-
-        player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
-        player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
-
-        // Enable / disable special capacity button's interaction
-        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-
-        // Updates the character's score visuals
-        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
-        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
         #endregion
     }
 
@@ -470,6 +475,38 @@ public class S_GameManager : MonoBehaviour
     /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>
     public void HandlePlayerLose(bool p_isPlayer1Dead)
     {
+        #region Skill tree handling
+
+        // When the skill tree handler script will call the HandlePlayerLose function, it will be able to see who was the killed player
+        isLastPlayerDeadIsPlayer1 = p_isPlayer1Dead;
+
+        int _scorePointRoundWinner = player1ScorePoint;
+        // Changing the money that will be given to each players
+        _moneyToGiveToPlayer1 = 10;
+        _moneyToGiveToPlayer2 = 5;
+
+        if (p_isPlayer1Dead)
+        {
+            _scorePointRoundWinner = player2ScorePoint;
+            // Changing the money that will be given to each players
+            _moneyToGiveToPlayer1 = 5;
+            _moneyToGiveToPlayer2 = 10;
+        }
+
+        // Players's money management
+        player1CharacterMoney.AddMoney(_moneyToGiveToPlayer1);
+        player2CharacterMoney.AddMoney(_moneyToGiveToPlayer2);
+
+        // If the game is not in pause, and if any player has not won
+        if (isGameRunning && _scorePointRoundWinner < _pointsNeededToWin - 1)
+        {
+            isGameRunning = false;
+            Time.timeScale = 0;
+            S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
+            return;
+        }
+        #endregion
+
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
 
@@ -502,10 +539,6 @@ public class S_GameManager : MonoBehaviour
             }
 
             _mapIndex += _mapIndexModifier;
-
-            // Changing the money that will be gived to each players
-            _moneyToHadToPlayer1WhenHeLose = 5;
-            _moneyToHadToPlayer2WhenHeLose = 10;
         }
         else
         {
@@ -523,10 +556,6 @@ public class S_GameManager : MonoBehaviour
             }
 
             _mapIndex -= _mapIndexModifier;
-
-            // Changing the money that will be gived to each players
-            _moneyToHadToPlayer1WhenHeLose = 10;
-            _moneyToHadToPlayer2WhenHeLose = 5;
         }
 
         currentTurn = TurnEmun.TransitionTurn;
@@ -534,6 +563,7 @@ public class S_GameManager : MonoBehaviour
         _loseCoefficient++;
 
         #region Characters management
+
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
@@ -544,10 +574,6 @@ public class S_GameManager : MonoBehaviour
 
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
-
-        // Players's money management
-        player1CharacterMoney.AddMoney(_moneyToHadToPlayer1WhenHeLose);
-        player2CharacterMoney.AddMoney(_moneyToHadToPlayer2WhenHeLose);
         #endregion
     }
 

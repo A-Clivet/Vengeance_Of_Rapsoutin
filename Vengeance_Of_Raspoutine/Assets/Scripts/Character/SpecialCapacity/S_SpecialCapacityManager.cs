@@ -160,7 +160,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
                 //Heads or tails to determine whether or not we destroy the unit.
                 if (Random.Range(0,1) == 1)
                 {
-                    unit.DestroyUnit();
+                    unit.DestroyFormation();
                     unitsDestroyed++;
                 }
                 //If we've destroyed enough units we stop the function.
@@ -203,18 +203,18 @@ public class S_SpecialCapacityManager : MonoBehaviour
                     {
                         dmgIncrement = p_dmgLimit;
                     }
-                    unit.DestroyUnit();
+                    unit.DestroyFormation();
                 }
             }
         }
         S_GridManager grid;
         if (p_isPlayer1Units)
         {
-            grid = S_GameManager.Instance.unitManagerP1.grid;
+            grid = S_GameManager.Instance.player1unitManager.grid;
         }
         else
         {
-            grid = S_GameManager.Instance.unitManagerP2.grid;
+            grid = S_GameManager.Instance.player2unitManager.grid;
         }
         //We spawn the new projectile.
         GameObject UnitToSpawn = Instantiate(p_energyBall);

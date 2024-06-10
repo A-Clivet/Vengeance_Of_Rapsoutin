@@ -233,14 +233,14 @@ public class S_UnitManager : MonoBehaviour
         }
     }
 
-    public void AttackBuff(Unit unit)
+    public void AttackBuff(GameObject GOunit)
     {
-        unit.attack += 5;
+        GOunit.GetComponent<Unit>().attack += 1;
     }
 
-    public void DefenseBuff(Unit unit)
+    public void DefenseBuff(GameObject GOunit)
     {
-        unit.defense += 5;
+        GOunit.GetComponent<Unit>().defense += 1;
     }
 
     //public struct UnitOnLine{

@@ -1,25 +1,71 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class S_SkillTree : MonoBehaviour
 {
+    [Header("Stats :")]
+    [SerializeField] bool _isPlayer1SkillTree;
+
+    [Header("References :")]
     [SerializeField] private S_CharacterStats _characterStats;
     [SerializeField] private List<S_SpecialCapacityStats> _specialCapacities;
     [SerializeField] private List<Button> _buttons;
     [SerializeField] private int _threshold;
+    [SerializeField] private TextMeshProUGUI _xpDisplay;
+    [SerializeField] private TextMeshProUGUI _thresholdDisplay;
+
+    private S_GameManager _gameManager;
+    private S_CharacterAdrenaline _player1CharacterAdrenaline;
+    private S_CharacterAdrenaline _player2CharacterAdrenaline;
+
     private int _baseThreshold;
 
     private void Start()
     {
+        _gameManager = S_GameManager.Instance;
+
+        _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+        _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+
         _baseThreshold = _threshold;
         ResetSkillTree();
+        UpdateXpDisplay();
+        UpdateThresholdDisplay(false);
+    }
+
+    void ChangeAbility(int p__specialCapacitiesIndex)
+    {
+        if (_isPlayer1SkillTree)
+        {
+            _player1CharacterAdrenaline.specialCapacity = _specialCapacities[p__specialCapacitiesIndex];
+
+            S_CharacterManager.Instance.player1CharacterGameObject.GetComponent<S_CharacterSpecialCapacity>().RecieveSpecialCapacityStats
+                (_specialCapacities[p__specialCapacitiesIndex].capacityName, 
+                _specialCapacities[p__specialCapacitiesIndex].capacityDescription, 
+                _specialCapacities[p__specialCapacitiesIndex].capacityEffectDescription
+            );
+        }
+            
+
+        else
+        {
+            _player2CharacterAdrenaline.specialCapacity = _specialCapacities[p__specialCapacitiesIndex];
+
+            S_CharacterManager.Instance.player2CharacterGameObject.GetComponent<S_CharacterSpecialCapacity>().RecieveSpecialCapacityStats
+                (_specialCapacities[p__specialCapacitiesIndex].capacityName, 
+                _specialCapacities[p__specialCapacitiesIndex].capacityDescription, 
+                _specialCapacities[p__specialCapacitiesIndex].capacityEffectDescription
+            );
+        }
+            
     }
 
     //Default Ability.
     public void BaseAbility()
     {
-        _characterStats.specialCapacity = _specialCapacities[0];
+        ChangeAbility(0);
     }
 
     //Ability to reduce the turn charges of your troupes.
@@ -30,16 +76,21 @@ public class S_SkillTree : MonoBehaviour
             if (S_GameManager.Instance.player1CharacterXP.ammount >= _threshold)
             {
                 _specialCapacities[1].isCapacityLocked = false;
-                _characterStats.specialCapacity = _specialCapacities[1];
+
+                ChangeAbility(1);
+
                 _buttons[2].interactable = false;
                 _buttons[3].interactable = false;
                 _threshold *= 2;
                 _buttons[4].interactable = true;
+
+                UpdateXpDisplay();
+                UpdateThresholdDisplay(false);
             }
         }
         else
         {
-            _characterStats.specialCapacity = _specialCapacities[1];
+            ChangeAbility(1);
         }
     }
 
@@ -51,16 +102,21 @@ public class S_SkillTree : MonoBehaviour
             if (S_GameManager.Instance.player1CharacterXP.ammount >= _threshold)
             {
                 _specialCapacities[2].isCapacityLocked = false;
-                _characterStats.specialCapacity = _specialCapacities[2];
+
+                ChangeAbility(2);
+
                 _buttons[1].interactable = false;
                 _buttons[3].interactable = false;
                 _threshold *= 2;
                 _buttons[5].interactable = true;
+
+                UpdateXpDisplay();
+                UpdateThresholdDisplay(false);
             }
         }
         else
         {
-            _characterStats.specialCapacity = _specialCapacities[2];
+            ChangeAbility(2);
         }
     }
 
@@ -72,16 +128,21 @@ public class S_SkillTree : MonoBehaviour
             if (S_GameManager.Instance.player1CharacterXP.ammount >= _threshold)
             {
                 _specialCapacities[3].isCapacityLocked = false;
-                _characterStats.specialCapacity = _specialCapacities[3];
+
+                ChangeAbility(3);
+
                 _buttons[1].interactable = false;
                 _buttons[2].interactable = false;
                 _threshold *= 2;
                 _buttons[5].interactable = true;
+
+                UpdateXpDisplay();
+                UpdateThresholdDisplay(false);
             }
         }
         else
         {
-            _characterStats.specialCapacity = _specialCapacities[3];
+            ChangeAbility(3);
         }
     }
 
@@ -93,14 +154,19 @@ public class S_SkillTree : MonoBehaviour
             if (S_GameManager.Instance.player1CharacterXP.ammount >= _threshold)
             {
                 _specialCapacities[4].isCapacityLocked = false;
-                _characterStats.specialCapacity = _specialCapacities[4];
+
+                ChangeAbility(4);
+
                 _threshold *= 2;
                 _buttons[6].interactable = true;
+
+                UpdateXpDisplay();
+                UpdateThresholdDisplay(false);
             }
         }
         else
         {
-            _characterStats.specialCapacity = _specialCapacities[4];
+            ChangeAbility(4);
         }
     }
 
@@ -112,14 +178,19 @@ public class S_SkillTree : MonoBehaviour
             if (S_GameManager.Instance.player1CharacterXP.ammount >= _threshold)
             {
                 _specialCapacities[5].isCapacityLocked = false;
-                _characterStats.specialCapacity = _specialCapacities[5];
+
+                ChangeAbility(5);
+
                 _threshold *= 2;
                 _buttons[6].interactable = true;
+
+                UpdateXpDisplay();
+                UpdateThresholdDisplay(false);
             }
         }
         else
         {
-            _characterStats.specialCapacity = _specialCapacities[5];
+            ChangeAbility(5);
         }
     }
 
@@ -131,12 +202,15 @@ public class S_SkillTree : MonoBehaviour
             if (S_GameManager.Instance.player1CharacterXP.ammount >= _threshold)
             {
                 _specialCapacities[6].isCapacityLocked = false;
-                _characterStats.specialCapacity = _specialCapacities[6];
+                ChangeAbility(6);
+
+                UpdateXpDisplay();
+                UpdateThresholdDisplay(true);
             }
         }
         else
         {
-            _characterStats.specialCapacity = _specialCapacities[6];
+            ChangeAbility(6);
         }
     }
 
@@ -145,7 +219,9 @@ public class S_SkillTree : MonoBehaviour
     {
         S_GameManager.Instance.player1CharacterXP.ResetAmmount();
         _threshold = _baseThreshold;
-        _characterStats.specialCapacity = _specialCapacities[0];
+
+        ChangeAbility(0);
+
         for (int i = 1; i < _specialCapacities.Count; i++)
         {
             _specialCapacities[i].isCapacityLocked = true;
@@ -154,9 +230,36 @@ public class S_SkillTree : MonoBehaviour
         {
             _buttons[i].interactable = false;
         }
-        for (int i = 1; i < 3; i++)
+        for (int i = 1; i <= 3; i++)
         {
             _buttons[i].interactable = true;
+        }
+
+        UpdateXpDisplay();
+        UpdateThresholdDisplay(false);
+    }
+
+    private void UpdateXpDisplay()
+    {
+        if (_isPlayer1SkillTree)
+        {
+            _xpDisplay.text = "xp = " + S_GameManager.Instance.player1CharacterXP.ammount.ToString();
+        }
+        else
+        {
+            _xpDisplay.text = "xp = " + S_GameManager.Instance.player2CharacterXP.ammount.ToString();
+        }
+    }
+
+    private void UpdateThresholdDisplay(bool p_allSkillsUnlocked)
+    {
+        if (p_allSkillsUnlocked)
+        {
+            _thresholdDisplay.text = "Congratulations you unlocked everything !";
+        }
+        else
+        {
+            _thresholdDisplay.text = "Price = " + _threshold.ToString();
         }
     }
 }
