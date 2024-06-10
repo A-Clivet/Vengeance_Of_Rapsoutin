@@ -266,6 +266,15 @@ public class Unit : MonoBehaviour
         {
             actualTile.unit = null;
             grid.unitList.Remove(this);
+            grid.totalUnitAmount -= 1;
+            if (S_GameManager.Instance.isPlayer1Turn)
+            {
+                S_GameManager.Instance.player1CharacterXP.GainXP(5);
+            }
+            else
+            {
+                S_GameManager.Instance.player2CharacterXP.GainXP(5);
+            }
             grid.AllUnitPerColumn[tileX].Remove(this);
             Destroy(gameObject);
         }

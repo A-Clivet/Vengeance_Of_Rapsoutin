@@ -200,6 +200,16 @@ public class S_UnitManager : MonoBehaviour
                         UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
                     }
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+
+                    if (S_GameManager.Instance.isPlayer1Turn)
+                    {
+                        S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                    }
+                    else
+                    {
+                        S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                    }
+
                     columnCounter = 0;
                     currentColorColumn = -1;
                 }
@@ -223,14 +233,14 @@ public class S_UnitManager : MonoBehaviour
         }
     }
 
-    public void AttackBuff(Unit unit)
+    public void AttackBuff(GameObject GOunit)
     {
-        unit.attack += 5;
+        GOunit.GetComponent<Unit>().attack += 1;
     }
 
-    public void DefenseBuff(Unit unit)
+    public void DefenseBuff(GameObject GOunit)
     {
-        unit.defense += 5;
+        GOunit.GetComponent<Unit>().defense += 1;
     }
 
     //public struct UnitOnLine{
