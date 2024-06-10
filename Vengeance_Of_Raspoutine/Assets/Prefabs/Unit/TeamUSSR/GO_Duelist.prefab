@@ -186,21 +186,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   SO_Unit: {fileID: 11400000, guid: 0f57fd0ac30f80b4f9214e63d63b23ac, type: 2}
-  attack: 0
-  defense: 0
+  attack: 2
+  defense: 2
   state: 0
-  turnCharge: 0
+  turnCharge: 2
   actualFormation: []
   formationIndex: 0
-  unitColor: 0
+  unitColor: 2
   unitSprite: {fileID: 0}
   actualTile: {fileID: 0}
   highlight: {fileID: 1401381864322760783}
   grid: {fileID: 0}
   tileX: 0
   tileY: 0
-  sizeX: 0
-  sizeY: 0
+  sizeX: 1
+  sizeY: 1
   isChecked: 0
   mustAttack: 0
 --- !u!61 &8606980364883050880
