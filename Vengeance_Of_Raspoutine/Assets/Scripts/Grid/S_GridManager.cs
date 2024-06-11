@@ -97,6 +97,10 @@ public class S_GridManager : MonoBehaviour
                         gridList[i][j].GetComponent<SpriteRenderer>().color += _spriteColor;
                     }
                 }
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    unitList[i].statsCanvas.SetActive(true);
+                }
             }
             else
             {
@@ -106,6 +110,10 @@ public class S_GridManager : MonoBehaviour
                     {
                         gridList[i][j].GetComponent<SpriteRenderer>().color += _transparentColor;
                     }
+                }
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    unitList[i].statsCanvas.SetActive(false);
                 }
             }
         }

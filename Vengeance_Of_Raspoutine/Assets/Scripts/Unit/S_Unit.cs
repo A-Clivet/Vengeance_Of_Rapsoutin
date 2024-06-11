@@ -24,6 +24,7 @@ public class Unit : MonoBehaviour
     public S_Tile actualTile;
     public GameObject highlight;
     public S_GridManager grid;
+    public GameObject statsCanvas;
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
 
