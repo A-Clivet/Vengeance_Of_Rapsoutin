@@ -57,27 +57,37 @@ public class Unit : MonoBehaviour
     private IEnumerator LerpMove()
     {
         float t = 0;
+        float _distance = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
+
         if (!_isMoving)
         {
             _isMoving = true;
         }
 
-        while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1f)
+        while (_distance >= 0.1f)
         {
             transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), t);
+
+            // We re-calculate the distance
+            _distance = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
+
             yield return new WaitForEndOfFrame();
+
             if (mustAttack)
             {
-                t = t + Time.deltaTime / 100;
+                // Speed for one frame divided by the distance left
+                t = 10 * Time.deltaTime / _distance;
             }
             else
             {
-                t = t + Time.deltaTime / 5;
+                t = 5 * Time.deltaTime / _distance;
             }
             
         }
         _isMoving = false;
+
         transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
+
         if (mustAttack)
         {
             AttackPlayer();
@@ -334,11 +344,13 @@ public class Unit : MonoBehaviour
                 _posToMove = tile.transform.position;
 
                 StartCoroutine(LerpMove());
+
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                break;
+                
+                return;
             }
         }
     }
@@ -355,16 +367,15 @@ public class Unit : MonoBehaviour
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
-                if (!_isMoving)
-                {
-                    _isMoving = true;
-                    StartCoroutine(LerpMove());
-                }
+
+                StartCoroutine(LerpMove());
+
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                break;
+
+                return;
             }
         }
     }

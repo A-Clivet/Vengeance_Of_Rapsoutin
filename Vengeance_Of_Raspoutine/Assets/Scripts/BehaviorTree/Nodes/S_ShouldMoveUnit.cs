@@ -26,6 +26,7 @@ public class S_ShouldMoveUnit : Node
             {
                 _unit.ActionMoveToTile(_gridManager.gridList[_unitColumn[i][_unitColumn[i].Count - 1].tileX][_unitColumn[i][_unitColumn[i].Count - 1].tileY + 1]);
                 pr_state = NodeState.SUCCESS;
+                return pr_state;
             }
         }
 
@@ -35,15 +36,16 @@ public class S_ShouldMoveUnit : Node
             {
                 _unit.ActionMoveToTile(_gridManager.gridList[_unitLine[i][_unitColumn[i].Count - 1].tileX][_unitLine[i][_unitLine[i].Count - 1].tileY + 1]);
                 pr_state = NodeState.SUCCESS;
+                return pr_state;
             }
 
             if (_gridManager.gridList[_unitLine[i][_unitLine[i].Count - 1].tileX + 1][_unitLine[i][_unitLine[i].Count - 1].tileY] == null)
             {
                 _unit.ActionMoveToTile(_gridManager.gridList[_unitLine[i][_unitColumn[i].Count - 1].tileX][_unitLine[i][_unitLine[i].Count - 1].tileY + 1]);
                 pr_state = NodeState.SUCCESS;
+                return pr_state;
             }
         }
-
         pr_state = NodeState.FAILURE;
         return pr_state;
     }

@@ -113,47 +113,74 @@ public class S_GridManager : MonoBehaviour
     
     public List<List<Unit>> UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
     {
-
+        //Debug.Log("Starting UnitPriorityCheck");
         List<List<Unit>> GridUnit = new();
+        List<Unit> StateIdleUnit = new();
+        List<Unit> StateDefendUnit = new();
+        List<Unit> StateAttackUnit = new();
+        List<Unit> OrganizedColumn = new();
 
         for (int x = 0; x < width; x++)
         {
-            List<Unit> StateIdleUnit = new();
-            List<Unit> StateDefendUnit = new();
-            List<Unit> StateAttackUnit = new();
-            List<Unit> OrganizedColumn = new();
-
+            StateIdleUnit.Clear();
+            StateDefendUnit.Clear();
+            StateAttackUnit.Clear();
+            OrganizedColumn.Clear();
 
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
-                if (gridList[x][y].unit == null) continue; 
-                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
-                if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
-                if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit == null) continue;
+                //Debug.Log($"Processing unit at grid[{x}][{y}] with state {gridList[x][y].unit.state}");
+
+                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3)
+                    StateIdleUnit.Add(gridList[x][y].unit);
+
+                if (gridList[x][y].unit.state == 1) 
+                    StateDefendUnit.Add(gridList[x][y].unit);
+
+                if (gridList[x][y].unit.state == 2)
+                    StateAttackUnit.Add(gridList[x][y].unit);
+
                 gridList[x][y].unit.actualTile = null;
                 gridList[x][y].unit = null;
+                print("AUSCOUR");
             }
+
+            print("StateIdleUnit" + StateIdleUnit.Count);
+            print("StateDefendUnit" + StateDefendUnit.Count);
+            print("StateAttackUnit" + StateAttackUnit.Count);
+            print("OrganizedColumn" + OrganizedColumn.Count);
+
             foreach (Unit u in StateDefendUnit)
             {
                 OrganizedColumn.Add(u);
+                print("AUSCOUR");
             }
+
             foreach (Unit u in StateAttackUnit)
             {
                 OrganizedColumn.Add(u);
+                print("AUSCOUR");
             }
+
             foreach (Unit u in StateIdleUnit)
             {
                 OrganizedColumn.Add(u);
+                print("AUSCOUR");
             }
 
             GridUnit.Add(OrganizedColumn);
 
-            for(int y = 0; y < OrganizedColumn.Count; y++)
+            for (int y = 0; y < OrganizedColumn.Count; y++)
             {
+                //Debug.Log($"Switching unit in OrganizedColumn at index {y}");
                 OrganizedColumn[y].SwitchUnit(gridList[x][y]);
+                print("AUSCOUR");
             }
+
         }
 
-        return GridUnit; 
+        //Debug.Log("Finished UnitPriorityCheck");
+        return GridUnit;
     }
 }

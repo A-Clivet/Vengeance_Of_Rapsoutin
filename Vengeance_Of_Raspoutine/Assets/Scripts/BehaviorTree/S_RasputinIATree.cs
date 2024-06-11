@@ -1,9 +1,13 @@
 using S_BehaviorTree;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class S_RasputinIATree : S_BehaviorTree.S_Tree
 {
+    public static S_RasputinIATree Instance;
+
     public S_GameManager gameManager;
     public S_UnitManager unitManager;
     public S_GridManager gridManager;
@@ -16,6 +20,11 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
     protected S_CharacterAdrenaline pr_characterAdrenaline;
 
     private GameObject _player2CharacterGameObject;
+
+    private void Awake()
+    {
+        Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndPause);
+    }
 
     protected override Node SetupTree()
     {
@@ -63,6 +72,13 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
         }
         );
 
+        StartCoroutine(CooldownPerAction());
         return root;
+    }
+
+    public IEnumerator CooldownPerAction()
+    {
+        print("Waiting amongus");
+        yield return new WaitForSeconds(2);
     }
 }

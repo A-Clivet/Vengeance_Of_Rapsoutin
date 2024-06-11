@@ -15,7 +15,7 @@ public class S_CheckNumberUnit : Node
     {
         _unitCall.CallAmountUpdate();
 
-        if (_unitCall.callAmount >= 8)     //check si il y a au moins 8 unité dans sa reserve
+        if (_unitCall.callAmount >= 8)     //Check if there are 8 or more unit in the storage
         {
             pr_state = NodeState.SUCCESS;
             return pr_state;
