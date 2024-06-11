@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static S_Instantiator;
 
 public class S_RemoveUnit : MonoBehaviour
 {
     public static S_RemoveUnit Instance;
 
+
     public Unit hoveringUnit;
+    public int NbCombo;
+    public bool removing;
 
     private void Awake()
     {
@@ -35,8 +37,11 @@ public class S_RemoveUnit : MonoBehaviour
                         tile.unit.MoveToTile(hoveringUnit.actualTile);
                     }
                 }
-                
+                NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
                 Destroy(hoveringUnit.gameObject);
+                //Used for verifying if the action of removing the unit has created a combo
+                removing = true;
+
                 hoveringUnit = null;
                 S_GameManager.Instance.ReduceActionPointBy1();
             }   

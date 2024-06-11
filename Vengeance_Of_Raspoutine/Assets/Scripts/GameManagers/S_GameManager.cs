@@ -667,11 +667,25 @@ public class S_GameManager : MonoBehaviour
         {
             // Detect in the player1 grid if there are at least three units that are aligned vertically or horizontally
             player1unitManager.UnitCombo(3);
+
+            //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
+            if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
+            {
+                _playerActionNumber +=1;
+                S_RemoveUnit.Instance.removing = false;
+            }
         }
         else if (currentTurn == TurnEmun.Player2Turn)
         {
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
             player2unitManager.UnitCombo(3);
+
+            //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
+            if (S_RemoveUnit.Instance.NbCombo < player2unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
+            {
+                _playerActionNumber+=1;
+                S_RemoveUnit.Instance.removing = false;
+            }
         }
 
         // Action time cooldown

@@ -231,6 +231,12 @@ public class S_UnitManager : MonoBehaviour
                 //if p_defendingUnit position = unitColumn
             }
         }
+        //If we are here then it significate that we've created a wall combo. Then we check if we removed a unit before to avoid removing a action point
+        if (S_RemoveUnit.Instance.removing)
+        {
+            S_GameManager.Instance.IncreaseActionPointBy1();
+            S_RemoveUnit.Instance.removing = false;
+        }
     }
 
     public void AttackBuff(GameObject GOunit)

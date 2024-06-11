@@ -97,6 +97,7 @@ public class Unit : MonoBehaviour
         tileY= p_tile.tileY;
         unitManager = p_tile.grid.unitManager;
         enemyGrid = grid.enemyGrid;
+        grid.AllUnitPerColumn[tileX].Add(this);
     }
 
     public void DestroyFormation()
