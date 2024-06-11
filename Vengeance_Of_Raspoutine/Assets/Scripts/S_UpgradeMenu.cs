@@ -18,8 +18,12 @@ public class S_UpgradeMenu : MonoBehaviour
     private int _attBuffIncrement = 0;
     private int _defBuffIncrement = 0;
 
+    S_GameManager _gameManager;
+
     private void Start()
     {
+        _gameManager = S_GameManager.Instance;
+
         UnitListInit();
         MoneyDisplayUpdate();
         UnitDisplayUpdate();
@@ -30,7 +34,7 @@ public class S_UpgradeMenu : MonoBehaviour
         {
             if (_playerNumber == 1)
             {
-                if (S_GameManager.Instance.player1CharacterMoney.Buy(5))
+                if (_gameManager.player1CharacterMoney.Buy(5))
                 {
                     _unitManager.AttackBuff(_units[_unitInd]);
                     MoneyDisplayUpdate();
@@ -39,7 +43,7 @@ public class S_UpgradeMenu : MonoBehaviour
             }
             else if (_playerNumber == 2)
             {
-                if (S_GameManager.Instance.player2CharacterMoney.Buy(5))
+                if (_gameManager.player2CharacterMoney.Buy(5))
                 {
                     _unitManager.AttackBuff(_units[_unitInd]);
                     MoneyDisplayUpdate();
@@ -59,7 +63,7 @@ public class S_UpgradeMenu : MonoBehaviour
         {
             if (_playerNumber == 1)
             {
-                if (S_GameManager.Instance.player1CharacterMoney.Buy(5))
+                if (_gameManager.player1CharacterMoney.Buy(5))
                 {
                     _unitManager.DefenseBuff(_units[_unitInd]);
                     MoneyDisplayUpdate();
@@ -68,7 +72,7 @@ public class S_UpgradeMenu : MonoBehaviour
             }
             else if (_playerNumber == 2)
             {
-                if (S_GameManager.Instance.player2CharacterMoney.Buy(5))
+                if (_gameManager.player2CharacterMoney.Buy(5))
                 {
                     _unitManager.DefenseBuff(_units[_unitInd]);
                     MoneyDisplayUpdate();
@@ -104,11 +108,11 @@ public class S_UpgradeMenu : MonoBehaviour
     {
         if (_playerNumber == 1)
         {
-            _moneyDisplay.text = "Money left : " + S_GameManager.Instance.player1CharacterMoney.ammount + " g";
+            _moneyDisplay.text = "Money left : " + _gameManager.player1CharacterMoney.ammount + " g";
         }
         else if (_playerNumber == 2)
         {
-            _moneyDisplay.text = "Money left : " + S_GameManager.Instance.player2CharacterMoney.ammount + " g";
+            _moneyDisplay.text = "Money left : " + _gameManager.player2CharacterMoney.ammount + " g";
         }
     }
 
@@ -122,15 +126,15 @@ public class S_UpgradeMenu : MonoBehaviour
         switch(_playerNumber)
         {
             case 1:
-                for (int i=0; i < S_GameManager.Instance.player1UnitCallButton.GetComponent<S_UnitCall>().GetUnits().Count; i++)
+                for (int i=0; i < _gameManager.player1UnitCall.GetUnits().Count; i++)
                 {
-                    _units.Add(S_GameManager.Instance.player1UnitCallButton.GetComponent<S_UnitCall>().GetUnits()[i]);
+                    _units.Add(_gameManager.player1UnitCall.GetUnits()[i]);
                 }
                 break;
             case 2:
-                for (int i = 0; i < S_GameManager.Instance.player2UnitCallButton.GetComponent<S_UnitCall>().GetUnits().Count; i++)
+                for (int i = 0; i < _gameManager.player2UnitCall.GetUnits().Count; i++)
                 {
-                    _units.Add(S_GameManager.Instance.player2UnitCallButton.GetComponent<S_UnitCall>().GetUnits()[i]);
+                    _units.Add(_gameManager.player2UnitCall.GetUnits()[i]);
                 }
                 break;
             default: 

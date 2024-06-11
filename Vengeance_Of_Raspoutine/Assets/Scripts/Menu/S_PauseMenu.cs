@@ -30,8 +30,6 @@ public class S_PauseMenu : MonoBehaviour
         }
     }
 
-
-
     public void ResumeButton()
     {
         Time.timeScale = 1f;
@@ -40,6 +38,7 @@ public class S_PauseMenu : MonoBehaviour
 
     public void LeaveButton()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
 }

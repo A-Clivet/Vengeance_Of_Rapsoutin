@@ -8,14 +8,20 @@ public class S_UnitCallButtonHandler : MonoBehaviour
     public static S_UnitCallButtonHandler Instance;
 
     [Header("References :")]
-    public Button player1UnitCallButton;
-    public Button player2UnitCallButton;
+    public S_UnitCall player1UnitCall;
+    public S_UnitCall player2UnitCall;
+
+    Button player1UnitCallButton;
+    Button player2UnitCallButton;
     #endregion
 
     #region Methods
     private void Awake()
     {
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndPause);
+
+        player1UnitCallButton = player1UnitCall.gameObject.GetComponent<Button>();
+        player2UnitCallButton = player2UnitCall.gameObject.GetComponent<Button>();
     }
 
     /// <summary> Handles the interaction state of the unit call buttons for both players.
@@ -32,6 +38,12 @@ public class S_UnitCallButtonHandler : MonoBehaviour
         {
             player2UnitCallButton.interactable = p_isButtonInteractionGivenIsEnabled;
         }
+    }
+
+    public void CallUnitsForAllPlayers()
+    {
+        player1UnitCall.UnitCalling();
+        player2UnitCall.UnitCalling();
     }
 
     #endregion
