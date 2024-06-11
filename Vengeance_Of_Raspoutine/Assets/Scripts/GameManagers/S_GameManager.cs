@@ -100,7 +100,7 @@ public class S_GameManager : MonoBehaviour
             else
             {
                 Debug.LogError(
-                    "ERROR ! You tryed to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
+                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
                     "' but it's not planned into the variable's code. UNITY IS PAUSED !"
                 );
                 Debug.Break();
@@ -168,11 +168,12 @@ public class S_GameManager : MonoBehaviour
 
             // Updating the map according to the players points
             _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
+
+            S_WeatherEvent.Instance.EventProbability();
         }
     }
 
     #endregion
-
     [Header("Player's inputs GameObject references :")]
     public GameObject player1Inputs;
     public GameObject player2Inputs;
@@ -227,6 +228,7 @@ public class S_GameManager : MonoBehaviour
     int _playerActionNumber;
 
     int _loseCoefficient = 1;
+    int _playersPlayed = 0;
     #endregion
 
     #region Methods
@@ -265,9 +267,7 @@ public class S_GameManager : MonoBehaviour
         }
 
         #endregion
-
         #region First turn management
-
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
 
@@ -275,9 +275,7 @@ public class S_GameManager : MonoBehaviour
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         #endregion
-
         #region Characters management
-
         // Setting up character manager reference
         _characterManager = S_CharacterManager.Instance;
 
@@ -305,7 +303,6 @@ public class S_GameManager : MonoBehaviour
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
-
         #endregion
     }
 
@@ -349,6 +346,7 @@ public class S_GameManager : MonoBehaviour
                 currentTurn = TurnEmun.Player2Turn;
                 break;
         }
+        S_WeatherEvent.Instance.EventProbability();
     }
 
     /// <summary> End the turn of the player who played and let the other player play,
@@ -357,6 +355,13 @@ public class S_GameManager : MonoBehaviour
     {
         if (currentTurn == TurnEmun.TransitionTurn)
         {
+            _playersPlayed++;
+            if (_playersPlayed >= 2) 
+            {
+                if(S_WeatherEvent.Instance.currentEvent!=null)
+                S_WeatherEvent.Instance.currentEvent();
+
+            }
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
@@ -365,6 +370,7 @@ public class S_GameManager : MonoBehaviour
             {
                 currentTurn=TurnEmun.Player1Turn;
             }
+
         }
         else
         {
@@ -457,7 +463,6 @@ public class S_GameManager : MonoBehaviour
         }
 
         #region Characters management
-
         // Updates the character's score visuals
         player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
@@ -492,7 +497,7 @@ public class S_GameManager : MonoBehaviour
         // To avoid having to manage two grid manager variables
         // we create a local variable nammed "gridManager" it contain the S_GridManager we will use later,
         // this variable will change depending if it's player1 turn and vice versa. 
-        S_GridManager gridManager = _player1GridManager;
+        S_GridManager gridManager;
 
 
         if (isPlayer1Turn)
@@ -512,6 +517,10 @@ public class S_GameManager : MonoBehaviour
                     Unit unit = gridManager.AllUnitPerColumn[i][j];
 
                     unit.ReturnToBaseTile();
+                    if (unit.state == 3)
+                    {
+                        unit.state = 0;
+                    }
 
                 }
             }
@@ -527,6 +536,10 @@ public class S_GameManager : MonoBehaviour
                     if (unit.mustAttack)
                     {
                         formationAttacking = true;
+                    }
+                    else
+                    {
+                        formationAttacking = false;
                     }
 
                 }
@@ -551,7 +564,7 @@ public class S_GameManager : MonoBehaviour
         {
             unitManagerP1.UnitCombo(3);
         }
-        else
+        else if(currentTurn == TurnEmun.Player2Turn)
         {
             unitManagerP2.UnitCombo(3);
         }
@@ -594,7 +607,7 @@ public class S_GameManager : MonoBehaviour
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;
 
                 }
-                else
+                else if (currentTurn == TurnEmun.Player2Turn)
                 {
                     _player1GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = false;
                     _player2GridManager.gridList[i][j].GetComponent<BoxCollider2D>().enabled = true;

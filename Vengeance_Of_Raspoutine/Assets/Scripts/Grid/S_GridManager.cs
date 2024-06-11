@@ -127,7 +127,7 @@ public class S_GridManager : MonoBehaviour
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
                 if (gridList[x][y].unit == null) continue; 
-                if (gridList[x][y].unit.state == 0) StateIdleUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
                 gridList[x][y].unit.actualTile = null;

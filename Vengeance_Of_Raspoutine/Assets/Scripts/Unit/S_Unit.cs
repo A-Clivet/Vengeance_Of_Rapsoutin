@@ -129,7 +129,6 @@ public class Unit : MonoBehaviour
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         S_GameManager.Instance.EndTurn();
     }
-
     //launch the attack of all formation and begin the recursion of the attack
 
     public void AttackCharge()
@@ -221,8 +220,7 @@ public class Unit : MonoBehaviour
     //}
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
-    public void ReducePlayerHp()
-    { // needs rework
+    public void ReducePlayerHp(){ // needs rework
         if (S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.player2CharacterHealth.currentHP -= attack;
@@ -248,17 +246,17 @@ public class Unit : MonoBehaviour
                         if (actualFormation[j] != this)
                         {
                             actualFormation[j].actualTile.unit = null;
-                            grid.unitList.Remove(actualFormation[j]);
                             grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
                             Destroy(actualFormation[j].gameObject);
                         }
+                        actualFormation[j].actualTile.unit = null;
+                        grid.unitList.Remove(actualFormation[j]);
+                        grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
+                        grid.unitList.Remove(this);
+                        grid.AllUnitPerColumn[tileX].Remove(this);
+                        Destroy(gameObject);
                     }
-                    unitManager.UnitColumn.Remove(actualFormation);
                 }
-                actualTile.unit = null;
-                grid.unitList.Remove(this);
-                grid.AllUnitPerColumn[tileX].Remove(this);
-                Destroy(gameObject);
             }
             return;
         }

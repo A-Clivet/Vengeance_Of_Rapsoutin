@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static S_GameManager;
 using Random = UnityEngine.Random;
 
 public class S_UnitCall : MonoBehaviour
@@ -28,6 +29,16 @@ public class S_UnitCall : MonoBehaviour
 
     public int CallAmountUpdate()
     {
+        if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
+        {
+            tile = grid.gridList;
+        }
+
+        if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+        {
+            tile = grid.gridList;
+        }
+
         return callAmount = unitCapacity - grid.totalUnitAmount;
     }
 
