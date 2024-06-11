@@ -44,13 +44,20 @@ public class Unit : MonoBehaviour
         actualTiles = new List<S_Tile>() { actualTile, null, null, null };
 
         int randomNumber = Random.Range(0, 1);
-        unitColor = SO_Unit.unitColor;
         gameObject.GetComponent<SpriteRenderer>().sprite = SO_Unit.unitSprite[randomNumber];
         sizeX = SO_Unit.sizeX;
         sizeY = SO_Unit.sizeY;
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
         turnCharge = SO_Unit.unitTurnCharge;
+        if(sizeY == 2)
+        {
+            unitColor = Random.Range(0,3);
+        }
+        else
+        {
+            unitColor = SO_Unit.unitColor;
+        }
         speed = 10;
     }
 
@@ -229,25 +236,28 @@ public class Unit : MonoBehaviour
     /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
     public void TakeDamage(int p_damage)
     {
-        if (actualFormation != null)
+        if (state == 2)
         {
             attack -= p_damage;
             if (attack <= 0)
             {
-                for (int j = 0; j < actualFormation.Count; j++)
+                if (sizeY == 1)
                 {
-                    if (actualFormation[j] != this)
+                    for (int j = 0; j < actualFormation.Count; j++)
                     {
-                        actualFormation[j].actualTile.unit = null;
-                        grid.unitList.Remove(actualFormation[j]);
-                        grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
-                        Destroy(actualFormation[j].gameObject);
+                        if (actualFormation[j] != this)
+                        {
+                            actualFormation[j].actualTile.unit = null;
+                            grid.unitList.Remove(actualFormation[j]);
+                            grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
+                            Destroy(actualFormation[j].gameObject);
+                        }
                     }
+                    unitManager.UnitColumn.Remove(actualFormation);
                 }
                 actualTile.unit = null;
                 grid.unitList.Remove(this);
                 grid.AllUnitPerColumn[tileX].Remove(this);
-                unitManager.UnitColumn.Remove(actualFormation);
                 Destroy(gameObject);
             }
             return;
@@ -454,6 +464,8 @@ public class Unit : MonoBehaviour
         {
             unit.GetComponent<BoxCollider2D>().enabled = true;
         }
+
+        unitManager.UnitCombo(3);
     }
 
     public void EliteMoveToTile(S_Tile p_tile)
@@ -539,6 +551,8 @@ public class Unit : MonoBehaviour
         {
             unit.GetComponent<BoxCollider2D>().enabled = true;
         }
+
+        unitManager.UnitCombo(3);
     }
 
     //Used to reorganize the Units by state
@@ -669,7 +683,7 @@ public class Unit : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Unit>().grid != grid)
         {
-            if (collision.gameObject.GetComponent<Unit>().actualFormation == null)
+            if (collision.gameObject.GetComponent<Unit>().state == 2)
             {
                 attack -= collision.gameObject.GetComponent<Unit>().defense;
                 collision.gameObject.GetComponent<Unit>().TakeDamage(attack + collision.gameObject.GetComponent<Unit>().defense);

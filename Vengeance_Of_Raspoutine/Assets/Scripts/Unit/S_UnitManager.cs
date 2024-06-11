@@ -17,185 +17,340 @@ public class S_UnitManager : MonoBehaviour
 
     public void UnitCombo(int p_formationNumber)
     {
-
-        int columnCounter = 0;
-        int lineCounter = 0;
-
-        int currentColorColumn = -1;
-        int currentColorLine = -1;
-
-        //SO_Unit actualType = null;
-
-        //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
-
-        for (int i = 0; i < grid.width; i++)//check list largeur
+        Debug.Log("is called");
+        Debug.Log(grid.AllUnitPerColumn.Count);
+        Debug.Log(grid.AllUnitPerColumn[0].Count);
+        for (int i = 0; i < grid.AllUnitPerColumn.Count; i++)
         {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
+            for (int j = 0; j < grid.AllUnitPerColumn[i].Count; j++)
             {
-                if (gridList[i][j].unit == null) //si la case est vide, continue
+
+                if (grid.AllUnitPerColumn[i][j].state == 0)
                 {
-                    continue;
-                }
-                else // si la case contient une unité
-                {
-                    if (gridList[i][j].unit.sizeY > 1)// si l'unité prends plus d'une case de hauteur ce n'est pas un mur
+                    int columnCounter = 0;
+                    int lineCounter = 1;
+                    if (grid.AllUnitPerColumn[i][j].sizeY < 2)
                     {
-                        if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
+                        Debug.Log("Unit Pos in UnitPerColumn (" + grid.AllUnitPerColumn[i][j].tileX + "," + grid.AllUnitPerColumn[i][j].tileY + ")");
+                        //check unit in column
+                        for(int k = 0; k < p_formationNumber; k++)
                         {
-                            gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire que l'unité à été check et ne pas repasser dessus
-
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+                            if (grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + 2 >= grid.height)
                             {
-                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
+                                continue;
+                            }
+                            if (grid.AllUnitPerColumn[i][j + k].state == 0 && grid.AllUnitPerColumn[i][j].SO_Unit.unitType == grid.AllUnitPerColumn[i][j + k].SO_Unit.unitType && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i][j + k].unitColor)
+                            {
+                                columnCounter++;
+                            }
+                            else
+                            {
+                                columnCounter = 0;
+                                break;
+                            }
+                        }
+                        if(columnCounter == p_formationNumber)
+                        {
+                            UnitColumn.Add(new());
+
+                            for (int k = 0; k < p_formationNumber; k++)
+                            {
+                                gridList[i][j + k].unit.state = 2;
+                                UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j + k].unit);
+                            }
+                            for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)
+                            {
+                                UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
+                            }
+                        }
+
+                        //check unit in line 
+                        while (i + lineCounter < grid.width && grid.gridList[i][j].unit.SO_Unit.unitType == grid.gridList[i + lineCounter][j].unit.SO_Unit.unitType && grid.gridList[i][j].unit.unitColor == grid.gridList[i + lineCounter][j].unit.unitColor && grid.AllUnitPerColumn[i][j].state == 0)
+                        {
+                            lineCounter++;
+                        }
+                        if (lineCounter >= p_formationNumber)
+                        {
+                            UnitLine.Add(new());
+
+                            for (int k = 0; k < lineCounter; k++)
+                            {
+                                gridList[i + k][j].unit.state = 1;
+                                UnitLine[UnitLine.Count - 1].Add(gridList[i + k][j].unit);
+                            }
+                            for (int k = 0; k < UnitLine[UnitLine.Count - 1].Count; k++)
+                            {
+                                UnitLine[UnitLine.Count - 1][k].actualFormation = UnitLine[UnitLine.Count - 1];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Unit Pos in UnitPerColumn (" + grid.AllUnitPerColumn[i][j].tileX + "," + grid.AllUnitPerColumn[i][j].tileY + ")");
+                        if (grid.AllUnitPerColumn[i][j].tileY + p_formationNumber >= grid.height)
+                        {
+                            break;
+                        }
+                        if(grid.AllUnitPerColumn[i][j].sizeX == 1)
+                        {
+                            for (int k = 1; k < p_formationNumber; k++)
+                            {
+                                if (grid.AllUnitPerColumn[i][j + k].state == 0 && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i][j + k].unitColor && grid.AllUnitPerColumn[i][j + k].SO_Unit.sizeY < 2)
                                 {
-                                    UnitColumn.Add(new());
-
-                                    gridList[i][j].unit.state = 2;
-                                    gridList[i][j + 2].unit.DestroyFormation();
-                                    gridList[i][j + 3].unit.DestroyFormation();
-
-                                    grid.UnitPriorityCheck();
+                                    columnCounter++;
+                                }
+                                else
+                                {
+                                    columnCounter = 0;
+                                    break;
+                                }
+                            }
+                            if (columnCounter == p_formationNumber - 1)
+                            {
+                                gridList[i][j].unit.state = 2;
+                                for (int k = 1; k < p_formationNumber; k++)
+                                {
+                                    
+                                    gridList[i][j + k].grid.unitList.Remove(gridList[i][j + k].unit);
+                                    gridList[i][j + k].grid.AllUnitPerColumn[gridList[i][j + k].tileX].Remove(gridList[i][j + k].unit);
+                                    gridList[i][j + k].unit = null;
+                                    foreach (Unit unit in grid.AllUnitPerColumn[i])
+                                    {
+                                        unit.MoveToTile(gridList[i][j + k]);
+                                    }
+                                    Destroy(gridList[i][j + k].gameObject);
                                 }
                             }
                         }
-                        else // size x = 2
+                        else
                         {
-                            gridList[i][j].unit.isChecked = true;
-
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null) && (gridList[i + 1][j + 2].unit != null && gridList[i + 1][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+                            for (int k = 1; k < p_formationNumber; k++)
                             {
-                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
+                                if (grid.AllUnitPerColumn[i][j + k].state == 0 && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i][j + k].unitColor && grid.AllUnitPerColumn[i][j + k].SO_Unit.sizeY < 2 &&
+                                    grid.AllUnitPerColumn[i + 1][j + k].state == 0 && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i + 1][j + k].unitColor && grid.AllUnitPerColumn[i + 1][j + k].SO_Unit.sizeY < 2
+                                    )
                                 {
-                                    UnitColumn.Add(new());
-
-                                    gridList[i][j].unit.state = 2;
-                                    gridList[i][j + 2].unit.DestroyFormation();
-                                    gridList[i][j + 3].unit.DestroyFormation();
-                                    gridList[i + 1][j + 2].unit.DestroyFormation();
-                                    gridList[i + 1][j + 3].unit.DestroyFormation();
-
-                                    grid.UnitPriorityCheck();
+                                    columnCounter++;
+                                }
+                                else
+                                {
+                                    columnCounter = 0;
+                                    break;
+                                }
+                            }
+                            if (columnCounter == p_formationNumber - 1)
+                            {
+                                gridList[i][j].unit.state = 2;
+                                for (int k = 1; k < p_formationNumber; k++)
+                                {
+                                    gridList[i][j + k].grid.unitList.Remove(gridList[i][j + k].unit);
+                                    gridList[i][j + k].grid.AllUnitPerColumn[gridList[i][j + k].tileX].Remove(gridList[i][j + k].unit);
+                                    gridList[i][j + k].unit = null;
+                                    gridList[i + 1][j + k].grid.unitList.Remove(gridList[i][j + k].unit);
+                                    gridList[i + 1][j + k].grid.AllUnitPerColumn[gridList[i][j + k].tileX].Remove(gridList[i][j + k].unit);
+                                    gridList[i + 1][j + k].unit = null;
+                                    foreach (Unit unit in grid.AllUnitPerColumn[i])
+                                    {
+                                        unit.MoveToTile(gridList[i][j + k]);
+                                    }
+                                    gridList[i + 1][j + k].unit = null;
+                                    foreach (Unit unit in grid.AllUnitPerColumn[i + 1])
+                                    {
+                                        unit.MoveToTile(gridList[i][j + k]);
+                                    }
+                                    Destroy(gridList[i][j + k].gameObject);
+                                    Destroy(gridList[i + 1][j + k].gameObject);
                                 }
                             }
                         }
-                        return;
                     }
                 }
             }
         }
-
-
-        for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
-        {
-            for (int j = 0; j < grid.width; j++) // largeur
-            {
-                if (gridList[j][i].unit == null)
-                {
-                    currentColorLine = -1; // -1 is not a value that a unitColor will be 
-                    lineCounter = 0;
-                    continue;
-                }
-                if (gridList[j][i].unit.state != 0)
-                {
-                    currentColorLine = -1;
-                    lineCounter = 0;
-                    continue;
-                }
-                if (gridList[j][i].unit.unitColor != currentColorLine)
-                {
-                    currentColorLine = gridList[j][i].unit.unitColor;
-                    lineCounter = 1;
-                    continue;
-                }
-                else
-                {
-                    lineCounter++;
-                }
-
-                if (lineCounter == p_formationNumber)
-                {
-                    UnitLine.Add(new());
-                    gridList[j][i].unit.state = 1;
-                    gridList[j - 1][i].unit.state = 1;
-                    gridList[j - 2][i].unit.state = 1;
-
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                    currentColorLine = -1;
-                    lineCounter = 0;
-                }
-                if (UnitLine.Count >= 1)
-                {
-                    Defend(UnitLine);
-                }
-                UnitLine.Clear();
-            }
-            currentColorLine = -1;
-            lineCounter = 0;
-        }
-
-        for (int i = 0; i < grid.width; i++) // largeur
-        {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
-            {
-
-                if (gridList[i][j].unit == null)
-                {
-                    currentColorColumn = -1; // -1 is not a value that a unitColor will be 
-                    columnCounter = 0;
-                    continue;
-                }
-                if (gridList[i][j].unit.state != 0)
-                {
-                    currentColorColumn = -1;
-                    columnCounter = 0;
-                    continue;
-                }
-                if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
-                {
-                    currentColorColumn = gridList[i][j].unit.unitColor;
-                    columnCounter = 1;
-                    continue;
-                }
-                else
-                {
-                    columnCounter++;
-                }
-
-                if (columnCounter == p_formationNumber) // mode attack 
-                {
-                    UnitColumn.Add(new());
-
-                    gridList[i][j].unit.state = 2;
-                    gridList[i][j - 1].unit.state = 2;
-                    gridList[i][j - 2].unit.state = 2;
-
-                    //temporary visual change to notices attacking units
-
-                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                    for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)
-                    {
-                        UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
-                        UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
-                    }
-                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                    columnCounter = 0;
-                    currentColorColumn = -1;
-                }
-            }
-            currentColorColumn = -1;
-            columnCounter = 0;
-        }
-
+        grid.UnitPriorityCheck();
     }
+
+    //public void UnitCombo(int p_formationNumber)
+    //{
+
+    //    int columnCounter = 0;
+    //    int lineCounter = 0;
+
+    //    int currentColorColumn = -1;
+    //    int currentColorLine = -1;
+
+    //    //SO_Unit actualType = null;
+
+    //    //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
+
+    //    for (int i = 0; i < grid.width; i++)//check list largeur
+    //    {
+    //        for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
+    //        {
+    //            if (gridList[i][j].unit == null) //si la case est vide, continue
+    //            {
+    //                continue;
+    //            }
+    //            else // si la case contient une unité
+    //            {
+    //                if (gridList[i][j].unit.sizeY > 1)// si l'unité prends plus d'une case de hauteur ce n'est pas un mur
+    //                {
+    //                    if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
+    //                    {
+    //                        gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire que l'unité à été check et ne pas repasser dessus
+
+    //                        if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+    //                        {
+    //                            if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
+    //                            {
+    //                                UnitColumn.Add(new());
+
+    //                                gridList[i][j].unit.state = 2;
+    //                                gridList[i][j + 2].unit.DestroyFormation(); // function to remove
+    //                                gridList[i][j + 3].unit.DestroyFormation(); // function to remove
+
+    //                                grid.UnitPriorityCheck();
+    //                            }
+    //                        }
+    //                    }
+    //                    else // size x = 2
+    //                    {
+    //                        gridList[i][j].unit.isChecked = true;
+
+    //                        if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null) && (gridList[i + 1][j + 2].unit != null && gridList[i + 1][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
+    //                        {
+    //                            if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
+    //                            {
+    //                                UnitColumn.Add(new());
+
+    //                                gridList[i][j].unit.state = 2;
+    //                                gridList[i][j + 2].unit.DestroyFormation();
+    //                                gridList[i][j + 3].unit.DestroyFormation();
+    //                                gridList[i + 1][j + 2].unit.DestroyFormation();
+    //                                gridList[i + 1][j + 3].unit.DestroyFormation();
+
+    //                                grid.UnitPriorityCheck();
+    //                            }
+    //                        }
+    //                    }
+    //                    return;
+    //                }
+    //            }
+    //        }
+    //    }
+
+
+    //    for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
+    //    {
+    //        for (int j = 0; j < grid.width; j++) // largeur
+    //        {
+    //            if (gridList[j][i].unit == null)
+    //            {
+    //                currentColorLine = -1; // -1 is not a value that a unitColor will be 
+    //                lineCounter = 0;
+    //                continue;
+    //            }
+    //            if (gridList[j][i].unit.state != 0)
+    //            {
+    //                currentColorLine = -1;
+    //                lineCounter = 0;
+    //                continue;
+    //            }
+    //            if (gridList[j][i].unit.unitColor != currentColorLine)
+    //            {
+    //                currentColorLine = gridList[j][i].unit.unitColor;
+    //                lineCounter = 1;
+    //                continue;
+    //            }
+    //            else
+    //            {
+    //                lineCounter++;
+    //            }
+
+    //            if (lineCounter == p_formationNumber)
+    //            {
+    //                UnitLine.Add(new());
+    //                gridList[j][i].unit.state = 1;
+    //                gridList[j - 1][i].unit.state = 1;
+    //                gridList[j - 2][i].unit.state = 1;
+
+    //                UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
+    //                UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
+    //                UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
+    //                grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+    //                currentColorLine = -1;
+    //                lineCounter = 0;
+    //            }
+    //            if (UnitLine.Count >= 1)
+    //            {
+    //                Defend(UnitLine);
+    //            }
+    //            UnitLine.Clear();
+    //        }
+    //        currentColorLine = -1;
+    //        lineCounter = 0;
+    //    }
+
+    //    for (int i = 0; i < grid.width; i++) // largeur
+    //    {
+    //        for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
+    //        {
+
+    //            if (gridList[i][j].unit == null)
+    //            {
+    //                currentColorColumn = -1; // -1 is not a value that a unitColor will be 
+    //                columnCounter = 0;
+    //                continue;
+    //            }
+    //            if (gridList[i][j].unit.state != 0)
+    //            {
+    //                currentColorColumn = -1;
+    //                columnCounter = 0;
+    //                continue;
+    //            }
+    //            if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
+    //            {
+    //                currentColorColumn = gridList[i][j].unit.unitColor;
+    //                columnCounter = 1;
+    //                continue;
+    //            }
+    //            else
+    //            {
+    //                columnCounter++;
+    //            }
+
+    //            if (columnCounter == p_formationNumber) // mode attack 
+    //            {
+    //                UnitColumn.Add(new());
+
+    //                gridList[i][j].unit.state = 2;
+    //                gridList[i][j - 1].unit.state = 2;
+    //                gridList[i][j - 2].unit.state = 2;
+
+    //                //temporary visual change to notices attacking units
+
+    //                gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+    //                gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+    //                gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+
+    //                UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
+    //                UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
+    //                UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
+    //                for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)
+    //                {
+    //                    UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
+    //                    UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
+    //                }
+    //                grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+    //                columnCounter = 0;
+    //                currentColorColumn = -1;
+    //            }
+    //        }
+    //        currentColorColumn = -1;
+    //        columnCounter = 0;
+    //    }
+
+    //}
 
 
     public void Defend(List<List<Unit>> p_defendingUnit)

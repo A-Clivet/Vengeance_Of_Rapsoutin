@@ -60,7 +60,7 @@ public class S_UnitCall : MonoBehaviour
                     eliteAmount++;
                     if (unitSpawned.sizeX == 2)
                     {
-                        while (X >= 7 || grid.gridList[X][4].unit != null || grid.gridList[X][5].unit != null)
+                        while (X < 7 && grid.gridList[X][4].unit != null)
                         {
                             X = ColumnSelector();        
                         }
@@ -123,7 +123,7 @@ public class S_UnitCall : MonoBehaviour
     }
     private int TypeSelector()
     { /* select which type is the unit */
-        return Random.Range(0, units.Count);
+        return Random.Range(0, units.Count - 2);
     }
     private int ColorSelector()
     { /* select which color is the unit */
