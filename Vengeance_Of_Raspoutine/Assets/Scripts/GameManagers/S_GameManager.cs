@@ -46,8 +46,8 @@ public class S_GameManager : MonoBehaviour
                 _currentRoundNumber++;
 
                 // Change the interactability of the unit call's buttons to the corresponding value
-                player1UnitCallButton.interactable = true;
-                player2UnitCallButton.interactable = false;
+                _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
+                _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
                 // Enable / disable the two player's action preventer panel
                 _player1ActionPreventerVisualGameObject.SetActive(false);
@@ -67,8 +67,8 @@ public class S_GameManager : MonoBehaviour
 
                 _currentRoundNumber++;
 
-                player1UnitCallButton.interactable = false;
-                player2UnitCallButton.interactable = true;
+                _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
+                _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
 
                 _player1ActionPreventerVisualGameObject.SetActive(true);
                 _player2ActionPreventerVisualGameObject.SetActive(false);
@@ -81,8 +81,8 @@ public class S_GameManager : MonoBehaviour
             {
                 // In case if this turn is too long we disable all possible interactions for all players
 
-                player1UnitCallButton.interactable = false;
-                player2UnitCallButton.interactable = false;
+                _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
+                _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
                 // NOTE : You can uncomment the code below if you see that the player can, for exemple, grap a unit after he finish his turn
                 // (WARNING THO : That make the screen flash thats why it's currently commented)
@@ -118,9 +118,9 @@ public class S_GameManager : MonoBehaviour
     public S_UnitManager player1unitManager { get; private set; }
     public S_UnitManager player2unitManager { get; private set; }
 
-    // -- Unit call button's references -- //
-    public Button player1UnitCallButton { get; private set; }
-    public Button player2UnitCallButton { get; private set; }
+    // -- Unit call references -- //
+    public S_UnitCall player1UnitCall { get; private set; }
+    public S_UnitCall player2UnitCall { get; private set; }
 
     // -- Players's inputs game object's references -- //
     public GameObject player1InputsGameObject { get; private set; }
@@ -242,6 +242,9 @@ public class S_GameManager : MonoBehaviour
     // -- End menu manager's reference -- //
     S_EndMenuManager _endMenuManager;
 
+    // Unit call button handler's reference
+    S_UnitCallButtonHandler _unitCallButtonHandler;
+
     // -- Game background sprite renderer's reference -- //
     SpriteRenderer _gameBackgroundSpriteRenderer;
 
@@ -273,8 +276,8 @@ public class S_GameManager : MonoBehaviour
         player2unitManager = S_UnitManagersHandler.Instance.player2UnitManager;
 
         // -- Unit call button's references -- //
-        player1UnitCallButton = S_UnitCallButtonHandler.Instance.player1UnitCallButton;
-        player2UnitCallButton = S_UnitCallButtonHandler.Instance.player2UnitCallButton;
+        player1UnitCall = S_UnitCallButtonHandler.Instance.player1UnitCall;
+        player2UnitCall = S_UnitCallButtonHandler.Instance.player2UnitCall;
 
         // -- Players's inputs game object's references -- //
         player1InputsGameObject = S_PlayerInputsHandler.Instance.player1InputsGameObject;
@@ -303,6 +306,9 @@ public class S_GameManager : MonoBehaviour
 
         // -- End menu manager's reference -- //
         _endMenuManager = S_EndMenuManager.Instance;
+
+        // -- Unit call button handler's reference -- //
+        _unitCallButtonHandler = S_UnitCallButtonHandler.Instance;
 
         // -- Game background sprite renderer's reference -- //
         _gameBackgroundSpriteRenderer = S_GameBackgroundSizeUpdaterManager.Instance.GetComponent<SpriteRenderer>();
@@ -373,8 +379,7 @@ public class S_GameManager : MonoBehaviour
         _playerActionNumber = _startingPlayerActionNumber;
 
         // Call the start units for all players
-        player1UnitCallButton.gameObject.GetComponent<S_UnitCall>().UnitCalling();
-        player2UnitCallButton.gameObject.GetComponent<S_UnitCall>().UnitCalling();
+        _unitCallButtonHandler.CallUnitsForAllPlayers();
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
@@ -480,14 +485,16 @@ public class S_GameManager : MonoBehaviour
         // When the skill tree handler script will call the HandlePlayerLose function, it will be able to see who was the killed player
         isLastPlayerDeadIsPlayer1 = p_isPlayer1Dead;
 
-        int _scorePointRoundWinner = player1ScorePoint;
+        int _roundWinnerScorePoint = player1ScorePoint;
+
         // Changing the money that will be given to each players
         _moneyToGiveToPlayer1 = 10;
         _moneyToGiveToPlayer2 = 5;
 
         if (p_isPlayer1Dead)
         {
-            _scorePointRoundWinner = player2ScorePoint;
+            _roundWinnerScorePoint = player2ScorePoint;
+
             // Changing the money that will be given to each players
             _moneyToGiveToPlayer1 = 5;
             _moneyToGiveToPlayer2 = 10;
@@ -498,22 +505,32 @@ public class S_GameManager : MonoBehaviour
         player2CharacterMoney.AddMoney(_moneyToGiveToPlayer2);
 
         // If the game is not in pause, and if any player has not won
-        if (isGameRunning && _scorePointRoundWinner < _pointsNeededToWin - 1)
+        if (isGameRunning && _roundWinnerScorePoint < _pointsNeededToWin - 1)
         {
             isGameRunning = false;
             Time.timeScale = 0;
+
             foreach (Unit unit in player1GridManager.unitList)
             {
                 unit.GetComponent<BoxCollider2D>().enabled = false;
             }
+
             foreach (Unit unit in player2GridManager.unitList)
             {
                 unit.GetComponent<BoxCollider2D>().enabled = false;
             }
+
             S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
+
             return;
         }
         #endregion
+
+        // Destroy all unit on all grids, and recall UnitCall for the two players
+        S_RemoveUnit.Instance.RemoveAllUnits();
+
+        // Call the start units for all players
+        _unitCallButtonHandler.CallUnitsForAllPlayers();
 
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
@@ -585,6 +602,126 @@ public class S_GameManager : MonoBehaviour
         #endregion
     }
 
+    /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>
+    public void HandlePlayerLoseI(bool isPlayer1Dead)
+    {
+        isLastPlayerDeadIsPlayer1 = isPlayer1Dead;
+
+        UpdateScore(isPlayer1Dead);
+
+        if (ShouldPauseGame(isPlayer1Dead))
+        {
+            PauseGame();
+            return;
+        }
+
+        ResetRound(isPlayer1Dead);
+
+        UpdateCharactersStats();
+    }
+
+    private void UpdateScore(bool isPlayer1Dead)
+    {
+        // Changing the money that will be given to each players corresponding to who loses
+        _moneyToGiveToPlayer1 = isPlayer1Dead ? 5 : 10;
+        _moneyToGiveToPlayer2 = isPlayer1Dead ? 10 : 5;
+
+        player1CharacterMoney.AddMoney(_moneyToGiveToPlayer1);
+        player2CharacterMoney.AddMoney(_moneyToGiveToPlayer2);
+    }
+
+    private bool ShouldPauseGame(bool isPlayer1Dead)
+    {
+        // 
+        int _roundWinnerScorePoints = isPlayer1Dead ? player2ScorePoint : player1ScorePoint;
+
+        return isGameRunning && (_roundWinnerScorePoints < _pointsNeededToWin - 1);
+    }
+
+    private void PauseGame()
+    {
+        isGameRunning = false;
+        Time.timeScale = 0;
+
+        foreach (Unit unit in player1GridManager.unitList)
+        {
+            unit.GetComponent<BoxCollider2D>().enabled = false;
+        }
+
+        foreach (Unit unit in player2GridManager.unitList)
+        {
+            unit.GetComponent<BoxCollider2D>().enabled = false;
+        }
+
+        S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
+    }
+
+    private void ResetRound(bool isPlayer1Dead)
+    {
+        S_RemoveUnit.Instance.RemoveAllUnits();
+        _unitCallButtonHandler.CallUnitsForAllPlayers();
+
+        int mapIndexModifier = (_currentGameMode == S_GameModeInvoker.GameModes.Domination) ? 0 : _loseCoefficient;
+
+        UpdateScores(isPlayer1Dead, mapIndexModifier);
+
+        currentTurn = TurnEmun.TransitionTurn;
+        _loseCoefficient++;
+    }
+
+    private void UpdateScores(bool isPlayer1Dead, int mapIndexModifier)
+    {
+        if (_currentGameMode == S_GameModeInvoker.GameModes.Domination)
+        {
+            UpdateScoresInDominationMode(isPlayer1Dead);
+        }
+        else
+        {
+            if (isPlayer1Dead)
+            {
+                player2ScorePoint++;
+                _mapIndex += mapIndexModifier;
+            }
+            else
+            {
+                player1ScorePoint++;
+                _mapIndex -= mapIndexModifier;
+            }
+        }
+    }
+
+    private void UpdateScoresInDominationMode(bool isPlayer1Dead)
+    {
+        if (isPlayer1Dead)
+        {
+            if (player1ScorePoint > 0) 
+                player1ScorePoint--;
+            else 
+                player2ScorePoint++;
+        }
+        else
+        {
+            if (player2ScorePoint > 0) 
+                player2ScorePoint--;
+            else 
+                player1ScorePoint++;
+        }
+    }
+
+    private void UpdateCharactersStats()
+    {
+        // Updates the character's score visuals
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+
+        player1CharacterHealth.ResetHealthStats();
+        player2CharacterHealth.ResetHealthStats();
+
+        // Reset players character's stats
+        player1CharacterAdrenaline.ResetAdrenalineStats();
+        player2CharacterAdrenaline.ResetAdrenalineStats();
+    }
+
     /// <summary>
     /// TODO : After the merge of the refactored S_GameManager this function will be deleted,
     /// for the one who used it (S_Unit) 
@@ -593,7 +730,14 @@ public class S_GameManager : MonoBehaviour
     [Obsolete]
     public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
     {
-        switch (p_playerNumber)
+        if (p_playerNumber == 1)
+            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, p_isActive);
+
+        else if (p_playerNumber == 2)
+            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, p_isActive);
+
+        // COMMENTED BECAUSE IT'S NOT WORKING ANYMORE
+        /*switch (p_playerNumber)
         {
             case 1:
                 player1UnitCallButton.interactable = p_isActive;
@@ -604,7 +748,7 @@ public class S_GameManager : MonoBehaviour
             default:
                 Debug.LogError("ERROR ! The given player number '" + p_playerNumber + "' is incorrect, it is not planned in the switch");
                 break;
-        }
+        }*/
     }
 
     public void StartTurnCheckUnit()
@@ -659,6 +803,7 @@ public class S_GameManager : MonoBehaviour
 
     #region Action points handling
 
+    /// <summary> Reduces the number of Action Points of the player playing by one </summary>
     public void ReduceActionPointBy1()
     {
         _playerActionNumber -= 1;
