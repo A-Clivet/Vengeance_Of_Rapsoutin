@@ -186,6 +186,9 @@ public class S_GameManager : MonoBehaviour
                 return;
             }
 
+            // Call the start units for all players
+            _unitCallButtonHandler.CallUnitsForAllPlayers();
+
             // Updating the map according to the players points
             _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
 
@@ -378,9 +381,6 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
-        // Call the start units for all players
-        _unitCallButtonHandler.CallUnitsForAllPlayers();
-
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
 
@@ -526,12 +526,6 @@ public class S_GameManager : MonoBehaviour
         }
         #endregion
 
-        // Destroy all unit on all grids, and recall UnitCall for the two players
-        S_RemoveUnit.Instance.RemoveAllUnits();
-
-        // Call the start units for all players
-        _unitCallButtonHandler.CallUnitsForAllPlayers();
-
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
 
@@ -563,6 +557,9 @@ public class S_GameManager : MonoBehaviour
                 player2ScorePoint++;
             }
 
+            // Destroy all unit on all grids, and recall UnitCall for the two players
+            S_RemoveUnit.Instance.RemoveAllUnits();
+
             _mapIndex += _mapIndexModifier;
         }
         else
@@ -579,6 +576,9 @@ public class S_GameManager : MonoBehaviour
             {
                 player1ScorePoint++;
             }
+
+            // Destroy all unit on all grids, and recall UnitCall for the two players
+            S_RemoveUnit.Instance.RemoveAllUnits();
 
             _mapIndex -= _mapIndexModifier;
         }
@@ -652,6 +652,8 @@ public class S_GameManager : MonoBehaviour
         {
             unit.GetComponent<BoxCollider2D>().enabled = false;
         }
+        S_UnitCallButtonHandler.Instance.player1UnitCall.enabled = false;
+        S_UnitCallButtonHandler.Instance.player2UnitCall.enabled = false;
 
         S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
     }

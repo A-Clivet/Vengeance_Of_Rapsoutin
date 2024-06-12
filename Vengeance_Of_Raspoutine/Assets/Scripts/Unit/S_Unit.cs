@@ -148,16 +148,20 @@ public class Unit : MonoBehaviour
 
         if (turnCharge <= 0)
         {
-            //remove virtually the units from their own grid and tile, they do not exists anymore for their grid and respective tiles.
-            for (int i = 0; i < actualFormation.Count; i++)
+            if (actualFormation.Count > 1)
             {
 
-                actualFormation[i].mustAttack = true;
-                actualFormation[i].turnCharge = 0;
-                actualFormation[i].actualTile.unit = null;
-                grid.unitList.Remove(actualFormation[i]);
-                actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
-                actualFormation[i].StartCoroutine(LerpMove());
+                //remove virtually the units from their own grid and tile, they do not exists anymore for their grid and respective tiles.
+                for (int i = 0; i < actualFormation.Count; i++)
+                {
+
+                    actualFormation[i].mustAttack = true;
+                    actualFormation[i].turnCharge = 0;
+                    actualFormation[i].actualTile.unit = null;
+                    grid.unitList.Remove(actualFormation[i]);
+                    actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
+                    actualFormation[i].StartCoroutine(LerpMove());
+                }
             }
         }
     }
