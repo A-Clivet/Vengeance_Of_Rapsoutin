@@ -483,7 +483,7 @@ public class S_GameManager : MonoBehaviour
                 currentTurn = TurnEmun.Player1Turn;
             }
             _playerTurnAnimationGO.SetActive(true);
-            _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+            //_playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         }
         else
         {

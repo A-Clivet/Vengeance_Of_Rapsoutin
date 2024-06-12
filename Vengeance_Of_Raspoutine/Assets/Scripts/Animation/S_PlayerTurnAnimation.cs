@@ -33,12 +33,14 @@ public class S_PlayerTurnAnimation : MonoBehaviour
         {
             _playerTurnText.text = "Player 1 turn";
             p_characterImage.GetComponent<SpriteRenderer>().sprite = _character1SpriteImage;
+            transform.GetChild(0).gameObject.SetActive(true);
         }
 
         else
         {
             _playerTurnText.text = "Player 2 turn";
             p_characterImage.GetComponent<SpriteRenderer>().sprite = _character2SpriteImage;
+            transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 }
