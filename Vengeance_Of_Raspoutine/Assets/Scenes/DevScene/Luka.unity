@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6478122
 Transform:
   m_ObjectHideFlags: 0
@@ -196,6 +196,8 @@ MonoBehaviour:
   _playerTurnText: {fileID: 223626680}
   _character1SpriteImage: {fileID: 21300000, guid: 0916c164f5ad8c64f89f501f545144bb, type: 3}
   _character2SpriteImage: {fileID: 21300000, guid: 432fc51e3589d8149ab0b370d176b949, type: 3}
+  _animatorPlayerTurn: {fileID: 6478123}
+  animationName: PlayerTurnAnimation
 --- !u!1001 &38721197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1005,6 +1007,10 @@ PrefabInstance:
     - target: {fileID: 9165852499453358498, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 290054162}
+    - target: {fileID: 9165852499453358498, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EndTurn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1793,7 +1799,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
