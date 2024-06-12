@@ -292,71 +292,77 @@ public class Unit : MonoBehaviour
     // Same as MoveToTile but use a action point
     public void ActionMoveToTile(S_Tile p_tile)
     {
-        foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
+        if (!grid.isSwapping)
         {
-            if (tile.unit == null || tile.unit==this)
+            foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
             {
-                if (S_GameManager.Instance.isPlayer1Turn)
+                if (tile.unit == null || tile.unit == this)
                 {
-                    S_GameManager.Instance.UnitCallOnOff(1, true);
+                    if (S_GameManager.Instance.isPlayer1Turn)
+                    {
+                        S_GameManager.Instance.UnitCallOnOff(1, true);
+                    }
+                    else
+                    {
+                        S_GameManager.Instance.UnitCallOnOff(2, true);
+                    }
+                    if (tileX != tile.tileX)
+                    {
+                        _willLoseActionPoints = true;
+                    }
+                    actualTile.unit = null;
+                    actualTile = tile;
+                    actualTile.unit = this;
+                    grid.unitSelected = null;
+                    tileX = tile.tileX;
+                    tileY = tile.tileY;
+                    _posToMove = tile.transform.position;
+                    if (!_isMoving)
+                    {
+                        _isMoving = true;
+                        StartCoroutine(LerpMove());
+                    }
+                    foreach (Unit unit in grid.unitList)
+                    {
+                        unit.GetComponent<BoxCollider2D>().enabled = true;
+                    }
+                    if (_willLoseActionPoints)
+                    {
+                        S_GameManager.Instance.ReduceActionPointBy1();
+                        _willLoseActionPoints = false;
+                    }
+                    break;
                 }
-                else
-                {
-                    S_GameManager.Instance.UnitCallOnOff(2, true);
-                }
-                if (tileX != tile.tileX)
-                {
-                    _willLoseActionPoints = true;
-                }
-                actualTile.unit = null;
-                actualTile = tile;
-                actualTile.unit = this;
-                grid.unitSelected = null;
-                tileX = tile.tileX;
-                tileY = tile.tileY;
-                _posToMove = tile.transform.position;
-                if (!_isMoving)
-                {
-                    _isMoving = true;
-                    StartCoroutine(LerpMove());
-                }
-                foreach (Unit unit in grid.unitList)
-                {
-                    unit.GetComponent<BoxCollider2D>().enabled = true;
-                }
-                if (_willLoseActionPoints)
-                {
-                    S_GameManager.Instance.ReduceActionPointBy1();
-                    _willLoseActionPoints = false;
-                }
-                break;
             }
+            unitManager.UnitCombo(3);
         }
-        unitManager.UnitCombo(3);
     }
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
   then deselect the unit*/
     public void MoveToTile(S_Tile p_tile)
     {
-        // We iterate throw the column of the given tile
-        foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
+        if (!grid.isSwapping)
         {
-            if (tile.unit == null || tile.unit == this)
+            // We iterate throw the column of the given tile
+            foreach (S_Tile tile in p_tile.grid.gridList[p_tile.tileX])
             {
-                actualTile.unit = null;
-                actualTile = tile;
-                actualTile.unit = this;
-                grid.unitSelected = null;
-                tileX = tile.tileX;
-                tileY = tile.tileY;
-                _posToMove = tile.transform.position;
-
-                StartCoroutine(LerpMove());
-                foreach (Unit unit in grid.unitList)
+                if (tile.unit == null || tile.unit == this)
                 {
-                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                    actualTile.unit = null;
+                    actualTile = tile;
+                    actualTile.unit = this;
+                    grid.unitSelected = null;
+                    tileX = tile.tileX;
+                    tileY = tile.tileY;
+                    _posToMove = tile.transform.position;
+
+                    StartCoroutine(LerpMove());
+                    foreach (Unit unit in grid.unitList)
+                    {
+                        unit.GetComponent<BoxCollider2D>().enabled = true;
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
@@ -398,9 +404,25 @@ public class Unit : MonoBehaviour
         {
             S_GameManager.Instance.UnitCallOnOff(2, false);
         }
-        if (actualTile.tileY + 1 > grid.gridList[actualTile.tileX].Count-1)
+        if (!grid.isSwapping)
         {
-            if(actualTile.tileY== grid.gridList[actualTile.tileX].Count - 1)
+            if (actualTile.tileY + 1 > grid.gridList[actualTile.tileX].Count - 1)
+            {
+                if (actualTile.tileY == grid.gridList[actualTile.tileX].Count - 1)
+                {
+                    grid.unitSelected = this;
+                    foreach (Unit unit in grid.unitList)
+                    {
+                        unit.GetComponent<BoxCollider2D>().enabled = false;
+                    }
+                }
+                return;
+            }
+            if (grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
+            {
+                grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit.SelectUnit();
+            }
+            else
             {
                 grid.unitSelected = this;
                 foreach (Unit unit in grid.unitList)
@@ -408,18 +430,39 @@ public class Unit : MonoBehaviour
                     unit.GetComponent<BoxCollider2D>().enabled = false;
                 }
             }
-            return;
-        }
-        if (grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
-        {
-            grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit.SelectUnit();
         }
         else
         {
-            grid.unitSelected = this;
-            foreach (Unit unit in grid.unitList)
+            if (grid.unitSelected == null)
             {
-                unit.GetComponent<BoxCollider2D>().enabled = false;
+                grid.unitSelected = this;
+            }
+            else if (grid.unitSelected != this)
+            {
+                grid.SwapUnits(grid.unitSelected.actualTile, this.actualTile, grid.unitSelected, this);
+                _posToMove = actualTile.transform.position;
+                grid.unitSelected._posToMove = grid.unitSelected.actualTile.transform.position;
+                StartCoroutine(LerpMove());
+                StartCoroutine(grid.unitSelected.LerpMove());
+                S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(S_GameManager.Instance.isPlayer1Turn, true);
+                grid.unitSelected = null;
+                S_GameManager.Instance.ReduceSwapCounter(S_GameManager.Instance.isPlayer1Turn);
+                if (S_GameManager.Instance.isPlayer1Turn)
+                {
+                    if (S_GameManager.Instance.swapCounterP1 == 0)
+                    {
+                        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = false;
+                    }
+                }
+                else
+                {
+                    if (S_GameManager.Instance.swapCounterP2 == 0)
+                    {
+                        S_SwapButtonsHandler.Instance.player2SwapButton.interactable = false;
+                    }
+                }
+
+                S_GameManager.Instance.ReduceActionPointBy1();
             }
         }
     }
@@ -428,9 +471,8 @@ public class Unit : MonoBehaviour
     public void VisualizePosition(S_Tile p_tile)
     {
         _posToMove = new Vector3(p_tile.transform.position.x, grid.startY + grid.height * actualTile.transform.localScale.y);
-        if (!_isMoving)
+        if (!grid.isSwapping)
         {
-            _isMoving = true;
             StartCoroutine(LerpMove());
         }
     }
@@ -455,6 +497,7 @@ public class Unit : MonoBehaviour
         attack = SO_Unit.attack;
         defense = SO_Unit.defense;
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Unit unit = collision.gameObject.GetComponent<Unit>();
@@ -498,9 +541,19 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(grid.unitSelected==null && state==0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
+        if (!grid.isSwapping)
         {
-            SelectUnit();
+            if (grid.unitSelected == null && state == 0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
+            {
+                SelectUnit();
+            }
+        }
+        else
+        {
+            if (state == 0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
+            {
+                SelectUnit();
+            }
         }
     }
 }

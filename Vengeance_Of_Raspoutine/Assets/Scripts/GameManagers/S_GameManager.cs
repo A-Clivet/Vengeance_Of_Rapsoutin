@@ -150,6 +150,9 @@ public class S_GameManager : MonoBehaviour
 
     public bool isLastPlayerDeadIsPlayer1 { get; private set; }
 
+    public int swapCounterP1 { get; private set; }
+    public int swapCounterP2 { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
@@ -289,6 +292,9 @@ public class S_GameManager : MonoBehaviour
         // -- Players's grid managers's references -- //
         player1GridManager = S_GridManagersHandler.Instance.player1GridManager;
         player2GridManager = S_GridManagersHandler.Instance.player2GridManager;
+
+        swapCounterP1 = 3;
+        swapCounterP2 = 3;
         #endregion
 
         #region Private variables
@@ -380,6 +386,9 @@ public class S_GameManager : MonoBehaviour
         #region First turn management
 
         _playerActionNumber = _startingPlayerActionNumber;
+
+        // Call the start units for all players
+        _unitCallButtonHandler.CallUnitsForAllPlayers();
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
@@ -527,6 +536,12 @@ public class S_GameManager : MonoBehaviour
         }
         #endregion
 
+        // Destroy all unit on all grids, and recall UnitCall for the two players
+        S_RemoveUnit.Instance.RemoveAllUnits();
+
+        // Call the start units for all players
+        _unitCallButtonHandler.CallUnitsForAllPlayers();
+
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
 
@@ -600,6 +615,12 @@ public class S_GameManager : MonoBehaviour
 
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
+
+
+        swapCounterP1 = 3;
+        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
+        swapCounterP2 = 3;
+        S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
         #endregion
     }
 
@@ -918,6 +939,18 @@ public class S_GameManager : MonoBehaviour
             {
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
+        }
+    }
+
+    public void ReduceSwapCounter(bool p_isPlayer1Affected)
+    {
+        if (p_isPlayer1Affected)
+        {
+            swapCounterP1--;
+        }
+        else
+        {
+            swapCounterP2--;
         }
     }
     #endregion
