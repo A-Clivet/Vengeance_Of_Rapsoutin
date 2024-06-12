@@ -105,8 +105,12 @@ public class S_RemoveUnit : MonoBehaviour
     /// <summary> Remove all units in the two player's grid | WARNING WORKS ONLY WITH NORMAL UNIT, NOT ELITE ONE </summary>
     public void RemoveAllUnits()
     {
+        // We clear all the existing attack formation
+        _gridManagersHandler.player1GridManager.unitManager.UnitColumn.Clear();
+        _gridManagersHandler.player2GridManager.unitManager.UnitColumn.Clear();
+
         // We create a copy of the unitLists
-        List<Unit> _player1UnitList = new(_gridManagersHandler.player1GridManager.unitList) ;
+        List<Unit> _player1UnitList = new(_gridManagersHandler.player1GridManager.unitList);
         List<Unit> _player2UnitList = new(_gridManagersHandler.player2GridManager.unitList);
 
         foreach (Unit _unit in _player1UnitList)
