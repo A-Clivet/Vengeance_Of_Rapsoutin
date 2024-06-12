@@ -18,8 +18,9 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: Dark magic
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: DESCRIPTION
-  capacityEffectDescription: EFFECTS
+  capacityDescription: Adds 1 attack point to all units on its side of the field
+  capacityEffectDescription: 'All the troops in the field '
+  isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 1
   unitStatsChangementValue: 1
@@ -28,3 +29,4 @@ MonoBehaviour:
   unitsToDestroy: 0
   affectedState: 0
   dmgLimit: 0
+  EnergyBall: {fileID: 0}

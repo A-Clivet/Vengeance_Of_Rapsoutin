@@ -18,8 +18,9 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 1
   capacityName: Amalgamation
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: DESCRIPTION
-  capacityEffectDescription: EFFECTS
+  capacityDescription: Transform inactive units into a projectile
+  capacityEffectDescription: 'attack stat equal to the sum of everyone''s stats (max
+    10), column on which to throw at choice '
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2
