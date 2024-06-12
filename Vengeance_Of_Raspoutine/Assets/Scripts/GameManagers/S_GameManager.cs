@@ -454,6 +454,7 @@ public class S_GameManager : MonoBehaviour
             if (_playersPlayed >= 2) 
             {
                 S_WeatherEvent.Instance.currentEvent?.Invoke();
+                _playersPlayed = 0;
             }
             #endregion
 
