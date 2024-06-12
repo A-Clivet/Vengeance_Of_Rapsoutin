@@ -17,7 +17,6 @@ public class S_SettingsMenu : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(false);
 
         _resolutions = Screen.resolutions;
         _filteredResolutions = new List<Resolution>();

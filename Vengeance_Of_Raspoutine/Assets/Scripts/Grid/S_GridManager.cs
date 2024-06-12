@@ -18,6 +18,7 @@ public class S_GridManager : MonoBehaviour
 
     public int width, height;
     public float startX, startY;
+    public bool isSwapping = false;
     [SerializeField] private S_Tile _tile;
 
     [Header("Differents tile's types :")]
@@ -163,5 +164,36 @@ public class S_GridManager : MonoBehaviour
         }
 
         return GridUnit; 
+    }
+
+    public void SwapUnits(S_Tile p_tile1, S_Tile p_tile2, Unit p_unit1, Unit p_unit2)
+    {
+        p_tile1.unit = p_unit2;
+        p_unit2.actualTile = p_tile1;
+        p_unit2.tileX = p_tile1.tileX;
+        p_unit2.tileY = p_tile1.tileY;
+        p_tile2.unit = p_unit1;
+        p_unit1.actualTile = p_tile2;
+        p_unit1.tileX = p_tile2.tileX;
+        p_unit1.tileY = p_tile2.tileY;
+        isSwapping = false;
+    }
+
+    public void SwapBtn()
+    {
+        if (S_GameManager.Instance.isPlayer1Turn)
+        {
+            if (S_GameManager.Instance.swapCounterP1 > 0)
+            {
+                isSwapping = !isSwapping;
+            }
+        }
+        else
+        {
+            if (S_GameManager.Instance.swapCounterP2 > 0)
+            {
+                isSwapping = !isSwapping;
+            }
+        }
     }
 }
