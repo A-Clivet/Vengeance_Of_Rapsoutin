@@ -211,6 +211,11 @@ public class S_GameManager : MonoBehaviour
 
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldownBetweenPlayerActions;
+
+    [Header("Animation player turn :")]
+    [SerializeField] S_PlayerTurnAnimation _playerTurnAnimationScript;
+    [SerializeField] private GameObject _characterImage;
+    [SerializeField] private GameObject _playerTurnAnimationGO;
     #endregion
 
     #region Private variable
@@ -321,6 +326,8 @@ public class S_GameManager : MonoBehaviour
 
         // -- Game background sprite renderer's reference -- //
         _gameBackgroundSpriteRenderer = S_GameBackgroundSizeUpdaterManager.Instance.GetComponent<SpriteRenderer>();
+
+        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
 
         #region Characters management
@@ -475,11 +482,15 @@ public class S_GameManager : MonoBehaviour
             {
                 currentTurn = TurnEmun.Player1Turn;
             }
+            _playerTurnAnimationGO.SetActive(true);
+            _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         }
         else
         {
+            _playerTurnAnimationGO.SetActive(false);
             currentTurn = TurnEmun.TransitionTurn;
         }
+        
 
         // Enable / disable special capacity button's interaction
         player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
