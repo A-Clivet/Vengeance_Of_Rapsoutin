@@ -181,18 +181,40 @@ public class S_GridManager : MonoBehaviour
 
     public void SwapBtn()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
+        if (unitSelected == null)
         {
-            if (S_GameManager.Instance.swapCounterP1 > 0)
+            if (S_GameManager.Instance.isPlayer1Turn)
             {
-                isSwapping = !isSwapping;
+                if (S_GameManager.Instance.swapCounterP1 > 0)
+                {
+                    isSwapping = !isSwapping;
+                }
+            }
+            else
+            {
+                if (S_GameManager.Instance.swapCounterP2 > 0)
+                {
+                    isSwapping = !isSwapping;
+                }
             }
         }
         else
         {
-            if (S_GameManager.Instance.swapCounterP2 > 0)
+            unitSelected.ReturnToBaseTile();
+            unitSelected = null;
+            if (S_GameManager.Instance.isPlayer1Turn)
             {
-                isSwapping = !isSwapping;
+                if (S_GameManager.Instance.swapCounterP1 > 0)
+                {
+                    isSwapping = !isSwapping;
+                }
+            }
+            else
+            {
+                if (S_GameManager.Instance.swapCounterP2 > 0)
+                {
+                    isSwapping = !isSwapping;
+                }
             }
         }
     }
