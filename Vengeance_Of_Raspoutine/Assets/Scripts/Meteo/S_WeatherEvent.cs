@@ -57,6 +57,7 @@ public class S_WeatherEvent : MonoBehaviour
             int eventChosen= UnityEngine.Random.Range(0, 3);
             if (eventChosen == 0)
             {
+                nbTurn = 8;
                 ManageEvent = Event.Earthquake;
             }
             else if (eventChosen == 1)
@@ -65,6 +66,7 @@ public class S_WeatherEvent : MonoBehaviour
             }
             else
             {
+                nbTurn = 5;
                 ManageEvent = Event.Blizzard;
             }
             weatherInfo.text = "Weather : " + ManageEvent;
@@ -81,7 +83,7 @@ public class S_WeatherEvent : MonoBehaviour
 
     public void EarthquakeEvent()
     {
-        nbTurn--; ;
+        nbTurn--;
         if (nbTurn < 0)
         {
             nbTurn = 8;
@@ -143,7 +145,7 @@ public class S_WeatherEvent : MonoBehaviour
 
     public void BlizzardEvent()
     {
-        nbTurn--; ;
+        nbTurn--;
         if (nbTurn < 0)
         {
             nbTurn = 5;

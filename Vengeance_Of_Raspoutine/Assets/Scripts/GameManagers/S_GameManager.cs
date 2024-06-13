@@ -150,6 +150,9 @@ public class S_GameManager : MonoBehaviour
 
     public bool isLastPlayerDeadIsPlayer1 { get; private set; }
 
+    public int swapCounterP1 { get; private set; }
+    public int swapCounterP2 { get; private set; }
+
     // Local variable that store the _mapIndex variable's value (this variable is needed for the _mapIndex getter setter to exist)
     int __mapIndex = 2;
 
@@ -186,6 +189,9 @@ public class S_GameManager : MonoBehaviour
                 return;
             }
 
+            // Call the start units for all players
+            _unitCallButtonHandler.CallUnitsForAllPlayers();
+
             // Updating the map according to the players points
             _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
 
@@ -205,6 +211,11 @@ public class S_GameManager : MonoBehaviour
 
     [Header("Cooldown between actions :")]
     [SerializeField] private float _cooldownBetweenPlayerActions;
+
+    [Header("Animation player turn :")]
+    [SerializeField] S_PlayerTurnAnimation _playerTurnAnimationScript;
+    [SerializeField] private GameObject _characterImage;
+    [SerializeField] private GameObject _playerTurnAnimationGO;
     #endregion
 
     #region Private variable
@@ -286,6 +297,9 @@ public class S_GameManager : MonoBehaviour
         // -- Players's grid managers's references -- //
         player1GridManager = S_GridManagersHandler.Instance.player1GridManager;
         player2GridManager = S_GridManagersHandler.Instance.player2GridManager;
+
+        swapCounterP1 = 3;
+        swapCounterP2 = 3;
         #endregion
 
         #region Private variables
@@ -312,6 +326,8 @@ public class S_GameManager : MonoBehaviour
 
         // -- Game background sprite renderer's reference -- //
         _gameBackgroundSpriteRenderer = S_GameBackgroundSizeUpdaterManager.Instance.GetComponent<SpriteRenderer>();
+
+        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
 
         #region Characters management
@@ -454,6 +470,7 @@ public class S_GameManager : MonoBehaviour
             if (_playersPlayed >= 2) 
             {
                 S_WeatherEvent.Instance.currentEvent?.Invoke();
+                _playersPlayed = 0;
             }
             #endregion
 
@@ -465,11 +482,15 @@ public class S_GameManager : MonoBehaviour
             {
                 currentTurn = TurnEmun.Player1Turn;
             }
+            _playerTurnAnimationGO.SetActive(true);
+            _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         }
         else
         {
+            _playerTurnAnimationGO.SetActive(false);
             currentTurn = TurnEmun.TransitionTurn;
         }
+        
 
         // Enable / disable special capacity button's interaction
         player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
@@ -563,6 +584,9 @@ public class S_GameManager : MonoBehaviour
                 player2ScorePoint++;
             }
 
+            // Destroy all unit on all grids, and recall UnitCall for the two players
+            S_RemoveUnit.Instance.RemoveAllUnits();
+
             _mapIndex += _mapIndexModifier;
         }
         else
@@ -579,6 +603,9 @@ public class S_GameManager : MonoBehaviour
             {
                 player1ScorePoint++;
             }
+
+            // Destroy all unit on all grids, and recall UnitCall for the two players
+            S_RemoveUnit.Instance.RemoveAllUnits();
 
             _mapIndex -= _mapIndexModifier;
         }
@@ -599,6 +626,12 @@ public class S_GameManager : MonoBehaviour
 
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
+
+
+        swapCounterP1 = 3;
+        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
+        swapCounterP2 = 3;
+        S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
         #endregion
     }
 
@@ -652,6 +685,8 @@ public class S_GameManager : MonoBehaviour
         {
             unit.GetComponent<BoxCollider2D>().enabled = false;
         }
+        S_UnitCallButtonHandler.Instance.player1UnitCall.enabled = false;
+        S_UnitCallButtonHandler.Instance.player2UnitCall.enabled = false;
 
         S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
     }
@@ -915,6 +950,18 @@ public class S_GameManager : MonoBehaviour
             {
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
+        }
+    }
+
+    public void ReduceSwapCounter(bool p_isPlayer1Affected)
+    {
+        if (p_isPlayer1Affected)
+        {
+            swapCounterP1--;
+        }
+        else
+        {
+            swapCounterP2--;
         }
     }
     #endregion
