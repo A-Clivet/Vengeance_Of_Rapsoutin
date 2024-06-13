@@ -1069,6 +1069,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1605509335744124701, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 19176966}
+    - target: {fileID: 1605509335744124701, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SwapBtn
+      objectReference: {fileID: 0}
     - target: {fileID: 2084371049259260804, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_fontColor.b
       value: 0
@@ -1120,6 +1128,14 @@ PrefabInstance:
     - target: {fileID: 5035317389381082593, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190335
+      objectReference: {fileID: 0}
+    - target: {fileID: 5306112719006949583, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530740733}
+    - target: {fileID: 5306112719006949583, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SwapBtn
       objectReference: {fileID: 0}
     - target: {fileID: 5617965077257230250, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: grid
