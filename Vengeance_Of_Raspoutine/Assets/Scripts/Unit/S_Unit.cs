@@ -512,7 +512,7 @@ public class Unit : MonoBehaviour
         {
             if (!unit.mustAttack)
             {
-                if (unit.actualFormation == null)
+                if (unit.actualFormation.Count <= 0)
                 {
                     attack -= unit.defense;
                     unit.TakeDamage(attack + unit.defense);
