@@ -496,6 +496,8 @@ public class S_GameManager : MonoBehaviour
         // Enable / disable special capacity button's interaction
         player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
         player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player1GridManager.isSwapping = false;
+        player2GridManager.isSwapping = false;
     }
     #endregion
 

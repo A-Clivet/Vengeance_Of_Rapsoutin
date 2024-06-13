@@ -1113,6 +1113,14 @@ PrefabInstance:
       propertyPath: _gameManager
       value: 
       objectReference: {fileID: 755483773}
+    - target: {fileID: 3711061910223575803, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: _character1SpriteImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 2fe1e8dc3caeb9c4496f9379af1308d4, type: 3}
+    - target: {fileID: 3711061910223575803, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: _character2SpriteImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 80af245b384b8ca4c82c7d1e9a6ed48b, type: 3}
     - target: {fileID: 5035317389381082593, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_fontColor.b
       value: 0
@@ -1177,6 +1185,18 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 19176966}
+    - target: {fileID: 8555511535055223497, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555511535055223497, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555511535055223497, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8986256539490347103, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_Name
       value: GO_BattleUIs
