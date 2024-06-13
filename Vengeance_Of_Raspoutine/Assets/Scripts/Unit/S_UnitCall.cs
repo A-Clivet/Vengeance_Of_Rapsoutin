@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using static S_GameManager;
 using Random = UnityEngine.Random;
@@ -17,7 +13,10 @@ public class S_UnitCall : MonoBehaviour
     public bool firstUnitCalled = false;
     public List<List<S_Tile>> tile;
     public TextMeshProUGUI text;
+
     [SerializeField] private List<GameObject> units = new List<GameObject>();
+
+    GameObject _unitsParentGameObject;
 
     private void Update()
     {
@@ -26,6 +25,9 @@ public class S_UnitCall : MonoBehaviour
 
     private void Awake()
     {
+        // Setting up local variables
+        _unitsParentGameObject = S_UnitCallButtonHandler.Instance.unitsParentGameObject;
+
         for (int i = 0; i < units.Count; i++)
         {
             units[i].GetComponent<Unit>().ResetBuffs();
@@ -34,7 +36,6 @@ public class S_UnitCall : MonoBehaviour
 
     public void Start()
     {
-        
         CallAmountUpdate();
     }
 
@@ -82,7 +83,7 @@ public class S_UnitCall : MonoBehaviour
                     X = ColumnSelector();
                 }
 
-                GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
+                GameObject unitToSpawn = Instantiate(units[TypeSelector()], _unitsParentGameObject.transform); /* unit that will get its value changed */
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 unitToSpawn.GetComponent<Unit>().tileX = X;
 

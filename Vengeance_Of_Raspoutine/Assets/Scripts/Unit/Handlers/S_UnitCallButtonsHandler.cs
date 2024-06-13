@@ -7,9 +7,12 @@ public class S_UnitCallButtonHandler : MonoBehaviour
 
     public static S_UnitCallButtonHandler Instance;
 
-    [Header("References :")]
+    [Header("Unit call references :")]
     public S_UnitCall player1UnitCall;
     public S_UnitCall player2UnitCall;
+
+    [Header("Unit's parent reference :")]
+    public GameObject unitsParentGameObject;
 
     Button player1UnitCallButton;
     Button player2UnitCallButton;
@@ -22,6 +25,13 @@ public class S_UnitCallButtonHandler : MonoBehaviour
 
         player1UnitCallButton = player1UnitCall.gameObject.GetComponent<Button>();
         player2UnitCallButton = player2UnitCall.gameObject.GetComponent<Button>();
+
+        // To prevent bugs, and help finding the problem
+        if (unitsParentGameObject == null)
+        {
+            Debug.LogError("ERROR ! The variable [" + unitsParentGameObject.ToString() + "] is null, that means you don't have given the Unit parent GameObject reference yet. UNITY IS PAUSED !");
+            Debug.Break();
+        }
     }
 
     /// <summary> Handles the interaction state of the unit call buttons for both players.
