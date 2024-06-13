@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -8,7 +7,6 @@ using UnityEngine.UI;
 
 public class S_WeatherEvent : MonoBehaviour
 {
-
     public static S_WeatherEvent Instance;
 
     public enum Event
@@ -20,7 +18,7 @@ public class S_WeatherEvent : MonoBehaviour
     }
 
     public EventStocker functionStocker = new EventStocker();
-    public Action currentEvent=null;
+    public Action currentEvent = null;
 
     Event _ManageEvent;
     public Event ManageEvent
@@ -34,13 +32,13 @@ public class S_WeatherEvent : MonoBehaviour
         }
     }
 
-    private int nbTurn = 0;
-    private int fogOpacityState=1;
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
     [SerializeField] private TextMeshProUGUI weatherInfo;
 
+    private int nbTurn = 0;
+    private int fogOpacityState = 1;
 
     private void Awake()
     {
@@ -50,11 +48,15 @@ public class S_WeatherEvent : MonoBehaviour
     public void EventProbability()
     {
         nbTurn = 0;
+        fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0);
         fogOpacityState = 1;
-        int rndProb=UnityEngine.Random.Range(0, 101);
+
+        int rndProb = UnityEngine.Random.Range(0, 101);
+
         if (rndProb > 80)
         {
-            int eventChosen= UnityEngine.Random.Range(0, 3);
+            int eventChosen = UnityEngine.Random.Range(0, 3);
+
             if (eventChosen == 0)
             {
                 nbTurn = 8;
@@ -62,23 +64,20 @@ public class S_WeatherEvent : MonoBehaviour
             }
             else if (eventChosen == 1)
             {
-                ManageEvent= Event.Fog;
+                ManageEvent = Event.Fog;
             }
             else
             {
                 nbTurn = 5;
                 ManageEvent = Event.Blizzard;
             }
-            weatherInfo.text = "Weather : " + ManageEvent;
-            return;
-
         }
         else
         {
             ManageEvent = Event.None;
         }
+
         weatherInfo.text = "Weather : " + ManageEvent;
-        return;
     }
 
     public void EarthquakeEvent()
@@ -94,7 +93,7 @@ public class S_WeatherEvent : MonoBehaviour
             }
             foreach (Unit u in unitToRemove)
             {
-                
+
                 u.actualTile.unit = null;
                 _player1GridManager.unitList.Remove(u);
                 _player1GridManager.totalUnitAmount -= 1;
@@ -105,7 +104,7 @@ public class S_WeatherEvent : MonoBehaviour
 
             foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 1))
             {
-                unitToRemove.Add(u);  
+                unitToRemove.Add(u);
             }
             foreach (Unit u in unitToRemove)
             {
@@ -124,12 +123,12 @@ public class S_WeatherEvent : MonoBehaviour
     }
     public void FogEvent()
     {
-            nbTurn+=fogOpacityState;
+        nbTurn += fogOpacityState;
 
-        if (nbTurn <= 0) 
+        if (nbTurn <= 0)
         {
             fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0);
-            fogOpacityState=-fogOpacityState;
+            fogOpacityState = -fogOpacityState;
         }
         if (nbTurn == 1)
         {
@@ -138,7 +137,7 @@ public class S_WeatherEvent : MonoBehaviour
         if (nbTurn >= 2)
         {
             fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 1);
-            fogOpacityState=-fogOpacityState;
+            fogOpacityState = -fogOpacityState;
         }
         return;
     }
@@ -154,8 +153,8 @@ public class S_WeatherEvent : MonoBehaviour
             foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 0))
             {
                 listOfIdle.Add(u);
-            } 
-            
+            }
+
             int nbMaxOfUnitFrozen = listOfIdle.Count() / 2;
             for (int i = 0; i < nbMaxOfUnitFrozen; i++)
             {
@@ -175,7 +174,7 @@ public class S_WeatherEvent : MonoBehaviour
             for (int i = 0; i < nbMaxOfUnitFrozen; i++)
             {
                 int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
-                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0,0, 1, 1);
+                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0, 0, 1, 1);
                 listOfIdle[unitToFreeze].state = 3;
 
             }
@@ -186,19 +185,19 @@ public class S_WeatherEvent : MonoBehaviour
 public class EventStocker
 {
     private Action _eventToStore { get; set; }
-    public Action StockFunction( S_WeatherEvent.Event p_wantedEvent, S_WeatherEvent p_classRef) 
+    public Action StockFunction(S_WeatherEvent.Event p_wantedEvent, S_WeatherEvent p_classRef)
     {
-        if(p_wantedEvent==S_WeatherEvent.Event.Earthquake)
+        if (p_wantedEvent == S_WeatherEvent.Event.Earthquake)
         {
             _eventToStore = p_classRef.EarthquakeEvent;
             return _eventToStore;
         }
-        else if(p_wantedEvent == S_WeatherEvent.Event.Fog)
+        else if (p_wantedEvent == S_WeatherEvent.Event.Fog)
         {
             _eventToStore = p_classRef.FogEvent;
             return _eventToStore;
         }
-        else if(p_wantedEvent == S_WeatherEvent.Event.Blizzard)
+        else if (p_wantedEvent == S_WeatherEvent.Event.Blizzard)
         {
             _eventToStore = p_classRef.BlizzardEvent;
             return _eventToStore;
