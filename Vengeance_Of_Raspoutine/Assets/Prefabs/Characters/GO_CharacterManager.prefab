@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad061255846f4c438f5274c92047865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _emptyScorePoint: {fileID: 21300000, guid: 211928c4868911540bf41ebf7eb33717, type: 3}
-  _scorePointFilled: {fileID: 21300000, guid: c6f124b8c6650a643adf9d48dc031f87, type: 3}
+  _emptyScorePoint: {fileID: 21300000, guid: f724049b7d2dc3943be93c42b09c0dd1, type: 3}
+  _scorePointFilled: {fileID: 21300000, guid: 80a5ce2e6a62ea44086ac26c72cdf6f1, type: 3}
   _character1Prefab: {fileID: 6502254604496220629, guid: a5060f2141cb18641b2ee4f3e656dec6, type: 3}
   _character2Prefab: {fileID: 1184922186947913994, guid: 58abfdf366d630c47ba9cf829f38556e, type: 3}
   _allCharactersParent: {fileID: 0}
