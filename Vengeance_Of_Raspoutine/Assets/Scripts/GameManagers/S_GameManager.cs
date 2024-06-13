@@ -49,10 +49,6 @@ public class S_GameManager : MonoBehaviour
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
-                // Enable / disable the two player's action preventer panel
-                _player1ActionPreventerVisualGameObject.SetActive(false);
-                _player2ActionPreventerVisualGameObject.SetActive(true);
-
                 // Change the player turn text to the corresponding value
                 _playerTurnTextUI.text = "Player 1 turn";
 
@@ -69,9 +65,6 @@ public class S_GameManager : MonoBehaviour
 
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
-
-                _player1ActionPreventerVisualGameObject.SetActive(true);
-                _player2ActionPreventerVisualGameObject.SetActive(false);
 
                 _playerTurnTextUI.text = "Player 2 turn";
 
@@ -313,10 +306,6 @@ public class S_GameManager : MonoBehaviour
         _playerTurnTextUI = _battleUIsReferencesHandler.playerTurnTextUI;
         _playerActionsLeftTextUI = _battleUIsReferencesHandler.playerActionsLeftTextUI;
         _totalTurnsTextUI = _battleUIsReferencesHandler.totalTurnsTextUI;
-
-        // -- Players action preventer visual game objects's references -- //
-        _player1ActionPreventerVisualGameObject = S_PlayersActionPreventerVisualUIReferencesHandler.Instance.player1ActionPreventerVisualGameObject;
-        _player2ActionPreventerVisualGameObject = S_PlayersActionPreventerVisualUIReferencesHandler.Instance.player2ActionPreventerVisualGameObject;
 
         // -- End menu manager's reference -- //
         _endMenuManager = S_EndMenuManager.Instance;
