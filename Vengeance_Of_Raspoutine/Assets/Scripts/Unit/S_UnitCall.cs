@@ -24,7 +24,7 @@ public class S_UnitCall : MonoBehaviour
         TextUpdate();
     }
 
-        private void Awake()
+    private void Awake()
     {
         // Setting up local variables
         _unitsParentGameObject = S_UnitCallButtonHandler.Instance.unitsParentGameObject;
@@ -37,7 +37,6 @@ public class S_UnitCall : MonoBehaviour
 
     public void Start()
     {
-        UnitCalling();
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         CallAmountUpdate();
     }
@@ -85,7 +84,7 @@ public class S_UnitCall : MonoBehaviour
                 {   
                     unitType = Random.Range(0,3);
                 }
-                GameObject unitToSpawn = Instantiate(units[unitType]); /* unit that will be spawned onto the grid */
+                GameObject unitToSpawn = Instantiate(units[unitType], _unitsParentGameObject.transform); /* unit that will be spawned onto the grid */
                 Unit unitSpawned = unitToSpawn.GetComponent<Unit>();
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 int X = ColumnSelector();
@@ -116,7 +115,7 @@ public class S_UnitCall : MonoBehaviour
                     }
                 }
 
-                GameObject unitToSpawn = Instantiate(units[TypeSelector()], _unitsParentGameObject.transform); /* unit that will get its value changed */
+                /* unit that will get its value changed */
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 unitSpawned.tileX = X;
 

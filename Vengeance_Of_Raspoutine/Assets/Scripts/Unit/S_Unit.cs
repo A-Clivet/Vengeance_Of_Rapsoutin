@@ -503,20 +503,23 @@ public class Unit : MonoBehaviour
             if (actualTile.tileY >= grid.gridList[actualTile.tileX].Count - 1)
             {
                 grid.unitSelected = this;
+
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = false;
                 }
+
             }
             if (grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
             {
                 grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit.SelectUnit();
             }
-            else
-            {
-                unit.GetComponent<BoxCollider2D>().enabled = false;
-            }
-            return;
+
+
+        }
+        else
+        {
+
         }
 
         if (sizeX == 2 && sizeY == 2 && (grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null && grid.gridList[actualTile.tileX + 1][actualTile.tileY + 2].unit))
@@ -524,7 +527,7 @@ public class Unit : MonoBehaviour
             grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
             grid.gridList[actualTile.tileX + 1][actualTile.tileY + 2].unit.SelectUnit();
         }
-        else if (sizeX == 1 && sizeY == 2 && grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null) 
+        else if (sizeX == 1 && sizeY == 2 && grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null)
         {
             grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
         }
@@ -536,9 +539,30 @@ public class Unit : MonoBehaviour
         {
             if (grid.unitSelected == null)
             {
-                grid.unitSelected = this;
+                switch (sizeX)
+                {
+                    default:
+
+                        return;
+
+                    case 1:
+
+                        if (grid.gridList[tileX][tileY + 1].unit != null)
+                            grid.unitSelected = this;
+
+                        break;
+
+                    case 2:
+
+                        if (grid.gridList[tileX][tileY + 2].unit != null && grid.gridList[tileX + 1][tileY + 2].unit != null)
+                        {
+                            grid.unitSelected = this;
+                        }
+                        break;
+
+                }
             }
-            else if (grid.unitSelected != this)
+            else if(grid.unitSelected != this)
             {
                 grid.SwapUnits(grid.unitSelected.actualTile, this.actualTile, grid.unitSelected, this);
                 _posToMove = actualTile.transform.position;

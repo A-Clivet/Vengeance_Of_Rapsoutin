@@ -139,8 +139,8 @@ public class S_UnitManager : MonoBehaviour
                         {
                             for (int k = 1; k < p_formationNumber; k++)
                             {
-                                if (grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || j + k >= grid.AllUnitPerColumn.Count ||
-                                    grid.gridList[i][j].unit || grid.gridList[i][j + k].unit == null || grid.gridList[i + 1][j + k].unit)
+                                if ( i + 1 >= grid.width || grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || j + k >= grid.AllUnitPerColumn.Count ||
+                                    grid.gridList[i][j].unit == null || grid.gridList[i][j + k].unit == null || grid.gridList[i + 1][j + k].unit == null)
                                 {
                                     continue;
                                 }

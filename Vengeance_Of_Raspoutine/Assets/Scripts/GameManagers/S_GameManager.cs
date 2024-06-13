@@ -804,13 +804,13 @@ public class S_GameManager : MonoBehaviour
             {
                 for (int j = 0; j < Mathf.Abs(gridManager.AllUnitPerColumn[i].Count); j++)
                 {
-                    //Unit unit = gridManager.AllUnitPerColumn[i][j];
+                    Unit unit = gridManager.AllUnitPerColumn[i][j];
 
-                    //unit.ReturnToBaseTile();
-                    //if (unit.state == 3)
-                    //{
-                    //    unit.state = 0;
-                    //}
+                    unit.ReturnToBaseTile();
+                    if (unit.state == 3)
+                    {
+                        unit.state = 0;
+                    }
 
                     gridManager.AllUnitPerColumn[i][j].ReturnToBaseTile();
 
