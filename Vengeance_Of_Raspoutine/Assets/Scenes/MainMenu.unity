@@ -4723,16 +4723,14 @@ MonoBehaviour:
   buttonPrevious: {fileID: 1776698919}
   buttonNext: {fileID: 70939557}
   tutoSelection:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 1b17ab1fd69aafb40bf2db4e6fb0112b, type: 3}
+  - {fileID: 21300000, guid: 1b4c01d93c499404bb5d790200b46208, type: 3}
+  - {fileID: 21300000, guid: 869d002ff9805324da5ca577fea7c957, type: 3}
+  - {fileID: 21300000, guid: 375ceb8a99b2e5c4195016819398d3a0, type: 3}
+  - {fileID: 21300000, guid: a495dd69a724d9a4ca7935048012948c, type: 3}
+  - {fileID: 21300000, guid: 4b05690e40ae2484886310aa94220263, type: 3}
+  - {fileID: 21300000, guid: 0bcf09b9c19ea2243b25d720eee4ef4d, type: 3}
+  - {fileID: 21300000, guid: 7b05fa310962dca47b800d4705c06d59, type: 3}
   _currentSprite: {fileID: 1715838744}
 --- !u!114 &2051962783
 MonoBehaviour:
