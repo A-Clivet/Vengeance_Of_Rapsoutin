@@ -327,7 +327,7 @@ public class S_GameManager : MonoBehaviour
         // -- Game background sprite renderer's reference -- //
         _gameBackgroundSpriteRenderer = S_GameBackgroundSizeUpdaterManager.Instance.GetComponent<SpriteRenderer>();
 
-        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+        
         #endregion
 
         #region Characters management
@@ -403,6 +403,7 @@ public class S_GameManager : MonoBehaviour
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
+        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
     }
 
