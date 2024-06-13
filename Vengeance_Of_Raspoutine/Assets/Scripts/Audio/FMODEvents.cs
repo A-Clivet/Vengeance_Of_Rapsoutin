@@ -24,7 +24,7 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference MonsterWarHorn { get; private set; }
 
     [field: Header("UI")]
-    [field: SerializeField] public EventReference ClickUI_SFX { get; private set; }
+    [field: SerializeField] public EventReference ClickUI { get; private set; }
     [field: SerializeField] public EventReference UnitDeployed { get; private set; }
     [field: SerializeField] public EventReference UnitSelected { get; private set; }
 
@@ -43,7 +43,8 @@ public class FMODEvents : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("Found more than one FMOD Events instance in the scene.");
+            Debug.Log("Found more than one FMOD Events instance in the scene.");
+            Destroy(gameObject);
         }
         instance = this;
     }

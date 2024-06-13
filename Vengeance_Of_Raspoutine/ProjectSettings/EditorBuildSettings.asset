@@ -21,9 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/DevScene/Axel.unity
     guid: 9c6b7e260bbba714c84e0c1f37c3b5b0
   - enabled: 1
-    path: Assets/Scenes/DevScene/EndMenuPlayer1.unity
+    path: Assets/Scenes/EndMenuPlayer1.unity
     guid: e82c0a6eb2f6ea64ca55bd307afe7cb6
   - enabled: 1
-    path: Assets/Scenes/DevScene/EndMenuPlayer2.unity
+    path: Assets/Scenes/EndMenuPlayer2.unity
     guid: 750eead083758cc48962b19788672181
   m_configObjects: {}

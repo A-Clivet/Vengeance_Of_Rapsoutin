@@ -12,14 +12,18 @@ public class S_UpgradeMenu : MonoBehaviour
     [SerializeField] private int _upgradeLimit;
     [SerializeField] private Button _attBuffButton;
     [SerializeField] private Button _defBuffButton;
-    private List<Unit> _units = new List<Unit>();
+    private List<GameObject> _units = new List<GameObject>();
     [SerializeField] private SpriteRenderer _UnitDisplay;
     private int _unitInd = 0;
     private int _attBuffIncrement = 0;
     private int _defBuffIncrement = 0;
 
+    S_GameManager _gameManager;
+
     private void Start()
     {
+        _gameManager = S_GameManager.Instance;
+
         UnitListInit();
         MoneyDisplayUpdate();
         UnitDisplayUpdate();
@@ -28,11 +32,23 @@ public class S_UpgradeMenu : MonoBehaviour
     {
         if (_attBuffIncrement < _upgradeLimit)
         {
-            if (S_GameManager.Instance.player1CharacterMoney.Buy(5))
+            if (_playerNumber == 1)
             {
-                _unitManager.AttackBuff(_units[_unitInd]);
-                MoneyDisplayUpdate();
-                _attBuffIncrement++;
+                if (_gameManager.player1CharacterMoney.Buy(5))
+                {
+                    _unitManager.AttackBuff(_units[_unitInd]);
+                    MoneyDisplayUpdate();
+                    _attBuffIncrement++;
+                }
+            }
+            else if (_playerNumber == 2)
+            {
+                if (_gameManager.player2CharacterMoney.Buy(5))
+                {
+                    _unitManager.AttackBuff(_units[_unitInd]);
+                    MoneyDisplayUpdate();
+                    _attBuffIncrement++;
+                }
             }
         }
         else
@@ -45,11 +61,23 @@ public class S_UpgradeMenu : MonoBehaviour
     {
         if (_defBuffIncrement < _upgradeLimit)
         {
-            if (S_GameManager.Instance.player1CharacterMoney.Buy(5))
+            if (_playerNumber == 1)
             {
-                _unitManager.DefenseBuff(_units[_unitInd]);
-                MoneyDisplayUpdate();
-                _defBuffIncrement++;
+                if (_gameManager.player1CharacterMoney.Buy(5))
+                {
+                    _unitManager.DefenseBuff(_units[_unitInd]);
+                    MoneyDisplayUpdate();
+                    _defBuffIncrement++;
+                }
+            }
+            else if (_playerNumber == 2)
+            {
+                if (_gameManager.player2CharacterMoney.Buy(5))
+                {
+                    _unitManager.DefenseBuff(_units[_unitInd]);
+                    MoneyDisplayUpdate();
+                    _defBuffIncrement++;
+                }
             }
         }
         else
@@ -60,7 +88,7 @@ public class S_UpgradeMenu : MonoBehaviour
 
     public void UnitIndAdd()
     {
-        if (_unitInd < _units.Count)
+        if (_unitInd < _units.Count - 1)
         {
             _unitInd++;
             UnitDisplayUpdate();
@@ -78,7 +106,14 @@ public class S_UpgradeMenu : MonoBehaviour
 
     private void MoneyDisplayUpdate()
     {
-        _moneyDisplay.text = "Money left : " + S_GameManager.Instance.player1CharacterMoney.ammount + " g";
+        if (_playerNumber == 1)
+        {
+            _moneyDisplay.text = "Money left : " + _gameManager.player1CharacterMoney.ammount + " g";
+        }
+        else if (_playerNumber == 2)
+        {
+            _moneyDisplay.text = "Money left : " + _gameManager.player2CharacterMoney.ammount + " g";
+        }
     }
 
     private void UnitDisplayUpdate()
@@ -91,15 +126,15 @@ public class S_UpgradeMenu : MonoBehaviour
         switch(_playerNumber)
         {
             case 1:
-                for (int i=0; i < S_GameManager.Instance.player1UnitCallButton.GetComponent<S_UnitCall>().GetUnits().Count; i++)
+                for (int i=0; i < _gameManager.player1UnitCall.GetUnits().Count; i++)
                 {
-                    _units.Add(S_GameManager.Instance.player1UnitCallButton.GetComponent<S_UnitCall>().GetUnits()[i].GetComponent<Unit>());
+                    _units.Add(_gameManager.player1UnitCall.GetUnits()[i]);
                 }
                 break;
             case 2:
-                for (int i = 0; i < S_GameManager.Instance.player2UnitCallButton.GetComponent<S_UnitCall>().GetUnits().Count; i++)
+                for (int i = 0; i < _gameManager.player2UnitCall.GetUnits().Count; i++)
                 {
-                    _units.Add(S_GameManager.Instance.player2UnitCallButton.GetComponent<S_UnitCall>().GetUnits()[i].GetComponent<Unit>());
+                    _units.Add(_gameManager.player2UnitCall.GetUnits()[i]);
                 }
                 break;
             default: 

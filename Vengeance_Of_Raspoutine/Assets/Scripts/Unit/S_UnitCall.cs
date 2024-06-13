@@ -13,12 +13,26 @@ public class S_UnitCall : MonoBehaviour
     public bool firstUnitCalled = false;
     public List<List<S_Tile>> tile;
     public TextMeshProUGUI text;
+
     [SerializeField] private List<GameObject> units = new List<GameObject>();
     public int eliteAmount = 0;
+
+    GameObject _unitsParentGameObject;
 
     private void Update()
     {   
         TextUpdate();
+    }
+
+        private void Awake()
+    {
+        // Setting up local variables
+        _unitsParentGameObject = S_UnitCallButtonHandler.Instance.unitsParentGameObject;
+
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].GetComponent<Unit>().ResetBuffs();
+        }
     }
 
     public void Start()
@@ -54,6 +68,16 @@ public class S_UnitCall : MonoBehaviour
 
         if (grid.totalUnitAmount < unitCapacity)
         {
+            if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
+            {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.UssrWarHorn, this.transform.position);
+                Debug.Log("1");
+            }
+            else if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+            {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.MonsterWarHorn, this.transform.position);
+                Debug.Log("2");
+            }
             for (int i = 0; i < callAmount; i++)
             {
                 int unitType = TypeSelector();
@@ -92,7 +116,10 @@ public class S_UnitCall : MonoBehaviour
                     }
                 }
 
+                GameObject unitToSpawn = Instantiate(units[TypeSelector()], _unitsParentGameObject.transform); /* unit that will get its value changed */
+                //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 unitSpawned.tileX = X;
+
                 //function to move the unit on the _grid to the right spots
                 unitSpawned.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY]);
 

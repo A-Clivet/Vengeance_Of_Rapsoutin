@@ -1,24 +1,24 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class S_WeatherEvent : MonoBehaviour
 {
-
     public static S_WeatherEvent Instance;
 
     public enum Event
     {
+        None,
         Earthquake,
         Fog,
         Blizzard
     }
 
     public EventStocker functionStocker = new EventStocker();
-    public Action currentEvent=null;
+    public Action currentEvent = null;
 
     Event _ManageEvent;
     public Event ManageEvent
@@ -32,11 +32,13 @@ public class S_WeatherEvent : MonoBehaviour
         }
     }
 
-    private int nbTurn = 0;
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
+    [SerializeField] private TextMeshProUGUI weatherInfo;
 
+    private int nbTurn = 0;
+    private int fogOpacityState = 1;
 
     private void Awake()
     {
@@ -45,30 +47,42 @@ public class S_WeatherEvent : MonoBehaviour
 
     public void EventProbability()
     {
-        int rndProb=UnityEngine.Random.Range(0, 101);
+        nbTurn = 0;
+        fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0);
+        fogOpacityState = 1;
+
+        int rndProb = UnityEngine.Random.Range(0, 101);
+
         if (rndProb > 80)
         {
-            int eventChosen= UnityEngine.Random.Range(0, 3);
+            int eventChosen = UnityEngine.Random.Range(0, 3);
+
             if (eventChosen == 0)
             {
+                nbTurn = 8;
                 ManageEvent = Event.Earthquake;
             }
             else if (eventChosen == 1)
             {
-                ManageEvent= Event.Fog;
+                ManageEvent = Event.Fog;
             }
             else
             {
+                nbTurn = 5;
                 ManageEvent = Event.Blizzard;
             }
-            return;
         }
-        return;
+        else
+        {
+            ManageEvent = Event.None;
+        }
+
+        weatherInfo.text = "Weather : " + ManageEvent;
     }
 
     public void EarthquakeEvent()
     {
-        nbTurn--; ;
+        nbTurn--;
         if (nbTurn < 0)
         {
             nbTurn = 8;
@@ -79,29 +93,27 @@ public class S_WeatherEvent : MonoBehaviour
             }
             foreach (Unit u in unitToRemove)
             {
-                
+
                 u.actualTile.unit = null;
                 _player1GridManager.unitList.Remove(u);
                 _player1GridManager.totalUnitAmount -= 1;
                 _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
-                u.StopAllCoroutines();
             }
             unitToRemove.Clear();
 
             foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 1))
             {
-                unitToRemove.Add(u);  
+                unitToRemove.Add(u);
             }
             foreach (Unit u in unitToRemove)
             {
 
                 u.actualTile.unit = null;
-                _player1GridManager.unitList.Remove(u);
-                _player1GridManager.totalUnitAmount -= 1;
-                _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
+                _player2GridManager.unitList.Remove(u);
+                _player2GridManager.totalUnitAmount -= 1;
+                _player2GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
-                u.StopAllCoroutines();
             }
             _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
             _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
@@ -111,59 +123,60 @@ public class S_WeatherEvent : MonoBehaviour
     }
     public void FogEvent()
     {
-        if (nbTurn <= 2)
+        nbTurn += fogOpacityState;
+
+        if (nbTurn <= 0)
         {
-            nbTurn++;
+            fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0);
+            fogOpacityState = -fogOpacityState;
         }
         if (nbTurn == 1)
         {
             fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 0.5f);
         }
-        if (nbTurn == 2)
+        if (nbTurn >= 2)
         {
             fog.color = new Color(fog.color.r, fog.color.g, fog.color.b, 1);
+            fogOpacityState = -fogOpacityState;
         }
         return;
     }
 
     public void BlizzardEvent()
     {
-        nbTurn--; ;
+        nbTurn--;
         if (nbTurn < 0)
         {
             nbTurn = 5;
-            int listOfIdle = _player1GridManager.unitList.Where(a => a.state == 0).Count();
-            int UnitFrozen = 0;
-            while (UnitFrozen <= listOfIdle)
+            List<Unit> listOfIdle;
+            listOfIdle = new List<Unit>();
+            foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 0))
             {
-                foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 0))
-                {
-                    int spawnProbability = UnityEngine.Random.Range(0, 101);
-                    if (UnitFrozen >= listOfIdle && spawnProbability <= 25)
-                    {
-                        u.state = 3;
-                        UnitFrozen++;
-                    }
-                }
+                listOfIdle.Add(u);
             }
 
-            listOfIdle = _player2GridManager.unitList.Where(a => a.state == 0).Count();
-            UnitFrozen = 0;
-            while (UnitFrozen <= listOfIdle)
+            int nbMaxOfUnitFrozen = listOfIdle.Count() / 2;
+            for (int i = 0; i < nbMaxOfUnitFrozen; i++)
             {
-                foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 0))
-                {
-                    int spawnProbability = UnityEngine.Random.Range(0, 101);
-                    if (UnitFrozen <= listOfIdle && spawnProbability <= 25)
-                    {
-                        u.state = 3;
-                        UnitFrozen++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
+                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0, 0, 1, 1);
+                listOfIdle[unitToFreeze].state = 3;
+
+            }
+
+            listOfIdle.Clear();
+            foreach (Unit u in _player2GridManager.unitList.Where(a => a.state == 0))
+            {
+                listOfIdle.Add(u);
+            }
+
+            nbMaxOfUnitFrozen = listOfIdle.Count() / 2;
+            for (int i = 0; i < nbMaxOfUnitFrozen; i++)
+            {
+                int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
+                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0, 0, 1, 1);
+                listOfIdle[unitToFreeze].state = 3;
+
             }
         }
         return;
@@ -172,20 +185,26 @@ public class S_WeatherEvent : MonoBehaviour
 public class EventStocker
 {
     private Action _eventToStore { get; set; }
-    public Action StockFunction( S_WeatherEvent.Event p_wantedEvent, S_WeatherEvent p_classRef) 
+    public Action StockFunction(S_WeatherEvent.Event p_wantedEvent, S_WeatherEvent p_classRef)
     {
-        if(p_wantedEvent==S_WeatherEvent.Event.Earthquake)
+        if (p_wantedEvent == S_WeatherEvent.Event.Earthquake)
         {
             _eventToStore = p_classRef.EarthquakeEvent;
             return _eventToStore;
         }
-        else if(p_wantedEvent == S_WeatherEvent.Event.Fog)
+        else if (p_wantedEvent == S_WeatherEvent.Event.Fog)
         {
             _eventToStore = p_classRef.FogEvent;
             return _eventToStore;
         }
-        else if(p_wantedEvent == S_WeatherEvent.Event.Blizzard)
+        else if (p_wantedEvent == S_WeatherEvent.Event.Blizzard)
         {
+            _eventToStore = p_classRef.BlizzardEvent;
+            return _eventToStore;
+        }
+        else if (p_wantedEvent == S_WeatherEvent.Event.None)
+        {
+            _eventToStore = null;
             return _eventToStore;
         }
         Debug.LogError("the event given in parameter does not exist");

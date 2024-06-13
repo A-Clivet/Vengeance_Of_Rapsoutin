@@ -378,19 +378,29 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
+
+                p_defendingUnit[i][j].defense = 2;
+                p_defendingUnit[i][j].attack = 0;
+
                 //if p_defendingUnit position = unitColumn
             }
         }
+        //If we are here then it significate that we've created a wall combo. Then we check if we removed a unit before to avoid removing a action point
+        if (S_RemoveUnit.Instance.removing)
+        {
+            S_GameManager.Instance.IncreaseActionPointBy1();
+            S_RemoveUnit.Instance.removing = false;
+        }
     }
 
-    public void AttackBuff(Unit unit)
+    public void AttackBuff(GameObject GOunit)
     {
-        unit.attack += 5;
+        GOunit.GetComponent<Unit>().attack += 1;
     }
 
-    public void DefenseBuff(Unit unit)
+    public void DefenseBuff(GameObject GOunit)
     {
-        unit.defense += 5;
+        GOunit.GetComponent<Unit>().defense += 1;
     }
 
     //public struct UnitOnLine{

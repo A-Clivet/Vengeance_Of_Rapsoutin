@@ -5,22 +5,25 @@ using UnityEngine.UI;
 
 public class S_SettingsMenu : MonoBehaviour
 {
+    [Header("References :")]
     [SerializeField] private TMP_Dropdown _screenSizeDropdown;
     [SerializeField] private Toggle _fullScreenToggle;
+
     private Resolution[] _resolutions;
     private List<Resolution> _filteredResolutions;
     private float _currentRefreshRate;
-    private int _currentResolutionIndex=0;
+    private int _currentResolutionIndex = 0;
     private bool _isFullScreen;
 
     private void Start()
     {
+
         _resolutions = Screen.resolutions;
         _filteredResolutions = new List<Resolution>();
         _screenSizeDropdown.ClearOptions();
         _currentRefreshRate = Screen.currentResolution.refreshRateRatio.numerator;
 
-        for (int i=0; i < _resolutions.Length; i++)
+        for (int i = 0; i < _resolutions.Length; i++)
         {
             if (_resolutions[i].refreshRateRatio.numerator == _currentRefreshRate)
             {
@@ -30,20 +33,23 @@ public class S_SettingsMenu : MonoBehaviour
 
         List<string> options = new List<string>();
 
-        for (int i=0; i < _filteredResolutions.Count; i++)
+        for (int i = 0; i < _filteredResolutions.Count; i++)
         {
-            string resolutionOption = _filteredResolutions[i].width + "x" + _filteredResolutions[i].height + " " + _filteredResolutions[i].refreshRateRatio.numerator + "Hz";
+            string resolutionOption = _filteredResolutions[i].width + "x" + _filteredResolutions[i].height;
             options.Add(resolutionOption);
-            if (_filteredResolutions[i].width==Screen.width && _filteredResolutions[i].height == Screen.height)
+
+            if (_filteredResolutions[i].width == Screen.width && _filteredResolutions[i].height == Screen.height)
             {
                 _currentResolutionIndex = i;
             }
         }
 
         _screenSizeDropdown.AddOptions(options);
+
         LoadSavedDatas();
+
         _screenSizeDropdown.value = _currentResolutionIndex;
-        _screenSizeDropdown.RefreshShownValue(); 
+        _screenSizeDropdown.RefreshShownValue();
     }
 
     public void SetResolution()
@@ -58,7 +64,8 @@ public class S_SettingsMenu : MonoBehaviour
     {
         _isFullScreen = p_value;
         Screen.fullScreen = p_value;
-        if (_isFullScreen )
+
+        if (_isFullScreen)
         {
             PlayerPrefs.SetInt("isFullScreen", 1);
         }
@@ -89,5 +96,4 @@ public class S_SettingsMenu : MonoBehaviour
 
         SetResolution();
     }
-
 }

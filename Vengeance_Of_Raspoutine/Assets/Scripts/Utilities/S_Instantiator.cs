@@ -11,13 +11,15 @@ public class S_Instantiator : MonoBehaviour
         WarningAndPause,
         WarningAndDestructionOfTheSecondOne,
         DestructionOfTheSecondOne,
+        WarningAndDestructionOfTheSecondOneParent,
+        DestructionOfTheSecondOneParent,
     }
     #endregion
 
     #region Methods
     private void Awake()
     {
-        Instance = ReturnInstance(this, Instance, InstanceConflictResolutions.DestructionOfTheSecondOne);
+        Instance = ReturnInstance(this, Instance, InstanceConflictResolutions.DestructionOfTheSecondOneParent);
     }
 
     /// <summary> 
@@ -77,6 +79,15 @@ public class S_Instantiator : MonoBehaviour
 
             case InstanceConflictResolutions.DestructionOfTheSecondOne:
                 Destroy(p_className.gameObject);
+                break;
+
+            case InstanceConflictResolutions.WarningAndDestructionOfTheSecondOneParent:
+                Debug.LogWarning("WARNING! There are multiple [" + p_className.ToString() + "] scripts in the scene. THE SECOND SCRIPT'S GAMEOBJECT PARENT HAS BEEN DESTROYED.");
+                Destroy(p_className.transform.parent.gameObject);
+                break;
+
+            case InstanceConflictResolutions.DestructionOfTheSecondOneParent:
+                Destroy(p_className.transform.parent.gameObject);
                 break;
 
             default:
