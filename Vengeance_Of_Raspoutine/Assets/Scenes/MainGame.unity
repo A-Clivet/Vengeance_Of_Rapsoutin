@@ -1101,6 +1101,10 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278190335
       objectReference: {fileID: 0}
+    - target: {fileID: 3711061910223575803, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: _gameManager
+      value: 
+      objectReference: {fileID: 755483773}
     - target: {fileID: 5035317389381082593, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_fontColor.b
       value: 0
@@ -1170,6 +1174,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+--- !u!1 &664087876 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8915070717570011627, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+  m_PrefabInstance: {fileID: 664087875}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &664087877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4573189598966209728, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+  m_PrefabInstance: {fileID: 664087875}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &664087878 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3711061910223575803, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+  m_PrefabInstance: {fileID: 664087875}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664087876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829da4ec2455d8c4f8989234c795f2ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &693517628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,6 +1783,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: _characterImage
+      value: 
+      objectReference: {fileID: 664087877}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: _playerTurnAnimationGO
+      value: 
+      objectReference: {fileID: 664087876}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: _playerTurnAnimationScript
+      value: 
+      objectReference: {fileID: 664087878}
     - target: {fileID: 8672404642423907698, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: m_Name
       value: GO_GameManager
@@ -1778,6 +1815,10 @@ PrefabInstance:
     - target: {fileID: 2160516229550380036, guid: df3e8da3fea52724da36a8886bc64430, type: 3}
       propertyPath: m_Name
       value: GO_SkillTreeHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087356542941193410, guid: df3e8da3fea52724da36a8886bc64430, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5312862122899114816, guid: df3e8da3fea52724da36a8886bc64430, type: 3}
       propertyPath: m_LocalPosition.x
