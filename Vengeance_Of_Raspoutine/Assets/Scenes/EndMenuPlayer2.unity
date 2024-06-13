@@ -135,6 +135,26 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1977120549}
+    - target: {fileID: 6940315012408482490, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6940315012408482490, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6940315012408482490, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6940315012408482490, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7481523712861560972, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8126619147051216234, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
