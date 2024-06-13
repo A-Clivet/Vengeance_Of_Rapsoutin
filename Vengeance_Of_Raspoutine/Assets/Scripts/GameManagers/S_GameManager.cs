@@ -394,9 +394,6 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
-        // Call the start units for all players
-        _unitCallButtonHandler.CallUnitsForAllPlayers();
-
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
 
