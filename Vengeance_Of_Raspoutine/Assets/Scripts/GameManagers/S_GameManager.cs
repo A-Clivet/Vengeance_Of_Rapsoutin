@@ -550,9 +550,6 @@ public class S_GameManager : MonoBehaviour
         // Destroy all unit on all grids, and recall UnitCall for the two players
         S_RemoveUnit.Instance.RemoveAllUnits();
 
-        // Call the start units for all players
-        _unitCallButtonHandler.CallUnitsForAllPlayers();
-
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
 
@@ -614,6 +611,9 @@ public class S_GameManager : MonoBehaviour
 
         _loseCoefficient++;
 
+        // Call the start units for all players
+        _unitCallButtonHandler.CallUnitsForAllPlayers();
+
         #region Characters management
 
         // Updates the character's score visuals
@@ -626,13 +626,13 @@ public class S_GameManager : MonoBehaviour
 
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
-
+        #endregion
 
         swapCounterP1 = 3;
-        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
         swapCounterP2 = 3;
+
+        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
-        #endregion
     }
 
     /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>
