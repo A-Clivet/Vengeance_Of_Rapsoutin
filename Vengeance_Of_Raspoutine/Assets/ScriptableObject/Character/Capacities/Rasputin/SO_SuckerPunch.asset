@@ -18,7 +18,7 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: SockerPunch
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: turning walls into projectiles
+  capacityDescription: Turns a wall into an powerfull strike
   capacityEffectDescription: (attack stats equal to remaining hp)
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0

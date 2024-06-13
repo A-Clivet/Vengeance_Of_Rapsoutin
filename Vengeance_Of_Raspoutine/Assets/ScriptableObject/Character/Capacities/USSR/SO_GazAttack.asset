@@ -18,8 +18,8 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: GazAttack
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Debuff the opposing troops.
-  capacityEffectDescription: 'opposing troops : - 2 All Stats'
+  capacityDescription: Weakens all the enemy troops.
+  capacityEffectDescription: 'all enemy troops stats : - 2'
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 1
   unitStatChanged: 1
