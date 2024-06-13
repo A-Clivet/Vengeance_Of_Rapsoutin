@@ -247,9 +247,10 @@ public class Unit : MonoBehaviour
     /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
     public void TakeDamage(int p_damage)
     {
-        if (actualFormation != null)
+        if (actualFormation.Count > 0)
         {
             attack -= p_damage;
+
             if (attack <= 0)
             {
                 for (int j = 0; j < actualFormation.Count; j++)
@@ -270,20 +271,25 @@ public class Unit : MonoBehaviour
             }
             return;
         }
+
         defense -= p_damage;
+
         if (defense <= 0)
         {
             actualTile.unit = null;
             grid.unitList.Remove(this);
             grid.totalUnitAmount -= 1;
+
             if (S_GameManager.Instance.isPlayer1Turn)
             {
                 S_GameManager.Instance.player1CharacterXP.GainXP(5);
             }
+
             else
             {
                 S_GameManager.Instance.player2CharacterXP.GainXP(5);
             }
+
             grid.AllUnitPerColumn[tileX].Remove(this);
             Destroy(gameObject);
         }

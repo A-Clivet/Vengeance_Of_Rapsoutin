@@ -228,6 +228,10 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
+
+                p_defendingUnit[i][j].defense = 2;
+                p_defendingUnit[i][j].attack = 0;
+
                 //if p_defendingUnit position = unitColumn
             }
         }
