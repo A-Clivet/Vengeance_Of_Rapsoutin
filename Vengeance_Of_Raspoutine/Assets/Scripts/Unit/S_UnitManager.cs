@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class S_UnitManager : MonoBehaviour
@@ -17,9 +18,6 @@ public class S_UnitManager : MonoBehaviour
 
     public void UnitCombo(int p_formationNumber)
     {
-        Debug.Log("is called");
-        Debug.Log(grid.AllUnitPerColumn.Count);
-        Debug.Log(grid.AllUnitPerColumn[0].Count);
         for (int i = 0; i < grid.AllUnitPerColumn.Count; i++)
         {
             for (int j = 0; j < grid.AllUnitPerColumn[i].Count; j++)
@@ -28,14 +26,13 @@ public class S_UnitManager : MonoBehaviour
                 if (grid.AllUnitPerColumn[i][j].state == 0)
                 {
                     int columnCounter = 0;
-                    int lineCounter = 1;
+                    int lineCounter = 0;
                     if (grid.AllUnitPerColumn[i][j].sizeY < 2)
                     {
-                        Debug.Log("Unit Pos in UnitPerColumn (" + grid.AllUnitPerColumn[i][j].tileX + "," + grid.AllUnitPerColumn[i][j].tileY + ")");
                         //check unit in column
                         for(int k = 0; k < p_formationNumber; k++)
                         {
-                            if (grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + 2 >= grid.height)
+                            if (gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || j + k >= grid.AllUnitPerColumn[i].Count)
                             {
                                 continue;
                             }
@@ -55,6 +52,7 @@ public class S_UnitManager : MonoBehaviour
 
                             for (int k = 0; k < p_formationNumber; k++)
                             {
+                                if(j + k >= Mathf.Abs(grid.height) || gridList[i][j + k].unit == null) break;
                                 gridList[i][j + k].unit.state = 2;
                                 UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j + k].unit);
                             }
@@ -64,18 +62,29 @@ public class S_UnitManager : MonoBehaviour
                             }
                         }
 
-                        //check unit in line 
-                        while (i + lineCounter < grid.width && grid.gridList[i][j].unit.SO_Unit.unitType == grid.gridList[i + lineCounter][j].unit.SO_Unit.unitType && grid.gridList[i][j].unit.unitColor == grid.gridList[i + lineCounter][j].unit.unitColor && grid.AllUnitPerColumn[i][j].state == 0)
+                        //check unit in line  
+                        while(i + lineCounter < grid.width)
                         {
-                            lineCounter++;
+                            if (grid.gridList[i + lineCounter][j].unit == null) break;
+                            if (grid.gridList[grid.AllUnitPerColumn[i][j].tileX][grid.AllUnitPerColumn[i][j].tileY].unit.SO_Unit.unitType == grid.gridList[i + lineCounter][j].unit.SO_Unit.unitType && grid.gridList[grid.AllUnitPerColumn[i][j].tileX][grid.AllUnitPerColumn[i][j].tileY].unit.unitColor == grid.gridList[i + lineCounter][j].unit.unitColor && grid.gridList[i + lineCounter][j].unit.state == 0 && grid.gridList[i + lineCounter][j].unit.SO_Unit.unitType < 3 )
+                            {
+                                lineCounter++;
+                            }
+                            else
+                            {
+                                lineCounter = 0;
+                                break;
+                            }
                         }
                         if (lineCounter >= p_formationNumber)
                         {
                             UnitLine.Add(new());
 
-                            for (int k = 0; k < lineCounter; k++)
+                            for (int k = 0; k < lineCounter - 1; k++)
                             {
+                                Debug.Log(k);
                                 gridList[i + k][j].unit.state = 1;
+                                gridList[i + k][j].unit.spriteChange(defendImg);
                                 UnitLine[UnitLine.Count - 1].Add(gridList[i + k][j].unit);
                             }
                             for (int k = 0; k < UnitLine[UnitLine.Count - 1].Count; k++)
@@ -86,7 +95,7 @@ public class S_UnitManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Unit Pos in UnitPerColumn (" + grid.AllUnitPerColumn[i][j].tileX + "," + grid.AllUnitPerColumn[i][j].tileY + ")");
+                        //Debug.Log("Unit Pos in UnitPerColumn (" + grid.AllUnitPerColumn[i][j].tileX + "," + grid.AllUnitPerColumn[i][j].tileY + ")");
                         if (grid.AllUnitPerColumn[i][j].tileY + p_formationNumber >= grid.height)
                         {
                             break;
@@ -95,6 +104,10 @@ public class S_UnitManager : MonoBehaviour
                         {
                             for (int k = 1; k < p_formationNumber; k++)
                             {
+                                if (( j + k >= grid.AllUnitPerColumn[i].Count) || grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= Mathf.Abs(grid.height)  || (grid.AllUnitPerColumn[i][j + k] == null))
+                                {
+                                    continue;
+                                }
                                 if (grid.AllUnitPerColumn[i][j + k].state == 0 && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i][j + k].unitColor && grid.AllUnitPerColumn[i][j + k].SO_Unit.sizeY < 2)
                                 {
                                     columnCounter++;
@@ -126,8 +139,13 @@ public class S_UnitManager : MonoBehaviour
                         {
                             for (int k = 1; k < p_formationNumber; k++)
                             {
-                                if (grid.AllUnitPerColumn[i][j + k].state == 0 && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i][j + k].unitColor && grid.AllUnitPerColumn[i][j + k].SO_Unit.sizeY < 2 &&
-                                    grid.AllUnitPerColumn[i + 1][j + k].state == 0 && grid.AllUnitPerColumn[i][j].unitColor == grid.AllUnitPerColumn[i + 1][j + k].unitColor && grid.AllUnitPerColumn[i + 1][j + k].SO_Unit.sizeY < 2
+                                if (grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || j + k >= grid.AllUnitPerColumn.Count ||
+                                    grid.gridList[i][j].unit || grid.gridList[i][j + k].unit == null || grid.gridList[i + 1][j + k].unit)
+                                {
+                                    continue;
+                                }
+                                if (grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY + k].unit.state == 0 && grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].unit.unitColor == grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY + k].unit.unitColor && grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY + k].unit.SO_Unit.sizeY < 2 &&
+                                    grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY + k].unit.state == 0 && grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].unit.unitColor == grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY + k].unit.unitColor && grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY + k].unit.SO_Unit.sizeY < 2
                                     )
                                 {
                                     columnCounter++;

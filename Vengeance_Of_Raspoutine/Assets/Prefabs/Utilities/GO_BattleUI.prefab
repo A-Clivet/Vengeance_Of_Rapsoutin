@@ -94,6 +94,7 @@ MonoBehaviour:
   unitCapacity: 30
   firstUnitCalled: 0
   text: {fileID: 8660762086133191425}
+  unitManager: {fileID: 0}
   units:
   - {fileID: 5995191591774840050, guid: f30d447f5447a1346bdf5f6851c8a2f4, type: 3}
   - {fileID: 5995191591774840050, guid: ec31f67fe93b6f642ab2de0615759cfd, type: 3}
@@ -1092,6 +1093,7 @@ MonoBehaviour:
   unitCapacity: 30
   firstUnitCalled: 0
   text: {fileID: 7977958396473434724}
+  unitManager: {fileID: 0}
   units:
   - {fileID: 5995191591774840050, guid: 27fc96de3e8091d4a8671d2295d83c6a, type: 3}
   - {fileID: 5995191591774840050, guid: 632c5b3de81117b4780e65144e01f5f6, type: 3}

@@ -24,6 +24,7 @@ public class S_UnitCall : MonoBehaviour
     public void Start()
     {
         UnitCalling();
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         CallAmountUpdate();
     }
 
@@ -49,7 +50,6 @@ public class S_UnitCall : MonoBehaviour
         {
             CallAmountUpdate();
             callAmount /= 2;
-            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         }
 
         if (grid.totalUnitAmount < unitCapacity)
@@ -57,7 +57,7 @@ public class S_UnitCall : MonoBehaviour
             for (int i = 0; i < callAmount; i++)
             {
                 int unitType = TypeSelector();
-                if (eliteAmount == 3)
+                if (eliteAmount >= 2)
                 {   
                     unitType = Random.Range(0,3);
                 }
@@ -71,7 +71,7 @@ public class S_UnitCall : MonoBehaviour
                     eliteAmount++;
                     if (unitSpawned.sizeX == 2)
                     {
-                        while (X < 7 && grid.gridList[X][4].unit != null)
+                        while (X == 7 || grid.gridList[X][4].unit != null || grid.gridList[X + 1][4].unit != null)
                         {
                             X = ColumnSelector();        
                         }
@@ -86,7 +86,7 @@ public class S_UnitCall : MonoBehaviour
                 }
                 else
                 {
-                    while (grid.gridList[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    while (grid.gridList[X][5].unit != null) 
                     {
                         X = ColumnSelector();
                     }
@@ -94,18 +94,12 @@ public class S_UnitCall : MonoBehaviour
 
                 unitSpawned.tileX = X;
                 //function to move the unit on the _grid to the right spots
-                unitSpawned.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
+                unitSpawned.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY]);
 
                 unitToSpawn.transform.position = new Vector3(unitSpawned.actualTile.transform.position.x, unitSpawned.grid.startY + unitSpawned.grid.height + unitSpawned.actualTile.transform.position.y);
-                
-                if(unitSpawned.sizeX == 1)
-                {
-                    unitSpawned.MoveToTile(unitSpawned.actualTile);
-                }
-                else if(unitSpawned.sizeX == 2)
-                {
-                    unitSpawned.EliteMoveToTile(unitSpawned.actualTile);
-                }
+
+                unitSpawned.MoveToTile(grid.gridList[unitSpawned.tileX][Mathf.Abs(grid.height) - unitSpawned.sizeY]);
+
                 grid.totalUnitAmount++;
             }
 
@@ -134,7 +128,7 @@ public class S_UnitCall : MonoBehaviour
     }
     private int TypeSelector()
     { /* select which type is the unit */
-        return Random.Range(0, units.Count - 2);
+        return Random.Range(0, units.Count);
     }
     private int ColorSelector()
     { /* select which color is the unit */
