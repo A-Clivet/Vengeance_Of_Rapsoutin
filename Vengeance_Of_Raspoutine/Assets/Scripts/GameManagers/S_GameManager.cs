@@ -383,11 +383,12 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
-        // Randomly determine the player who will play first in the initial turn
-        RandomStartTurn();
-
+        
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
+
+        // Randomly determine the player who will play first in the initial turn
+        RandomStartTurn();
 
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
