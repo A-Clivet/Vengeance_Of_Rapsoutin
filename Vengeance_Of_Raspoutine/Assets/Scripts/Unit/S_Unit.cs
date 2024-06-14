@@ -278,7 +278,6 @@ public class Unit : MonoBehaviour
         {
             actualTile.unit = null;
             grid.unitList.Remove(this);
-            grid.totalUnitAmount -= 1;
 
             if (S_GameManager.Instance.isPlayer1Turn)
             {
