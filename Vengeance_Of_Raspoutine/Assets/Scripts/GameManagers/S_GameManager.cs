@@ -746,36 +746,7 @@ public class S_GameManager : MonoBehaviour
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
     }
-
-    /// <summary>
-    /// TODO : After the merge of the refactored S_GameManager this function will be deleted,
-    /// for the one who used it (S_Unit) 
-    /// it will be replaced by the HandleUnitCallButtonInteraction function in the S_UnitCallHandler
-    /// </summary>
-    [Obsolete]
-    public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
-    {
-        if (p_playerNumber == 1)
-            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, p_isActive);
-
-        else if (p_playerNumber == 2)
-            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, p_isActive);
-
-        // COMMENTED BECAUSE IT'S NOT WORKING ANYMORE
-        /*switch (p_playerNumber)
-        {
-            case 1:
-                player1UnitCallButton.interactable = p_isActive;
-                break;
-            case 2:
-                player2UnitCallButton.interactable = p_isActive;
-                break;
-            default:
-                Debug.LogError("ERROR ! The given player number '" + p_playerNumber + "' is incorrect, it is not planned in the switch");
-                break;
-        }*/
-    }
-
+    
     public void StartTurnCheckUnit()
     {
         // To avoid having to manage two grid manager variables

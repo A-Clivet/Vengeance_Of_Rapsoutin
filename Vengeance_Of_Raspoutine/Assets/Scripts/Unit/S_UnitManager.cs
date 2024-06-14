@@ -253,15 +253,5 @@ public class S_UnitManager : MonoBehaviour
         GOunit.GetComponent<Unit>().defense += 1;
     }
 
-    //public struct UnitOnLine{
-    //    public List<Unit> units;
-    //    public List<int> Y; // 3
-    //    public List<Vector2Int> bounds; // (3,6) 
-    //}
 
-    //public struct UnitOnColumn{
-    //    public List<Unit> units;
-    //    public List<int> X;
-    //    public List<Vector2Int> bounds;
-    //}
 }

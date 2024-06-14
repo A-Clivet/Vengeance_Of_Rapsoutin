@@ -171,63 +171,6 @@ public class Unit : MonoBehaviour
         ReducePlayerHp();
         actualFormation[0].DestroyFormation();
     }
-    // Used to check where the attacking formation needs to go if an adversary unit is found and deals damage to them.
-    //public void AttackAnotherUnit()
-    //{
-    //    //the lead of the formation is the one who checks where to go next and kills the formation if his own life fall to/below 0.
-    //    if (actualFormation[0] == this)
-    //    {
-    //        for (int i = 0; i < enemyGrid.gridList[tileX].Count; i++)
-    //        {
-    //            if (enemyGrid.gridList[tileX][i].unit)
-    //            {
-    //                if (enemyGrid.gridList[tileX][i].unit.actualFormation == null)
-    //                {
-    //                    attack -= enemyGrid.gridList[tileX][i].unit.defense;
-    //                    enemyGrid.gridList[tileX][i].unit.TakeDamage(attack + enemyGrid.gridList[tileX][i].unit.defense);
-
-    //                }
-    //                else
-    //                {
-    //                    attack -= enemyGrid.gridList[tileX][i].unit.attack;
-    //                    enemyGrid.gridList[tileX][i].unit.TakeDamage(attack + enemyGrid.gridList[tileX][i].unit.attack);
-    //                }
-    //                if (attack <= 0)
-    //                {
-    //                    unitManager.UnitColumn.Remove(actualFormation);
-    //                    StartCoroutine(DestroyFormation());
-    //                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-    //                    return;
-    //                }
-    //                for (int j = i; j < enemyGrid.gridList[tileX].Count; j++)
-    //                {
-    //                    if (enemyGrid.gridList[tileX][j].unit)
-    //                    {
-    //                        _posToMove = enemyGrid.gridList[tileX][j].transform.position;
-    //                        StartCoroutine(LerpMove());
-    //                        break;
-    //                    }
-    //                }
-    //                return;
-    //            }
-    //        }
-    //        //at this point, there are no units left on the column of the attacker so it attacks the player instead
-    //        _posToMove = new Vector3(transform.position.x, -((grid.startY + grid.height * transform.localScale.y) + transform.position.y), -1);
-    //        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-    //        grid.enemyGrid.AllUnitPerColumn = grid.UnitPriorityCheck();
-    //        ReducePlayerHp();
-    //        StartCoroutine(DestroyFormation());
-    //        return;
-    //    }
-
-    //    //followers of the lead just moves.
-    //    else
-    //    {
-    //        _posToMove = actualFormation[0]._posToMove - new Vector3(0, actualFormation[0].transform.position.y - transform.position.y, -1);
-    //        StartCoroutine(LerpMove());
-    //    }
-    //    return;
-    //}
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
     public void ReducePlayerHp(){ // needs rework
@@ -305,12 +248,13 @@ public class Unit : MonoBehaviour
                 {
                     if (S_GameManager.Instance.isPlayer1Turn)
                     {
-                        S_GameManager.Instance.UnitCallOnOff(1, true);
+                        S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, true);
                     }
                     else
                     {
-                        S_GameManager.Instance.UnitCallOnOff(2, true);
+                        S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, true);
                     }
+                   
                     if (tileX != tile.tileX)
                     {
                         _willLoseActionPoints = true;
@@ -403,12 +347,13 @@ public class Unit : MonoBehaviour
     {
         if (S_GameManager.Instance.isPlayer1Turn)
         {
-            S_GameManager.Instance.UnitCallOnOff(1, false);
+            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, false);
         }
         else
         {
-            S_GameManager.Instance.UnitCallOnOff(2, false);
+            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, false);
         }
+        
         if (!grid.isSwapping)
         {
             if (actualTile.tileY + 1 > grid.gridList[actualTile.tileX].Count - 1)
