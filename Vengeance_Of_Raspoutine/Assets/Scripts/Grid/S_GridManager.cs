@@ -162,7 +162,7 @@ public class S_GridManager : MonoBehaviour
                 OrganizedColumn[y].SwitchUnit(gridList[x][y]);
             }
         }
-
+        unitManager.UnitCombo(3);
         return GridUnit; 
     }
 
