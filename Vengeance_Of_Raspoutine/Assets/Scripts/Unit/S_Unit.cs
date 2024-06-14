@@ -252,7 +252,7 @@ public class Unit : MonoBehaviour
     // Same as MoveToTile but use a action point
     public void ActionMoveToTile(S_Tile p_tile)
     {
-        if((p_tile.tileX == 7 && sizeX == 2) || (grid.gridList[p_tile.tileX][4]!=null && sizeY == 2))
+        if ((p_tile.tileX == 7 && sizeX == 2) || (grid.gridList[p_tile.tileX][4] != null && sizeY == 2))
         {
             p_tile.tileX--;
         }
@@ -260,72 +260,121 @@ public class Unit : MonoBehaviour
         {
             S_GameManager.Instance.UnitCallOnOff(1, true);
         }
-        else if(!S_GameManager.Instance.isPlayer1Turn)
+        else if (!S_GameManager.Instance.isPlayer1Turn)
         {
             S_GameManager.Instance.UnitCallOnOff(2, true);
         }
-        if(tileX != p_tile.tileX)
+        if (tileX != p_tile.tileX)
         {
             _willLoseActionPoints = true;
         }
 
         int lineToGoTo = 0;
 
-        for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // p_tile.grid.gridList[Mathf.Abs(p_tile.grid.height) - p_tile.tileX - 1]) 
+        if (sizeX == 1)
         {
-            if (p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this)
+            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // start from the top of the column 
             {
-                lineToGoTo = i;
+                if (p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
+                {
+                    lineToGoTo = i;
+                }
+                else
+                {
+                    break;
+                }
             }
-            else
-            {
-                break;
-            }
-        }
-        actualTile.unit = null;
-        actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
-        actualTile.unit = this;
 
-        switch (sizeX, sizeY)
-        {
-            case (1, 1):
+
+            switch ((sizeX, sizeY))
+            {
+                case (1, 1):
+
+                    actualTile.unit = null;
+
+                    actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
 
                     p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
 
-                break;
-            case (1, 2):
+                    break;
+
+
+                case (1, 2):
+
+
+                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+                    actualTile.unit = null;
+
+                    actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
 
                     p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
                     p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
 
-                break;
-            case (2, 2):
+                    break;
 
-                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                    p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
-                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-                    p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+                default:
 
-                break;
+                    break;
+            }
 
-            default:
+            grid.unitSelected = null;
+            tileX = actualTile.tileX;
+            tileY = actualTile.tileY;
 
-                break;
-        }
+            _posToMove = actualTile.transform.position;
 
-        grid.unitSelected = null;
-        tileX = p_tile.grid.gridList[p_tile.tileX][lineToGoTo].tileX;
-        tileY = p_tile.grid.gridList[p_tile.tileX][lineToGoTo].tileY;
-        _posToMove = p_tile.grid.gridList[p_tile.tileX][lineToGoTo].transform.position;
-
-        if (!_isMoving)
-        {
-            _isMoving = true;
             StartCoroutine(LerpMove());
+
+            foreach (Unit unit in grid.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
+            }
         }
-        foreach (Unit unit in grid.unitList)
+        else // if unit is sizeX ==  2
         {
-            unit.GetComponent<BoxCollider2D>().enabled = true;
+            int x = p_tile.tileX;
+            if (x == grid.width - 1)
+            {
+                x--;
+            }
+
+            for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
+            {
+                if ((p_tile.grid.gridList[x][i].unit == null || p_tile.grid.gridList[x][i].unit == this) && (p_tile.grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
+                {
+                    lineToGoTo = i;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            //clears tiles 
+            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = null;
+            p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = null;
+            actualTile.unit = null;
+
+            actualTile = grid.gridList[x][lineToGoTo];
+
+            //set unit to tiles 
+            actualTile.unit = this;
+            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
+            p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+
+            grid.unitSelected = null;
+            tileX = actualTile.tileX;
+            tileY = actualTile.tileY;
+            _posToMove = actualTile.transform.position;
+
+            StartCoroutine(LerpMove());
+
+            foreach (Unit unit in grid.unitList)
+            {
+                unit.GetComponent<BoxCollider2D>().enabled = true;
+            }
         }
         if (_willLoseActionPoints)
         {
@@ -556,30 +605,26 @@ public class Unit : MonoBehaviour
                 }
 
             }
-            if (grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
+            if (sizeX == 2 && sizeY == 2 && (grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null && grid.gridList[actualTile.tileX + 1][actualTile.tileY + 2].unit))
+            {
+                grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
+            }
+            else if (sizeX == 1 && sizeY == 2 && grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null)
+            {
+                grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
+            }
+            else if (sizeX == 1 && sizeY == 1 && grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
             {
                 grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit.SelectUnit();
             }
-
-
-        }
-        else
-        {
-
-        }
-
-        if (sizeX == 2 && sizeY == 2 && (grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null && grid.gridList[actualTile.tileX + 1][actualTile.tileY + 2].unit))
-        {
-            grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
-            grid.gridList[actualTile.tileX + 1][actualTile.tileY + 2].unit.SelectUnit();
-        }
-        else if (sizeX == 1 && sizeY == 2 && grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null)
-        {
-            grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
-        }
-        else if (sizeX == 1 && sizeY == 1 && grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
-        {
-            grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit.SelectUnit();
+            else
+            {
+                grid.unitSelected = this;
+                foreach (Unit unit in grid.unitList)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = false;
+                }
+            }
         }
         else // enter when it's the last SelectUnit();
         {
@@ -608,7 +653,7 @@ public class Unit : MonoBehaviour
 
                 }
             }
-            else if(grid.unitSelected != this)
+            else if (grid.unitSelected != this)
             {
                 grid.SwapUnits(grid.unitSelected.actualTile, this.actualTile, grid.unitSelected, this);
                 _posToMove = actualTile.transform.position;
@@ -637,6 +682,7 @@ public class Unit : MonoBehaviour
             }
         }
     }
+
 
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
