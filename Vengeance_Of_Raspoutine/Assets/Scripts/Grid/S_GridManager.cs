@@ -26,7 +26,7 @@ public class S_GridManager : MonoBehaviour
 
     private Color _spriteColor = new Color(0,0,0,1);
     private Color _transparentColor = new Color(0,0,0,-1);
-    private bool _isGridVisible = false;
+    public bool isGridVisible = false;
 
     private void Awake()
     {
@@ -88,8 +88,8 @@ public class S_GridManager : MonoBehaviour
     {
         if (ctx.started)
         {
-            _isGridVisible = !_isGridVisible;
-            if (_isGridVisible)
+            isGridVisible = !isGridVisible;
+            if (isGridVisible)
             {
                 for (int i = 0; i < gridList.Count; i++)
                 {
