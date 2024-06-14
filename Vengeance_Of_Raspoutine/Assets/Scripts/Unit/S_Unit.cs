@@ -338,7 +338,7 @@ public class Unit : MonoBehaviour
                 x--;
             }
 
-            for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
+            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
             {
                 if ((p_tile.grid.gridList[x][i].unit == null || p_tile.grid.gridList[x][i].unit == this) && (p_tile.grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
                 {
@@ -390,22 +390,23 @@ public class Unit : MonoBehaviour
 
         if (sizeX == 1)
         {
-            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // start from the top of the column 
-            {
-                if (grid.gridList[p_tile.tileX][i].unit == null || grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
-                {
-                    lineToGoTo = i;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
 
             switch ((sizeX, sizeY))
             {
                 case (1, 1):
+
+                    for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // start from the top of the column 
+                    {
+                        if (grid.gridList[p_tile.tileX][i].unit == null || grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
+                        {
+                            lineToGoTo = i;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
 
                     actualTile.unit = null;
 
@@ -418,6 +419,17 @@ public class Unit : MonoBehaviour
 
                 case (1, 2):
 
+                    for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // start from the top of the column 
+                    {
+                        if (grid.gridList[p_tile.tileX][i].unit == null || grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
+                        {
+                            lineToGoTo = i;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
                     grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
                     actualTile.unit = null;
@@ -455,7 +467,7 @@ public class Unit : MonoBehaviour
                 x--;
             }
 
-            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
+            for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
             {
                 if ((grid.gridList[x][i].unit == null || grid.gridList[x][i].unit == this) && (grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
                 {
@@ -497,23 +509,37 @@ public class Unit : MonoBehaviour
 
     public void ForceOnTile(S_Tile p_tile) // force a unit on input tile 
     {
-        if(p_tile.unit == null)
+        if (p_tile.unit != null)
         {
-            switch ((sizeX, sizeY))
+            if (p_tile.tileY + 1 < grid.height)
             {
-                case (1, 1):
+                ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 1]);
+            }
+            else
+            {
+                Debug.Log("Well... Fuck");
+                return;
 
-                    actualTile.unit = null;
+            }
+        }
 
-                    actualTile = p_tile;
+        switch ((sizeX, sizeY))
+        {
+            case (1, 1):
 
-                    actualTile.unit = this;
+                actualTile.unit = null;
 
-                    break;
+                actualTile = p_tile;
+
+                actualTile.unit = this;
+
+                break;
 
 
-                case (1, 2):
+            case (1, 2):
 
+                if (grid.gridList[p_tile.tileX][p_tile.tileY + 1] == null)
+                {
 
                     grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
                     actualTile.unit = null;
@@ -522,11 +548,23 @@ public class Unit : MonoBehaviour
 
                     actualTile.unit = this;
                     grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+                }
+                else
+                {
+                    ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 2]);
+                }
+                break;
 
-                    break;
+            case (2, 2):
 
-                case (2, 2):
+                int x = p_tile.tileX;
+                if (x == grid.width - 1)
+                {
+                    p_tile = grid.gridList[p_tile.tileX - 1][p_tile.tileY];
+                }
 
+                if (grid.gridList[p_tile.tileX][p_tile.tileY + 1] == null && grid.gridList[p_tile.tileX + 1][p_tile.tileY] == null && grid.gridList[p_tile.tileX + 1][p_tile.tileY + 1] == null)
+                {
                     //clears tiles 
                     grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = null;
                     grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
@@ -541,17 +579,22 @@ public class Unit : MonoBehaviour
                     grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
                     grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
 
-                    break;
+                }
+                else
+                {
+                    ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 2]);
+                }
+                break;
 
-                default:
+            default:
 
-                    break;
-            }
-            tileX = p_tile.tileX;
-            tileY = p_tile.tileY;
-            _posToMove = p_tile.transform.position;
-            StartCoroutine(LerpMove());
+                break;
         }
+        tileX = p_tile.tileX;
+        tileY = p_tile.tileY;
+        _posToMove = p_tile.transform.position;
+        StartCoroutine(LerpMove());
+
     }
 
     //Used to reorganize the Units by state

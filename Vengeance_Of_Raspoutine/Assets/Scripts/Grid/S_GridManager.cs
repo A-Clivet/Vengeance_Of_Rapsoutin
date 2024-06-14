@@ -151,25 +151,24 @@ public class S_GridManager : MonoBehaviour
 
                     if(gridList[x][y].unit.sizeX == 2) BigUnitY = gridList[x][y].tileY;
 
-                    if (BigUnits[0].state == 0 || BigUnits[0].state == 3)
+                    if (BigUnits[BigUnits.Count-1].state == 0 || BigUnits[BigUnits.Count - 1].state == 3)
                     {
                         StateIdleUnit.Add(BigUnits[BigUnits.Count - 1]);
                     }
-                    else if (BigUnits[0].state == 1)
+                    else if (BigUnits[BigUnits.Count - 1].state == 1)
                     {
                         StateDefendUnit.Add(BigUnits[BigUnits.Count - 1]);
                     }
-                    else if (BigUnits[0].state == 2)
+                    else if (BigUnits[BigUnits.Count - 1].state == 2)
                     {
                         StateAttackUnit.Add(BigUnits[BigUnits.Count - 1]);
                     }
-                    y++;
+                    continue;
                 }
                 else if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit); //will be placed last in the column in order
                 else if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit); //will be placed first in the column in order
                 else if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit); //will be placed middle in the column in order
                 //gridList[x][y].unit.actualTile = null;
-                gridList[x][y].unit = null;
             }
 
             foreach (Unit u in StateDefendUnit)
@@ -185,8 +184,12 @@ public class S_GridManager : MonoBehaviour
                 OrganizedColumn.Add(u);
             }
 
+            foreach (S_Tile tile in gridList[x])
+            {
+                tile.unit = null;
+            }
 
-            for (int y = 0; y < OrganizedColumn.Count; y++)
+           /* for (int y = 0; y < OrganizedColumn.Count; y++)
             {
                 Debug.Log("BigUnit Y value : " + BigUnitY);
                 Debug.Log("OrganizedColumn Y value : " + OrganizedColumn[y].tileY);
@@ -226,7 +229,7 @@ public class S_GridManager : MonoBehaviour
                             break;
                     }
                 }
-            }
+            }*/
 
             GridUnit.Add(OrganizedColumn);
 
