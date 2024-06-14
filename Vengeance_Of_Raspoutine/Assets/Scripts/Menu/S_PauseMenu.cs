@@ -11,6 +11,14 @@ public class S_PauseMenu : MonoBehaviour
     [SerializeField] GameObject _settingsMenuGameObject;
     [SerializeField] GameObject _rebindControlMenuGameObject;
 
+    // Private variables
+    bool _isPlayer1UnitCallButtonInteractable;
+    bool _isPlayer1SwapUnitButtonInteractable;
+
+    bool _isPlayer2UnitCallButtonInteractable;
+    bool _isPlayer2SwapUnitButtonInteractable;
+
+    // Script references
     S_GameManager _gameManager;
     S_UnitCallButtonHandler _unitCallButtonHandler;
     S_GridManagersHandler _gridManagersHandler;
@@ -53,22 +61,40 @@ public class S_PauseMenu : MonoBehaviour
     public void HandlePauseMenuVisibility(bool p_newPauseMenuVisibility)
     {
         bool _newInGameUIsVisibility = !p_newPauseMenuVisibility;
-
-        // We change players unit call buttons interactability
-        _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, _newInGameUIsVisibility);
-        _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, _newInGameUIsVisibility);
-
-        // We change players swap unit buttons interactability
-        _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, _newInGameUIsVisibility);
-        _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, _newInGameUIsVisibility);
-
         
         if (p_newPauseMenuVisibility)
+        {
+            // We save what buttons was ON before the Pause Menu activation
+            _isPlayer1UnitCallButtonInteractable = _unitCallButtonHandler.player1UnitCallButton.interactable;
+            _isPlayer1SwapUnitButtonInteractable = _swapButtonsHandler.player1SwapButton.interactable;
+
+            _isPlayer2UnitCallButtonInteractable = _unitCallButtonHandler.player2UnitCallButton.interactable;
+            _isPlayer2SwapUnitButtonInteractable = _swapButtonsHandler.player2SwapButton.interactable;
+
+            // We change players unit call buttons interactability
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
+
+            // We change players swap unit buttons interactability
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, false);
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, false);
+
             // We change all units interactability to false 
-            _gridManagersHandler.HandleAllUnitInteractions(_newInGameUIsVisibility);
+            _gridManagersHandler.HandleAllUnitInteractions(false);
+        }
         else
+        {
+            // We change players unit call buttons interactability
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, _isPlayer1UnitCallButtonInteractable);
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, _isPlayer2UnitCallButtonInteractable);
+
+            // We change players swap unit buttons interactability
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, _isPlayer1SwapUnitButtonInteractable);
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, _isPlayer2SwapUnitButtonInteractable);
+
             // We change all units interactability accordingly to what player is playing 
             _gameManager.DeactivateGrid();
+        }
 
         // We change skip button interactability
         _battleUIsReferencesHandler.skipTurnButtonUI.interactable = _newInGameUIsVisibility;
