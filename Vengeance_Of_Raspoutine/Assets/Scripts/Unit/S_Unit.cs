@@ -343,7 +343,7 @@ public class Unit : MonoBehaviour
         {
             for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // start from the top of the column 
             {
-                if (p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
+                if (grid.gridList[p_tile.tileX][i].unit == null || grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
                 {
                     lineToGoTo = i;
                 }
@@ -360,9 +360,9 @@ public class Unit : MonoBehaviour
 
                     actualTile.unit = null;
 
-                    actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
+                    actualTile = grid.gridList[p_tile.tileX][lineToGoTo];
 
-                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
+                    actualTile.unit = this;
 
                     break;
 
@@ -370,13 +370,13 @@ public class Unit : MonoBehaviour
                 case (1, 2):
 
 
-                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+                    grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
                     actualTile.unit = null;
                     
-                    actualTile = p_tile.grid.gridList[p_tile.tileX][lineToGoTo];
+                    actualTile = grid.gridList[p_tile.tileX][lineToGoTo];
 
-                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY].unit = this;
-                    p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+                    actualTile.unit = this;
+                    grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
 
                     break;
 
@@ -406,9 +406,9 @@ public class Unit : MonoBehaviour
                 x--;
             }
 
-            for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
+            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
             {
-                if ((p_tile.grid.gridList[x][i].unit == null || p_tile.grid.gridList[x][i].unit == this) && (p_tile.grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
+                if ((grid.gridList[x][i].unit == null || grid.gridList[x][i].unit == this) && (grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
                 {
                     lineToGoTo = i;
                 }
@@ -419,18 +419,18 @@ public class Unit : MonoBehaviour
             }
 
             //clears tiles 
-            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = null;
-            p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
-            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = null;
+            grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = null;
+            grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+            grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = null;
             actualTile.unit = null;
 
             actualTile = grid.gridList[x][lineToGoTo];
 
             //set unit to tiles 
             actualTile.unit = this;
-            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
-            p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
-            p_tile.grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+            grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
+            grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+            grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
 
             grid.unitSelected = null;
             tileX = actualTile.tileX;
@@ -450,8 +450,54 @@ public class Unit : MonoBehaviour
     {
         if(p_tile.unit == null)
         {
-            actualTile = p_tile;
-            p_tile.unit = this;
+            switch ((sizeX, sizeY))
+            {
+                case (1, 1):
+
+                    actualTile.unit = null;
+
+                    actualTile = p_tile;
+
+                    actualTile.unit = this;
+
+                    break;
+
+
+                case (1, 2):
+
+
+                    grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+                    actualTile.unit = null;
+
+                    actualTile = p_tile;
+
+                    actualTile.unit = this;
+                    grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+
+                    break;
+
+                case (2, 2):
+
+                    //clears tiles 
+                    grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = null;
+                    grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+                    grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = null;
+                    actualTile.unit = null;
+
+                    actualTile = p_tile;
+
+                    //set unit to tiles 
+                    actualTile.unit = this;
+                    grid.gridList[actualTile.tileX + 1][actualTile.tileY].unit = this;
+                    grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = this;
+                    grid.gridList[actualTile.tileX + 1][actualTile.tileY + 1].unit = this;
+
+                    break;
+
+                default:
+
+                    break;
+            }
             tileX = p_tile.tileX;
             tileY = p_tile.tileY;
             _posToMove = p_tile.transform.position;
