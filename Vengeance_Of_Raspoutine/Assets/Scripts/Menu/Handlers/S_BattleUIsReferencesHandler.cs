@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class S_BattleUIsReferencesHandler : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class S_BattleUIsReferencesHandler : MonoBehaviour
     public TextMeshProUGUI playerTurnTextUI;
     public TextMeshProUGUI playerActionsLeftTextUI;
     public TextMeshProUGUI totalTurnsTextUI;
+    public Button skipTurnButtonUI; 
 
     private void Awake()
     {
