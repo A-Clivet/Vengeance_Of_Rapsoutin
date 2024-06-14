@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_Unit_Duelist
   m_EditorClassIdentifier: 
   UnitName: Duelist
-  attack: 2
+  attack: 6
   defense: 2
   sizeX: 1
   sizeY: 1
