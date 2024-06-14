@@ -2961,6 +2961,10 @@ PrefabInstance:
       value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5920533083824793201, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
+      propertyPath: tileSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71fb2a86bcddda04fbca01dd97e451a2, type: 3}
+    - target: {fileID: 5920533083824793201, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
       propertyPath: unitManager
       value: 
       objectReference: {fileID: 1312575505}
@@ -2968,6 +2972,10 @@ PrefabInstance:
       propertyPath: startY
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8275921660412898142, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
+      propertyPath: tileSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71fb2a86bcddda04fbca01dd97e451a2, type: 3}
     - target: {fileID: 8275921660412898142, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
       propertyPath: unitManager
       value: 
