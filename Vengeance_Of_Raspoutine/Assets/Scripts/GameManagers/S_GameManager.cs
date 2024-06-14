@@ -842,7 +842,6 @@ public class S_GameManager : MonoBehaviour
             if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
                 _playerActionNumber +=1;
-                S_RemoveUnit.Instance.removing = false;
             }
         }
         else if (currentTurn == TurnEmun.Player2Turn)
@@ -854,8 +853,11 @@ public class S_GameManager : MonoBehaviour
             if (S_RemoveUnit.Instance.NbCombo < player2unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
                 _playerActionNumber+=1;
-                S_RemoveUnit.Instance.removing = false;
             }
+        }
+        if(S_RemoveUnit.Instance.removing)
+        {
+            S_RemoveUnit.Instance.removing = false;
         }
 
         // Action time cooldown

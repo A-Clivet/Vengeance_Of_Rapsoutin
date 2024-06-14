@@ -530,7 +530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   SO_Unit: {fileID: 11400000, guid: 0f57fd0ac30f80b4f9214e63d63b23ac, type: 2}
-  attack: 2
+  attack: 6
   defense: 2
   state: 0
   turnCharge: 2
@@ -541,13 +541,13 @@ MonoBehaviour:
   actualTile: {fileID: 0}
   highlight: {fileID: 1401381864322760783}
   grid: {fileID: 0}
+  statsCanvas: {fileID: 5614847287348201519}
   tileX: 0
   tileY: 0
   sizeX: 1
   sizeY: 1
   isChecked: 0
   mustAttack: 0
-  statsCanvas: {fileID: 5614847287348201519}
 --- !u!61 &8606980364883050880
 BoxCollider2D:
   m_ObjectHideFlags: 0

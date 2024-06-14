@@ -229,7 +229,7 @@ public class S_UnitManager : MonoBehaviour
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
 
-                p_defendingUnit[i][j].defense = 2;
+                p_defendingUnit[i][j].defense = 4;
                 p_defendingUnit[i][j].attack = 0;
 
                 //if p_defendingUnit position = unitColumn
