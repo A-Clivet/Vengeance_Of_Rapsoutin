@@ -551,7 +551,16 @@ public class Unit : MonoBehaviour
                 }
                 else
                 {
-                    ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 2]);
+                    if (p_tile.tileY + 2 < grid.height)
+                    {
+                        ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 2]);
+                    }
+                    else
+                    {
+                        Debug.Log("Well... Fuck");
+                        return;
+
+                    }
                 }
                 break;
 
@@ -582,7 +591,16 @@ public class Unit : MonoBehaviour
                 }
                 else
                 {
-                    ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 2]);
+                    if (p_tile.tileY + 2 < grid.height)
+                    {
+                        ForceOnTile(grid.gridList[p_tile.tileX][p_tile.tileY + 2]);
+                    }
+                    else
+                    {
+                        Debug.Log("Well... Fuck");
+                        return;
+
+                    }
                 }
                 break;
 
