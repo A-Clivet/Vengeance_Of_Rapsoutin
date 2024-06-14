@@ -18,6 +18,7 @@ public class S_GridManager : MonoBehaviour
 
     public int width, height;
     public float startX, startY;
+    public bool isSwapping = false;
     [SerializeField] private S_Tile _tile;
 
     [Header("Differents tile's types :")]
@@ -44,7 +45,7 @@ public class S_GridManager : MonoBehaviour
                 gridList.Add(new List<S_Tile>());
                 for (int y = 0; y < height; y++)
                 {
-                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * _gridScale.x, (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    var spawnedTile = Instantiate(_tile, new Vector3((x +p_x) * (_gridScale.x + 0.1f), (y +p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
@@ -60,7 +61,7 @@ public class S_GridManager : MonoBehaviour
                 gridList.Add(new List<S_Tile>());
                 for (int y = 0;y>height;y--)
                 {
-                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * _gridScale.x, (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
+                    var spawnedTile = Instantiate(_tile, new Vector3((x + p_x) * (_gridScale.x + 0.1f), (y + p_y) * _gridScale.y, 0), Quaternion.identity, transform);
                     gridList[x].Add(spawnedTile);
                     spawnedTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
                     spawnedTile.GetComponent<SpriteRenderer>().color += _transparentColor;
@@ -97,6 +98,10 @@ public class S_GridManager : MonoBehaviour
                         gridList[i][j].GetComponent<SpriteRenderer>().color += _spriteColor;
                     }
                 }
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    unitList[i].statsCanvas.SetActive(true);
+                }
             }
             else
             {
@@ -106,6 +111,10 @@ public class S_GridManager : MonoBehaviour
                     {
                         gridList[i][j].GetComponent<SpriteRenderer>().color += _transparentColor;
                     }
+                }
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    unitList[i].statsCanvas.SetActive(false);
                 }
             }
         }
@@ -127,7 +136,7 @@ public class S_GridManager : MonoBehaviour
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
                 if (gridList[x][y].unit == null) continue; 
-                if (gridList[x][y].unit.state == 0) StateIdleUnit.Add(gridList[x][y].unit);
+                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
                 gridList[x][y].unit.actualTile = null;
@@ -153,7 +162,62 @@ public class S_GridManager : MonoBehaviour
                 OrganizedColumn[y].SwitchUnit(gridList[x][y]);
             }
         }
-
+        unitManager.UnitCombo(3);
         return GridUnit; 
+    }
+
+    public void SwapUnits(S_Tile p_tile1, S_Tile p_tile2, Unit p_unit1, Unit p_unit2)
+    {
+        p_tile1.unit = p_unit2;
+        p_unit2.actualTile = p_tile1;
+        p_unit2.tileX = p_tile1.tileX;
+        p_unit2.tileY = p_tile1.tileY;
+        p_tile2.unit = p_unit1;
+        p_unit1.actualTile = p_tile2;
+        p_unit1.tileX = p_tile2.tileX;
+        p_unit1.tileY = p_tile2.tileY;
+        isSwapping = false;
+    }
+
+    public void SwapBtn()
+    {
+        if (unitSelected == null)
+        {
+            if (S_GameManager.Instance.isPlayer1Turn)
+            {
+                if (S_GameManager.Instance.swapCounterP1 > 0)
+                {
+                    isSwapping = !isSwapping;
+                }
+            }
+            else
+            {
+                if (S_GameManager.Instance.swapCounterP2 > 0)
+                {
+                    isSwapping = !isSwapping;
+                }
+            }
+        }
+        else
+        {
+            unitSelected.ReturnToBaseTile();
+            unitSelected = null;
+            if (S_GameManager.Instance.isPlayer1Turn)
+            {
+                if (S_GameManager.Instance.swapCounterP1 > 0)
+                {
+                    isSwapping = !isSwapping;
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, true);
+                }
+            }
+            else
+            {
+                if (S_GameManager.Instance.swapCounterP2 > 0)
+                {
+                    isSwapping = !isSwapping;
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, true);
+                }
+            }
+        }
     }
 }

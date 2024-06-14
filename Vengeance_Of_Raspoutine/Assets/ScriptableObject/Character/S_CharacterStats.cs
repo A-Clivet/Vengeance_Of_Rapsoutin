@@ -20,4 +20,5 @@ public class S_CharacterStats : ScriptableObject
     public int maxAdrenaline;
     public S_SpecialCapacityStats specialCapacity;
     public int money;
+    public int XP;
 }

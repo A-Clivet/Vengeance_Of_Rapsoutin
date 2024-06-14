@@ -29,7 +29,8 @@ public class AudioManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("Found more than one Audio Manager in the scene.");
+            Debug.Log("Found more than one Audio Manager in the scene.");
+            Destroy(gameObject);
         }
         instance = this;
 
@@ -43,7 +44,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeMusic(FMODEvents.instance.music);
+        InitializeMusic(FMODEvents.instance.Music);
     }
 
     private void Update()
@@ -59,20 +60,39 @@ public class AudioManager : MonoBehaviour
         _musicEventInstance.start();
     }
 
-    public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos)
+    public void SetMusic(int p_Music)
     {
+        //set p_Music to 0 for the main menu music and 1 for the battle music
+        _musicEventInstance.setParameterByName("Crossfade", p_Music);
+    }
+    public void SetAdaptativeMusic(int p_Music)
+    {
+        //set p_Music to 0 for the short loop, 1 for the tense loop (only in domination)
+        //set p_Music to 2 for the long loop 
+        _musicEventInstance.setParameterByName("AdaptativeMusic", p_Music);
+    }
+
+    public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos) //always plays the full sound
+    {
+        //make an instance of this function when you want it to play, give it an instance of the event you want to play
+        //give it a vector 3
         RuntimeManager.PlayOneShot(p_sound, p_worldPos);
     }
 
-    public EventInstance CreateInstance(EventReference p_eventReference)
+    public EventInstance CreateInstance(EventReference p_eventReference) //only plays the sound when called and stops when not
     {
+        //make an instance of this function when you want it to play
+        //give it the event you want to play
         EventInstance eventInstance = RuntimeManager.CreateInstance(p_eventReference);
         _eventInstances.Add(eventInstance);
         return eventInstance;
     }
 
-    public StudioEventEmitter InitializeEventEmitter(EventReference p_eventReference, GameObject p_emitterGameObject)
+    public StudioEventEmitter InitializeEventEmitter(EventReference p_eventReference, GameObject p_emitterGameObject)//always plays the full sound if the player is close enough
     {
+        //make an instance of this function when you want it to play
+        //give it an instance of the event you want to play
+        //give it a game object for directional audio
         StudioEventEmitter emitter = p_emitterGameObject.GetComponent<StudioEventEmitter>();
         emitter.EventReference = p_eventReference;
         _eventEmitters.Add(emitter);

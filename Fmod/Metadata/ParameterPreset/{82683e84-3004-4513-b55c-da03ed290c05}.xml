@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{82683e84-3004-4513-b55c-da03ed290c05}">
+		<property name="name">
+			<value>Crossfade</value>
+		</property>
+		<relationship name="folder">
+			<destination>{004f8bf2-ced5-4a47-b202-817a287f0b95}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{d8981964-2e41-491f-8090-4f8e873759ab}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{d8981964-2e41-491f-8090-4f8e873759ab}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>3</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>MainMenu</value>
+			<value>Adaptative</value>
+			<value>Crazy</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>

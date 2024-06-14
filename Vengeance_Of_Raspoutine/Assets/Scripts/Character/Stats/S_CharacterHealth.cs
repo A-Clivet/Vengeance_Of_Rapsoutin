@@ -127,7 +127,7 @@ public class S_CharacterHealth : MonoBehaviour
     void UpdateHealthUIs()
     {
         // Updating the text
-        _healthText.text = _currentHP + " HP / " + _maxHP + " HP";
+        _healthText.text = _currentHP + " / " + _maxHP + " HP";
 
         // Updating the bar
 

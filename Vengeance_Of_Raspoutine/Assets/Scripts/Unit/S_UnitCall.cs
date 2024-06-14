@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
+using static S_GameManager;
 using Random = UnityEngine.Random;
 
 public class S_UnitCall : MonoBehaviour
@@ -15,27 +13,40 @@ public class S_UnitCall : MonoBehaviour
     public bool firstUnitCalled = false;
     public List<List<S_Tile>> tile;
     public TextMeshProUGUI text;
+
     [SerializeField] private List<GameObject> units = new List<GameObject>();
+
+    GameObject _unitsParentGameObject;
 
     private void Update()
     {
         TextUpdate();
     }
-    
+
+    private void Awake()
+    {
+        // Setting up local variables
+        _unitsParentGameObject = S_UnitCallButtonHandler.Instance.unitsParentGameObject;
+
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].GetComponent<Unit>().ResetBuffs();
+        }
+    }
+
     public void Start()
     {
-        UnitCalling();
         CallAmountUpdate();
     }
 
     public int CallAmountUpdate()
     {
-        if (S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
         {
             tile = grid.gridList;
         }
 
-        if (!S_GameManager.Instance.isPlayer1Turn)
+        if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
         {
             tile = grid.gridList;
         }
@@ -49,20 +60,19 @@ public class S_UnitCall : MonoBehaviour
         {
             CallAmountUpdate();
             callAmount /= 2;
-        }
-        
-        if (S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
-        }
-
-        if (!S_GameManager.Instance.isPlayer1Turn)
-        {
-            tile = grid.gridList;
+            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         }
 
         if (grid.totalUnitAmount < unitCapacity)
         {
+            if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
+            {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.UssrWarHorn, this.transform.position);
+            }
+            else if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+            {
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.MonsterWarHorn, this.transform.position);
+            }
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();
@@ -71,7 +81,7 @@ public class S_UnitCall : MonoBehaviour
                     X = ColumnSelector();
                 }
 
-                GameObject unitToSpawn = Instantiate(units[TypeSelector()]); /* unit that will get its value changed */
+                GameObject unitToSpawn = Instantiate(units[TypeSelector()], _unitsParentGameObject.transform); /* unit that will get its value changed */
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 unitToSpawn.GetComponent<Unit>().tileX = X;
 
@@ -94,7 +104,7 @@ public class S_UnitCall : MonoBehaviour
         grid.unitManager.UnitCombo(3);
         TextUpdate();
     }
-    
+
     public void TextUpdate()
     {
         string buttonText = CallAmountUpdate().ToString();
@@ -112,5 +122,9 @@ public class S_UnitCall : MonoBehaviour
     private int ColorSelector()
     { /* select which color is the unit */
         return Random.Range(0, 3);
+    }
+    public List<GameObject> GetUnits()
+    {
+        return units;
     }
 }

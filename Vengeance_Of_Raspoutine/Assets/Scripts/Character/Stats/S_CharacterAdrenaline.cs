@@ -9,7 +9,6 @@ public class S_CharacterAdrenaline : MonoBehaviour
     [SerializeField] Button _speacialCapacityButton;
 
     bool _isPlayer1Character;
-    S_SpecialCapacityStats _specialCapacity;
     int _currentAdrenaline;
     int _maxAdrenaline;
 
@@ -39,6 +38,8 @@ public class S_CharacterAdrenaline : MonoBehaviour
     {
         get { return _maxAdrenaline; }
     }
+
+    public S_SpecialCapacityStats specialCapacity { get; set; }
     #endregion
 
     #endregion
@@ -49,7 +50,7 @@ public class S_CharacterAdrenaline : MonoBehaviour
     {
         // Setting up class variables
         _maxAdrenaline = p_maxAdrenaline;
-        _specialCapacity = p_specialCapacity;
+        specialCapacity = p_specialCapacity;
         _isPlayer1Character = p_isPlayer1Character;
 
         // Setting up character Adrenaline to 0
@@ -81,7 +82,7 @@ public class S_CharacterAdrenaline : MonoBehaviour
             S_GameManager.Instance.ReduceActionPointBy1();
 
             // Launch special capacity
-            StartCoroutine(S_SpecialCapacityManager.Instance.LaunchSpecialCapacity(_specialCapacity, _isPlayer1Character));
+            StartCoroutine(S_SpecialCapacityManager.Instance.LaunchSpecialCapacity(specialCapacity, _isPlayer1Character));
         }
     }
 
