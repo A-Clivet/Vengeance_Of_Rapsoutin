@@ -57,9 +57,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 267622484672723709}
     m_Modifications:
     - target: {fileID: 1067431043294472158, guid: 52c45869771a1b3479270c67b6835d9a, type: 3}
-      propertyPath: defendImg
+      propertyPath: grid
       value: 
-      objectReference: {fileID: 21300000, guid: b2b98d45844fa4d44be2fc3c68bce6ee, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 2038685374330913229, guid: 52c45869771a1b3479270c67b6835d9a, type: 3}
       propertyPath: m_Name
       value: GO_UnitManagerPlayer2
@@ -138,9 +138,9 @@ PrefabInstance:
       value: GO_UnitManagerPlayer1
       objectReference: {fileID: 0}
     - target: {fileID: 3313703358663809349, guid: ad7ce021a2c42d74fb50f00ac407953f, type: 3}
-      propertyPath: defendImg
+      propertyPath: grid
       value: 
-      objectReference: {fileID: 21300000, guid: b2b98d45844fa4d44be2fc3c68bce6ee, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 9000085726112535338, guid: ad7ce021a2c42d74fb50f00ac407953f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
