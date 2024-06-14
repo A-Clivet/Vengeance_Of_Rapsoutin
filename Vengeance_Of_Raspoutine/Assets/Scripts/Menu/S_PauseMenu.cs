@@ -11,6 +11,7 @@ public class S_PauseMenu : MonoBehaviour
     [SerializeField] GameObject _settingsMenuGameObject;
     [SerializeField] GameObject _rebindControlMenuGameObject;
 
+    S_GameManager _gameManager;
     S_UnitCallButtonHandler _unitCallButtonHandler;
     S_GridManagersHandler _gridManagersHandler;
     S_SwapButtonsHandler _swapButtonsHandler;
@@ -18,6 +19,7 @@ public class S_PauseMenu : MonoBehaviour
 
     private void Start()
     {
+        _gameManager = S_GameManager.Instance;
         _unitCallButtonHandler = S_UnitCallButtonHandler.Instance;
         _gridManagersHandler = S_GridManagersHandler.Instance;
         _swapButtonsHandler = S_SwapButtonsHandler.Instance;
@@ -48,25 +50,6 @@ public class S_PauseMenu : MonoBehaviour
         }
     }
 
-/*    public void OpenPauseMenu()
-    {
-        // We disable players unit call buttons
-        _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
-        _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
-
-        _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, false);
-        _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, false);
-
-        _gridManagersHandler.HandleAllUnitInteractions(false);
-
-        _battleUIsReferencesHandler.skipTurnButtonUI.interactable = false;
-
-        _pauseCanvas.SetActive(true);
-        _settingsCanvas.SetActive(true);
-
-        Time.timeScale = 0f;
-    }*/
-
     public void HandlePauseMenuVisibility(bool p_newPauseMenuVisibility)
     {
         bool _newInGameUIsVisibility = !p_newPauseMenuVisibility;
@@ -79,8 +62,13 @@ public class S_PauseMenu : MonoBehaviour
         _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, _newInGameUIsVisibility);
         _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, _newInGameUIsVisibility);
 
-        // We change all units interactability
-        _gridManagersHandler.HandleAllUnitInteractions(_newInGameUIsVisibility);
+        
+        if (p_newPauseMenuVisibility)
+            // We change all units interactability to false 
+            _gridManagersHandler.HandleAllUnitInteractions(_newInGameUIsVisibility);
+        else
+            // We change all units interactability accordingly to what player is playing 
+            _gameManager.DeactivateGrid();
 
         // We change skip button interactability
         _battleUIsReferencesHandler.skipTurnButtonUI.interactable = _newInGameUIsVisibility;
