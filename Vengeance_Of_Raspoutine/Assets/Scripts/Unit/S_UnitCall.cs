@@ -94,14 +94,14 @@ public class S_UnitCall : MonoBehaviour
                     eliteAmount++;
                     if (unitSpawned.sizeX == 2)
                     {
-                        while (X == 7 || grid.gridList[X][4].unit != null || grid.gridList[X + 1][4].unit != null)
+                        while (X == grid.width - 1 || grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null || grid.gridList[X + 1][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null)
                         {
                             X = ColumnSelector();        
                         }
                     }
                     else 
                     {
-                        while (grid.gridList[X][4].unit != null)
+                        while (grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null)
                         {
                             X = ColumnSelector();
                         }
@@ -109,7 +109,7 @@ public class S_UnitCall : MonoBehaviour
                 }
                 else
                 {
-                    while (grid.gridList[X][5].unit != null) 
+                    while (grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null) 
                     {
                         X = ColumnSelector();
                     }
