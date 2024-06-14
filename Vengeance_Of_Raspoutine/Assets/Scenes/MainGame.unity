@@ -1814,10 +1814,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GO_UpgradeHandler
       objectReference: {fileID: 0}
-    - target: {fileID: 4867449411563776547, guid: b2b77a5913422054c928764a44d1c819, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5785388890817235669, guid: b2b77a5913422054c928764a44d1c819, type: 3}
       propertyPath: m_Camera
       value: 
