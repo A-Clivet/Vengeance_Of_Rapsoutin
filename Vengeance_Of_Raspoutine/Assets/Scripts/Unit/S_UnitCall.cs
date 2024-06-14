@@ -68,12 +68,10 @@ public class S_UnitCall : MonoBehaviour
             if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
             {
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.UssrWarHorn, this.transform.position);
-                Debug.Log("1");
             }
             else if (S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
             {
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.MonsterWarHorn, this.transform.position);
-                Debug.Log("2");
             }
             for (int i = 0; i < callAmount; i++)
             {
