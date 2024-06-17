@@ -395,10 +395,13 @@ public class Unit : MonoBehaviour
                 StartCoroutine(LerpMove());
                 StartCoroutine(grid.unitSelected.LerpMove());
                 S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(S_GameManager.Instance.isPlayer1Turn, true);
+                grid.unitSelected.highlight.SetActive(false);
                 grid.unitSelected = null;
                 S_GameManager.Instance.ReduceSwapCounter(S_GameManager.Instance.isPlayer1Turn);
                 if (S_GameManager.Instance.isPlayer1Turn)
                 {
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, false);
+                    S_SwapButtonsHandler.Instance.player1ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP1;
                     if (S_GameManager.Instance.swapCounterP1 == 0)
                     {
                         S_SwapButtonsHandler.Instance.player1SwapButton.interactable = false;
@@ -406,6 +409,8 @@ public class Unit : MonoBehaviour
                 }
                 else
                 {
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, false);
+                    S_SwapButtonsHandler.Instance.player2ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP2;
                     if (S_GameManager.Instance.swapCounterP2 == 0)
                     {
                         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = false;
@@ -488,6 +493,7 @@ public class Unit : MonoBehaviour
     {
         highlight.SetActive(false);
         S_RemoveUnit.Instance.hoveringUnit = null;
+        highlight.SetActive(grid.isSwapping && this == grid.unitSelected);
     }
     private void OnMouseDown()
     {

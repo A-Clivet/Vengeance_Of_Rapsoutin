@@ -320,6 +320,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1SwapButton: {fileID: 1605509335744124701}
   player2SwapButton: {fileID: 5306112719006949583}
+  swapActivated: {r: 0.6679245, g: 0.6679245, b: 0.6679245, a: 1}
+  swapDeactivated: {r: 1, g: 1, b: 1, a: 1}
+  player1ButtonText: {fileID: 8485244133401629445}
+  player2ButtonText: {fileID: 3285951074572567048}
 --- !u!1 &3837566227581398961
 GameObject:
   m_ObjectHideFlags: 0

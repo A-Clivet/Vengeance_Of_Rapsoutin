@@ -188,6 +188,7 @@ public class S_GridManager : MonoBehaviour
                 if (S_GameManager.Instance.swapCounterP1 > 0)
                 {
                     isSwapping = !isSwapping;
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
                 }
             }
             else
@@ -195,6 +196,7 @@ public class S_GridManager : MonoBehaviour
                 if (S_GameManager.Instance.swapCounterP2 > 0)
                 {
                     isSwapping = !isSwapping;
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
                 }
             }
         }
@@ -208,6 +210,7 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, true);
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
                 }
             }
             else
@@ -216,6 +219,7 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, true);
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
                 }
             }
         }
