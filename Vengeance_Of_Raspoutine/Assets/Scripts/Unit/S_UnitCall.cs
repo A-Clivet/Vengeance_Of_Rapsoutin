@@ -90,6 +90,10 @@ public class S_UnitCall : MonoBehaviour
                 unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>().grid.startY + unitToSpawn.GetComponent<Unit>().grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
                 unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
                 grid.totalUnitAmount++;
+                if (grid.isGridVisible)
+                {
+                    unitToSpawn.GetComponent<Unit>().statsCanvas.SetActive(true);
+                }
             }
 
             if (firstUnitCalled)
