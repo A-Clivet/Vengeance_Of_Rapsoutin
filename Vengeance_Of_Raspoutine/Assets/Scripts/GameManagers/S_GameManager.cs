@@ -389,8 +389,6 @@ public class S_GameManager : MonoBehaviour
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
-
-        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
     }
 
@@ -438,6 +436,7 @@ public class S_GameManager : MonoBehaviour
         }
 
         S_WeatherEvent.Instance.EventProbability();
+        S_WeatherAnimation.Instance.PlayWeatherAnimation();
     }
 
     /// <summary> End the turn of the player who played and let the other player play,
