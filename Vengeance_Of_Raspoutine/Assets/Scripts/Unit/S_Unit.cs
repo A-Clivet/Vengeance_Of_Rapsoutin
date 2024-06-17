@@ -277,7 +277,7 @@ public class Unit : MonoBehaviour
 
         if (sizeX == 1)
         {
-            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // start from the top of the column 
+            for (int i = (Mathf.Abs(grid.height) - sizeY); i > -1; i--) // start from the top of the column 
             {
                 if (p_tile.grid.gridList[p_tile.tileX][i].unit == null || p_tile.grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
                 {
@@ -342,7 +342,7 @@ public class Unit : MonoBehaviour
                 x--;
             }
 
-            for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
+            for (int i = (Mathf.Abs(grid.height) - sizeY); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
             {
                 if ((p_tile.grid.gridList[x][i].unit == null || p_tile.grid.gridList[x][i].unit == this) && (p_tile.grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
                 {
@@ -399,7 +399,7 @@ public class Unit : MonoBehaviour
             {
                 case (1, 1):
 
-                    for (int i = (Mathf.Abs(grid.height) - 1); i > -1; i--) // start from the top of the column 
+                    for (int i = (Mathf.Abs(grid.height) - sizeY); i > -1; i--) // start from the top of the column 
                     {
                         if (grid.gridList[p_tile.tileX][i].unit == null || grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
                         {
@@ -423,7 +423,7 @@ public class Unit : MonoBehaviour
 
                 case (1, 2):
 
-                    for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // start from the top of the column 
+                    for (int i = (Mathf.Abs(grid.height) - sizeY); i > -1; i--) // start from the top of the column 
                     {
                         if (grid.gridList[p_tile.tileX][i].unit == null || grid.gridList[p_tile.tileX][i].unit == this) // if it doesn't hit any unit 
                         {
@@ -471,7 +471,7 @@ public class Unit : MonoBehaviour
                 x--;
             }
 
-            for (int i = (Mathf.Abs(grid.height) - 2); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
+            for (int i = (Mathf.Abs(grid.height) - sizeY); i > -1; i--) // check columns from the end to get the first time it would hit a unit 
             {
                 if ((grid.gridList[x][i].unit == null || grid.gridList[x][i].unit == this) && (grid.gridList[x + 1][i].unit == null || p_tile.grid.gridList[x + 1][i].unit == this))
                 {
@@ -658,7 +658,7 @@ public class Unit : MonoBehaviour
         {
             S_GameManager.Instance.UnitCallOnOff(2, false);
         }
-        if (!grid.isSwapping)
+        if (!grid.isSwapping )
         {
             if (actualTile.tileY >= grid.gridList[actualTile.tileX].Count - 1)
             {
@@ -670,28 +670,38 @@ public class Unit : MonoBehaviour
                 }
 
             }
-            if (sizeX == 2 && sizeY == 2 && (grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null && grid.gridList[actualTile.tileX + 1][actualTile.tileY + 2].unit))
+            switch (sizeX, sizeY)
             {
-                grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
-            }
-            else if (sizeX == 1 && sizeY == 2 && grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit != null)
-            {
-                grid.gridList[actualTile.tileX][actualTile.tileY + 2].unit.SelectUnit();
-            }
-            else if (sizeX == 1 && sizeY == 1 && grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit != null)
-            {
-                grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit.SelectUnit();
-            }
-            else
-            {
-                grid.unitSelected = this;
-                foreach (Unit unit in grid.unitList)
-                {
-                    unit.GetComponent<BoxCollider2D>().enabled = false;
-                }
+                case (1, 1):
+
+                        grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
+
+                    break;
+
+                case (1, 2):
+
+                        grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
+
+                    break;
+
+                case(2,2):
+
+                        grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
+
+                    break;
+
+                default:
+
+                    grid.unitSelected = this;
+                    foreach (Unit unit in grid.unitList)
+                    {
+                        unit.GetComponent<BoxCollider2D>().enabled = false;
+                    }
+
+                    break;
             }
         }
-        else // enter when it's the last SelectUnit();
+        else 
         {
             if (grid.unitSelected == null)
             {
