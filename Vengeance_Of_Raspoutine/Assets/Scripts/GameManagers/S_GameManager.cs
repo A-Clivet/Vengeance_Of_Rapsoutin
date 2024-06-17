@@ -389,6 +389,7 @@ public class S_GameManager : MonoBehaviour
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
+        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
     }
 
