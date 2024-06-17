@@ -1,26 +1,42 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class S_UnitManager : MonoBehaviour
 {
+    [Header("Stats :")]
+    [Tooltip("The number of Adrenaline had to the player who create a new formation (Attack & Defense), the number is multiplied by the number of unit there are in the formation")]
+    public int numberOfAdrenalineToHadForEachUnitInFormation = 1;
+
     public S_GridManager grid;
-    private List<List<S_Tile>> gridList;
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
 
+    // - Private variables - //
+    // References
+    S_GameManager _gameManager;
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
 
-    public void Awake()
+    private List<List<S_Tile>> gridList;
+
+    private void Awake()
     {
         gridList = grid.gridList;
+
+        // Setting up private variables
+        _gameManager = S_GameManager.Instance;
     }
 
-    public void UnitCombo(int p_formationNumber)
+    private void Start()
     {
+        // Setting up private variables
+        _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+        _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+    }
 
+    public void UnitCombo(int p_formationNumber, bool p_isIAUsingThisFunction = false)
+    {
         int columnCounter = 0;
         int lineCounter = 0;
 
@@ -63,7 +79,6 @@ public class S_UnitManager : MonoBehaviour
                                         columnCounter = 0;
                                     }
                                 }
-
                             }
                         }
                         else // size x = 2
@@ -88,15 +103,12 @@ public class S_UnitManager : MonoBehaviour
                                         columnCounter = 0;
                                     }
                                 }
-
-
                             }
                         }
                     }
                 }
             }
         }
-
 
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
@@ -128,6 +140,13 @@ public class S_UnitManager : MonoBehaviour
                 if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
+
+                    // We had Adrenaline to the player who created this formation
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
+                    }
+
                     gridList[j][i].unit.state = 1;
                     gridList[j - 1][i].unit.state = 1;
                     gridList[j - 2][i].unit.state = 1;
@@ -180,6 +199,12 @@ public class S_UnitManager : MonoBehaviour
                 if (columnCounter == p_formationNumber) // mode attack 
                 {
                     UnitColumn.Add(new());
+
+                    // We had Adrenaline to the player who created this formation
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
+                    }
 
                     gridList[i][j].unit.state = 2;
                     gridList[i][j - 1].unit.state = 2;
@@ -253,5 +278,20 @@ public class S_UnitManager : MonoBehaviour
         GOunit.GetComponent<Unit>().defense += 1;
     }
 
+    void AddAdrenalineToThePlayerWhoForm(int p_adrenalineToHad)
+    {
+        // Security
+        if (_player1CharacterAdrenaline == null || _player2CharacterAdrenaline == null)
+        {
+            _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+            _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+        }
 
+        // Adding adrenaline for the player who played
+        if (_gameManager.currentTurn == S_GameManager.TurnEmun.Player1Turn)
+            _player1CharacterAdrenaline.currentAdrenaline += p_adrenalineToHad;
+
+        else if (_gameManager.currentTurn == S_GameManager.TurnEmun.Player2Turn)
+            _player2CharacterAdrenaline.currentAdrenaline += p_adrenalineToHad;
+    }
 }

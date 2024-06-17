@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1067431043294472158, guid: 52c45869771a1b3479270c67b6835d9a, type: 3}
+      propertyPath: numberOfAdrenalineToHadForEachUnitInFormation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2038685374330913229, guid: 52c45869771a1b3479270c67b6835d9a, type: 3}
       propertyPath: m_Name
       value: GO_UnitManagerPlayer2
@@ -140,6 +144,10 @@ PrefabInstance:
     - target: {fileID: 3313703358663809349, guid: ad7ce021a2c42d74fb50f00ac407953f, type: 3}
       propertyPath: grid
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313703358663809349, guid: ad7ce021a2c42d74fb50f00ac407953f, type: 3}
+      propertyPath: numberOfAdrenalineToHadForEachUnitInFormation
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9000085726112535338, guid: ad7ce021a2c42d74fb50f00ac407953f, type: 3}
       propertyPath: m_LocalPosition.x
