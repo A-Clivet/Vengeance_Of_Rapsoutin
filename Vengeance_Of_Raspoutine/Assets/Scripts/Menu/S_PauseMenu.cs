@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class S_PauseMenu : MonoBehaviour
 {
@@ -11,7 +12,14 @@ public class S_PauseMenu : MonoBehaviour
     [SerializeField] GameObject _settingsMenuGameObject;
     [SerializeField] GameObject _rebindControlMenuGameObject;
 
+    [Header("Pause button references :")]
+    [SerializeField] GameObject _pauseMenuButtonGameObject;
+    [SerializeField] Sprite _pauseButtonSprite;
+    [SerializeField] Sprite _resumeButtonSprite;
+
     // Private variables
+    Image _pauseMenuButtonImage;
+
     bool _isPlayer1UnitCallButtonInteractable;
     bool _isPlayer1SwapUnitButtonInteractable;
 
@@ -38,24 +46,28 @@ public class S_PauseMenu : MonoBehaviour
         _chooseSettingMenuGameObject.SetActive(false);
         _settingsMenuGameObject.SetActive(false);
         _rebindControlMenuGameObject.SetActive(false);
+
+        // Setting up private variables
+        _pauseMenuButtonImage = _pauseMenuButtonGameObject.GetComponent<Image>();
     }
 
     /// <summary> Open or close the pause menu when the escape button is pressed </summary>
     public void OnEscapeButton(InputAction.CallbackContext p_context) 
     {
         if (p_context.performed)
-        {
-            // We close the paune menu if it was open...
-            if (_settingsCanvas.activeSelf)
-            {
-                HandlePauseMenuVisibility(false);
-            }
-            // ...otherwise we open it
-            else
-            {
-                HandlePauseMenuVisibility(true);
-            }
-        }
+            SwapPauseMenuVisibility();
+    }
+
+    /// <summary> We close the paune menu if it was open, otherwise we open it </summary>
+    public void SwapPauseMenuVisibility()
+    {
+        if (_pauseCanvas.activeSelf)
+            // Disable the pause menu
+            HandlePauseMenuVisibility(false);
+
+        else
+            // Enable the pause menu
+            HandlePauseMenuVisibility(true);
     }
 
     public void HandlePauseMenuVisibility(bool p_newPauseMenuVisibility)
@@ -81,6 +93,9 @@ public class S_PauseMenu : MonoBehaviour
 
             // We change all units interactability to false 
             _gridManagersHandler.HandleAllUnitInteractions(false);
+
+            // Changing the pause menu button to the new sprite
+            _pauseMenuButtonImage.sprite = _resumeButtonSprite;
         }
         else
         {
@@ -94,8 +109,11 @@ public class S_PauseMenu : MonoBehaviour
 
             // We change all units interactability accordingly to what player is playing 
             _gameManager.DeactivateGrid();
-        }
 
+            // Changing the pause menu button to the new sprite
+            _pauseMenuButtonImage.sprite = _pauseButtonSprite;
+        }
+        
         // We change skip button interactability
         _battleUIsReferencesHandler.skipTurnButtonUI.interactable = _newInGameUIsVisibility;
 
@@ -112,30 +130,6 @@ public class S_PauseMenu : MonoBehaviour
 
         // We change the delta time of the game accordingly to the given parameter
         Time.timeScale = p_newPauseMenuVisibility ? 0 : 1;
-    }
-
-    public void ClosePauseMenu()
-    {
-        // We unable players unit call buttons
-        _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
-        _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
-
-        _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, true);
-        _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, true);
-
-        // We able all units interactions
-        _gridManagersHandler.HandleAllUnitInteractions(true);
-
-        _battleUIsReferencesHandler.skipTurnButtonUI.interactable = true;
-
-        // We disable all pause menu UIs
-        _chooseSettingMenuGameObject.SetActive(false);
-        _settingsMenuGameObject.SetActive(false);
-        _rebindControlMenuGameObject.SetActive(false);
-        _settingsCanvas.SetActive(false);
-        _pauseCanvas.SetActive(false);
-
-        Time.timeScale = 1f;
     }
 
     public void ReturnToMainMenu()
