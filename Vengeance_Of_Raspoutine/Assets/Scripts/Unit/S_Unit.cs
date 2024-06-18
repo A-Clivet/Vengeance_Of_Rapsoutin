@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour
     [Header("Movements :")]
     public int speed;
     private bool _isMoving = false;
-    private Vector3 _posToMove;
+    public Vector3 _posToMove;
 
     [Header("References :")]
     public SO_Unit SO_Unit; //Unit.SO_Unit.
@@ -35,7 +35,9 @@ public class Unit : MonoBehaviour
     public bool isChecked;
     public bool mustAttack = false;
     private bool _willLoseActionPoints = false;
-    
+
+    public GameObject unitPreview; //Preview of where the unit will land
+    public Unit unitPreviewComponent; //Preview components
 
     private void Awake()
     {
@@ -284,6 +286,7 @@ public class Unit : MonoBehaviour
                 }
             }
         }
+        highlight.SetActive(false);
         unitManager.UnitCombo(3);
     }
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
@@ -403,6 +406,7 @@ public class Unit : MonoBehaviour
                 if (S_GameManager.Instance.isPlayer1Turn)
                 {
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, false);
+                    S_SwapButtonsHandler.Instance.player1ButtonText.text = S_GameManager.Instance.swapCounterP1.ToString();
                     S_SwapButtonsHandler.Instance.player1ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP1;
                     if (S_GameManager.Instance.swapCounterP1 == 0)
                     {
@@ -412,6 +416,7 @@ public class Unit : MonoBehaviour
                 else
                 {
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, false);
+                    S_SwapButtonsHandler.Instance.player2ButtonText.text = S_GameManager.Instance.swapCounterP2.ToString();
                     S_SwapButtonsHandler.Instance.player2ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP2;
                     if (S_GameManager.Instance.swapCounterP2 == 0)
                     {
@@ -427,25 +432,33 @@ public class Unit : MonoBehaviour
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
+        if(unitPreview == null && !grid.isSwapping){
+            unitPreview = Instantiate(gameObject);
+            unitPreviewComponent = unitPreview.GetComponent<Unit>();
+            unitPreview.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0.75f);
+            highlight.SetActive(true);
+        }
+
 
         if (grid.gridList[p_tile.tileX][0].unit == null)
         {
-            _posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
+            unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
         }
         else if(tileX == p_tile.tileX)
         {
-            _posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
+            unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
         }
         else
         {
-            _posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
+            unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
         }
         
         if (!grid.isSwapping)
         {
-            StartCoroutine(LerpMove());
+            StartCoroutine(unitPreviewComponent.LerpMove());
         }
     }
+
     public bool GetIsMoving()
     {
         return _isMoving;
