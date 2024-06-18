@@ -140,7 +140,7 @@ public class Unit : MonoBehaviour
 
     private void OnDestroy()
     {
-        grid.totalUnitAmount -= 1;
+        if(actualTile != null) grid.totalUnitAmount -= 1;
     }
     //launch the attack of all formation and begin the recursion of the attack
 
@@ -429,29 +429,30 @@ public class Unit : MonoBehaviour
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
-        if(unitPreview == null && !grid.isSwapping){
-            unitPreview = Instantiate(gameObject);
-            unitPreviewComponent = unitPreview.GetComponent<Unit>();
-            unitPreview.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0.75f);
-            highlight.SetActive(true);
-        }
-
-
-        if (grid.gridList[p_tile.tileX][0].unit == null)
-        {
-            unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
-        }
-        else if(tileX == p_tile.tileX)
-        {
-            unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
-        }
-        else
-        {
-            unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
-        }
-        
         if (!grid.isSwapping)
         {
+            if (unitPreview == null)
+            {
+                unitPreview = Instantiate(gameObject);
+                unitPreviewComponent = unitPreview.GetComponent<Unit>();
+                unitPreview.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0.75f);
+                unitPreviewComponent.actualTile = null;
+                highlight.SetActive(true);
+            }
+
+            if (grid.gridList[p_tile.tileX][0].unit == null)
+            {
+                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
+            }
+            else if (tileX == p_tile.tileX)
+            {
+                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
+            }
+            else
+            {
+                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
+            }
+
             StartCoroutine(unitPreviewComponent.LerpMove());
         }
     }
