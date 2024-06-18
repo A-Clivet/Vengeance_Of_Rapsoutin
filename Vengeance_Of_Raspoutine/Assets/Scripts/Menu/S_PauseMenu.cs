@@ -65,7 +65,7 @@ public class S_PauseMenu : MonoBehaviour
             // Disable the pause menu
             HandlePauseMenuVisibility(false);
 
-        else
+        else if (!_pauseCanvas.activeSelf && !_settingsCanvas.activeSelf)
             // Enable the pause menu
             HandlePauseMenuVisibility(true);
     }
