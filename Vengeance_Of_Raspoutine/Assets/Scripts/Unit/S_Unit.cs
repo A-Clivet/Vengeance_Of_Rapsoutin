@@ -341,7 +341,6 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
-        Debug.Log("UnitPriorityCheck Called");
         unitManager.UnitCombo(3);
     }
 
