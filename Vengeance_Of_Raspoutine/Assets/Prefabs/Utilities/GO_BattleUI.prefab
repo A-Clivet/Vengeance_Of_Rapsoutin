@@ -529,6 +529,8 @@ MonoBehaviour:
   _animatorWeather: {fileID: 1437281159665445994}
   _animatorPlayerTurn: {fileID: 1305922814866434624}
   _animPlayerCanvas: {fileID: 8915070717570011627}
+  hasPlayedPlayer: 0
+  hasPlayedWeather: 0
 --- !u!1 &4525810565916063214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,11 +1994,11 @@ RectTransform:
   - {fileID: 5090377194984964678}
   - {fileID: 6702973987179137757}
   - {fileID: 8693550792069820485}
-  - {fileID: 749720528918431962}
   - {fileID: 2303293306417145494}
   - {fileID: 4383822572776730639}
   - {fileID: 2380958946025779241}
   - {fileID: 8992338366530236471}
+  - {fileID: 749720528918431962}
   - {fileID: 7807670009178991103}
   - {fileID: 9144967759497758478}
   - {fileID: 8882310728075289327}

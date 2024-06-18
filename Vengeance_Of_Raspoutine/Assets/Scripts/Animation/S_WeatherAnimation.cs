@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class S_WeatherAnimation : MonoBehaviour
 {
@@ -57,6 +58,18 @@ public class S_WeatherAnimation : MonoBehaviour
         if (hasPlayedPlayer && _animatorPlayerTurn.GetCurrentAnimatorStateInfo(0).IsName("PlayerTurnAnimation") && _animatorPlayerTurn.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !_animatorPlayerTurn.IsInTransition(0))
         {
             _animPlayerCanvas.SetActive(false);
+        }
+    }
+    public void SkipAnimation(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            _animatorPlayerTurn.speed = 100f;
+        }
+
+        else if (ctx.canceled)
+        {
+            _animatorPlayerTurn.speed = 1f;
         }
     }
 }
