@@ -9,7 +9,7 @@ public class S_PlayerTurnAnimation : MonoBehaviour
     [SerializeField] private Sprite _character1SpriteImage;
     [SerializeField] private Sprite _character2SpriteImage;
 
-    public void PlayTurnAnimation(GameObject p_characterImage)
+    public void PlayTurnAnimation(GameObject p_characterImage) //changes the data according to which player plays the trick
     {
         if (_gameManager.isPlayer1Turn == true)
         {

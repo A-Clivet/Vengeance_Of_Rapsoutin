@@ -32,7 +32,7 @@ public class S_WeatherAnimation : MonoBehaviour
         PlayAnimAfterTheOther();
     }
 
-    public void PlayWeatherAnimation()
+    public void PlayWeatherAnimation() // function for play the weather animation 
     {
         _playerWeatherText.text = "Weather : " + _currentEvent.ManageEvent;
         _animatorWeather.Play(0, 0, 0);
@@ -40,13 +40,13 @@ public class S_WeatherAnimation : MonoBehaviour
 
     public void PlayAnimAfterTheOther()
     {
-        if (!hasPlayedWeather)
+        if (!hasPlayedWeather) // check if the first animation has already play 
         {
             _animatorWeather.Play("WeatherAnimation");
             hasPlayedWeather = true;
         }
 
-        // Vérifier si la première animation est terminée et jouer la deuxième
+        // Check if the first animation is finished and play the second one.
         if (hasPlayedWeather && !hasPlayedPlayer && _animatorWeather.GetCurrentAnimatorStateInfo(0).IsName("WeatherAnimation")&& _animatorWeather.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !_animatorWeather.IsInTransition(0))
         {
             _animPlayerCanvas.SetActive(true);
@@ -54,13 +54,13 @@ public class S_WeatherAnimation : MonoBehaviour
             hasPlayedPlayer = true;
         }
 
-        // Vérifier si la deuxième animation est terminée et désactiver l'Animator
+        // Check that the second animation is complete and deactivate the Animator
         if (hasPlayedPlayer && _animatorPlayerTurn.GetCurrentAnimatorStateInfo(0).IsName("PlayerTurnAnimation") && _animatorPlayerTurn.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !_animatorPlayerTurn.IsInTransition(0))
         {
             _animPlayerCanvas.SetActive(false);
         }
     }
-    public void SkipAnimation(InputAction.CallbackContext ctx)
+    public void SkipAnimation(InputAction.CallbackContext ctx) //skip the animation speed to make a kind of skip
     {
         if (ctx.performed)
         {
