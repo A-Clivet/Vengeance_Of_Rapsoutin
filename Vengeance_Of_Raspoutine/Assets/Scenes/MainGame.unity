@@ -697,29 +697,16 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 19176966}
-    - target: {fileID: 8034573284115960563, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8915070717570011627, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8986256539490347103, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_Name
       value: GO_BattleUIs
-      objectReference: {fileID: 0}
-    - target: {fileID: 8986256539490347103, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9165852499453358498, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 755483773}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8034573284115960563, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a147602cd33660d46bd54aac7266579f, type: 3}
