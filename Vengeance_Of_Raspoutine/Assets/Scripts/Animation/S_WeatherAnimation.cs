@@ -13,8 +13,8 @@ public class S_WeatherAnimation : MonoBehaviour
     [SerializeField] private Animator _animatorPlayerTurn;
     [SerializeField] private GameObject _animPlayerCanvas;
 
-    private bool hasPlayedPlayer = false;
-    private bool hasPlayedWeather = false;
+    [HideInInspector] public bool hasPlayedPlayer = false;
+    [HideInInspector] public bool hasPlayedWeather = false;
 
     private void Awake()
     {
@@ -28,8 +28,17 @@ public class S_WeatherAnimation : MonoBehaviour
 
     void Update()
     {
+        PlayAnimAfterTheOther();
+    }
 
+    public void PlayWeatherAnimation()
+    {
+        _playerWeatherText.text = "Weather : " + _currentEvent.ManageEvent;
+        _animatorWeather.Play(0, 0, 0);
+    }
 
+    public void PlayAnimAfterTheOther()
+    {
         if (!hasPlayedWeather)
         {
             _animatorWeather.Play("WeatherAnimation");
@@ -37,7 +46,7 @@ public class S_WeatherAnimation : MonoBehaviour
         }
 
         // Vérifier si la première animation est terminée et jouer la deuxième
-        if (hasPlayedWeather && !hasPlayedPlayer && _animatorWeather.GetCurrentAnimatorStateInfo(0).IsName("WeatherAnimation") && _animatorWeather.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !_animatorWeather.IsInTransition(0))
+        if (hasPlayedWeather && !hasPlayedPlayer && _animatorWeather.GetCurrentAnimatorStateInfo(0).IsName("WeatherAnimation")&& _animatorWeather.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !_animatorWeather.IsInTransition(0))
         {
             _animPlayerCanvas.SetActive(true);
             _animatorPlayerTurn.Play("PlayerTurnAnimation");
@@ -49,11 +58,5 @@ public class S_WeatherAnimation : MonoBehaviour
         {
             _animPlayerCanvas.SetActive(false);
         }
-    }
-
-    public void PlayWeatherAnimation()
-    {
-        _playerWeatherText.text = "Weather : " + _currentEvent.ManageEvent;
-        _animatorWeather.Play(0, 0, 0);
     }
 }

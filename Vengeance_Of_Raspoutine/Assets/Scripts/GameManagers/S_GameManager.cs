@@ -209,6 +209,8 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] S_PlayerTurnAnimation _playerTurnAnimationScript;
     [SerializeField] private GameObject _characterImage;
     [SerializeField] private GameObject _playerTurnAnimationGO;
+
+    [SerializeField] private GameObject _canvasAnimPlayer;
     #endregion
 
     #region Private variable
@@ -623,6 +625,8 @@ public class S_GameManager : MonoBehaviour
 
         S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
+        S_SwapButtonsHandler.Instance.player1ButtonText.text = "Swap " + swapCounterP1;
+        S_SwapButtonsHandler.Instance.player2ButtonText.text = "Swap " + swapCounterP2;
     }
 
     /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>
