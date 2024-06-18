@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class S_SelectionButton : MonoBehaviour
 {
-    [SerializeField] private int Value;
+    [SerializeField] int _value;
+
     public void ButtonPressed()
     {
-        S_UnitSelectorMenu.instance.SelectedUnit(Value);
+        S_UnitSelectorMenu.Instance.SelectedUnit(_value);
     }
 }

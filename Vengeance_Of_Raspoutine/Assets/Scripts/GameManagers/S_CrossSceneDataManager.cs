@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static S_UnitSelectorMenu;
 
 public class S_CrossSceneDataManager : MonoBehaviour
 {
@@ -19,6 +21,9 @@ public class S_CrossSceneDataManager : MonoBehaviour
             SceneManager.LoadSceneAsync("MainGame");
         }
     }
+
+    public List<PlayersSelectedUnit> player1SelectedUnits;
+    public List<PlayersSelectedUnit> player2SelectedUnits;
 
     private void Awake()
     {
