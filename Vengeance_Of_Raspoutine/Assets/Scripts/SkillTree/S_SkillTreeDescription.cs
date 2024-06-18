@@ -13,10 +13,9 @@ public class S_SkillTreeDescription : MonoBehaviour, IPointerEnterHandler, IPoin
     private void Start()
     {
         descriptionPanel.SetActive(false);
-
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData) //when the mouse hovers over the skill buttons, the correct skill description is displayed
     {
         descriptionPanel.SetActive(true);
         skillTextDescription.text = soText.capacityDescription;
@@ -24,7 +23,7 @@ public class S_SkillTreeDescription : MonoBehaviour, IPointerEnterHandler, IPoin
         
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData)// desactivate the panel of the skill description
     {
         descriptionPanel.SetActive(false);
     }
