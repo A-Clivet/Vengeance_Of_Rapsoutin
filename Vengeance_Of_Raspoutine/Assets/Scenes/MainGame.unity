@@ -594,6 +594,14 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 19176966}
+    - target: {fileID: 8034573284115960563, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8915070717570011627, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8986256539490347103, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_Name
       value: GO_BattleUIs
@@ -603,7 +611,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 755483773}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8034573284115960563, guid: a147602cd33660d46bd54aac7266579f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a147602cd33660d46bd54aac7266579f, type: 3}
@@ -1007,6 +1016,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2544457}
     m_Modifications:
+    - target: {fileID: 381197348557752677, guid: b2b77a5913422054c928764a44d1c819, type: 3}
+      propertyPath: _animPlayerCanvas
+      value: 
+      objectReference: {fileID: 664087876}
     - target: {fileID: 4140407722808227765, guid: b2b77a5913422054c928764a44d1c819, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1263,6 +1276,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3331802682866520800, guid: cbc991f4ca0f9c74b89b2ddd25578c18, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3485212238782181466, guid: cbc991f4ca0f9c74b89b2ddd25578c18, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3485212238782181466, guid: cbc991f4ca0f9c74b89b2ddd25578c18, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571104406348002584, guid: cbc991f4ca0f9c74b89b2ddd25578c18, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571104406348002584, guid: cbc991f4ca0f9c74b89b2ddd25578c18, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3571104406348002584, guid: cbc991f4ca0f9c74b89b2ddd25578c18, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -1560,6 +1593,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GO_EventManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5594100887180191186, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
       propertyPath: fog
       value: 
@@ -1567,7 +1604,7 @@ PrefabInstance:
     - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
       propertyPath: weatherInfo
       value: 
-      objectReference: {fileID: 1855625399}
+      objectReference: {fileID: 0}
     - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
       propertyPath: _player1GridManager
       value: 
@@ -1649,6 +1686,10 @@ PrefabInstance:
       propertyPath: _characterImage
       value: 
       objectReference: {fileID: 664087877}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: _canvasAnimPlayer
+      value: 
+      objectReference: {fileID: 664087876}
     - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: _playerTurnAnimationGO
       value: 
@@ -1770,17 +1811,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1855625399 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7850615960891767614, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-  m_PrefabInstance: {fileID: 664087875}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1869549172
 GameObject:
   m_ObjectHideFlags: 0

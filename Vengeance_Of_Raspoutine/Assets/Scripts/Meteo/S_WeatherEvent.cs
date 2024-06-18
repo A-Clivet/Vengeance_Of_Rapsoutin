@@ -76,8 +76,6 @@ public class S_WeatherEvent : MonoBehaviour
         {
             ManageEvent = Event.None;
         }
-
-        weatherInfo.text = "Weather : " + ManageEvent;
     }
 
     public void EarthquakeEvent()
