@@ -283,8 +283,8 @@ public class Unit : MonoBehaviour
                     break;
                 }
             }
-            unitManager.UnitCombo(3);
         }
+        unitManager.UnitCombo(3);
     }
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
   then deselect the unit*/
@@ -314,6 +314,7 @@ public class Unit : MonoBehaviour
                 }
             }
         }
+        unitManager.UnitCombo(3);
     }
     //Used to reorganize the Units by state
     public void SwitchUnit(S_Tile p_tile)
@@ -340,6 +341,8 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
+        Debug.Log("UnitPriorityCheck Called");
+        unitManager.UnitCombo(3);
     }
 
     //get the last unit of the row corresponding to the tile clicked
@@ -420,7 +423,20 @@ public class Unit : MonoBehaviour
     //Align the Unit with the collumn overed by the mouse to previsualize where you're aiming
     public void VisualizePosition(S_Tile p_tile)
     {
-        _posToMove = new Vector3(p_tile.transform.position.x, grid.startY + grid.height * actualTile.transform.localScale.y);
+
+        if (grid.gridList[p_tile.tileX][0].unit == null)
+        {
+            _posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
+        }
+        else if(tileX == p_tile.tileX)
+        {
+            _posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
+        }
+        else
+        {
+            _posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
+        }
+        
         if (!grid.isSwapping)
         {
             StartCoroutine(LerpMove());
@@ -491,6 +507,7 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         if (!grid.isSwapping)
         {
             if (grid.unitSelected == null && state == 0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
