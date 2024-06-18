@@ -39,7 +39,7 @@ public class S_CharacterAdrenaline : MonoBehaviour
         get { return _maxAdrenaline; }
     }
 
-    public S_SpecialCapacityStats specialCapacity { get; private set; }
+    public S_SpecialCapacityStats specialCapacity { get; set; }
     #endregion
 
     #endregion

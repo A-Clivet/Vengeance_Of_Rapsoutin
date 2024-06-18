@@ -45,11 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSelection:
-  - {fileID: 21300000, guid: 4976052fb88ddf747bf7683122d607a5, type: 3}
-  - {fileID: 21300000, guid: 2fbe87424feeb0d4a81b40f5a0bb13cd, type: 3}
-  - {fileID: 21300000, guid: ef10200cf753aef4496a179a3bd4eb76, type: 3}
-  - {fileID: 21300000, guid: dc8bc00c827058048a0076cee801441c, type: 3}
-  - {fileID: 21300000, guid: 5e42300c4aa800c4088939fedc52792c, type: 3}
+  - {fileID: 21300000, guid: 1cf0a7786073c7241ac28fe8110d3ffa, type: 3}
+  - {fileID: 21300000, guid: 0479d0d4e14e2ca4ea4dff6ce9556250, type: 3}
+  - {fileID: 21300000, guid: 4e073e0f46590a542995cf26b05f1f76, type: 3}
+  - {fileID: 21300000, guid: ea7a574bfc91e9a488b9ba0883aa18f0, type: 3}
+  - {fileID: 21300000, guid: e2d6575630d119f4290ddf3a6ff71c97, type: 3}
   _character1Stats: {fileID: 11400000, guid: 4e30370c7edf7cb49aab6c1ed4255a90, type: 2}
   _character2Stats: {fileID: 11400000, guid: 1a2a61745404aa745b13a386bdc79d60, type: 2}
-  _cooldownBetweenPlayerActions: 0.5
+  _cooldownBetweenPlayerActions: 0.1

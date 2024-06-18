@@ -1,26 +1,42 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class S_UnitManager : MonoBehaviour
 {
+    [Header("Stats :")]
+    [Tooltip("The number of Adrenaline had to the player who create a new formation (Attack & Defense), the number is multiplied by the number of unit there are in the formation")]
+    public int numberOfAdrenalineToHadForEachUnitInFormation = 1;
+
     public S_GridManager grid;
-    private List<List<S_Tile>> gridList;
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
 
+    // - Private variables - //
+    // References
+    S_GameManager _gameManager;
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
 
-    public void Awake()
+    private List<List<S_Tile>> gridList;
+
+    private void Awake()
     {
         gridList = grid.gridList;
+
+        // Setting up private variables
+        _gameManager = S_GameManager.Instance;
     }
 
-    public void UnitCombo(int p_formationNumber)
+    private void Start()
     {
+        // Setting up private variables
+        _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+        _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+    }
 
+    public void UnitCombo(int p_formationNumber, bool p_isIAUsingThisFunction = false)
+    {
         int columnCounter = 0;
         int lineCounter = 0;
 
@@ -63,7 +79,6 @@ public class S_UnitManager : MonoBehaviour
                                         columnCounter = 0;
                                     }
                                 }
-
                             }
                         }
                         else // size x = 2
@@ -88,15 +103,12 @@ public class S_UnitManager : MonoBehaviour
                                         columnCounter = 0;
                                     }
                                 }
-
-
                             }
                         }
                     }
                 }
             }
         }
-
 
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
@@ -128,15 +140,16 @@ public class S_UnitManager : MonoBehaviour
                 if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
-                    for(int h  = 0; h < p_formationNumber; h++)
+
+                    // We had Adrenaline to the player who created this formation
+                    if (!p_isIAUsingThisFunction)
                     {
-                        gridList[j - h][i].unit.state = 1;
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
 
-                    for(int h = p_formationNumber - 1; h >= 0; h--)
-                    {
-                        UnitLine[UnitLine.Count - 1].Add(gridList[j - h][i].unit);
-                    }
+                    gridList[j][i].unit.state = 1;
+                    gridList[j - 1][i].unit.state = 1;
+                    gridList[j - 2][i].unit.state = 1;
 
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
                     currentColorLine = -1;
@@ -184,11 +197,15 @@ public class S_UnitManager : MonoBehaviour
                 {
                     UnitColumn.Add(new());
 
-                    for (int h = 0; h < p_formationNumber; h++) 
+                    // We had Adrenaline to the player who created this formation
+                    if (!p_isIAUsingThisFunction)
                     {
-                        gridList[i][j - h].unit.state = 2;
-                        gridList[i][j - h].unit.gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 1f);  //temporary visual change to notices attacking units
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
+
+                    gridList[i][j].unit.state = 2;
+                    gridList[i][j - 1].unit.state = 2;
+                    gridList[i][j - 2].unit.state = 2;
                     
                     for (int h = p_formationNumber - 1; h >= 0; h--)
                     {
@@ -201,6 +218,16 @@ public class S_UnitManager : MonoBehaviour
                         UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
                     }
                     grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+
+                    if (S_GameManager.Instance.isPlayer1Turn)
+                    {
+                        S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                    }
+                    else
+                    {
+                        S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                    }
+
                     columnCounter = 0;
                     currentColorColumn = -1;
                 }
@@ -219,30 +246,45 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
+
+                p_defendingUnit[i][j].defense = 4;
+                p_defendingUnit[i][j].attack = 0;
+
                 //if p_defendingUnit position = unitColumn
             }
         }
+        //If we are here then it significate that we've created a wall combo. Then we check if we removed a unit before to avoid removing a action point
+        if (S_RemoveUnit.Instance.removing)
+        {
+            S_GameManager.Instance.IncreaseActionPointBy1();
+            S_RemoveUnit.Instance.removing = false;
+        }
     }
 
-    public void AttackBuff(Unit unit)
+    public void AttackBuff(GameObject GOunit)
     {
-        unit.attack += 5;
+        GOunit.GetComponent<Unit>().attack += 1;
     }
 
-    public void DefenseBuff(Unit unit)
+    public void DefenseBuff(GameObject GOunit)
     {
-        unit.defense += 5;
+        GOunit.GetComponent<Unit>().defense += 1;
     }
 
-    //public struct UnitOnLine{
-    //    public List<Unit> units;
-    //    public List<int> Y; // 3
-    //    public List<Vector2Int> bounds; // (3,6) 
-    //}
+    void AddAdrenalineToThePlayerWhoForm(int p_adrenalineToHad)
+    {
+        // Security
+        if (_player1CharacterAdrenaline == null || _player2CharacterAdrenaline == null)
+        {
+            _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+            _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+        }
 
-    //public struct UnitOnColumn{
-    //    public List<Unit> units;
-    //    public List<int> X;
-    //    public List<Vector2Int> bounds;
-    //}
+        // Adding adrenaline for the player who played
+        if (_gameManager.currentTurn == S_GameManager.TurnEmun.Player1Turn)
+            _player1CharacterAdrenaline.currentAdrenaline += p_adrenalineToHad;
+
+        else if (_gameManager.currentTurn == S_GameManager.TurnEmun.Player2Turn)
+            _player2CharacterAdrenaline.currentAdrenaline += p_adrenalineToHad;
+    }
 }

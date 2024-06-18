@@ -18,6 +18,7 @@ public class S_GridManager : MonoBehaviour
 
     public int width, height;
     public float startX, startY;
+    public bool isSwapping = false;
     [SerializeField] private S_Tile _tile;
 
     [Header("Differents tile's types :")]
@@ -25,7 +26,7 @@ public class S_GridManager : MonoBehaviour
 
     private Color _spriteColor = new Color(0,0,0,1);
     private Color _transparentColor = new Color(0,0,0,-1);
-    private bool _isGridVisible = false;
+    public bool isGridVisible = false;
 
     private void Awake()
     {
@@ -87,8 +88,8 @@ public class S_GridManager : MonoBehaviour
     {
         if (ctx.started)
         {
-            _isGridVisible = !_isGridVisible;
-            if (_isGridVisible)
+            isGridVisible = !isGridVisible;
+            if (isGridVisible)
             {
                 for (int i = 0; i < gridList.Count; i++)
                 {
@@ -96,6 +97,10 @@ public class S_GridManager : MonoBehaviour
                     {
                         gridList[i][j].GetComponent<SpriteRenderer>().color += _spriteColor;
                     }
+                }
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    unitList[i].statsCanvas.SetActive(true);
                 }
             }
             else
@@ -106,6 +111,10 @@ public class S_GridManager : MonoBehaviour
                     {
                         gridList[i][j].GetComponent<SpriteRenderer>().color += _transparentColor;
                     }
+                }
+                for (int i = 0; i < unitList.Count; i++)
+                {
+                    unitList[i].statsCanvas.SetActive(false);
                 }
             }
         }
@@ -179,8 +188,69 @@ public class S_GridManager : MonoBehaviour
             }
 
         }
+        unitManager.UnitCombo(3);
+        return GridUnit; 
+    }
 
-        //Debug.Log("Finished UnitPriorityCheck");
-        return GridUnit;
+    public void SwapUnits(S_Tile p_tile1, S_Tile p_tile2, Unit p_unit1, Unit p_unit2)
+    {
+        p_tile1.unit = p_unit2;
+        p_unit2.actualTile = p_tile1;
+        p_unit2.tileX = p_tile1.tileX;
+        p_unit2.tileY = p_tile1.tileY;
+        p_tile2.unit = p_unit1;
+        p_unit1.actualTile = p_tile2;
+        p_unit1.tileX = p_tile2.tileX;
+        p_unit1.tileY = p_tile2.tileY;
+        isSwapping = false;
+    }
+
+    public void SwapBtn()
+    {
+        if (unitSelected == null)
+        {
+            if (S_GameManager.Instance.isPlayer1Turn)
+            {
+                if (S_GameManager.Instance.swapCounterP1 > 0)
+                {
+                    isSwapping = !isSwapping;
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, false);
+                }
+            }
+            else
+            {
+                if (S_GameManager.Instance.swapCounterP2 > 0)
+                {
+                    isSwapping = !isSwapping;
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, false);
+                }
+            }
+        }
+        else
+        {
+            unitSelected.ReturnToBaseTile();
+            unitSelected.highlight.SetActive(false);
+            unitSelected = null;
+            if (S_GameManager.Instance.isPlayer1Turn)
+            {
+                if (S_GameManager.Instance.swapCounterP1 > 0)
+                {
+                    isSwapping = !isSwapping;
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, true);
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
+                }
+            }
+            else
+            {
+                if (S_GameManager.Instance.swapCounterP2 > 0)
+                {
+                    isSwapping = !isSwapping;
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, true);
+                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
+                }
+            }
+        }
     }
 }

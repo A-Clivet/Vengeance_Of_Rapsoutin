@@ -74,14 +74,14 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos) //always plays the full sound
     {
-        //make an instance of this function when you want it to play, give it an instance of the event you want to play
+        //make an Instance of this function when you want it to play, give it an Instance of the event you want to play
         //give it a vector 3
         RuntimeManager.PlayOneShot(p_sound, p_worldPos);
     }
 
     public EventInstance CreateInstance(EventReference p_eventReference) //only plays the sound when called and stops when not
     {
-        //make an instance of this function when you want it to play
+        //make an Instance of this function when you want it to play
         //give it the event you want to play
         EventInstance eventInstance = RuntimeManager.CreateInstance(p_eventReference);
         _eventInstances.Add(eventInstance);
@@ -90,8 +90,8 @@ public class AudioManager : MonoBehaviour
 
     public StudioEventEmitter InitializeEventEmitter(EventReference p_eventReference, GameObject p_emitterGameObject)//always plays the full sound if the player is close enough
     {
-        //make an instance of this function when you want it to play
-        //give it an instance of the event you want to play
+        //make an Instance of this function when you want it to play
+        //give it an Instance of the event you want to play
         //give it a game object for directional audio
         StudioEventEmitter emitter = p_emitterGameObject.GetComponent<StudioEventEmitter>();
         emitter.EventReference = p_eventReference;

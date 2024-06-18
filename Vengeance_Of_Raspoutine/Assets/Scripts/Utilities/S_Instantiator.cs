@@ -1,3 +1,5 @@
+// Tool made by Alexandre94.fr
+
 using UnityEngine;
 
 public class S_Instantiator : MonoBehaviour
@@ -11,17 +13,19 @@ public class S_Instantiator : MonoBehaviour
         WarningAndPause,
         WarningAndDestructionOfTheSecondOne,
         DestructionOfTheSecondOne,
+        WarningAndDestructionOfTheSecondOneParent,
+        DestructionOfTheSecondOneParent,
     }
     #endregion
 
     #region Methods
     private void Awake()
     {
-        Instance = ReturnInstance(this, Instance, InstanceConflictResolutions.DestructionOfTheSecondOne);
+        Instance = ReturnInstance(this, Instance, InstanceConflictResolutions.DestructionOfTheSecondOneParent);
     }
 
     /// <summary> 
-    /// If there is no existing instance, returns the instance of the specified script type,
+    /// If there is no existing Instance, returns the Instance of the specified script type,
     /// else it handles the conflict according to the specified resolution type set. 
     /// 
     /// <para> Method utilization example: </para>
@@ -37,11 +41,11 @@ public class S_Instantiator : MonoBehaviour
     ///     }
     /// }
     /// </code> </example> </summary>
-    /// <typeparam characterName = "T"> The type of the script to return an instance of. </typeparam>
+    /// <typeparam characterName = "T"> The type of the script to return an Instance of. </typeparam>
     /// <param characterName = "p_className"> The type of the script to instantiate. </param>
     /// <param characterName = "p_instanceVariable"> The "Instance" variable you have created in your class. </param>
     /// <param characterName = "p_instanceConflictResolution"> Defines how to resolve conflicts when multiple instances are detected. </param>
-    /// <returns> The instance of the specified script type.</returns>
+    /// <returns> The Instance of the specified script type.</returns>
     public T ReturnInstance<T>(T p_className, T p_instanceVariable, InstanceConflictResolutions p_instanceConflictResolution) where T : MonoBehaviour
     {
 
@@ -77,6 +81,15 @@ public class S_Instantiator : MonoBehaviour
 
             case InstanceConflictResolutions.DestructionOfTheSecondOne:
                 Destroy(p_className.gameObject);
+                break;
+
+            case InstanceConflictResolutions.WarningAndDestructionOfTheSecondOneParent:
+                Debug.LogWarning("WARNING! There are multiple [" + p_className.ToString() + "] scripts in the scene. THE SECOND SCRIPT'S GAMEOBJECT PARENT HAS BEEN DESTROYED.");
+                Destroy(p_className.transform.parent.gameObject);
+                break;
+
+            case InstanceConflictResolutions.DestructionOfTheSecondOneParent:
+                Destroy(p_className.transform.parent.gameObject);
                 break;
 
             default:

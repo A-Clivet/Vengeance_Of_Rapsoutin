@@ -19,7 +19,7 @@ public class S_Credits : MonoBehaviour
             if (stateInfo.normalizedTime >= 1f)
             {
                 // when the animation credits is finish, return automaticaly in the main menu
-                SceneManager.LoadScene("Nicolas-Menu");
+                SceneManager.LoadScene("MainMenu");
             }
         }
     }

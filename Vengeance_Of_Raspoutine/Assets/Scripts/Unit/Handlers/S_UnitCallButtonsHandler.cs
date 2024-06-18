@@ -7,15 +7,46 @@ public class S_UnitCallButtonHandler : MonoBehaviour
 
     public static S_UnitCallButtonHandler Instance;
 
-    [Header("References :")]
-    public Button player1UnitCallButton;
-    public Button player2UnitCallButton;
+    [Header("Unit call references :")]
+    public S_UnitCall player1UnitCall;
+    public S_UnitCall player2UnitCall;
+
+    [Header("Unit's parent reference :")]
+    public GameObject unitsParentGameObject;
+
+    [HideInInspector] public Button player1UnitCallButton;
+    [HideInInspector] public Button player2UnitCallButton;
+
+    S_CrossSceneDataManager _crossSceneDataManager;
     #endregion
 
     #region Methods
     private void Awake()
     {
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndPause);
+
+        _crossSceneDataManager = S_CrossSceneDataManager.Instance;
+
+        player1UnitCallButton = player1UnitCall.gameObject.GetComponent<Button>();
+        player2UnitCallButton = player2UnitCall.gameObject.GetComponent<Button>();
+
+        // To prevent bugs, and help finding the problem
+        if (unitsParentGameObject == null)
+        {
+            Debug.LogError("ERROR ! The variable [" + unitsParentGameObject.ToString() + "] is null, that means you don't have given the Unit parent GameObject reference yet. UNITY IS PAUSED !");
+            Debug.Break();
+        }
+
+        // Giving the SelectedUnits to the two UnitCall Script
+        foreach (S_UnitSelectorMenu.PlayersSelectedUnit playersSelectedUnit in _crossSceneDataManager.player1SelectedUnits)
+        {
+            player1UnitCall.units.Add(playersSelectedUnit);
+        }
+
+        foreach (S_UnitSelectorMenu.PlayersSelectedUnit playersSelectedUnit in _crossSceneDataManager.player2SelectedUnits)
+        {
+            player2UnitCall.units.Add(playersSelectedUnit);
+        }
     }
 
     /// <summary> Handles the interaction state of the unit call buttons for both players.
@@ -32,6 +63,12 @@ public class S_UnitCallButtonHandler : MonoBehaviour
         {
             player2UnitCallButton.interactable = p_isButtonInteractionGivenIsEnabled;
         }
+    }
+
+    public void CallUnitsForAllPlayers()
+    {
+        player1UnitCall.UnitCalling();
+        player2UnitCall.UnitCalling();
     }
 
     #endregion
