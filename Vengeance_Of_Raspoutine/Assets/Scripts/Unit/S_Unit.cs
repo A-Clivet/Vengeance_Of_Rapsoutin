@@ -304,9 +304,26 @@ public class Unit : MonoBehaviour
             {
                 if (tile.unit == null || tile.unit == this)
                 {
-                    actualTile.unit = null;
-                    actualTile = tile;
-                    actualTile.unit = this;
+                    if (sizeY == 2)
+                    {
+                        grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
+                        actualTile.unit = null;
+
+                        actualTile = grid.gridList[p_tile.tileX][grid.AllUnitPerColumn.Count - 1];
+
+                        actualTile.unit = this;
+                        
+                        GameObject VoidUnit = Instantiate(unitManager.voidUnit);
+                        Unit VoidUnitComponent = VoidUnit.GetComponent<Unit>();
+                        VoidUnitComponent.MoveToTile(grid.gridList[actualTile.unit.tileX][actualTile.unit.tileY+&]);
+                    }
+                    else
+                    {
+                        actualTile.unit = null;
+                        actualTile = tile;
+                        actualTile.unit = this;
+                    }
+  
                     grid.unitSelected = null;
                     tileX = tile.tileX;
                     tileY = tile.tileY;
@@ -330,6 +347,8 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null)
             {
+
+
                 actualTile = tile;
                 actualTile.unit = this;
                 grid.unitSelected = null;

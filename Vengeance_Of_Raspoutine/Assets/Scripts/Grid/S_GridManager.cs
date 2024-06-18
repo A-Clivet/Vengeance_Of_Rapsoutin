@@ -135,22 +135,44 @@ public class S_GridManager : MonoBehaviour
 
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
-                if (gridList[x][y].unit == null) continue; 
-                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
-                if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
-                if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
-                gridList[x][y].unit.actualTile = null;
-                gridList[x][y].unit = null;
+                switch (gridList[x][y].unit.sizeY, gridList[x][y].unit.state)
+                {
+                    case (1, -1):
+                        StateIdleUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (1, 0):
+                        StateIdleUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (1, 3):
+                        StateIdleUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (1, 1):
+                        StateDefendUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (1, 2):
+                        StateAttackUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (2, 0):
+                        StateIdleUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (2, 1):
+                        StateDefendUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (2, 2):
+                        StateAttackUnit.Add(gridList[x][y].unit);
+                        break;
+                }
             }
-            foreach (Unit u in StateDefendUnit)
+
+            foreach (Unit u in StateDefendUnit) //will be placed first in the column in order
             {
                 OrganizedColumn.Add(u);
             }
-            foreach (Unit u in StateAttackUnit)
+            foreach (Unit u in StateAttackUnit) //will be placed middle in the column in order
             {
                 OrganizedColumn.Add(u);
             }
-            foreach (Unit u in StateIdleUnit)
+            foreach (Unit u in StateIdleUnit) //will be placed last in the column in order
             {
                 OrganizedColumn.Add(u);
             }

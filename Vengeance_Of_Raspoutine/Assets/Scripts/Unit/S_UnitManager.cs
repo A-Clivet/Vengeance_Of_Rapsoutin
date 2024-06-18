@@ -11,12 +11,15 @@ public class S_UnitManager : MonoBehaviour
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
+    public GameObject voidUnit;
 
     // - Private variables - //
     // References
     S_GameManager _gameManager;
     S_CharacterAdrenaline _player1CharacterAdrenaline;
     S_CharacterAdrenaline _player2CharacterAdrenaline;
+
+
 
     private List<List<S_Tile>> gridList;
 

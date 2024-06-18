@@ -14,6 +14,8 @@ public class S_UnitCall : MonoBehaviour
     public List<List<S_Tile>> tile;
     public TextMeshProUGUI text;
 
+    private int eliteAmount = 0;
+
     [SerializeField] private List<GameObject> units = new List<GameObject>();
 
     GameObject _unitsParentGameObject;
@@ -76,13 +78,21 @@ public class S_UnitCall : MonoBehaviour
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();
+                int unitType = TypeSelector();
 
-                GameObject unitToSpawn = Instantiate(units[TypeSelector()], _unitsParentGameObject.transform); /* unit that will get its value changed */
+
+                if (eliteAmount >= 2)
+                {
+                    unitType = Random.Range(0, 3);
+                }
+
+                GameObject unitToSpawn = Instantiate(units[unitType], _unitsParentGameObject.transform); /* unit that will get its value changed */
                 Unit SpawnedUnit = unitToSpawn.GetComponent<Unit>();
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
                 if(SpawnedUnit.sizeY == 2)
                 {
-                    while (tile[X][4].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    eliteAmount++;
+                    while (tile[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]!= null) // peut crash à casue du nombre d'unité sur le board non définie 
                     {
                         X = ColumnSelector();
                     }
@@ -101,6 +111,7 @@ public class S_UnitCall : MonoBehaviour
                 SpawnedUnit.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
                 unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height+ SpawnedUnit.actualTile.transform.position.y);
                 SpawnedUnit.MoveToTile(SpawnedUnit.actualTile);
+
                 grid.totalUnitAmount++;
                 if (grid.isGridVisible)
                 {
