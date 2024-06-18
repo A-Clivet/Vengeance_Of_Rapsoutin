@@ -76,23 +76,35 @@ public class S_UnitCall : MonoBehaviour
             for (int i = 0; i < callAmount; i++)
             {
                 int X = ColumnSelector();
-                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
-                {
-                    X = ColumnSelector();
-                }
 
                 GameObject unitToSpawn = Instantiate(units[TypeSelector()], _unitsParentGameObject.transform); /* unit that will get its value changed */
+                Unit SpawnedUnit = unitToSpawn.GetComponent<Unit>();
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
-                unitToSpawn.GetComponent<Unit>().tileX = X;
+                if(SpawnedUnit.sizeY == 2)
+                {
+                    while (tile[X][4].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    {
+                        X = ColumnSelector();
+                    }
+                }
+                else
+                {
+                    while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    {
+                        X = ColumnSelector();
+                    }
+                }
+
+                SpawnedUnit.tileX = X;
 
                 //function to move the unit on the _grid to the right spots
-                unitToSpawn.GetComponent<Unit>().OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
-                unitToSpawn.transform.position = new Vector3(unitToSpawn.GetComponent<Unit>().actualTile.transform.position.x, unitToSpawn.GetComponent<Unit>().grid.startY + unitToSpawn.GetComponent<Unit>().grid.height+ unitToSpawn.GetComponent<Unit>().actualTile.transform.position.y);
-                unitToSpawn.GetComponent<Unit>().MoveToTile(unitToSpawn.GetComponent<Unit>().actualTile);
+                SpawnedUnit.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
+                unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height+ SpawnedUnit.actualTile.transform.position.y);
+                SpawnedUnit.MoveToTile(SpawnedUnit.actualTile);
                 grid.totalUnitAmount++;
                 if (grid.isGridVisible)
                 {
-                    unitToSpawn.GetComponent<Unit>().statsCanvas.SetActive(true);
+                    SpawnedUnit.statsCanvas.SetActive(true);
                 }
             }
 
@@ -121,7 +133,7 @@ public class S_UnitCall : MonoBehaviour
     }
     private int TypeSelector()
     { /* select which type is the unit */
-        return Random.Range(0, 3);
+        return Random.Range(0, units.Count);
     }
     private int ColorSelector()
     { /* select which color is the unit */

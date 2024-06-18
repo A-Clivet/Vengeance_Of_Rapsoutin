@@ -186,6 +186,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1fff1aa72b34f648ae7da77bb5167c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1UnitCall: {fileID: 0}
+  player2UnitCall: {fileID: 0}
+  unitsParentGameObject: {fileID: 0}
   player1UnitCallButton: {fileID: 3394074779788104287}
   player2UnitCallButton: {fileID: 4285553238608049120}
 --- !u!1 &3804874309739245938
@@ -286,6 +289,7 @@ MonoBehaviour:
   - {fileID: 5995191591774840050, guid: f30d447f5447a1346bdf5f6851c8a2f4, type: 3}
   - {fileID: 5995191591774840050, guid: ec31f67fe93b6f642ab2de0615759cfd, type: 3}
   - {fileID: 5995191591774840050, guid: 0535f644d68a2c0498a53e21091dd593, type: 3}
+  - {fileID: 5995191591774840050, guid: 7d1eb7dc10a55af4b812743933596ef0, type: 3}
 --- !u!114 &4285553238608049120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +444,7 @@ MonoBehaviour:
   - {fileID: 5995191591774840050, guid: 27fc96de3e8091d4a8671d2295d83c6a, type: 3}
   - {fileID: 5995191591774840050, guid: 632c5b3de81117b4780e65144e01f5f6, type: 3}
   - {fileID: 5995191591774840050, guid: 1a35271cc129679479237d8cb8c81caa, type: 3}
+  - {fileID: 5995191591774840050, guid: 519fd94b35cffc848bad19a319f56478, type: 3}
 --- !u!114 &3394074779788104287
 MonoBehaviour:
   m_ObjectHideFlags: 0

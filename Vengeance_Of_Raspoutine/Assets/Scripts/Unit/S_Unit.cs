@@ -43,12 +43,12 @@ public class Unit : MonoBehaviour
     {
         int randomNumber = Random.Range(0, 1);
         unitColor = SO_Unit.unitColor;
-        //gameObject.GetComponent<SpriteRenderer>().sprite = SO_Unit.unitSprite[randomNumber];
-        //sizeX = SO_Unit.sizeX;
-        //sizeY = SO_Unit.sizeY;
-        //attack = SO_Unit.attack;
-        //defense = SO_Unit.defense;
-        //turnCharge = SO_Unit.unitTurnCharge;
+        gameObject.GetComponent<SpriteRenderer>().sprite = SO_Unit.unitSprite[randomNumber];
+        sizeX = SO_Unit.sizeX;
+        sizeY = SO_Unit.sizeY;
+        attack = SO_Unit.attack;
+        defense = SO_Unit.defense;
+        turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
     }
 

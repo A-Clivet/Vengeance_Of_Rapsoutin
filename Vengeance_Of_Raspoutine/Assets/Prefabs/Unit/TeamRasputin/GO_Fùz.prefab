@@ -680,7 +680,7 @@ Transform:
   m_GameObject: {fileID: 5995191591774840050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.504275, y: 7.695674, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 0.715, y: 0.715, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -753,6 +753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  _posToMove: {x: 0, y: 0, z: 0}
   SO_Unit: {fileID: 11400000, guid: 243e211b752ef35479aff91aabd7d569, type: 2}
   attack: 6
   defense: 2
@@ -772,6 +773,8 @@ MonoBehaviour:
   sizeY: 1
   isChecked: 0
   mustAttack: 0
+  unitPreview: {fileID: 0}
+  unitPreviewComponent: {fileID: 0}
 --- !u!61 &8606980364883050880
 BoxCollider2D:
   m_ObjectHideFlags: 0
