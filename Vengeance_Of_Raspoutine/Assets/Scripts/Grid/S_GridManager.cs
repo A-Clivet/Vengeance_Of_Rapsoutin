@@ -189,6 +189,7 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, false);
                 }
             }
             else
@@ -197,12 +198,14 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, false);
                 }
             }
         }
         else
         {
             unitSelected.ReturnToBaseTile();
+            unitSelected.highlight.SetActive(false);
             unitSelected = null;
             if (S_GameManager.Instance.isPlayer1Turn)
             {

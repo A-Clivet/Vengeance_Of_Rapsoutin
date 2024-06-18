@@ -407,7 +407,6 @@ public class Unit : MonoBehaviour
                 {
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, false);
                     S_SwapButtonsHandler.Instance.player1ButtonText.text = S_GameManager.Instance.swapCounterP1.ToString();
-                    S_SwapButtonsHandler.Instance.player1ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP1;
                     if (S_GameManager.Instance.swapCounterP1 == 0)
                     {
                         S_SwapButtonsHandler.Instance.player1SwapButton.interactable = false;
@@ -417,13 +416,11 @@ public class Unit : MonoBehaviour
                 {
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, false);
                     S_SwapButtonsHandler.Instance.player2ButtonText.text = S_GameManager.Instance.swapCounterP2.ToString();
-                    S_SwapButtonsHandler.Instance.player2ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP2;
                     if (S_GameManager.Instance.swapCounterP2 == 0)
                     {
                         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = false;
                     }
                 }
-
                 S_GameManager.Instance.ReduceActionPointBy1();
             }
         }
@@ -525,7 +522,6 @@ public class Unit : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         if (!grid.isSwapping)
         {
             if (grid.unitSelected == null && state == 0 && S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)

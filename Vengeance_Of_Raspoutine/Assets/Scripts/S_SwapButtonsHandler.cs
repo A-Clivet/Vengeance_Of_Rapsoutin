@@ -9,10 +9,10 @@ public class S_SwapButtonsHandler : MonoBehaviour
 
     public Button player1SwapButton;
     public Button player2SwapButton;
-    private ColorBlock player1ButtonColors;
-    private ColorBlock player2ButtonColors;
-    public Color swapActivated;
-    public Color swapDeactivated = new Color(1, 1, 1);
+    public GameObject player1SwapButtonActivated;
+    public GameObject player2SwapButtonActivated;
+    public GameObject player1SwapButtonDeactivated;
+    public GameObject player2SwapButtonDeactivated;
     public TextMeshProUGUI player1ButtonText;
     public TextMeshProUGUI player2ButtonText;
 
@@ -23,10 +23,8 @@ public class S_SwapButtonsHandler : MonoBehaviour
 
     private void Start()
     {
-        player1ButtonColors = player1SwapButton.colors;
-        player2ButtonColors = player2SwapButton.colors;
-        player1ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP1;
-        player2ButtonText.text = "Swap " + S_GameManager.Instance.swapCounterP2;
+        player1ButtonText.text = S_GameManager.Instance.swapCounterP1.ToString();
+        player2ButtonText.text = S_GameManager.Instance.swapCounterP2.ToString();
     }
 
     /// <summary> Handles the interaction state of the swap unit buttons for both players.
@@ -51,25 +49,27 @@ public class S_SwapButtonsHandler : MonoBehaviour
         {
             if (p_fxEnable)
             {
-                player1ButtonColors.selectedColor = swapActivated;
+                player1SwapButtonDeactivated.SetActive(false);
+                player1SwapButtonActivated.SetActive(true);
             }
             else
             {
-                player1ButtonColors.selectedColor = swapDeactivated;
+                player1SwapButtonActivated.SetActive(false);
+                player1SwapButtonDeactivated.SetActive(true);
             }
-            player1SwapButton.colors = player1ButtonColors;
         }
         else
         {
             if (p_fxEnable)
             {
-                player2ButtonColors.selectedColor = swapActivated;
+                player2SwapButtonActivated.SetActive(true);
+                player2SwapButtonDeactivated.SetActive(false);
             }
             else
             {
-                player2ButtonColors.selectedColor = swapDeactivated;
+                player2SwapButtonActivated.SetActive(false);
+                player2SwapButtonDeactivated.SetActive(true);
             }
-            player2SwapButton.colors= player2ButtonColors;
         }
     }
 }

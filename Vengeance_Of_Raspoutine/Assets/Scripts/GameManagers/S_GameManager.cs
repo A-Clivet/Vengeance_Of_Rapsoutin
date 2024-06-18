@@ -431,10 +431,12 @@ public class S_GameManager : MonoBehaviour
         {
             case 0:
                 currentTurn = TurnEmun.Player1Turn;
+                S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(false, false);
                 break;
 
             case 1:
                 currentTurn = TurnEmun.Player2Turn;
+                S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(true, false);
                 break;
         }
 
@@ -446,6 +448,17 @@ public class S_GameManager : MonoBehaviour
     /// reset the timer to 60s and adds 1 to the current round number </summary>
     public void EndTurn()
     {
+        if (player1GridManager.unitSelected != null)
+        {
+            player1GridManager.unitSelected.highlight.SetActive(false);
+        }
+        if (player2GridManager.unitSelected != null)
+        {
+            player2GridManager.unitSelected.highlight.SetActive(false);
+        }
+        S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(!isPlayer1Turn, true);
+        S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(isPlayer1Turn, false);
+        S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(isPlayer1Turn, false);
         if (currentTurn == TurnEmun.TransitionTurn)
         {
             // Re-organize all the unit in each player grid (removes gaps in grids)
@@ -625,8 +638,8 @@ public class S_GameManager : MonoBehaviour
 
         S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
-        S_SwapButtonsHandler.Instance.player1ButtonText.text = "Swap " + swapCounterP1;
-        S_SwapButtonsHandler.Instance.player2ButtonText.text = "Swap " + swapCounterP2;
+        S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
+        S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
     }
 
     /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>
