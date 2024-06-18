@@ -100,6 +100,8 @@ public class Unit : MonoBehaviour
         unitManager = p_tile.grid.unitManager;
         enemyGrid = grid.enemyGrid;
         grid.AllUnitPerColumn[tileX].Add(this);
+
+        GetComponent<SpriteRenderer>().sprite = SO_Unit.unitSprite[unitColor];
     }
 
     public void DestroyFormation()
