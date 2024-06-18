@@ -209,6 +209,8 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] S_PlayerTurnAnimation _playerTurnAnimationScript;
     [SerializeField] private GameObject _characterImage;
     [SerializeField] private GameObject _playerTurnAnimationGO;
+
+    [SerializeField] private GameObject _canvasAnimPlayer;
     #endregion
 
     #region Private variable
