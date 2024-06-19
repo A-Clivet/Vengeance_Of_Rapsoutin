@@ -15,12 +15,6 @@ public class S_UpgradeHandler : MonoBehaviour
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndPause);
     }
 
-    public void NextBtn()
-    {
-        _player1UpgradeCanvas.SetActive(false);
-        _player2UpgradeCanvas.SetActive(true);
-    }
-
     public void Finished() //Button that manages the last troop upgrade canvas to start a new game
     {
         _player2UpgradeCanvas.SetActive(false);
