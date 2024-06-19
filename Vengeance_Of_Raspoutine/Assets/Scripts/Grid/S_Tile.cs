@@ -24,7 +24,11 @@ public class S_Tile : MonoBehaviour
     {
         if (grid.unitSelected != null && S_GameManager.Instance.currentTurn!=S_GameManager.TurnEmun.TransitionTurn)
         {
-            grid.unitSelected.ActionMoveToTile(this);
+            if ((grid.gridList[tileX][Mathf.Abs(grid.height) - grid.unitSelected.sizeY].unit != null) /*|| (grid.gridList[p_tile.tileX][4] != this && sizeY == 2)*/)
+            {
+                return;
+            }
+            grid.unitSelected.ActionMoveToTile(grid.gridList[tileX][Mathf.Abs(grid.height) - grid.unitSelected.sizeY]);
         }
     }
 }

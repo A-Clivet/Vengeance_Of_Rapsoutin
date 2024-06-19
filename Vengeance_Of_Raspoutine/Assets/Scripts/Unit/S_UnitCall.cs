@@ -81,8 +81,8 @@ public class S_UnitCall : MonoBehaviour
             {
                 int unitType = TypeSelector();
                 if (eliteAmount >= 2)
-                {   
-                    unitType = Random.Range(0,3);
+                {
+                    unitType = Random.Range(0, 3);
                 }
                 GameObject unitToSpawn = Instantiate(units[unitType], _unitsParentGameObject.transform); /* unit that will be spawned onto the grid */
                 Unit unitSpawned = unitToSpawn.GetComponent<Unit>();
@@ -96,10 +96,10 @@ public class S_UnitCall : MonoBehaviour
                     {
                         while (X == grid.width - 1 || grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null || grid.gridList[X + 1][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null)
                         {
-                            X = ColumnSelector();        
+                            X = ColumnSelector();
                         }
                     }
-                    else 
+                    else
                     {
                         while (grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null)
                         {
@@ -109,7 +109,7 @@ public class S_UnitCall : MonoBehaviour
                 }
                 else
                 {
-                    while (grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null) 
+                    while (grid.gridList[X][Mathf.Abs(grid.height) - unitSpawned.sizeY].unit != null)
                     {
                         X = ColumnSelector();
                     }

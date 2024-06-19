@@ -95,7 +95,6 @@ public class S_UnitManager : MonoBehaviour
                     }
                     else
                     {
-                        //Debug.Log("Unit Pos in UnitPerColumn (" + grid.AllUnitPerColumn[i][j].tileX + "," + grid.AllUnitPerColumn[i][j].tileY + ")");
                         if (grid.AllUnitPerColumn[i][j].tileY + p_formationNumber >= grid.height)
                         {
                             break;
@@ -127,57 +126,7 @@ public class S_UnitManager : MonoBehaviour
                                     gridList[i][j + k].grid.unitList.Remove(gridList[i][j + k].unit);
                                     gridList[i][j + k].grid.AllUnitPerColumn[gridList[i][j + k].tileX].Remove(gridList[i][j + k].unit);
                                     gridList[i][j + k].unit = null;
-                                    foreach (Unit unit in grid.AllUnitPerColumn[i])
-                                    {
-                                        unit.MoveToTile(gridList[i][j + k]);
-                                    }
                                     Destroy(gridList[i][j + k].gameObject);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int k = 1; k < p_formationNumber; k++)
-                            {
-                                if ( i + 1 >= grid.width || grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY].tileY + k >= grid.height || j + k >= grid.AllUnitPerColumn.Count ||
-                                    grid.gridList[i][j].unit == null || grid.gridList[i][j + k].unit == null || grid.gridList[i + 1][j + k].unit == null)
-                                {
-                                    continue;
-                                }
-                                if (grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY + k].unit.state == 0 && grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].unit.unitColor == grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY + k].unit.unitColor && grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY + k].unit.SO_Unit.sizeY < 2 &&
-                                    grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY + k].unit.state == 0 && grid.gridList[i][grid.AllUnitPerColumn[i][j].tileY].unit.unitColor == grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY + k].unit.unitColor && grid.gridList[i + 1][grid.AllUnitPerColumn[i][j].tileY + k].unit.SO_Unit.sizeY < 2
-                                    )
-                                {
-                                    columnCounter++;
-                                }
-                                else
-                                {
-                                    columnCounter = 0;
-                                    break;
-                                }
-                            }
-                            if (columnCounter == p_formationNumber - 1)
-                            {
-                                gridList[i][j].unit.state = 2;
-                                for (int k = 1; k < p_formationNumber; k++)
-                                {
-                                    gridList[i][j + k].grid.unitList.Remove(gridList[i][j + k].unit);
-                                    gridList[i][j + k].grid.AllUnitPerColumn[gridList[i][j + k].tileX].Remove(gridList[i][j + k].unit);
-                                    gridList[i][j + k].unit = null;
-                                    gridList[i + 1][j + k].grid.unitList.Remove(gridList[i][j + k].unit);
-                                    gridList[i + 1][j + k].grid.AllUnitPerColumn[gridList[i][j + k].tileX].Remove(gridList[i][j + k].unit);
-                                    gridList[i + 1][j + k].unit = null;
-                                    foreach (Unit unit in grid.AllUnitPerColumn[i])
-                                    {
-                                        unit.MoveToTile(gridList[i][j + k]);
-                                    }
-                                    gridList[i + 1][j + k].unit = null;
-                                    foreach (Unit unit in grid.AllUnitPerColumn[i + 1])
-                                    {
-                                        unit.MoveToTile(gridList[i][j + k]);
-                                    }
-                                    Destroy(gridList[i][j + k].gameObject);
-                                    Destroy(gridList[i + 1][j + k].gameObject);
                                 }
                             }
                         }
