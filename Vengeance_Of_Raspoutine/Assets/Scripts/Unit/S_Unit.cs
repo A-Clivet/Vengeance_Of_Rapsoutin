@@ -669,35 +669,38 @@ public class Unit : MonoBehaviour
                 }
 
             }
-            switch (sizeX, sizeY)
+            if(grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit != null)
             {
-                case (1, 1):
+                switch (sizeX, sizeY)
+                {
+                    case (1, 1):
 
                         grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
 
-                    break;
+                        break;
 
-                case (1, 2):
-
-                        grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
-
-                    break;
-
-                case(2,2):
+                    case (1, 2):
 
                         grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
 
-                    break;
+                        break;
 
-                default:
+                    case (2, 2):
 
-                    grid.unitSelected = this;
-                    foreach (Unit unit in grid.unitList)
-                    {
-                        unit.GetComponent<BoxCollider2D>().enabled = false;
-                    }
+                        grid.gridList[actualTile.tileX][actualTile.tileY + sizeY].unit.SelectUnit();
 
-                    break;
+                        break;
+
+                    default:
+
+                        grid.unitSelected = this;
+                        foreach (Unit unit in grid.unitList)
+                        {
+                            unit.GetComponent<BoxCollider2D>().enabled = false;
+                        }
+
+                        break;
+                }
             }
         }
         else 
