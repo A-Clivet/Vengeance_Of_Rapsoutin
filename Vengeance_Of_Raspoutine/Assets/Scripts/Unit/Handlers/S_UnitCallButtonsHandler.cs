@@ -14,8 +14,8 @@ public class S_UnitCallButtonHandler : MonoBehaviour
     [Header("Unit's parent reference :")]
     public GameObject unitsParentGameObject;
 
-    Button player1UnitCallButton;
-    Button player2UnitCallButton;
+    [HideInInspector] public Button player1UnitCallButton;
+    [HideInInspector] public Button player2UnitCallButton;
     #endregion
 
     #region Methods

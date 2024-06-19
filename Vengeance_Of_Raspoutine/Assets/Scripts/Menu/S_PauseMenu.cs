@@ -1,64 +1,138 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class S_PauseMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject _pauseCanvas;
-    [SerializeField] private GameObject _settingsCanvas;
+    [Header("References :")]
+    [SerializeField] GameObject _pauseCanvas;
+    [SerializeField] GameObject _settingsCanvas;
+    [SerializeField] GameObject _chooseSettingMenuGameObject;
+    [SerializeField] GameObject _settingsMenuGameObject;
+    [SerializeField] GameObject _rebindControlMenuGameObject;
+
+    [Header("Pause button references :")]
+    [SerializeField] GameObject _pauseMenuButtonGameObject;
+    [SerializeField] Sprite _pauseButtonSprite;
+    [SerializeField] Sprite _resumeButtonSprite;
+
+    // Private variables
+    Image _pauseMenuButtonImage;
+
+    bool _isPlayer1UnitCallButtonInteractable;
+    bool _isPlayer1SwapUnitButtonInteractable;
+
+    bool _isPlayer2UnitCallButtonInteractable;
+    bool _isPlayer2SwapUnitButtonInteractable;
+
+    // Script references
+    S_GameManager _gameManager;
+    S_UnitCallButtonHandler _unitCallButtonHandler;
+    S_GridManagersHandler _gridManagersHandler;
+    S_SwapButtonsHandler _swapButtonsHandler;
+    S_BattleUIsReferencesHandler _battleUIsReferencesHandler;
 
     private void Start()
     {
+        _gameManager = S_GameManager.Instance;
+        _unitCallButtonHandler = S_UnitCallButtonHandler.Instance;
+        _gridManagersHandler = S_GridManagersHandler.Instance;
+        _swapButtonsHandler = S_SwapButtonsHandler.Instance;
+        _battleUIsReferencesHandler = S_BattleUIsReferencesHandler.Instance;
+
         _pauseCanvas.SetActive(false);
         _settingsCanvas.SetActive(false);
+        _chooseSettingMenuGameObject.SetActive(false);
+        _settingsMenuGameObject.SetActive(false);
+        _rebindControlMenuGameObject.SetActive(false);
+
+        // Setting up private variables
+        _pauseMenuButtonImage = _pauseMenuButtonGameObject.GetComponent<Image>();
     }
 
-    public void OnEscapeButton(InputAction.CallbackContext p_ctx) // open or close the canvas with escape button
+    /// <summary> Open or close the pause menu when the escape button is pressed </summary>
+    public void OnEscapeButton(InputAction.CallbackContext p_context) 
     {
-        if (p_ctx.performed)
+        if (p_context.performed)
+            SwapPauseMenuVisibility();
+    }
+
+    /// <summary> We close the paune menu if it was open, otherwise we open it </summary>
+    public void SwapPauseMenuVisibility()
+    {
+        if (_pauseCanvas.activeSelf)
+            // Disable the pause menu
+            HandlePauseMenuVisibility(false);
+
+        else
+            // Enable the pause menu
+            HandlePauseMenuVisibility(true);
+    }
+
+    public void HandlePauseMenuVisibility(bool p_newPauseMenuVisibility)
+    {
+        bool _newInGameUIsVisibility = !p_newPauseMenuVisibility;
+        
+        if (p_newPauseMenuVisibility)
         {
-            if (_pauseCanvas.activeSelf)
-            {
-                S_UnitCallButtonHandler.Instance.player1UnitCall.enabled = true;
-                S_UnitCallButtonHandler.Instance.player2UnitCall.enabled = true;
-                S_GameManager.Instance.DeactivateGrid();
+            // We save what buttons was ON before the Pause Menu activation
+            _isPlayer1UnitCallButtonInteractable = _unitCallButtonHandler.player1UnitCallButton.interactable;
+            _isPlayer1SwapUnitButtonInteractable = _swapButtonsHandler.player1SwapButton.interactable;
 
-                _pauseCanvas.SetActive(false);
-                Time.timeScale = 1.0f;
-            }
-            else if (!_pauseCanvas.activeSelf && !_settingsCanvas.activeSelf)
-            {
-                foreach (Unit unit in S_GameManager.Instance.player1GridManager.unitList)
-                {
-                    unit.GetComponent<BoxCollider2D>().enabled = false;
-                }
+            _isPlayer2UnitCallButtonInteractable = _unitCallButtonHandler.player2UnitCallButton.interactable;
+            _isPlayer2SwapUnitButtonInteractable = _swapButtonsHandler.player2SwapButton.interactable;
 
-                foreach (Unit unit in S_GameManager.Instance.player2GridManager.unitList)
-                {
-                    unit.GetComponent<BoxCollider2D>().enabled = false;
-                }
-                S_UnitCallButtonHandler.Instance.player1UnitCall.enabled = false;
-                S_UnitCallButtonHandler.Instance.player2UnitCall.enabled = false;
-                _pauseCanvas.SetActive(true);
-                Time.timeScale = 0f;
+            // We change players unit call buttons interactability
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
-            }
+            // We change players swap unit buttons interactability
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, false);
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, false);
+
+            // We change all units interactability to false 
+            _gridManagersHandler.HandleAllUnitInteractions(false);
+
+            // Changing the pause menu button to the new sprite
+            _pauseMenuButtonImage.sprite = _resumeButtonSprite;
         }
+        else
+        {
+            // We change players unit call buttons interactability
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, _isPlayer1UnitCallButtonInteractable);
+            _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, _isPlayer2UnitCallButtonInteractable);
+
+            // We change players swap unit buttons interactability
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(true, _isPlayer1SwapUnitButtonInteractable);
+            _swapButtonsHandler.HandleSwapUnitButtonInteraction(false, _isPlayer2SwapUnitButtonInteractable);
+
+            // We change all units interactability accordingly to what player is playing 
+            _gameManager.DeactivateGrid();
+
+            // Changing the pause menu button to the new sprite
+            _pauseMenuButtonImage.sprite = _pauseButtonSprite;
+        }
+        
+        // We change skip button interactability
+        _battleUIsReferencesHandler.skipTurnButtonUI.interactable = _newInGameUIsVisibility;
+
+        // We change all pause menu UIs visibility
+        _settingsCanvas.SetActive(p_newPauseMenuVisibility);
+        _pauseCanvas.SetActive(p_newPauseMenuVisibility);
+
+        if (!p_newPauseMenuVisibility)
+        {
+            _rebindControlMenuGameObject.SetActive(p_newPauseMenuVisibility);
+            _chooseSettingMenuGameObject.SetActive(p_newPauseMenuVisibility);
+            _settingsMenuGameObject.SetActive(p_newPauseMenuVisibility);
+        }
+
+        // We change the delta time of the game accordingly to the given parameter
+        Time.timeScale = p_newPauseMenuVisibility ? 0 : 1;
     }
 
-    public void ResumeButton()
-    {
-        Time.timeScale = 1f;
-
-        S_UnitCallButtonHandler.Instance.player1UnitCall.enabled = true;
-        S_UnitCallButtonHandler.Instance.player2UnitCall.enabled = true;
-        S_GameManager.Instance.DeactivateGrid();
-
-        _pauseCanvas.SetActive(false);
-
-    }
-
-    public void LeaveButton()
+    public void ReturnToMainMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");

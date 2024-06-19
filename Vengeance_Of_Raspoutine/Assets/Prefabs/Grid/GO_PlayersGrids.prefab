@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: enemyGrid
       value: 
       objectReference: {fileID: 8275921660412898142}
+    - target: {fileID: 7528097859753831138, guid: a6d8553c916b9f547a38925219eab82e, type: 3}
+      propertyPath: tileSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71fb2a86bcddda04fbca01dd97e451a2, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -137,10 +141,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8373739165469845448}
     m_Modifications:
-    - target: {fileID: 760293869847579072, guid: 8a4ebc47710b64b439c7e2fefb48637e, type: 3}
-      propertyPath: startY
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 760293869847579072, guid: 8a4ebc47710b64b439c7e2fefb48637e, type: 3}
       propertyPath: enemyGrid
       value: 

@@ -209,6 +209,8 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] S_PlayerTurnAnimation _playerTurnAnimationScript;
     [SerializeField] private GameObject _characterImage;
     [SerializeField] private GameObject _playerTurnAnimationGO;
+
+    [SerializeField] private GameObject _canvasAnimPlayer;
     #endregion
 
     #region Private variable
@@ -383,12 +385,12 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
-        // Randomly determine the player who will play first in the initial turn
-        RandomStartTurn();
-
+        
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
+        // Randomly determine the player who will play first in the initial turn
+        RandomStartTurn();
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         #endregion
     }
@@ -429,20 +431,34 @@ public class S_GameManager : MonoBehaviour
         {
             case 0:
                 currentTurn = TurnEmun.Player1Turn;
+                S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(false, false);
                 break;
 
             case 1:
                 currentTurn = TurnEmun.Player2Turn;
+                S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(true, false);
                 break;
         }
 
         S_WeatherEvent.Instance.EventProbability();
+        S_WeatherAnimation.Instance.PlayWeatherAnimation();
     }
 
     /// <summary> End the turn of the player who played and let the other player play,
     /// reset the timer to 60s and adds 1 to the current round number </summary>
     public void EndTurn()
     {
+        if (player1GridManager.unitSelected != null)
+        {
+            player1GridManager.unitSelected.highlight.SetActive(false);
+        }
+        if (player2GridManager.unitSelected != null)
+        {
+            player2GridManager.unitSelected.highlight.SetActive(false);
+        }
+        S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(!isPlayer1Turn, true);
+        S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(isPlayer1Turn, false);
+        S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(isPlayer1Turn, false);
         if (currentTurn == TurnEmun.TransitionTurn)
         {
             // Re-organize all the unit in each player grid (removes gaps in grids)
@@ -622,6 +638,8 @@ public class S_GameManager : MonoBehaviour
 
         S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
+        S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
+        S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
     }
 
     /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>
@@ -745,36 +763,7 @@ public class S_GameManager : MonoBehaviour
         player1CharacterAdrenaline.ResetAdrenalineStats();
         player2CharacterAdrenaline.ResetAdrenalineStats();
     }
-
-    /// <summary>
-    /// TODO : After the merge of the refactored S_GameManager this function will be deleted,
-    /// for the one who used it (S_Unit) 
-    /// it will be replaced by the HandleUnitCallButtonInteraction function in the S_UnitCallHandler
-    /// </summary>
-    [Obsolete]
-    public void UnitCallOnOff(int p_playerNumber, bool p_isActive)
-    {
-        if (p_playerNumber == 1)
-            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, p_isActive);
-
-        else if (p_playerNumber == 2)
-            S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, p_isActive);
-
-        // COMMENTED BECAUSE IT'S NOT WORKING ANYMORE
-        /*switch (p_playerNumber)
-        {
-            case 1:
-                player1UnitCallButton.interactable = p_isActive;
-                break;
-            case 2:
-                player2UnitCallButton.interactable = p_isActive;
-                break;
-            default:
-                Debug.LogError("ERROR ! The given player number '" + p_playerNumber + "' is incorrect, it is not planned in the switch");
-                break;
-        }*/
-    }
-
+    
     public void StartTurnCheckUnit()
     {
         // To avoid having to manage two grid manager variables
@@ -848,7 +837,6 @@ public class S_GameManager : MonoBehaviour
             if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
                 _playerActionNumber +=1;
-                S_RemoveUnit.Instance.removing = false;
             }
         }
         else if (currentTurn == TurnEmun.Player2Turn)
@@ -860,8 +848,11 @@ public class S_GameManager : MonoBehaviour
             if (S_RemoveUnit.Instance.NbCombo < player2unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
                 _playerActionNumber+=1;
-                S_RemoveUnit.Instance.removing = false;
             }
+        }
+        if(S_RemoveUnit.Instance.removing)
+        {
+            S_RemoveUnit.Instance.removing = false;
         }
 
         // Action time cooldown

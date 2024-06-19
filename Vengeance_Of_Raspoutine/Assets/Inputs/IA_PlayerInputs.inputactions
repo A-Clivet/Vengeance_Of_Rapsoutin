@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Skip Animation",
+                    "type": "Button",
+                    "id": "313ec6e0-be73-4cf0-8559-e71bd28a7bab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -126,6 +135,17 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a2a3c85-d4a3-4a22-9c10-6e8e432374ac",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip Animation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -173,6 +193,15 @@
                     "name": "Show Special Capacity Description",
                     "type": "Button",
                     "id": "b36578ef-fc5d-4c44-9b19-accaded8f8a0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skip Animation",
+                    "type": "Button",
+                    "id": "5782a4df-7781-437a-b8c0-39095558374d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -232,6 +261,145 @@
                     "processors": "",
                     "groups": "",
                     "action": "Show Special Capacity Description",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9130c4a0-3e19-4260-858a-992dce734557",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip Animation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player2Inputs1",
+            "id": "26d7458c-c36e-4b76-a92a-7f3d147188fd",
+            "actions": [
+                {
+                    "name": "mouseLeft",
+                    "type": "Button",
+                    "id": "192a977d-419d-422a-9f59-e4de6572ede0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mouseRight",
+                    "type": "Button",
+                    "id": "74841f8b-39ce-475a-8688-78322507d9c5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mousePos",
+                    "type": "Value",
+                    "id": "95a065f3-b1b9-42ee-887b-1d2188ed6232",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Show Grid",
+                    "type": "Button",
+                    "id": "de62feaf-6d87-462a-aaa4-4d0e5b357283",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Show Special Capacity Description",
+                    "type": "Button",
+                    "id": "7a3193f4-4ed1-44a4-96ca-747023caee33",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skip Animation",
+                    "type": "Button",
+                    "id": "f320bc66-9a40-4c8a-9858-49d861e1ce94",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1efe06f4-88c5-4015-9b6c-9057b382dee1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89b03702-a772-46ac-8b09-59bbf0b90e89",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c83a887-402e-481a-b454-5242016bf27f",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousePos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0be60f12-6abb-4505-a8c8-bc279b2b2070",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Grid",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6fab298b-e489-4434-b1d4-81d3da60b4aa",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Special Capacity Description",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0f52b95c-b70a-4ab6-b26b-2e1d1de83589",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip Animation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
