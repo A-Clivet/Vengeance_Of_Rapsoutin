@@ -315,7 +315,7 @@ public class Unit : MonoBehaviour
                         
                         GameObject VoidUnit = Instantiate(unitManager.voidUnit);
                         Unit VoidUnitComponent = VoidUnit.GetComponent<Unit>();
-                        VoidUnitComponent.MoveToTile(grid.gridList[actualTile.unit.tileX][actualTile.unit.tileY+&]);
+                        VoidUnitComponent.MoveToTile(grid.gridList[actualTile.unit.tileX][actualTile.unit.tileY+1]);
                     }
                     else
                     {
