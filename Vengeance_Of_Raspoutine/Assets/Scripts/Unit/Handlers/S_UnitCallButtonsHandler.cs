@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +7,8 @@ public class S_UnitCallButtonHandler : MonoBehaviour
 {
     #region Variables
 
+    private Color _transparency = new Color(0,0,0, 217/255f);
+    
     public static S_UnitCallButtonHandler Instance;
 
     [Header("Unit call references :")]
@@ -58,10 +62,12 @@ public class S_UnitCallButtonHandler : MonoBehaviour
         if (p_isPlayer1UnitCallButtonChanged)
         {
             player1UnitCallButton.interactable = p_isButtonInteractionGivenIsEnabled;
+            player1UnitCallButton.GetComponentInChildren<TextMeshProUGUI>().color = _transparency;
         }
         else
         {
             player2UnitCallButton.interactable = p_isButtonInteractionGivenIsEnabled;
+            player2UnitCallButton.GetComponentInChildren<TextMeshProUGUI>().color = _transparency;
         }
     }
 
