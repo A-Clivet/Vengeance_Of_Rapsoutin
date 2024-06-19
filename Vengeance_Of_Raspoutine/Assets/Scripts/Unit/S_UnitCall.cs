@@ -77,7 +77,6 @@ public class S_UnitCall : MonoBehaviour
             }
             for (int i = 0; i < callAmount; i++)
             {
-                int X = ColumnSelector();
                 int unitType = TypeSelector();
 
 
@@ -89,7 +88,11 @@ public class S_UnitCall : MonoBehaviour
                 GameObject unitToSpawn = Instantiate(units[unitType], _unitsParentGameObject.transform); /* unit that will get its value changed */
                 Unit SpawnedUnit = unitToSpawn.GetComponent<Unit>();
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
-                if(SpawnedUnit.sizeY == 2)
+
+                int X = ColumnSelector();
+
+
+                if (SpawnedUnit.sizeY == 2)
                 {
                     eliteAmount++;
                     while (tile[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY] != null) // peut crash à casue du nombre d'unité sur le board non définie 
@@ -110,7 +113,7 @@ public class S_UnitCall : MonoBehaviour
                 //function to move the unit on the _grid to the right spots
                 SpawnedUnit.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
                 unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height + SpawnedUnit.actualTile.transform.position.y);
-                SpawnedUnit.MoveToTile(SpawnedUnit.actualTile);
+                SpawnedUnit.MoveToTile(grid.gridList[SpawnedUnit.tileX][SpawnedUnit.tileY]);
 
                 grid.totalUnitAmount++;
                 if (grid.isGridVisible)
