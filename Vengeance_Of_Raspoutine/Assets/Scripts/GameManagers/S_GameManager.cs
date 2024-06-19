@@ -787,7 +787,7 @@ public class S_GameManager : MonoBehaviour
                     unit.ReturnToBaseTile();
                     if (unit.state == 3)
                     {
-                        unit.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                        unit.transform.GetChild(2).gameObject.SetActive(false);
                         unit.state = 0;
                     }
                 }

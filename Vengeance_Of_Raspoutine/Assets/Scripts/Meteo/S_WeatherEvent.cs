@@ -155,9 +155,8 @@ public class S_WeatherEvent : MonoBehaviour
             for (int i = 0; i < nbMaxOfUnitFrozen; i++)
             {
                 int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
-                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0, 0, 1, 1);
+                listOfIdle[unitToFreeze].transform.GetChild(2).gameObject.SetActive(true);
                 listOfIdle[unitToFreeze].state = 3;
-
             }
 
             listOfIdle.Clear();
@@ -170,9 +169,8 @@ public class S_WeatherEvent : MonoBehaviour
             for (int i = 0; i < nbMaxOfUnitFrozen; i++)
             {
                 int unitToFreeze = UnityEngine.Random.Range(0, listOfIdle.Count());
-                listOfIdle[unitToFreeze].GetComponent<SpriteRenderer>().color = new Color(0, 0, 1, 1);
+                listOfIdle[unitToFreeze].transform.GetChild(2).gameObject.SetActive(true);
                 listOfIdle[unitToFreeze].state = 3;
-
             }
         }
         return;
