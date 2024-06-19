@@ -271,7 +271,7 @@ public class Unit : MonoBehaviour
                     grid.unitSelected = null;
                     tileX = tile.tileX;
                     tileY = tile.tileY;
-                    _posToMove = tile.transform.position;
+                    _posToMove = grid.gridList[tileX][tileY].transform.position;
                     if (!_isMoving)
                     {
                         _isMoving = true;

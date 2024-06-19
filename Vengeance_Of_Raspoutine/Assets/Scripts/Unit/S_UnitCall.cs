@@ -112,7 +112,7 @@ public class S_UnitCall : MonoBehaviour
                 //function to move the unit on the _grid to the right spots
                 SpawnedUnit.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
                 unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height + SpawnedUnit.actualTile.transform.position.y);
-                SpawnedUnit.MoveToTile(grid.gridList[SpawnedUnit.tileX][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
+                SpawnedUnit.MoveToTile(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
 
                 grid.totalUnitAmount++;
                 if (grid.isGridVisible)
