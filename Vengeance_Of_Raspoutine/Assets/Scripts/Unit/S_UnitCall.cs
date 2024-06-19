@@ -92,14 +92,14 @@ public class S_UnitCall : MonoBehaviour
                 if(SpawnedUnit.sizeY == 2)
                 {
                     eliteAmount++;
-                    while (tile[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]!= null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    while (tile[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY] != null) // peut crash à casue du nombre d'unité sur le board non définie 
                     {
                         X = ColumnSelector();
                     }
                 }
                 else
                 {
-                    while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                    while (tile[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
                     {
                         X = ColumnSelector();
                     }
@@ -109,7 +109,7 @@ public class S_UnitCall : MonoBehaviour
 
                 //function to move the unit on the _grid to the right spots
                 SpawnedUnit.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
-                unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height+ SpawnedUnit.actualTile.transform.position.y);
+                unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height + SpawnedUnit.actualTile.transform.position.y);
                 SpawnedUnit.MoveToTile(SpawnedUnit.actualTile);
 
                 grid.totalUnitAmount++;

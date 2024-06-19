@@ -135,28 +135,35 @@ public class S_GridManager : MonoBehaviour
 
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
+                if (gridList[x][y].unit == null) continue;
                 switch (gridList[x][y].unit.sizeY, gridList[x][y].unit.state)
                 {
                     case (1, -1):
                         StateIdleUnit.Add(gridList[x][y].unit);
                         break;
+
                     case (1, 0):
+                        StateIdleUnit.Add(gridList[x][y].unit);
+                        break;
+                    case (2, 0):
                         StateIdleUnit.Add(gridList[x][y].unit);
                         break;
                     case (1, 3):
                         StateIdleUnit.Add(gridList[x][y].unit);
                         break;
+                    case (2, 3):
+                        StateIdleUnit.Add(gridList[x][y].unit);
+                        break;
+
                     case (1, 1):
                         StateDefendUnit.Add(gridList[x][y].unit);
                         break;
-                    case (1, 2):
-                        StateAttackUnit.Add(gridList[x][y].unit);
-                        break;
-                    case (2, 0):
-                        StateIdleUnit.Add(gridList[x][y].unit);
-                        break;
                     case (2, 1):
                         StateDefendUnit.Add(gridList[x][y].unit);
+                        break;
+
+                    case (1, 2):
+                        StateAttackUnit.Add(gridList[x][y].unit);
                         break;
                     case (2, 2):
                         StateAttackUnit.Add(gridList[x][y].unit);
@@ -181,7 +188,7 @@ public class S_GridManager : MonoBehaviour
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
-                OrganizedColumn[y].SwitchUnit(gridList[x][y]);
+                OrganizedColumn[y].MoveToTile(gridList[x][y]);
             }
         }
         unitManager.UnitCombo(3);
