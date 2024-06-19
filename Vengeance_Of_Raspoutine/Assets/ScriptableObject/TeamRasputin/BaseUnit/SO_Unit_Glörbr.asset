@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "SO_Unit_Gl\xF6rbr"
   m_EditorClassIdentifier: 
   UnitName: "Gl\xF6rbr"
-  attack: 5
+  attack: 1
   defense: 3
   sizeX: 1
   sizeY: 1

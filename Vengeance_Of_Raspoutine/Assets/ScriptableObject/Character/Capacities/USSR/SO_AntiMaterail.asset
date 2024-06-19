@@ -18,9 +18,8 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: MortarShots
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Shoots a high caliber bullet trough the enemy ranks.
-  capacityEffectDescription: the attack of the projectile is equal to remaining hp
-    of the wall
+  capacityDescription: turning walls into projectiles
+  capacityEffectDescription: (attack stats equal to remaining hp)
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2

@@ -18,8 +18,8 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: SpeedMagic
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Casts a spell that speeds up enemy troops
-  capacityEffectDescription: 'ally charge time : - 2'
+  capacityDescription: Reduce the action turns of all your troops.
+  capacityEffectDescription: 'Reduced troop attack time : - 2 turns'
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2

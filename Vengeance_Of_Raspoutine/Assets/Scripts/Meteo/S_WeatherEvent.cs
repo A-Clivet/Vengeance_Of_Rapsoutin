@@ -76,6 +76,8 @@ public class S_WeatherEvent : MonoBehaviour
         {
             ManageEvent = Event.None;
         }
+
+        weatherInfo.text = "Weather : " + ManageEvent;
     }
 
     public void EarthquakeEvent()
@@ -94,6 +96,7 @@ public class S_WeatherEvent : MonoBehaviour
 
                 u.actualTile.unit = null;
                 _player1GridManager.unitList.Remove(u);
+                _player1GridManager.totalUnitAmount -= 1;
                 _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
             }
@@ -108,6 +111,7 @@ public class S_WeatherEvent : MonoBehaviour
 
                 u.actualTile.unit = null;
                 _player2GridManager.unitList.Remove(u);
+                _player2GridManager.totalUnitAmount -= 1;
                 _player2GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
             }

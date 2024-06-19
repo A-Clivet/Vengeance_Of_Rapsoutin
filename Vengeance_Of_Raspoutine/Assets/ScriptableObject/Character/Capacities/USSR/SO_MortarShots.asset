@@ -18,8 +18,8 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: MortarShots
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Fires 5 inacurate but deadly mortar shots on the enemy.
-  capacityEffectDescription: kills 5 random troops
+  capacityDescription: Destroy 5 opposing troops at random.
+  capacityEffectDescription: 'Troop destruction: 5 troops'
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2

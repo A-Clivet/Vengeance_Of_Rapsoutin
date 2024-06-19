@@ -28,7 +28,7 @@ public class S_GridManager : MonoBehaviour
 
     private Color _spriteColor = new Color(0,0,0,1);
     private Color _transparentColor = new Color(0,0,0,-1);
-    public bool isGridVisible = false;
+    private bool _isGridVisible = false;
 
     private void Awake()
     {
@@ -93,8 +93,8 @@ public class S_GridManager : MonoBehaviour
     {
         if (ctx.started)
         {
-            isGridVisible = !isGridVisible;
-            if (isGridVisible)
+            _isGridVisible = !_isGridVisible;
+            if (_isGridVisible)
             {
                 for (int i = 0; i < gridList.Count; i++)
                 {
@@ -206,7 +206,6 @@ public class S_GridManager : MonoBehaviour
             }
             GridUnit[GridUnit.Count - 1] = OrganizedColumn;
         }
-        unitManager.UnitCombo(3);
         return GridUnit; 
     }
 
@@ -232,8 +231,6 @@ public class S_GridManager : MonoBehaviour
                 if (S_GameManager.Instance.swapCounterP1 > 0)
                 {
                     isSwapping = !isSwapping;
-                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
-                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, false);
                 }
             }
             else
@@ -241,15 +238,12 @@ public class S_GridManager : MonoBehaviour
                 if (S_GameManager.Instance.swapCounterP2 > 0)
                 {
                     isSwapping = !isSwapping;
-                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
-                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, false);
                 }
             }
         }
         else
         {
             unitSelected.ReturnToBaseTile();
-            unitSelected.highlight.SetActive(false);
             unitSelected = null;
             if (S_GameManager.Instance.isPlayer1Turn)
             {
@@ -257,7 +251,6 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, true);
-                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
                 }
             }
             else
@@ -266,7 +259,6 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, true);
-                    S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
                 }
             }
         }

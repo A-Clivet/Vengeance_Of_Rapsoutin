@@ -18,8 +18,8 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: Vodka sprinklers
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Sprinkles vodka over ally troops to make them more resistant.
-  capacityEffectDescription: 'Troops health : + 1'
+  capacityDescription: Adds 1 hit point to all units on its side of the field
+  capacityEffectDescription: 'Troops on all terrain: + 1'
   isCapacityLocked: 0
   isPlayer1UnitsChanged: 0
   unitStatChanged: 0
