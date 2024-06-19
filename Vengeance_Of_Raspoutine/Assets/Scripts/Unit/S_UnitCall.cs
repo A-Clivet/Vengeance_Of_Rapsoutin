@@ -38,6 +38,7 @@ public class S_UnitCall : MonoBehaviour
 
     public void Start()
     {
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         CallAmountUpdate();
     }
 
@@ -79,7 +80,6 @@ public class S_UnitCall : MonoBehaviour
             {
                 int unitType = TypeSelector();
 
-
                 if (eliteAmount >= 2)
                 {
                     unitType = Random.Range(0, 3);
@@ -90,7 +90,6 @@ public class S_UnitCall : MonoBehaviour
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
 
                 int X = ColumnSelector();
-
 
                 if (SpawnedUnit.sizeY == 2)
                 {
@@ -113,7 +112,7 @@ public class S_UnitCall : MonoBehaviour
                 //function to move the unit on the _grid to the right spots
                 SpawnedUnit.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
                 unitToSpawn.transform.position = new Vector3(SpawnedUnit.actualTile.transform.position.x, SpawnedUnit.grid.startY + SpawnedUnit.grid.height + SpawnedUnit.actualTile.transform.position.y);
-                SpawnedUnit.MoveToTile(grid.gridList[SpawnedUnit.tileX][SpawnedUnit.tileY]);
+                SpawnedUnit.MoveToTile(grid.gridList[SpawnedUnit.tileX][Mathf.Abs(grid.height) - SpawnedUnit.sizeY]);
 
                 grid.totalUnitAmount++;
                 if (grid.isGridVisible)

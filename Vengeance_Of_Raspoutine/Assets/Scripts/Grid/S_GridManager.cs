@@ -188,7 +188,8 @@ public class S_GridManager : MonoBehaviour
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
-                OrganizedColumn[y].MoveToTile(gridList[x][y]);
+                OrganizedColumn[y].MoveToTile(gridList[x][Mathf.Abs(height) - OrganizedColumn[y].sizeY]);
+                if (OrganizedColumn[y].sizeY == 2) y++;
             }
         }
         unitManager.UnitCombo(3);
