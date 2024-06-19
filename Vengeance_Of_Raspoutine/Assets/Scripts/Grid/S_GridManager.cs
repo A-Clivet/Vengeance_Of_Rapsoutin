@@ -129,7 +129,6 @@ public class S_GridManager : MonoBehaviour
     {
         Debug.Log("UnitPriority entered / Grid changed");
         List<List<Unit>> GridUnit = new();
-        List<Unit> BigUnits = new();
 
 
         for (int x = 0; x < width; x++)
@@ -138,7 +137,6 @@ public class S_GridManager : MonoBehaviour
             List<Unit> StateDefendUnit = new();
             List<Unit> StateAttackUnit = new();
             List<Unit> OrganizedColumn = new();
-            int shiftX = x;
 
 
             for (int y = 0; y < Mathf.Abs(height); y++)
@@ -147,23 +145,17 @@ public class S_GridManager : MonoBehaviour
                 if(gridList[x][y].unit == null ) continue;
                 if(gridList[x][y].unit.sizeY == 2)
                 {
-                    if (BigUnits.Contains(gridList[x][y].unit))
+                    if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3)
                     {
-                        continue;
+                        StateIdleUnit.Add(gridList[x][y].unit);
                     }
-                    BigUnits.Add(gridList[x][y].unit);
-
-                    if (BigUnits[BigUnits.Count-1].state == 0 || BigUnits[BigUnits.Count - 1].state == 3)
+                    else if (gridList[x][y].unit.state == 1)
                     {
-                        StateIdleUnit.Add(BigUnits[BigUnits.Count - 1]);
+                        StateDefendUnit.Add(gridList[x][y].unit);
                     }
-                    else if (BigUnits[BigUnits.Count - 1].state == 1)
+                    else if (gridList[x][y].unit.state == 2)
                     {
-                        StateDefendUnit.Add(BigUnits[BigUnits.Count - 1]);
-                    }
-                    else if (BigUnits[BigUnits.Count - 1].state == 2)
-                    {
-                        StateAttackUnit.Add(BigUnits[BigUnits.Count - 1]);
+                        StateAttackUnit.Add(gridList[x][y].unit);
                     }
                     continue;
                 }
@@ -198,58 +190,22 @@ public class S_GridManager : MonoBehaviour
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
-                if (OrganizedColumn[y].sizeX == 2)
-                {
-                    Debug.Log("UnitPrio MoveToTile sizeX 2");
-                    Debug.Log("Unit MoveToTile to move to (" + x + "," + y + ")");
-                    Debug.Log("Starting Column : " + shiftX);
-                    while (gridList[shiftX][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY].unit != null && gridList[shiftX + 1][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY].unit != null)
-                    {
-                        shiftX = Random.Range(0, width - 1);
-                    }
-                    Debug.Log("Arriving Column : " + shiftX);
-                    OrganizedColumn[y].MoveToTile(gridList[shiftX][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY]);
-                }
-                else if(OrganizedColumn[y].sizeY == 2)
+                if(OrganizedColumn[y].sizeY == 2)
                 {
                     Debug.Log("UnitPrio MoveToTile sizeY 2");
                     Debug.Log("Unit MoveToTile to move to (" + x + "," + y + ")");
-                    Debug.Log("Starting Column : " + shiftX);
-                    while (gridList[shiftX][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY].unit != null)
-                    {
-                        shiftX = Random.Range(0, width);
-                    }
-                    Debug.Log("Arriving Column : " + shiftX);
-                    OrganizedColumn[y].MoveToTile(gridList[shiftX][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY]);
-
+                    OrganizedColumn[y].MoveToTile(gridList[x][(Mathf.Abs(height) - OrganizedColumn[y].sizeY)]);
                 }
                 else
                 {
                     Debug.Log("UnitPrio MoveToTile size 1");
                     Debug.Log("Unit MoveToTile to move to (" + x + "," + y + ")");
-                    Debug.Log("Starting Column : " + shiftX);
-                    while (gridList[shiftX][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY].unit != null)
-                    {
-                        shiftX = Random.Range(0, width);
-                    }
-                    Debug.Log("Arriving Column : " + shiftX);
-                    OrganizedColumn[y].MoveToTile(gridList[shiftX][(Mathf.Abs(height) - 1) - OrganizedColumn[y].sizeY]);
+                    OrganizedColumn[y].MoveToTile(gridList[x][(Mathf.Abs(height) - OrganizedColumn[y].sizeY)]);
                 }
-                //else
-                //{
-                //    Debug.Log("UnitPrio MoveToTile size 1 forced");
-                //    Debug.Log("Unit forced to move to (" + x + "," + (OrganizedColumn[y - 1].tileY) + ")"); 
-                //    OrganizedColumn[y].ForceOnTile(gridList[x][OrganizedColumn[y - 1].tileY + OrganizedColumn[y - 1].sizeY]);
-                //    OrganizedColumn[y] = null;
-                //}
                 Debug.Log("#################################");
-                shiftX = x;
             }
-            
             GridUnit[GridUnit.Count - 1] = OrganizedColumn;
-
         }
-
         return GridUnit; 
     }
 

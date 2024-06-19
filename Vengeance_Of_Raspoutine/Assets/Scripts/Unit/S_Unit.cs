@@ -305,7 +305,6 @@ public class Unit : MonoBehaviour
 
                 case (1, 2):
 
-
                     p_tile.grid.gridList[actualTile.tileX][actualTile.tileY + 1].unit = null;
                     actualTile.unit = null;
 
