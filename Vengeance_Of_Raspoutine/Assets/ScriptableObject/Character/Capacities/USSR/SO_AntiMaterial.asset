@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b80e18d3964412844a1f2fdbb756d0c3, type: 3}
-  m_Name: SO_AntiMaterail
+  m_Name: SO_AntiMaterial
   m_EditorClassIdentifier: 
   isUnitsStatChangementSpecialCapacity: 0
   isUnitsMetamorphosisSpecialCapacity: 1
   isUnitsDestroySpecialCapacity: 0
   isUltimateSpecialCapacity: 0
-  capacityName: MortarShots
+  capacityName: Anti-material
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
   capacityDescription: Shoots a high caliber bullet trough the enemy ranks.
   capacityEffectDescription: the attack of the projectile is equal to remaining hp
     of the wall
-  isCapacityLocked: 1
+  isCapacityLocked: 0
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2
   unitStatsChangementValue: 3

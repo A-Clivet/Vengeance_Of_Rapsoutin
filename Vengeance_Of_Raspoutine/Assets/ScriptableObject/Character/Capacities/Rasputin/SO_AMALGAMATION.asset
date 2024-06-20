@@ -19,7 +19,7 @@ MonoBehaviour:
   capacityName: Amalgamation
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
   capacityDescription: Merges inactive units into a powerful projectile
-  capacityEffectDescription: the attack stat is equal to the sum of everyone's stats
+  capacityEffectDescription: The attack stat is equal to the sum of everyone's stats
     (max 10), can be deployed in any row
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0

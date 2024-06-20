@@ -38,18 +38,18 @@ public class S_UnitManager : MonoBehaviour
     public void UnitCombo(int p_formationNumber, bool p_isIAUsingThisFunction = false)
     {
         int columnCounter = 0;
-        int lineCounter = 0;
-        int currentColorLine=-1;
-        int currentColorColumn=-1;
+        int lineCounter;
+
+        int currentColorColumn = -1;
+        int currentColorLine;
 
         //SO_Unit actualType = null;
-
-        //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
 
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
             lineCounter = 0;
             currentColorLine = -1;
+            UnitLine.Clear();
             for (int j = 0; j < grid.width; j++) // largeur
             {
                 if(gridList[j][i].unit == null)
@@ -85,19 +85,35 @@ public class S_UnitManager : MonoBehaviour
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
 
+                    for(int k = 0; k < p_formationNumber; k++)
+                    {
+                        gridList[j - k][i].unit.state = 1;
+                        UnitLine[UnitLine.Count - 1].Add(gridList[j - k][i].unit);
+                    }
+                }    
+                else if (lineCounter >= p_formationNumber)
+                {
                     gridList[j][i].unit.state = 1;
-                }            
+                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation);
+                    }
+                }
             }
             if (UnitLine.Count >= 1)
             {
                 Defend(UnitLine);
             }
-            UnitLine.Clear();
         }
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+
         for (int i = 0; i < grid.width; i++) // largeur
         {
+            currentColorColumn = -1; // -1 is not a value that a unitColor will be 
             columnCounter = 0;
-            currentColorColumn = -1;
+
+
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
 
@@ -132,19 +148,25 @@ public class S_UnitManager : MonoBehaviour
                     {
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
-                    
-                    for (int h = p_formationNumber - 1; h > 0; h--)
-                    {
-                        gridList[i][j-h].unit.state = 2;
-                        UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - h].unit);
-                    }
 
+                    gridList[i][j].unit.state = 2;
+                    gridList[i][j - 1].unit.state = 2;
+                    gridList[i][j - 2].unit.state = 2;
+
+                    gridList[i][j].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0 ,0, 255);
+                    gridList[i][j - 1].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                    gridList[i][j - 2].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+
+                    //temporary visual change to notices attacking units
+                    
+                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
+                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
+                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
                     for (int k=0;k< UnitColumn[UnitColumn.Count-1].Count;k++)
                     {
                         UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
                         UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
                     }
-
                     if (S_GameManager.Instance.isPlayer1Turn)
                     {
                         S_GameManager.Instance.player1CharacterXP.GainXP(5);
@@ -153,11 +175,12 @@ public class S_UnitManager : MonoBehaviour
                     {
                         S_GameManager.Instance.player2CharacterXP.GainXP(5);
                     }
+
+
                 }
             }
         }
         grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-
     }
 
 
@@ -168,6 +191,7 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
+                p_defendingUnit[i][j].transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 0);
 
                 p_defendingUnit[i][j].defense = 4;
                 p_defendingUnit[i][j].attack = 0;

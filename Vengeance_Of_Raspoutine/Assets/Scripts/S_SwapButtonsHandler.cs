@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class S_SwapButtonsHandler : MonoBehaviour
 {
+    private Color _transparency = new Color(0,0,0, 217/255f);
+    
     public static S_SwapButtonsHandler Instance;
 
     public Button player1SwapButton;
@@ -36,10 +38,14 @@ public class S_SwapButtonsHandler : MonoBehaviour
         if (p_isPlayer1SwapUnitButtonChanged)
         {
             player1SwapButton.interactable = p_isButtonInteractionGivenIsEnabled;
+            player1SwapButton.GetComponentInChildren<TextMeshProUGUI>().color = _transparency;
+
         }
         else
         {
             player2SwapButton.interactable = p_isButtonInteractionGivenIsEnabled;
+            player2SwapButton.GetComponentInChildren<TextMeshProUGUI>().color = _transparency;
+
         }
     }
 

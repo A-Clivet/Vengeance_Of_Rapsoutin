@@ -64,7 +64,7 @@ public class S_RemoveUnit : MonoBehaviour
 
             return true;
         }
-
+        p_tile.grid.unitManager.UnitCombo(3);
         return false;
     }
 
