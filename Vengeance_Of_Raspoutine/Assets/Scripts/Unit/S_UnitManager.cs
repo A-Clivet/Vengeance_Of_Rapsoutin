@@ -148,12 +148,12 @@ public class S_UnitManager : MonoBehaviour
                     gridList[i][j].unit.state = 2;
                     gridList[i][j - 1].unit.state = 2;
                     gridList[i][j - 2].unit.state = 2;
-                    
-                    //temporary visual change to notices attacking units
 
-                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
+                    gridList[i][j].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0 ,0, 255);
+                    gridList[i][j - 1].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                    gridList[i][j - 2].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+
+                    //temporary visual change to notices attacking units
                     
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
@@ -187,6 +187,7 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
+                p_defendingUnit[i][j].transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 0);
 
                 p_defendingUnit[i][j].defense = 4;
                 p_defendingUnit[i][j].attack = 0;
