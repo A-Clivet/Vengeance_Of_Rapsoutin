@@ -75,7 +75,7 @@ public class S_UnitManager : MonoBehaviour
                     lineCounter++;
                 }
 
-                if (lineCounter >= p_formationNumber)
+                if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
 
@@ -85,9 +85,17 @@ public class S_UnitManager : MonoBehaviour
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
 
+                    for(int k = 0; k < p_formationNumber; k++)
+                    {
+                        gridList[j - k][i].unit.state = 1;
+                        UnitLine[UnitLine.Count - 1].Add(gridList[j - k][i].unit);
+                    }
+                }    
+                else if (lineCounter >= p_formationNumber)
+                {
                     gridList[j][i].unit.state = 1;
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                }              
+                }
             }
             if (UnitLine.Count >= 1)
             {
