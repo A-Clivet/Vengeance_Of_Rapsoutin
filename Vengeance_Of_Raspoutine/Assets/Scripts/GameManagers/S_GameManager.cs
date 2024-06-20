@@ -94,9 +94,9 @@ public class S_GameManager : MonoBehaviour
                 return;
             }
 
-            DeactivateGrid();
-
             StartTurnCheckUnit();
+
+            DeactivateGrid();
 
             _turnTimerTime = 60.0f;
         }
@@ -475,11 +475,14 @@ public class S_GameManager : MonoBehaviour
     {
         if (player1GridManager.unitSelected != null)
         {
+            player2GridManager.unitSelected = null;
             player1GridManager.unitSelected.highlight.SetActive(false);
         }
         if (player2GridManager.unitSelected != null)
         {
+            player2GridManager.unitSelected = null;
             player2GridManager.unitSelected.highlight.SetActive(false);
+
         }
         S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(!isPlayer1Turn, true);
         S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(isPlayer1Turn, false);

@@ -284,7 +284,6 @@ public class Unit : MonoBehaviour
             }
         }
         highlight.SetActive(false);
-        unitManager.UnitCombo(3);
     }
     /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
   then deselect the unit*/
