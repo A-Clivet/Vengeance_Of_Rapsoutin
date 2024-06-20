@@ -25,8 +25,8 @@ Transform:
   m_GameObject: {fileID: 912089018679891298}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.5042746, y: 7.695673, z: -1}
-  m_LocalScale: {x: 0.715007, y: 0.715007, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6639207390486999893}
@@ -639,8 +639,8 @@ Transform:
   m_GameObject: {fileID: 5396783087282159885}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.5042746, y: 7.8029246, z: -1}
-  m_LocalScale: {x: 0.5362517, y: 0.715007, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4011176919741723681}
@@ -694,7 +694,7 @@ SpriteRenderer:
   m_Size: {x: 1.5625, y: 1.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5995191591774840050
@@ -813,9 +813,9 @@ MonoBehaviour:
   unitColor: 2
   unitSprite: {fileID: 0}
   actualTile: {fileID: 0}
-  highlight: {fileID: 0}
+  highlight: {fileID: 7500957299029667905}
   grid: {fileID: 0}
-  statsCanvas: {fileID: 0}
+  statsCanvas: {fileID: 7983352921279894799}
   shadow: {fileID: 8537392610172286488}
   tileX: 0
   tileY: 0
@@ -1294,7 +1294,7 @@ RectTransform:
   m_GameObject: {fileID: 7983352921279894799}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.715007, y: 0.715007, z: 1}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4715161847396416946}
@@ -1304,7 +1304,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.5042741, y: 7.6956725}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1109598071146984991
@@ -1382,10 +1382,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e7bc8cedc039148802dc10c8ce5d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unit: {fileID: 0}
-  _atkDisplay: {fileID: 0}
-  _defDisplay: {fileID: 0}
-  _turnChargeDisplay: {fileID: 0}
+  _unit: {fileID: 3052463181262568449}
+  _atkSpriteBackground: {fileID: 4464655587891745404}
+  _defSpriteBackground: {fileID: 6372600855605684797}
+  _turnChargeSpriteBackground: {fileID: 2261244727946791404}
 --- !u!1 &8409822416979368956
 GameObject:
   m_ObjectHideFlags: 0

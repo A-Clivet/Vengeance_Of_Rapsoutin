@@ -25,9 +25,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88913874357584917}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.5221503, y: 7.8744235, z: -1}
-  m_LocalScale: {x: 0.57199997, y: 0.715007, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.03, y: 0.25, z: -1}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4011176919741723681}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 1.5625, y: 1.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &367574342088158031
@@ -381,7 +381,7 @@ RectTransform:
   m_GameObject: {fileID: 2353808798028606783}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.715007, y: 0.715007, z: 1}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1169067657440581807}
@@ -391,7 +391,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 3.5042741, y: 7.6956725}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4325523667934207153
@@ -469,10 +469,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e7bc8cedc039148802dc10c8ce5d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unit: {fileID: 0}
-  _atkDisplay: {fileID: 0}
-  _defDisplay: {fileID: 0}
-  _turnChargeDisplay: {fileID: 0}
+  _unit: {fileID: 3052463181262568449}
+  _atkSpriteBackground: {fileID: 7843377923362255600}
+  _defSpriteBackground: {fileID: 3285461208263112063}
+  _turnChargeSpriteBackground: {fileID: 4172058645317584732}
 --- !u!1 &2953142943920364573
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,8 +970,8 @@ Transform:
   m_GameObject: {fileID: 5119415801183614117}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.5042746, y: 7.695673, z: -1}
-  m_LocalScale: {x: 0.715007, y: 0.715007, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 0.7151007, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6656807500738810996}
@@ -1093,9 +1093,9 @@ MonoBehaviour:
   unitColor: 2
   unitSprite: {fileID: 0}
   actualTile: {fileID: 0}
-  highlight: {fileID: 0}
+  highlight: {fileID: 6066248497748931834}
   grid: {fileID: 0}
-  statsCanvas: {fileID: 0}
+  statsCanvas: {fileID: 2353808798028606783}
   shadow: {fileID: 4206402311853731124}
   tileX: 0
   tileY: 0
