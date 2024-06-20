@@ -43,7 +43,7 @@ public class S_GameManager : MonoBehaviour
                 isPlayer1Turn = true;
 
                 // Add one to the total number of turn passed in the round
-                _currentRoundNumber++;
+                currentRoundNumber++;
 
                 // Change the interactability of the unit call's buttons to the corresponding value
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
@@ -61,7 +61,7 @@ public class S_GameManager : MonoBehaviour
 
                 isPlayer1Turn = false;
 
-                _currentRoundNumber++;
+                currentRoundNumber++;
 
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
@@ -227,7 +227,7 @@ public class S_GameManager : MonoBehaviour
 
     // -- Informations showns to the player -- //
     float _turnTimerTime;
-    int _currentRoundNumber = 0;
+    public int currentRoundNumber = 0;
 
     // -- Text UIs who shows to the player informations -- //
     TextMeshProUGUI _turnTimerTextUI;
@@ -406,7 +406,7 @@ public class S_GameManager : MonoBehaviour
             _turnTimerTextUI.text = "Remaining time : " + ((int)_turnTimerTime).ToString();
 
             // Display the current round number
-            _playerActionsLeftTextUI.text = "Turn : " + _currentRoundNumber.ToString();
+            _playerActionsLeftTextUI.text = "Turn : " + currentRoundNumber.ToString();
 
             // Display the player's number of action left he have 
             _totalTurnsTextUI.text = "Remaining actions : " + _playerActionNumber;
