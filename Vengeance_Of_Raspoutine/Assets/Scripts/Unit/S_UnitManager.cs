@@ -95,6 +95,10 @@ public class S_UnitManager : MonoBehaviour
                 {
                     gridList[j][i].unit.state = 1;
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation);
+                    }
                 }
             }
             if (UnitLine.Count >= 1)
