@@ -12,9 +12,15 @@ public class S_CrossSceneDataManager : MonoBehaviour
     public List<PlayersSelectedUnit> player1SelectedUnits;
     public List<PlayersSelectedUnit> player2SelectedUnits;
 
+    public bool vsIA;
+
     private void Awake()
     {
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne);
         DontDestroyOnLoad(transform.parent);
+    }
+    public void VsIAOrPlayer(bool p_IsVsIA)
+    {
+        vsIA = p_IsVsIA;
     }
 }

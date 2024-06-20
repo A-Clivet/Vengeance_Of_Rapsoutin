@@ -364,10 +364,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2051962785}
-        m_TargetAssemblyTypeName: S_SelectionMode, Assembly-CSharp
-        m_MethodName: OnPlayerButton
-        m_Mode: 1
+      - m_Target: {fileID: 168501489}
+        m_TargetAssemblyTypeName: S_CrossSceneDataManager, Assembly-CSharp
+        m_MethodName: VsIAOrPlayer
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -679,6 +679,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73408300}
   m_CullTransparentMesh: 1
+--- !u!114 &168501489 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3749201494367363991, guid: d5b8ac66ea3393b4dab2bf125f821513, type: 3}
+  m_PrefabInstance: {fileID: 758904540}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26cdc570ccdb447489a9921dda369cb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &185046505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,17 +2033,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 2051962785}
-        m_TargetAssemblyTypeName: S_SelectionMode, Assembly-CSharp
-        m_MethodName: OnIAButton
-        m_Mode: 1
+      - m_Target: {fileID: 168501489}
+        m_TargetAssemblyTypeName: S_CrossSceneDataManager, Assembly-CSharp
+        m_MethodName: VsIAOrPlayer
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &686895023
 MonoBehaviour:

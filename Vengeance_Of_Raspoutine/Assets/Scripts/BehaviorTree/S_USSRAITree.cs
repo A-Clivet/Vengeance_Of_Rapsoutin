@@ -8,7 +8,6 @@ public class S_USSRAITree : S_BehaviorTree.S_Tree
     public S_UnitManager unitManager;
     public S_GridManager gridManager;
     public S_UnitCall unitCall;
-    public S_UnitCall unit;
     public S_RemoveUnit removeUnit;
 
     protected S_SpecialCapacityManager pr_abilityManager;

@@ -27,7 +27,7 @@ public class S_CheckLoneUnit : Node
             {
                 if (_gridManager.AllUnitPerColumn[i].Count - j >= 0)        //Allows to go through the grid by Lines and avoid the get out of the list
                 {
-                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].SO_Unit.unitType)     //Allows to Check if the last Unit has any Unit of the same type below it
+                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].SO_Unit.unitType && _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor== _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].unitColor)     //Allows to Check if the last Unit has any Unit of the same type below it
                     {
                         continue;
                     }
@@ -40,7 +40,7 @@ public class S_CheckLoneUnit : Node
                             {
                                 if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit != null)      //
                                 {
-                                    if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType)      //Checks if the unit Below the current unit that we are on is the same type
+                                    if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType && _gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.unitColor == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor)      //Checks if the unit Below the current unit that we are on is the same type
                                     {
                                         continue;
                                     }
@@ -52,7 +52,7 @@ public class S_CheckLoneUnit : Node
 
                                 if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit != null)      //Allows to check both sides of the unit we are checking and if they are not null
                                 {
-                                    if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType)      //Checks if the unit we are currently checking has any unit of of the same type next to it (Left and Right)
+                                    if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType && _gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.unitColor == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor)      //Checks if the unit we are currently checking has any unit of of the same type next to it (Left and Right)
                                     {
                                         continue;
                                     }

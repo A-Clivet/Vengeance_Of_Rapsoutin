@@ -57,7 +57,10 @@ public class S_GameManager : MonoBehaviour
             }
             else if (_currentTurn == TurnEmun.Player2Turn)
             {
-                gameObject.GetComponent<S_RasputinIATree>().CallTree();
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    gameObject.GetComponent<S_RasputinIATree>().CallTree();
+                }
 
                 // Same as for the player1 but for the player2
 
