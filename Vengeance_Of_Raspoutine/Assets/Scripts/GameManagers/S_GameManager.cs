@@ -575,7 +575,7 @@ public class S_GameManager : MonoBehaviour
 
             S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
 
-            //return;
+            return;
         }
         #endregion
 
