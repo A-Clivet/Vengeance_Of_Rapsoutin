@@ -801,6 +801,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   statsCanvas: {fileID: 6172254772495423388}
   shadow: {fileID: 2018066760050346878}
+  freeze: {fileID: 8257987798530120987}
   tileX: 0
   tileY: 0
   sizeX: 1

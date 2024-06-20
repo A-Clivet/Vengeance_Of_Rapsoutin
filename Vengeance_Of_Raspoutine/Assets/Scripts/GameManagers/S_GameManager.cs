@@ -815,7 +815,7 @@ public class S_GameManager : MonoBehaviour
                     unit.ReturnToBaseTile();
                     if (unit.state == 3)
                     {
-                        unit.transform.GetChild(2).gameObject.SetActive(false);
+                        unit.freeze.SetActive(false);
                         unit.state = 0;
                     }
                 }

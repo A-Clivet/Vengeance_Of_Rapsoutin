@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour
     private S_UnitManager unitManager;
 
     public GameObject shadow;
+    public GameObject freeze;
 
     public int tileX;
     public int tileY;
