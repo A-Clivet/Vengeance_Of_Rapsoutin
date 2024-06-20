@@ -173,7 +173,6 @@ public class S_GridManager : MonoBehaviour
             {
                 OrganizedColumn.Add(u);
             }
-            Debug.Log(OrganizedColumn.Count);
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {

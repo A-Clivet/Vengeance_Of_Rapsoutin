@@ -434,18 +434,14 @@ public class Unit : MonoBehaviour
             if (grid.gridList[p_tile.tileX][0].unit == null)
             {
                 shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
-                Debug.Log("a");
             }
             else if (tileX == p_tile.tileX || grid.AllUnitPerColumn[p_tile.tileX].Count >= Mathf.Abs(grid.height))
             {
                 shadow.transform.position = transform.position;
-                Debug.Log("b");
             }
             else 
             {
-                Debug.Log(p_tile.tileX) ;
                 shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count].transform.position.y);
-                Debug.Log("c");
             }
         }
         
