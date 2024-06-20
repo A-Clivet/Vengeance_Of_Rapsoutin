@@ -24,8 +24,9 @@ public class S_Tile : MonoBehaviour
     {
         if (grid.unitSelected != null && S_GameManager.Instance.currentTurn!=S_GameManager.TurnEmun.TransitionTurn)
         {
+            grid.unitSelected.shadow.SetActive(false);
             grid.unitSelected.ActionMoveToTile(this);
-            Destroy(unit.unitPreview);
+
         }
     }
 }

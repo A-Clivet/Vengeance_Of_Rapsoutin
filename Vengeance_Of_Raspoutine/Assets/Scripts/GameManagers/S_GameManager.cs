@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -211,6 +212,9 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerTurnAnimationGO;
 
     [SerializeField] private GameObject _canvasAnimPlayer;
+    
+    [Header("Timer :")]
+    [SerializeField] private Image _fill;
     #endregion
 
     #region Private variable
@@ -227,6 +231,10 @@ public class S_GameManager : MonoBehaviour
 
     // -- Informations showns to the player -- //
     float _turnTimerTime;
+    float _maxTime = 60;
+    Color _startTimer = new Color(0,1,144/255f);
+    Color _middleTimer = new Color(1,196/255f,0);
+    Color _endTimer = new Color(198/255f,4/255f,4/255f);
     int _currentRoundNumber = 0;
 
     // -- Text UIs who shows to the player informations -- //
@@ -404,6 +412,23 @@ public class S_GameManager : MonoBehaviour
 
             // Display the rounded timer in seconds in a text
             _turnTimerTextUI.text = "Remaining time : " + ((int)_turnTimerTime).ToString();
+
+            // reduces the timer circle
+            _fill.fillAmount = _turnTimerTime / _maxTime;
+            
+            // Color the timer circle
+            if (_turnTimerTime > _maxTime / 2)
+            {
+                // 30's first second : green to yellow
+                float lerpValue = (60 - _turnTimerTime) / (_maxTime / 2);
+                _fill.color = Color.Lerp(_startTimer, _middleTimer, lerpValue);
+            }
+            else
+            {
+                // 30's last second : yellow to red
+                float lerpValue = (_maxTime / 2 - _turnTimerTime) / (_maxTime / 2);
+                _fill.color = Color.Lerp(_middleTimer, _endTimer, lerpValue);
+            }
 
             // Display the current round number
             _playerActionsLeftTextUI.text = "Turn : " + _currentRoundNumber.ToString();

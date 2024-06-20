@@ -68,7 +68,7 @@ public class S_UnitCall : MonoBehaviour
         {
             CallAmountUpdate();
             callAmount /= 2;
-            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+
         }
 
         if (grid.totalUnitAmount < unitCapacity)
