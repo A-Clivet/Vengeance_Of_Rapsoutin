@@ -83,7 +83,7 @@ public class S_WeatherEvent : MonoBehaviour
         nbTurn--;
         if (nbTurn < 0)
         {
-            nbTurn = 8;
+            nbTurn = 4;
             List<Unit> unitToRemove = new List<Unit>();
             foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 1))
             {
