@@ -36,14 +36,14 @@ public class S_ShouldRemoveUnit : Node
 
             if (_unitComboColumn[i][0].SO_Unit.unitType == _gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY - 2].unit.SO_Unit.unitType)
             {
-                _removeUnit.RemoveUnitAI(_gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY - 1]);
+                _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY - 1]);
                 pr_state = NodeState.SUCCESS;
                 return pr_state;
             }
 
             if (_unitComboColumn[i][_unitComboColumn[i].Count - 1].SO_Unit.unitType == _gridManager.gridList[_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 2].unit.SO_Unit.unitType)
             {
-                _removeUnit.RemoveUnitAI(_gridManager.gridList[_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 1]);
+                _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 1]);
                 pr_state = NodeState.SUCCESS;
                 return pr_state;
             }
@@ -63,14 +63,14 @@ public class S_ShouldRemoveUnit : Node
 
             if (_unitComboLine[i][0].SO_Unit.unitType == _gridManager.gridList[_unitComboLine[i][0].tileX - 1][_unitComboLine[i][0].tileY + 1].unit.SO_Unit.unitType)
             {
-                _removeUnit.RemoveUnitAI(_gridManager.gridList[_unitComboLine[i][0].tileX -1 ][_unitComboLine[i][0].tileY]);
+                _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboLine[i][0].tileX -1 ][_unitComboLine[i][0].tileY]);
                 pr_state = NodeState.SUCCESS;
                 return pr_state;
             }
 
             if (_unitComboLine[i][_unitComboLine[i].Count - 1].SO_Unit.unitType == _gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX + 1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY + 1].unit.SO_Unit.unitType)
             {
-                _removeUnit.RemoveUnitAI(_gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX + 1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY]);
+                _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX + 1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY]);
                 pr_state = NodeState.SUCCESS;
                 return pr_state;
             }

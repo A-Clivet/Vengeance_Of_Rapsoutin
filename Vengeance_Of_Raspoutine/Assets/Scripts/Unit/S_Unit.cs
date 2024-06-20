@@ -28,6 +28,8 @@ public class Unit : MonoBehaviour
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
 
+
+
     public int tileX;
     public int tileY;
     public int sizeX;
@@ -36,8 +38,8 @@ public class Unit : MonoBehaviour
     public bool mustAttack = false;
     private bool _willLoseActionPoints = false;
 
-    public GameObject unitPreview; //Preview of where the unit will land
-    public Unit unitPreviewComponent; //Preview components
+
+    public GameObject _shadow;
 
     private void Awake()
     {
@@ -117,17 +119,6 @@ public class Unit : MonoBehaviour
     public void DestroyFormation()
     {
         unitManager.UnitColumn.Remove(actualFormation);
-        foreach (Unit u in actualFormation)
-        {
-            if (u != this)
-            {
-                grid.AllUnitPerColumn[u.tileX].Remove(u);
-                Destroy(u.gameObject);
-                u.StopAllCoroutines();
-                
-            }
-        }
-        grid.AllUnitPerColumn[tileX].Remove(this);
         for (int i = 0; i < unitManager.UnitColumn.Count; i++)
         {
             if (unitManager.UnitColumn[i][0].turnCharge <= 0)
@@ -152,7 +143,7 @@ public class Unit : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(actualTile != null) grid.totalUnitAmount -= 1;
+        grid.totalUnitAmount -= 1;
     }
     //launch the attack of all formation and begin the recursion of the attack
 
@@ -168,13 +159,17 @@ public class Unit : MonoBehaviour
                 //remove virtually the units from their own grid and tile, they do not exists anymore for their grid and respective tiles.
                 for (int i = 0; i < actualFormation.Count; i++)
                 {
+                    foreach (Unit u in actualFormation)
+                    {
+                        u.mustAttack = true;
+                        u.turnCharge = 0;
+                        u.actualTile.unit = null;
+                        grid.unitList.Remove(u);
+                        grid.AllUnitPerColumn[u.tileX].Remove(u);
+                        u._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
+                        u.StartCoroutine(LerpMove());
 
-                    actualFormation[i].mustAttack = true;
-                    actualFormation[i].turnCharge = 0;
-                    actualFormation[i].actualTile.unit = null;
-                    grid.unitList.Remove(actualFormation[i]);
-                    actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
-                    actualFormation[i].StartCoroutine(LerpMove());
+                    }
                 }
             }
         }
@@ -273,6 +268,7 @@ public class Unit : MonoBehaviour
                     {
                         _willLoseActionPoints = true;
                     }
+                    grid.AllUnitPerColumn[tileX].Remove(this);
                     actualTile.unit = null;
                     actualTile = tile;
                     actualTile.unit = this;
@@ -280,11 +276,9 @@ public class Unit : MonoBehaviour
                     tileX = tile.tileX;
                     tileY = tile.tileY;
                     _posToMove = tile.transform.position;
-                    if (!_isMoving)
-                    {
-                        _isMoving = true;
-                        StartCoroutine(LerpMove());
-                    }
+                    grid.AllUnitPerColumn[tileX].Add(this);
+
+                    StartCoroutine(LerpMove());
                     foreach (Unit unit in grid.unitList)
                     {
                         unit.GetComponent<BoxCollider2D>().enabled = true;
@@ -312,6 +306,7 @@ public class Unit : MonoBehaviour
             {
                 if (tile.unit == null || tile.unit == this)
                 {
+                    grid.AllUnitPerColumn[tileX].Remove(this);
                     actualTile.unit = null;
                     actualTile = tile;
                     actualTile.unit = this;
@@ -319,6 +314,7 @@ public class Unit : MonoBehaviour
                     tileX = tile.tileX;
                     tileY = tile.tileY;
                     _posToMove = tile.transform.position;
+                    grid.AllUnitPerColumn[tileX].Add(this);
 
                     StartCoroutine(LerpMove());
                     foreach (Unit unit in grid.unitList)
@@ -338,12 +334,14 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null)
             {
+                grid.AllUnitPerColumn[tileX].Remove(this);
                 actualTile = tile;
                 actualTile.unit = this;
                 grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
+                grid.AllUnitPerColumn[tileX].Add(this);
 
                 StartCoroutine(LerpMove());
 
@@ -380,6 +378,7 @@ public class Unit : MonoBehaviour
                     foreach (Unit unit in grid.unitList)
                     {
                         unit.GetComponent<BoxCollider2D>().enabled = false;
+                        _shadow.SetActive(true);
                     }
                 }
                 return;
@@ -394,7 +393,9 @@ public class Unit : MonoBehaviour
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = false;
+                    _shadow.SetActive(true);
                 }
+
             }
         }
         else
@@ -442,29 +443,26 @@ public class Unit : MonoBehaviour
     {
         if (!grid.isSwapping)
         {
-            if (unitPreview == null)
-            {
-                unitPreview = Instantiate(gameObject);
-                unitPreviewComponent = unitPreview.GetComponent<Unit>();
-                unitPreview.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0.75f);
-                unitPreviewComponent.actualTile = null;
-                highlight.SetActive(true);
-            }
 
             if (grid.gridList[p_tile.tileX][0].unit == null)
             {
-                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
+                _shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
             }
             else if (tileX == p_tile.tileX)
             {
-                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
+                _shadow.transform.position = transform.position;
+            }
+            else if (grid.AllUnitPerColumn[p_tile.tileX].Count == Mathf.Abs(grid.height))
+            {
+                _shadow.transform.position = new Vector3(p_tile.transform.position.x, transform.localScale.y * grid.height + 1);
             }
             else
             {
-                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
+
+                _shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count].transform.position.y);
+
             }
 
-            StartCoroutine(unitPreviewComponent.LerpMove());
         }
     }
 
