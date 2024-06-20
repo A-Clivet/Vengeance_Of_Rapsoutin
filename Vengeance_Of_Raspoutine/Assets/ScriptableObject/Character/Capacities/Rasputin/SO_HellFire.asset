@@ -19,7 +19,7 @@ MonoBehaviour:
   capacityName: HellFire
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
   capacityDescription: Burns to death 5 enemy troops
-  capacityEffectDescription: kills 5 random troops
+  capacityEffectDescription: Kills 5 random troops
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2

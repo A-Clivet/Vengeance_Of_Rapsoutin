@@ -152,7 +152,7 @@ public class Unit : MonoBehaviour
 
         if (turnCharge <= 0)
         {
-            if (actualFormation.Count > 1)
+            if (actualFormation.Count > 0)
             {
 
                 //remove virtually the units from their own grid and tile, they do not exists anymore for their grid and respective tiles.

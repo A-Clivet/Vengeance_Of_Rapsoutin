@@ -21,7 +21,7 @@ MonoBehaviour:
   capacityDescription: Sprinkles vodka over ally troops to make them more resistant.
   capacityEffectDescription: 'Troops health : + 1'
   isCapacityLocked: 0
-  isPlayer1UnitsChanged: 0
+  isPlayer1UnitsChanged: 1
   unitStatChanged: 0
   unitStatsChangementValue: 1
   baseState: 0
