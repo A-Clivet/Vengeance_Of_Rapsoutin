@@ -38,6 +38,10 @@ public class S_GridManager : MonoBehaviour
         _gridScale = _tile.transform.localScale;
 
         GenerateGrid(startX,startY);
+        for (int i = 0; i < width; i++) 
+        {
+            AllUnitPerColumn.Add(new List<Unit>());
+        }
     }
 
     // Generate the grid
@@ -135,12 +139,15 @@ public class S_GridManager : MonoBehaviour
     {
 
         List<List<Unit>> GridUnit = new();
+        List<Unit> StateIdleUnit = new();
+        List<Unit> StateDefendUnit = new();
+        List<Unit> StateAttackUnit = new();
 
         for (int x = 0; x < width; x++)
         {
-            List<Unit> StateIdleUnit = new();
-            List<Unit> StateDefendUnit = new();
-            List<Unit> StateAttackUnit = new();
+            StateIdleUnit.Clear();
+            StateDefendUnit.Clear();
+            StateAttackUnit.Clear();
             List<Unit> OrganizedColumn = new();
 
 
@@ -150,6 +157,7 @@ public class S_GridManager : MonoBehaviour
                 if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
                 if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
+
                 gridList[x][y].unit.actualTile = null;
                 gridList[x][y].unit = null;
             }
@@ -165,15 +173,14 @@ public class S_GridManager : MonoBehaviour
             {
                 OrganizedColumn.Add(u);
             }
-
-            GridUnit.Add(OrganizedColumn);
+            Debug.Log(OrganizedColumn.Count);
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
                 OrganizedColumn[y].SwitchUnit(gridList[x][y]);
             }
+            GridUnit.Add(OrganizedColumn);
         }
-        unitManager.UnitCombo(3);
         return GridUnit; 
     }
 

@@ -28,6 +28,8 @@ public class Unit : MonoBehaviour
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
 
+    public GameObject shadow;
+
     public int tileX;
     public int tileY;
     public int sizeX;
@@ -36,8 +38,6 @@ public class Unit : MonoBehaviour
     public bool mustAttack = false;
     private bool _willLoseActionPoints = false;
 
-    public GameObject unitPreview; //Preview of where the unit will land
-    public Unit unitPreviewComponent; //Preview components
 
     private void Awake()
     {
@@ -99,7 +99,6 @@ public class Unit : MonoBehaviour
         tileY= p_tile.tileY;
         unitManager = p_tile.grid.unitManager;
         enemyGrid = grid.enemyGrid;
-        grid.AllUnitPerColumn[tileX].Add(this);
 
         GetComponent<SpriteRenderer>().sprite = SO_Unit.unitSprite[unitColor];
     }
@@ -270,11 +269,7 @@ public class Unit : MonoBehaviour
                     tileX = tile.tileX;
                     tileY = tile.tileY;
                     _posToMove = tile.transform.position;
-                    if (!_isMoving)
-                    {
-                        _isMoving = true;
-                        StartCoroutine(LerpMove());
-                    }
+                    StartCoroutine(LerpMove());
                     foreach (Unit unit in grid.unitList)
                     {
                         unit.GetComponent<BoxCollider2D>().enabled = true;
@@ -319,7 +314,6 @@ public class Unit : MonoBehaviour
                 }
             }
         }
-        unitManager.UnitCombo(3);
     }
     //Used to reorganize the Units by state
     public void SwitchUnit(S_Tile p_tile)
@@ -346,7 +340,6 @@ public class Unit : MonoBehaviour
                 break;
             }
         }
-        unitManager.UnitCombo(3);
     }
 
     //get the last unit of the row corresponding to the tile clicked
@@ -372,6 +365,8 @@ public class Unit : MonoBehaviour
                     {
                         unit.GetComponent<BoxCollider2D>().enabled = false;
                     }
+                    shadow.SetActive(true);
+                    
                 }
                 return;
             }
@@ -385,7 +380,9 @@ public class Unit : MonoBehaviour
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = false;
+                    
                 }
+                shadow.SetActive(true);
             }
         }
         else
@@ -433,30 +430,25 @@ public class Unit : MonoBehaviour
     {
         if (!grid.isSwapping)
         {
-            if (unitPreview == null)
-            {
-                unitPreview = Instantiate(gameObject);
-                unitPreviewComponent = unitPreview.GetComponent<Unit>();
-                unitPreview.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 0.75f);
-                unitPreviewComponent.actualTile = null;
-                highlight.SetActive(true);
-            }
 
             if (grid.gridList[p_tile.tileX][0].unit == null)
             {
-                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
+                shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][0].transform.position.y);
+                Debug.Log("a");
             }
-            else if (tileX == p_tile.tileX)
+            else if (tileX == p_tile.tileX || grid.AllUnitPerColumn[p_tile.tileX].Count >= Mathf.Abs(grid.height))
             {
-                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y);
+                shadow.transform.position = transform.position;
+                Debug.Log("b");
             }
-            else
+            else 
             {
-                unitPreviewComponent._posToMove = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count - 1].transform.position.y + grid.AllUnitPerColumn[p_tile.tileX][0].transform.position.y * 2);
+                Debug.Log(p_tile.tileX) ;
+                shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][grid.AllUnitPerColumn[p_tile.tileX].Count].transform.position.y);
+                Debug.Log("c");
             }
-
-            StartCoroutine(unitPreviewComponent.LerpMove());
         }
+        
     }
 
     public bool GetIsMoving()

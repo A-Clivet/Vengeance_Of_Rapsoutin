@@ -38,80 +38,18 @@ public class S_UnitManager : MonoBehaviour
     public void UnitCombo(int p_formationNumber, bool p_isIAUsingThisFunction = false)
     {
         int columnCounter = 0;
-        int lineCounter = 0;
+        int lineCounter;
 
         int currentColorColumn = -1;
-        int currentColorLine = -1;
+        int currentColorLine;
 
         //SO_Unit actualType = null;
 
-        //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
-
-        for (int i = 0; i < grid.width; i++)//check list largeur
-        {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
-            {
-                if (gridList[i][j].unit == null) //si la case est vide, continue
-                {
-                    continue;
-                }
-                else // si la case contient une unité
-                {
-                    if (gridList[i][j].unit.sizeY > 1)// si l'unité prends plus d'une case de hauteur ce n'est pas un mur
-                    {
-                        if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
-                        {
-                            gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire que l'unité à été check et ne pas repasser dessus
-
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
-                            {
-                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
-                                {
-                                    if (columnCounter == p_formationNumber) // mode attack 
-                                    {
-                                        UnitColumn.Add(new());
-
-                                        gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyFormation();
-                                        gridList[i][j + 3].unit.DestroyFormation();
-
-                                        grid.UnitPriorityCheck();
-                                        columnCounter = 0;
-                                    }
-                                }
-                            }
-                        }
-                        else // size x = 2
-                        {
-                            gridList[i][j].unit.isChecked = true;
-
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
-                            {
-                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
-                                {
-                                    if (columnCounter == p_formationNumber) // mode attack 
-                                    {
-                                        UnitColumn.Add(new());
-
-                                        gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyFormation();
-                                        gridList[i][j + 3].unit.DestroyFormation();
-                                        gridList[i + 1][j + 2].unit.DestroyFormation();
-                                        gridList[i + 1][j + 3].unit.DestroyFormation();
-
-                                        grid.UnitPriorityCheck();
-                                        columnCounter = 0;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
+            lineCounter = 0;
+            currentColorLine = -1;
+            UnitLine.Clear();
             for (int j = 0; j < grid.width; j++) // largeur
             {
                 if(gridList[j][i].unit == null)
@@ -137,7 +75,7 @@ public class S_UnitManager : MonoBehaviour
                     lineCounter++;
                 }
 
-                if (lineCounter == p_formationNumber)
+                if (lineCounter >= p_formationNumber)
                 {
                     UnitLine.Add(new());
 
@@ -148,34 +86,27 @@ public class S_UnitManager : MonoBehaviour
                     }
 
                     gridList[j][i].unit.state = 1;
-                    gridList[j - 1][i].unit.state = 1;
-                    gridList[j - 2][i].unit.state = 1;
-
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                    currentColorLine = -1;
-                    lineCounter = 0;
-                }
-                if (UnitLine.Count >= 1)
-                {
-                    Defend(UnitLine);
-                }
-                UnitLine.Clear();
+                }              
             }
-            currentColorLine = -1;
-            lineCounter = 0;
+            if (UnitLine.Count >= 1)
+            {
+                Defend(UnitLine);
+            }
         }
 
         for (int i = 0; i < grid.width; i++) // largeur
         {
+            currentColorColumn = -1; // -1 is not a value that a unitColor will be 
+            columnCounter = 0;
+
+
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
 
                 if (gridList[i][j].unit == null)
                 {
-                    currentColorColumn = -1; // -1 is not a value that a unitColor will be 
+                    currentColorColumn = -1;
                     columnCounter = 0;
                     continue;
                 }
@@ -224,8 +155,6 @@ public class S_UnitManager : MonoBehaviour
                         UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
                         UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
                     }
-                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-
                     if (S_GameManager.Instance.isPlayer1Turn)
                     {
                         S_GameManager.Instance.player1CharacterXP.GainXP(5);
@@ -235,14 +164,11 @@ public class S_UnitManager : MonoBehaviour
                         S_GameManager.Instance.player2CharacterXP.GainXP(5);
                     }
 
-                    columnCounter = 0;
-                    currentColorColumn = -1;
+
                 }
             }
-            currentColorColumn = -1;
-            columnCounter = 0;
         }
-        
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
     }
 
 
