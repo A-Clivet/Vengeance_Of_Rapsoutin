@@ -475,14 +475,13 @@ public class S_GameManager : MonoBehaviour
     {
         if (player1GridManager.unitSelected != null)
         {
-            player2GridManager.unitSelected = null;
             player1GridManager.unitSelected.highlight.SetActive(false);
+            player1GridManager.unitSelected = null;
         }
         if (player2GridManager.unitSelected != null)
         {
-            player2GridManager.unitSelected = null;
             player2GridManager.unitSelected.highlight.SetActive(false);
-
+            player2GridManager.unitSelected = null;
         }
         S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(!isPlayer1Turn, true);
         S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(isPlayer1Turn, false);
@@ -576,12 +575,14 @@ public class S_GameManager : MonoBehaviour
 
             S_SkillTreeHandler.Instance.player1SkillTree.SetActive(true);
 
-            return;
+            //return;
         }
         #endregion
 
         // Destroy all unit on all grids, and recall UnitCall for the two players
         S_RemoveUnit.Instance.RemoveAllUnits();
+        _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
+        _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
 
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
@@ -616,6 +617,8 @@ public class S_GameManager : MonoBehaviour
 
             // Destroy all unit on all grids, and recall UnitCall for the two players
             S_RemoveUnit.Instance.RemoveAllUnits();
+            _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
+            _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
 
             _mapIndex += _mapIndexModifier;
         }
@@ -636,6 +639,8 @@ public class S_GameManager : MonoBehaviour
 
             // Destroy all unit on all grids, and recall UnitCall for the two players
             S_RemoveUnit.Instance.RemoveAllUnits();
+            _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
+            _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
 
             _mapIndex -= _mapIndexModifier;
         }
@@ -645,6 +650,8 @@ public class S_GameManager : MonoBehaviour
         _loseCoefficient++;
 
         // Call the start units for all players
+        _unitCallButtonHandler.player1UnitCall.firstUnitCalled = false;
+        _unitCallButtonHandler.player2UnitCall.firstUnitCalled = false;
         _unitCallButtonHandler.CallUnitsForAllPlayers();
 
         #region Characters management
