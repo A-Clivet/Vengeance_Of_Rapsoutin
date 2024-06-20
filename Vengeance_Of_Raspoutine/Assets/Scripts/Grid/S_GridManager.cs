@@ -28,6 +28,11 @@ public class S_GridManager : MonoBehaviour
     private Color _transparentColor = new Color(0,0,0,-1);
     public bool isGridVisible = false;
 
+    [Header("UI :")] 
+    public GameObject skipTurnButton;
+    public GameObject turnCounter;
+    public GameObject timerUI;
+    
     private void Awake()
     {
         _gridScale = _tile.transform.localScale;
@@ -91,6 +96,9 @@ public class S_GridManager : MonoBehaviour
             isGridVisible = !isGridVisible;
             if (isGridVisible)
             {
+                skipTurnButton.SetActive(true);
+                turnCounter.SetActive(true);
+                //timerUI.SetActive(true);
                 for (int i = 0; i < gridList.Count; i++)
                 {
                     for (int j = 0; j < gridList[i].Count; j++)
@@ -105,6 +113,9 @@ public class S_GridManager : MonoBehaviour
             }
             else
             {
+                skipTurnButton.SetActive(false);
+                turnCounter.SetActive(false);
+                //timerUI.SetActive(false);
                 for (int i = 0; i < gridList.Count; i++)
                 {
                     for (int j = 0; j < gridList[i].Count; j++)

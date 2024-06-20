@@ -211,6 +211,9 @@ public class S_GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerTurnAnimationGO;
 
     [SerializeField] private GameObject _canvasAnimPlayer;
+    
+    [Header("Timer :")]
+    [SerializeField] private Image _fill;
     #endregion
 
     #region Private variable
@@ -227,6 +230,7 @@ public class S_GameManager : MonoBehaviour
 
     // -- Informations showns to the player -- //
     float _turnTimerTime;
+    [NonSerialized] private float _maxTime = 60;
     int _currentRoundNumber = 0;
 
     // -- Text UIs who shows to the player informations -- //
@@ -404,6 +408,9 @@ public class S_GameManager : MonoBehaviour
 
             // Display the rounded timer in seconds in a text
             _turnTimerTextUI.text = "Remaining time : " + ((int)_turnTimerTime).ToString();
+
+            // reduces the timer circle
+            _fill.fillAmount = _turnTimerTime / _maxTime;
 
             // Display the current round number
             _playerActionsLeftTextUI.text = "Turn : " + _currentRoundNumber.ToString();
