@@ -18,12 +18,12 @@ MonoBehaviour:
   isUltimateSpecialCapacity: 0
   capacityName: GazAttack
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Weakens all the enemy troops.
-  capacityEffectDescription: 'all enemy troops stats : - 2'
-  isCapacityLocked: 1
-  isPlayer1UnitsChanged: 1
+  capacityDescription: Weakens all the enemy troop's attack.
+  capacityEffectDescription: 'All enemy troops attack stats : - 2'
+  isCapacityLocked: 0
+  isPlayer1UnitsChanged: 0
   unitStatChanged: 1
-  unitStatsChangementValue: 2
+  unitStatsChangementValue: -2
   baseState: 0
   newState: 0
   unitsToDestroy: 0

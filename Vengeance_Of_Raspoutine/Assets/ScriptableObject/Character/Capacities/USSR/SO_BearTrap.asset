@@ -19,9 +19,9 @@ MonoBehaviour:
   capacityName: BearTrap
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
   capacityDescription: Traps the enemy troops.
-  capacityEffectDescription: 'enemy charge time : + 1'
-  isCapacityLocked: 1
-  isPlayer1UnitsChanged: 1
+  capacityEffectDescription: 'Enemy charge time : + 1'
+  isCapacityLocked: 0
+  isPlayer1UnitsChanged: 0
   unitStatChanged: 2
   unitStatsChangementValue: 1
   baseState: 0

@@ -19,11 +19,11 @@ MonoBehaviour:
   capacityName: Doping
   capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
   capacityDescription: Increases the reflexes of ally troops.
-  capacityEffectDescription: 'ally charge time : - 3'
+  capacityEffectDescription: 'Ally charge time : - 1'
   isCapacityLocked: 1
-  isPlayer1UnitsChanged: 0
+  isPlayer1UnitsChanged: 1
   unitStatChanged: 2
-  unitStatsChangementValue: 3
+  unitStatsChangementValue: -1
   baseState: 0
   newState: 0
   unitsToDestroy: 0
