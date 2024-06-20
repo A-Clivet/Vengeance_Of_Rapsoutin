@@ -106,6 +106,7 @@ public class S_UnitManager : MonoBehaviour
                 Defend(UnitLine);
             }
         }
+        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
 
         for (int i = 0; i < grid.width; i++) // largeur
         {
