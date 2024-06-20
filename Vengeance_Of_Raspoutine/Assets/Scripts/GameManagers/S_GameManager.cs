@@ -419,13 +419,13 @@ public class S_GameManager : MonoBehaviour
             // Color the timer circle
             if (_turnTimerTime > _maxTime / 2)
             {
-                // Première moitié du temps : vert à jaune
+                // 30's first second : green to yellow
                 float lerpValue = (60 - _turnTimerTime) / (_maxTime / 2);
                 _fill.color = Color.Lerp(_startTimer, _middleTimer, lerpValue);
             }
             else
             {
-                // Deuxième moitié du temps : jaune à rouge
+                // 30's last second : yellow to red
                 float lerpValue = (_maxTime / 2 - _turnTimerTime) / (_maxTime / 2);
                 _fill.color = Color.Lerp(_middleTimer, _endTimer, lerpValue);
             }
