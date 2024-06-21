@@ -671,8 +671,8 @@ public class S_GameManager : MonoBehaviour
         swapCounterP1 = 3;
         swapCounterP2 = 3;
 
-        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = true;
-        S_SwapButtonsHandler.Instance.player2SwapButton.interactable = true;
+        S_SwapButtonsHandler.Instance.player1SwapButton.interactable = p_isPlayer1Dead;
+        S_SwapButtonsHandler.Instance.player2SwapButton.interactable = !p_isPlayer1Dead;
         S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
         S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
     }
