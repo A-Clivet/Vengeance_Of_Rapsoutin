@@ -5866,6 +5866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animatorCredits: {fileID: 1243026564}
+  _canvasCredits: {fileID: 720015372}
   animationName: CreditUp
 --- !u!114 &2051962782
 MonoBehaviour:

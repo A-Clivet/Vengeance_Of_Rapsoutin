@@ -142,7 +142,7 @@ public class Unit : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(actualTile != null) grid.totalUnitAmount -= 1;
+        grid.totalUnitAmount -= 1;
     }
     //launch the attack of all formation and begin the recursion of the attack
 
