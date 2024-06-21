@@ -14,23 +14,20 @@ public class S_CheckCanComboNode : Node
 
     public override NodeState Evaluate()
     {
-        _unitManager.UnitCombo(2);
+        _unitManager.UnitCombo(2, true);
+        parent.SetData("k_comboColumn", _unitManager.UnitColumn);
 
-        if (_unitManager.UnitColumn.Count > 0)
-        {
-            SetData("k_comboColumn", _unitManager.UnitColumn);
-            pr_state = NodeState.SUCCESS;
-            return pr_state;
-        }
+        parent.SetData("k_comboLine", _unitManager.UnitLine);
 
-        if (_unitManager.UnitLine.Count > 0)
+        if (_unitManager.UnitColumn.Count > 0 || _unitManager.UnitLine.Count > 0)
         {
-            SetData("k_comboLine", _unitManager.UnitLine);
             pr_state = NodeState.SUCCESS;
             return pr_state;
         }
 
         pr_state = NodeState.FAILURE;
+        ClearData("k_comboColumn");
+        ClearData("k_comboLine");
         return pr_state;
     }
 }

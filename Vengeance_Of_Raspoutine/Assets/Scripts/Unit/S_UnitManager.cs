@@ -44,12 +44,12 @@ public class S_UnitManager : MonoBehaviour
         int currentColorLine;
 
         //SO_Unit actualType = null;
-
+        UnitLine.Clear();
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
             lineCounter = 0;
             currentColorLine = -1;
-            UnitLine.Clear();
+            
             for (int j = 0; j < grid.width; j++) // largeur
             {
                 if(gridList[j][i].unit == null)
@@ -87,13 +87,19 @@ public class S_UnitManager : MonoBehaviour
 
                     for(int k = 0; k < p_formationNumber; k++)
                     {
-                        gridList[j - k][i].unit.state = 1;
+                        if (!p_isIAUsingThisFunction)
+                        {
+                            gridList[j - k][i].unit.state = 1;
+                        }
                         UnitLine[UnitLine.Count - 1].Add(gridList[j - k][i].unit);
                     }
                 }    
                 else if (lineCounter >= p_formationNumber)
                 {
-                    gridList[j][i].unit.state = 1;
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        gridList[j][i].unit.state = 1;
+                    }
                     UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
                     if (!p_isIAUsingThisFunction)
                     {
@@ -101,13 +107,15 @@ public class S_UnitManager : MonoBehaviour
                     }
                 }
             }
-            if (UnitLine.Count >= 1)
+            if (UnitLine.Count >= 1 && !p_isIAUsingThisFunction)
             {
                 Defend(UnitLine);
             }
         }
-        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-
+        if (!p_isIAUsingThisFunction)
+        {
+            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+        }
         for (int i = 0; i < grid.width; i++) // largeur
         {
             currentColorColumn = -1; // -1 is not a value that a unitColor will be 
@@ -131,6 +139,7 @@ public class S_UnitManager : MonoBehaviour
                 }
                 if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
                 {
+                    currentColorColumn = gridList[i][j].unit.unitColor;
                     columnCounter = 1;
                     continue;
                 }
@@ -148,39 +157,49 @@ public class S_UnitManager : MonoBehaviour
                     {
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        gridList[i][j].unit.state = 2;
+                        gridList[i][j - 1].unit.state = 2;
+                        gridList[i][j - 2].unit.state = 2;
 
-                    gridList[i][j].unit.state = 2;
-                    gridList[i][j - 1].unit.state = 2;
-                    gridList[i][j - 2].unit.state = 2;
-
-                    gridList[i][j].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0 ,0, 255);
-                    gridList[i][j - 1].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-                    gridList[i][j - 2].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-
+                        gridList[i][j].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                        gridList[i][j - 1].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                        gridList[i][j - 2].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                    }
                     //temporary visual change to notices attacking units
                     
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
                     UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                    for (int k=0;k< UnitColumn[UnitColumn.Count-1].Count;k++)
+                    if (!p_isIAUsingThisFunction)
                     {
-                        UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
-                        UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
-                    }
-                    if (S_GameManager.Instance.isPlayer1Turn)
-                    {
-                        S_GameManager.Instance.player1CharacterXP.GainXP(5);
-                    }
-                    else
-                    {
-                        S_GameManager.Instance.player2CharacterXP.GainXP(5);
-                    }
+                        for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)
+                        {
 
+                            UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
+                            UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
 
+                        }
+                    }
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        if (S_GameManager.Instance.isPlayer1Turn)
+                        {
+                            S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                        }
+                        else
+                        {
+                            S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                        }
+                    }
                 }
             }
         }
-        grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+        if (!p_isIAUsingThisFunction)
+        {
+            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
+        }
     }
 
 

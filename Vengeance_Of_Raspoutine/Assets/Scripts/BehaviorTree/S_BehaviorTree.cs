@@ -4,12 +4,7 @@ namespace S_BehaviorTree
 {
     public abstract class S_Tree : MonoBehaviour
     {
-        private Node _root = null;
-
-        protected void Start()
-        {
-            _root = SetupTree();
-        }
+        protected Node _root = null;
 
         public void CallTree()
         {

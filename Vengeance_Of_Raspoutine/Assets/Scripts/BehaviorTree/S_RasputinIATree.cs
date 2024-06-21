@@ -25,6 +25,11 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndPause);
     }
 
+    private void Start()
+    {
+        _root = SetupTree();
+    }
+
     protected override Node SetupTree()
     {
         _player2CharacterGameObject = S_CharacterManager.Instance.player2CharacterGameObject;
@@ -71,13 +76,12 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
         }
         );
 
-        StartCoroutine(CooldownPerAction());
         return root;
     }
-
-    public IEnumerator CooldownPerAction()
+    public IEnumerator LaunchIa()
     {
-        print("Waiting amongus");
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2f);
+        CallTree();
     }
+
 }

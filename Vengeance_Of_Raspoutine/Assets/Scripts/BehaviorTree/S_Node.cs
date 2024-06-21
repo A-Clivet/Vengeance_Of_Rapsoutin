@@ -41,7 +41,7 @@ namespace S_BehaviorTree
 
         public void SetData(string key, object value)
         {
-            pr_dataContext[key] = value;
+            pr_dataContext.Add(key, value);
         }
 
         public object GetData(string key)

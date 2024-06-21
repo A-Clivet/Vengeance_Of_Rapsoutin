@@ -73,19 +73,18 @@ public class S_CheckLoneUnit : Node
                             break;
                         }
                     }
-                }
-
-                if (_foundLoneUnitLine)
-                {
-                    break;
-                }
+                }   
+            }
+            if (_foundLoneUnitLine)
+            {
+                break;
             }
         }
 
         if (_foundLoneUnitLine == true)
         {
             pr_state = NodeState.SUCCESS;
-            SetData("k_LoneUnit", _loneUnit);
+            parent.SetData("k_LoneUnit", _loneUnit);
             return pr_state;
         }
 

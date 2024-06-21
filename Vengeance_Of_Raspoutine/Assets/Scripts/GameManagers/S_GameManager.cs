@@ -58,10 +58,6 @@ public class S_GameManager : MonoBehaviour
             }
             else if (_currentTurn == TurnEmun.Player2Turn)
             {
-                if (S_CrossSceneDataManager.Instance.vsIA)
-                {
-                    gameObject.GetComponent<S_RasputinIATree>().CallTree();
-                }
 
                 // Same as for the player1 but for the player2
 
@@ -284,6 +280,11 @@ public class S_GameManager : MonoBehaviour
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndDestructionOfTheSecondOne);
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
     private void Start()
     {
         #region Setting variables
@@ -398,13 +399,18 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
-        
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
+
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+           StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
         #endregion
     }
 
@@ -519,6 +525,7 @@ public class S_GameManager : MonoBehaviour
             }
             _playerTurnAnimationGO.SetActive(true);
             _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+
         }
         else
         {
@@ -876,7 +883,7 @@ public class S_GameManager : MonoBehaviour
         {
             if (_playerActionNumber > 0)
             {
-                gameObject.GetComponent<S_RasputinIATree>().CallTree();
+                StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
             }
 
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
@@ -900,6 +907,10 @@ public class S_GameManager : MonoBehaviour
         if (_playerActionNumber <= 0)
         {
             EndTurn();
+            if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+            {
+                StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            }
         }
     }
 

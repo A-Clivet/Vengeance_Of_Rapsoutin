@@ -274,6 +274,7 @@ public class Unit : MonoBehaviour
                     tileX = tile.tileX;
                     tileY = tile.tileY;
                     _posToMove = tile.transform.position;
+                    grid.AllUnitPerColumn[tileX].Add(this);
                     StartCoroutine(LerpMove());
                     foreach (Unit unit in grid.unitList)
                     {
@@ -370,7 +371,6 @@ public class Unit : MonoBehaviour
                     foreach (Unit unit in grid.unitList)
                     {
                         unit.GetComponent<BoxCollider2D>().enabled = false;
-                        _shadow.SetActive(true);
                     }
                     shadow.SetActive(true);
                     
