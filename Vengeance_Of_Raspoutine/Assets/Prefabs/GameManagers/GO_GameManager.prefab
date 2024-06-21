@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3852901904450097775}
   - component: {fileID: 4603387464598115885}
+  - component: {fileID: 3283146852115246695}
   m_Layer: 0
   m_Name: GO_GameManager
   m_TagString: Untagged
@@ -53,3 +54,24 @@ MonoBehaviour:
   _character1Stats: {fileID: 11400000, guid: 4e30370c7edf7cb49aab6c1ed4255a90, type: 2}
   _character2Stats: {fileID: 11400000, guid: 1a2a61745404aa745b13a386bdc79d60, type: 2}
   _cooldownBetweenPlayerActions: 0.1
+  _playerTurnAnimationScript: {fileID: 0}
+  _characterImage: {fileID: 0}
+  _playerTurnAnimationGO: {fileID: 0}
+  _canvasAnimPlayer: {fileID: 0}
+--- !u!114 &3283146852115246695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8672404642423907698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2d8c972ba99874997a3907de56a16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 4603387464598115885}
+  unitManager: {fileID: 0}
+  gridManager: {fileID: 0}
+  unitCall: {fileID: 0}
+  removeUnit: {fileID: 0}

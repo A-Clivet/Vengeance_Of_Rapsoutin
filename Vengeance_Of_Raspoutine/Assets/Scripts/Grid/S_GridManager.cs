@@ -137,7 +137,7 @@ public class S_GridManager : MonoBehaviour
     
     public List<List<Unit>> UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
     {
-
+        //Debug.Log("Starting UnitPriorityCheck");
         List<List<Unit>> GridUnit = new();
         List<Unit> StateIdleUnit = new();
         List<Unit> StateDefendUnit = new();
@@ -160,23 +160,37 @@ public class S_GridManager : MonoBehaviour
 
                 gridList[x][y].unit.actualTile = null;
                 gridList[x][y].unit = null;
+                print("AUSCOUR");
             }
+
+            print("StateIdleUnit" + StateIdleUnit.Count);
+            print("StateDefendUnit" + StateDefendUnit.Count);
+            print("StateAttackUnit" + StateAttackUnit.Count);
+            print("OrganizedColumn" + OrganizedColumn.Count);
+
             foreach (Unit u in StateDefendUnit)
             {
                 OrganizedColumn.Add(u);
+                print("AUSCOUR");
             }
+
             foreach (Unit u in StateAttackUnit)
             {
                 OrganizedColumn.Add(u);
+                print("AUSCOUR");
             }
+
             foreach (Unit u in StateIdleUnit)
             {
                 OrganizedColumn.Add(u);
+                print("AUSCOUR");
             }
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
+                //Debug.Log($"Switching unit in OrganizedColumn at index {y}");
                 OrganizedColumn[y].SwitchUnit(gridList[x][y]);
+                print("AUSCOUR");
             }
             GridUnit.Add(OrganizedColumn);
         }

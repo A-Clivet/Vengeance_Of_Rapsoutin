@@ -58,6 +58,7 @@ public class S_GameManager : MonoBehaviour
             }
             else if (_currentTurn == TurnEmun.Player2Turn)
             {
+
                 // Same as for the player1 but for the player2
 
                 isPlayer1Turn = false;
@@ -279,6 +280,11 @@ public class S_GameManager : MonoBehaviour
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndDestructionOfTheSecondOne);
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
     private void Start()
     {
         #region Setting variables
@@ -393,13 +399,18 @@ public class S_GameManager : MonoBehaviour
 
         _playerActionNumber = _startingPlayerActionNumber;
 
-        
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
+
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+           StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
         #endregion
 
 
@@ -519,6 +530,7 @@ public class S_GameManager : MonoBehaviour
             }
             _playerTurnAnimationGO.SetActive(true);
             _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+
         }
         else
         {
@@ -671,6 +683,7 @@ public class S_GameManager : MonoBehaviour
         S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
         S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
 
+
         if (!p_isPlayer1Dead)
         {
             currentTurn = TurnEmun.Player2Turn;
@@ -682,6 +695,10 @@ public class S_GameManager : MonoBehaviour
             isPlayer1Turn = true;
         }
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
 
     }
 
@@ -877,6 +894,14 @@ public class S_GameManager : MonoBehaviour
         }
         else if (currentTurn == TurnEmun.Player2Turn)
         {
+            if (_playerActionNumber > 0)
+            {
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
+            }
+
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
             player2unitManager.UnitCombo(3);
 
@@ -903,6 +928,10 @@ public class S_GameManager : MonoBehaviour
         if (_playerActionNumber <= 0)
         {
             EndTurn();
+            if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+            {
+                StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            }
         }
     }
 

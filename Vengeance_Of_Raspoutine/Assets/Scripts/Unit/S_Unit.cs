@@ -61,27 +61,37 @@ public class Unit : MonoBehaviour
     private IEnumerator LerpMove()
     {
         float t = 0;
+        float _distance = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
+
         if (!_isMoving)
         {
             _isMoving = true;
         }
 
-        while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1f)
+        while (_distance >= 0.1f)
         {
             transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), t);
+
+            // We re-calculate the distance
+            _distance = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
+
             yield return new WaitForEndOfFrame();
+
             if (mustAttack)
             {
-                t = t + Time.deltaTime / 100;
+                // Speed for one frame divided by the distance left
+                t = 10 * Time.deltaTime / _distance;
             }
             else
             {
-                t = t + Time.deltaTime / 5;
+                t = 5 * Time.deltaTime / _distance;
             }
             
         }
         _isMoving = false;
+
         transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
+
         if (mustAttack)
         {
             AttackPlayer();
@@ -107,17 +117,6 @@ public class Unit : MonoBehaviour
     public void DestroyFormation()
     {
         unitManager.UnitColumn.Remove(actualFormation);
-        foreach (Unit u in actualFormation)
-        {
-            if (u != this)
-            {
-                grid.AllUnitPerColumn[u.tileX].Remove(u);
-                Destroy(u.gameObject);
-                u.StopAllCoroutines();
-                
-            }
-        }
-        grid.AllUnitPerColumn[tileX].Remove(this);
         for (int i = 0; i < unitManager.UnitColumn.Count; i++)
         {
             if (unitManager.UnitColumn[i][0].turnCharge <= 0)
@@ -161,13 +160,17 @@ public class Unit : MonoBehaviour
                 //remove virtually the units from their own grid and tile, they do not exists anymore for their grid and respective tiles.
                 for (int i = 0; i < actualFormation.Count; i++)
                 {
+                    foreach (Unit u in actualFormation)
+                    {
+                        u.mustAttack = true;
+                        u.turnCharge = 0;
+                        u.actualTile.unit = null;
+                        grid.unitList.Remove(u);
+                        grid.AllUnitPerColumn[u.tileX].Remove(u);
+                        u._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
+                        u.StartCoroutine(LerpMove());
 
-                    actualFormation[i].mustAttack = true;
-                    actualFormation[i].turnCharge = 0;
-                    actualFormation[i].actualTile.unit = null;
-                    grid.unitList.Remove(actualFormation[i]);
-                    actualFormation[i]._posToMove = new Vector3(transform.position.x, -(grid.startY + grid.height * actualTile.transform.localScale.y) + transform.localScale.y * i, -1);
-                    actualFormation[i].StartCoroutine(LerpMove());
+                    }
                 }
             }
         }
@@ -266,6 +269,7 @@ public class Unit : MonoBehaviour
                     {
                         _willLoseActionPoints = true;
                     }
+                    grid.AllUnitPerColumn[tileX].Remove(this);
                     actualTile.unit = null;
                     actualTile = tile;
                     actualTile.unit = this;
@@ -273,6 +277,7 @@ public class Unit : MonoBehaviour
                     tileX = tile.tileX;
                     tileY = tile.tileY;
                     _posToMove = tile.transform.position;
+                    grid.AllUnitPerColumn[tileX].Add(this);
                     StartCoroutine(LerpMove());
                     foreach (Unit unit in grid.unitList)
                     {
@@ -300,6 +305,7 @@ public class Unit : MonoBehaviour
             {
                 if (tile.unit == null || tile.unit == this)
                 {
+                    grid.AllUnitPerColumn[tileX].Remove(this);
                     actualTile.unit = null;
                     actualTile = tile;
                     actualTile.unit = this;
@@ -307,6 +313,7 @@ public class Unit : MonoBehaviour
                     tileX = tile.tileX;
                     tileY = tile.tileY;
                     _posToMove = tile.transform.position;
+                    grid.AllUnitPerColumn[tileX].Add(this);
 
                     StartCoroutine(LerpMove());
                     foreach (Unit unit in grid.unitList)
@@ -325,21 +332,22 @@ public class Unit : MonoBehaviour
         {
             if (tile.unit == null)
             {
+                grid.AllUnitPerColumn[tileX].Remove(this);
                 actualTile = tile;
                 actualTile.unit = this;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
-                if (!_isMoving)
-                {
-                    _isMoving = true;
-                    StartCoroutine(LerpMove());
-                }
+                grid.AllUnitPerColumn[tileX].Add(this);
+
+                StartCoroutine(LerpMove());
+
                 foreach (Unit unit in grid.unitList)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                break;
+
+                return;
             }
         }
     }

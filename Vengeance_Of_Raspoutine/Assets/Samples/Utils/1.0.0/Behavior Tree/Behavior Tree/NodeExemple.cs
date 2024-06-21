@@ -1,5 +1,5 @@
-using System.Collections.Generic;
-using BehaviorTree;
+/*using System.Collections.Generic;
+using S_BehaviorTree;
 using UnityEngine;
 
 public class NeutralNode : Node
@@ -11,10 +11,10 @@ public class NeutralNode : Node
     public override NodeState Evaluate()
     {
         //code for the behavior here
-        state = NodeState.FAILURE;
+        pr_state = NodeState.FAILURE;
 
 
         //Debug.Log($"{this} : {state}");
-        return state;
+        return pr_state;
     }
-}
+}*/

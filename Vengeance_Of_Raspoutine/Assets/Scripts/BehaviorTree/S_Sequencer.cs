@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
-namespace BehaviorTree
+namespace S_BehaviorTree
 {
-    public class Sequence : Node
+    public class S_Sequencer : Node
     {
-        public Sequence() : base() { }
-        public Sequence(List<Node> children) : base(children) { }
+        public S_Sequencer() : base() { }
+        public S_Sequencer(List<Node> children) : base(children) { }
 
 
         public override NodeState Evaluate()
@@ -17,21 +17,21 @@ namespace BehaviorTree
                 switch (node.Evaluate())
                 {
                     case NodeState.FAILURE:
-                        state = NodeState.FAILURE; 
-                        return state;
+                        pr_state = NodeState.FAILURE;
+                        return pr_state;
                     case NodeState.SUCCESS:
                         continue;
                     case NodeState.RUNNING:
                         anyChildIsRunning = true;
                         continue;
                     default:
-                        state = NodeState.SUCCESS; 
-                        return state;
+                        pr_state = NodeState.SUCCESS;
+                        return pr_state;
                 }
             }
 
-            state = anyChildIsRunning ? NodeState.RUNNING : NodeState.SUCCESS;
-            return state;
+            pr_state = anyChildIsRunning ? NodeState.RUNNING : NodeState.SUCCESS;
+            return pr_state;
 
         }
     }
