@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +11,8 @@ public class S_RemoveUnit : MonoBehaviour
     public bool removing;
 
     [HideInInspector] public Unit hoveringUnit;
+
+    [SerializeField] AnimatorController _explosionAnimatorController;
 
     S_GameManager _gameManager;
     S_GridManagersHandler _gridManagersHandler;
@@ -57,15 +61,32 @@ public class S_RemoveUnit : MonoBehaviour
         // Storing the unit inside p_tile into a variable
         Unit _unit = p_tile.unit;
 
-        // Check if there is a unit under the mouse position, and if the unit is in state 0, or 1 (idle, or wall)
-        if (_unit != null && (_unit.state == 0 || _unit.state == 1))
-        {
-            HandleUnitDestruction(_unit);
+        // Hidding unit (from the one that attacks)
+        _unit.gameObject.GetComponent<BoxCollider2D>().enabled = false;
 
-            return true;
+        // Create an Animator, assign the _explosionAnimatorController to it, and start the animation
+        Animator _animator = _unit.gameObject.AddComponent<Animator>();
+        _animator.runtimeAnimatorController = _explosionAnimatorController;
+
+        StartCoroutine(HandleDestructionAfterAnimation(_animator, _unit));
+
+        return true;
+    }
+
+    private IEnumerator HandleDestructionAfterAnimation(Animator p_animator, Unit p_unit)
+    {
+        // Wait until the animation is done
+
+        // CREATE BUG :
+        yield return new WaitUntil(() => p_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+
+        // Check if there is a unit under the mouse position, and if the unit is in state 0, or 1 (idle, or wall)
+        if (p_unit != null && (p_unit.state == 0 || p_unit.state == 1))
+        {
+            HandleUnitDestruction(p_unit);
         }
-        p_tile.grid.unitManager.UnitCombo(3);
-        return false;
+
+        p_unit.actualTile.grid.unitManager.UnitCombo(3);
     }
 
     public void HandleUnitDestruction(Unit p_unit)

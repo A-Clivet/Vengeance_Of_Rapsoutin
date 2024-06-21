@@ -6,7 +6,12 @@ public class S_CharacterAdrenaline : MonoBehaviour
     #region Variables
     [Header("References :")]
     [SerializeField] Image _specialCapacityChargingSprite;
+    [SerializeField] Image _specialCapacityIcon;
     [SerializeField] Button _speacialCapacityButton;
+
+    [Header("Stats :")]
+    [SerializeField] Color _initialSpecialCapacityIconColor;
+    [SerializeField] Color _newSpecialCapacityIconColor;
 
     bool _isPlayer1Character;
     int _currentAdrenaline;
@@ -61,13 +66,13 @@ public class S_CharacterAdrenaline : MonoBehaviour
     public void RecieveNewTurnInfo(bool p_isPlayer1Turn)
     {
         if (p_isPlayer1Turn == _isPlayer1Character || !p_isPlayer1Turn == !_isPlayer1Character)
-        {
             _speacialCapacityButton.interactable = true;
-        }
         else
-        {
             _speacialCapacityButton.interactable = false;
-        }
+
+        // Changing the special capacity icon to the good one, if it was not  
+        if (_specialCapacityIcon.sprite != specialCapacity.capacitySprite)
+            _specialCapacityIcon.sprite = specialCapacity.capacitySprite;
     }
 
     /// <summary> This function is built to be used when the special capacity's button is pressed,
@@ -98,6 +103,12 @@ public class S_CharacterAdrenaline : MonoBehaviour
         // Note : We use a float cast "(float)" to avoid having a division of two int values,
         // if that was the case the division can't return us a float
         _specialCapacityChargingSprite.fillAmount = (float)_currentAdrenaline / _maxAdrenaline;
+
+        // Changing the special capacity icon color
+        if (currentAdrenaline == maxAdrenaline)
+            _specialCapacityIcon.color = _newSpecialCapacityIconColor;
+        else
+            _specialCapacityIcon.color = _initialSpecialCapacityIconColor;
     }
 
     // -- TO DEBUG -- //

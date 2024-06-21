@@ -176,7 +176,7 @@ public class Unit : MonoBehaviour
         actualFormation[0].DestroyFormation();
     }
 
-    /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
+    /* is called by the UnitManager, can be used to define what happens for a collidedUnit if units are kill by the enemy attack*/
     public void ReducePlayerHp(){ // needs rework
 
         AudioManager.instance.PlayOneShot(FMODEvents.instance.Impact, this.transform.position);
@@ -191,7 +191,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    /* is called by the unit that killed it, can be used to check if units are kill by the enemy attack*/
+    /* is called by the collidedUnit that killed it, can be used to check if units are kill by the enemy attack*/
     public void TakeDamage(int p_damage)
     {
         if (actualFormation.Count > 0)
@@ -200,21 +200,17 @@ public class Unit : MonoBehaviour
 
             if (attack <= 0)
             {
+                // Destruction of all the unit in formation except the leader of the formation (the one who is reading this code)
                 for (int j = 0; j < actualFormation.Count; j++)
                 {
                     if (actualFormation[j] != this)
                     {
-                        actualFormation[j].actualTile.unit = null;
-                        grid.unitList.Remove(actualFormation[j]);
-                        grid.AllUnitPerColumn[actualFormation[j].tileX].Remove(actualFormation[j]);
-                        Destroy(actualFormation[j].gameObject);
+                        S_RemoveUnit.Instance.RemoveUnitOnSpecificTile(actualFormation[j].actualTile);
                     }
                 }
-                actualTile.unit = null;
-                grid.unitList.Remove(this);
-                grid.AllUnitPerColumn[tileX].Remove(this);
-                unitManager.UnitColumn.Remove(actualFormation);
-                Destroy(gameObject);
+
+                // Destruction of the unit who leads the formation (the one who is reading this code)
+                S_RemoveUnit.Instance.RemoveUnitOnSpecificTile(actualTile);
             }
             return;
         }
@@ -223,21 +219,16 @@ public class Unit : MonoBehaviour
 
         if (defense <= 0)
         {
-            actualTile.unit = null;
-            grid.unitList.Remove(this);
-
             if (S_GameManager.Instance.isPlayer1Turn)
             {
                 S_GameManager.Instance.player1CharacterXP.GainXP(5);
             }
-
             else
             {
                 S_GameManager.Instance.player2CharacterXP.GainXP(5);
             }
 
-            grid.AllUnitPerColumn[tileX].Remove(this);
-            Destroy(gameObject);
+            S_RemoveUnit.Instance.RemoveUnitOnSpecificTile(actualTile);
         }
     }
 
@@ -286,8 +277,8 @@ public class Unit : MonoBehaviour
         }
         highlight.SetActive(false);
     }
-    /*Move the unit to the top of the row of unit corresponding at the tile clicked if possible
-  then deselect the unit*/
+    /*Move the collidedUnit to the top of the row of collidedUnit corresponding at the tile clicked if possible
+  then deselect the collidedUnit*/
     public void MoveToTile(S_Tile p_tile)
     {
         if (!grid.isSwapping)
@@ -341,7 +332,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    //get the last unit of the row corresponding to the tile clicked
+    //get the last collidedUnit of the row corresponding to the tile clicked
     public void SelectUnit()
     {
         if (S_GameManager.Instance.isPlayer1Turn)
@@ -456,7 +447,7 @@ public class Unit : MonoBehaviour
         MoveToTile(actualTile);
     }
 
-    //change sprite of the unit to the wall png
+    //change sprite of the collidedUnit to the wall png
     public void spriteChange(Sprite img)
     {
         transform.GetComponent<SpriteRenderer>().sprite = img;
@@ -470,25 +461,27 @@ public class Unit : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Unit unit = collision.gameObject.GetComponent<Unit>();
+        Unit collidedUnit = collision.gameObject.GetComponent<Unit>();
 
-        if (unit.grid != grid)
+        if (collidedUnit.grid != grid)
         {
-            if (!unit.mustAttack)
+            if (!collidedUnit.mustAttack)
             {
-                if (unit.actualFormation.Count <= 0)
+                // If the collidedUnit is a wall or an idle unit
+                if (collidedUnit.actualFormation.Count <= 0)
                 {
-                    attack -= unit.defense;
-                    unit.TakeDamage(attack + unit.defense);
-
+                    attack -= collidedUnit.defense;
+                    collidedUnit.TakeDamage(attack + collidedUnit.defense);
                 }
-                else if (unit.turnCharge > 0)
+                // If the collidedUnit is in enemy charging formation
+                else if (collidedUnit.turnCharge > 0)
                 {
-                    attack -= unit.attack;
-                    unit.TakeDamage(attack + unit.attack);
-
+                    attack -= collidedUnit.attack;
+                    collidedUnit.TakeDamage(attack + collidedUnit.attack);
                 }
-                if(attack <= 0)
+
+                // If the first collidedUnit of the attacking formation (the one that collides) has no more attacks point then we destroy the formation
+                if (attack <= 0)
                 {
                     actualFormation[0].DestroyFormation();
                 }

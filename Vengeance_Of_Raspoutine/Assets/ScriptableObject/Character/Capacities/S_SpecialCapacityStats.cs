@@ -10,6 +10,15 @@ public class S_SpecialCapacityStats : ScriptableObject
         TurnCharge
     }
 
+    public enum TypesOfFeedback
+    {
+        Explosion,
+        Pouf,
+        Pak,
+        Smoke,
+        Fire
+    }
+
     [HideInInspector] public bool isUnitsStatChangementSpecialCapacityHidden;
     [HideInInspector] public bool isUnitsMetamorphosisSpecialCapacityHidden;
     [HideInInspector] public bool isUnitsDestroySpecialCapacityHidden;
