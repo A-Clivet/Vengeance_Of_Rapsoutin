@@ -78,6 +78,8 @@ public class S_RemoveUnit : MonoBehaviour
         // We remove the unit from the AllUnitPerColumn unit's column
         p_unit.grid.AllUnitPerColumn[p_unit.tileX].Remove(p_unit);
 
+
+
         // We set the unit's grid tile's local variable "unit" (store what unit is on the tile) to nothing
         p_unit.actualTile.unit = null;
         #endregion
@@ -94,11 +96,13 @@ public class S_RemoveUnit : MonoBehaviour
             }
         }
         #endregion
-        
+
         #region Destruction of the unit
 
         // Now we finished using hoveringUnit variable we can destroy the unit
+
         Destroy(p_unit.gameObject);
+
         #endregion
     }
 
@@ -110,17 +114,31 @@ public class S_RemoveUnit : MonoBehaviour
         _gridManagersHandler.player2GridManager.unitManager.UnitColumn.Clear();
 
         // We create a copy of the unitLists
-        List<Unit> _player1UnitList = new(_gridManagersHandler.player1GridManager.unitList);
-        List<Unit> _player2UnitList = new(_gridManagersHandler.player2GridManager.unitList);
+        //List<Unit> _player1UnitList = new(_gridManagersHandler.player1GridManager.unitList);
+        //List<Unit> _player2UnitList = new(_gridManagersHandler.player2GridManager.unitList);
 
-        foreach (Unit _unit in _player1UnitList)
+        for(int i = _gridManagersHandler.player1GridManager.unitList.Count - 1; i >= 0; i--)
         {
-            HandleUnitDestruction(_unit);
+            Debug.Log("will be destroyed");
+            HandleUnitDestruction(_gridManagersHandler.player1GridManager.unitList[i]);
+        }
+        for (int i = _gridManagersHandler.player2GridManager.unitList.Count - 1; i >= 0; i--)
+        {
+            Debug.Log("will be destroyed");
+            HandleUnitDestruction(_gridManagersHandler.player2GridManager.unitList[i]);
         }
 
-        foreach (Unit _unit in _player2UnitList)
-        {
-            HandleUnitDestruction(_unit);
-        }
+        //foreach (Unit _unit in _player1UnitList)
+        //{
+        //    Debug.Log("will be destroyed");
+        //    HandleUnitDestruction(_unit);
+        //}
+
+        //foreach (Unit _unit in _player2UnitList)
+        //{
+        //    Debug.Log("will be destroyed");
+        //    HandleUnitDestruction(_unit);
+        //}
+
     }
 }

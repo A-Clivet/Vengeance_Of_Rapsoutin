@@ -21,11 +21,6 @@ public class S_UnitCall : MonoBehaviour
 
     GameObject _unitsParentGameObject;
 
-    private void Update()
-    {
-        TextUpdate();
-    }
-
     private void Awake()
     {
         // Setting up local variables
@@ -42,11 +37,6 @@ public class S_UnitCall : MonoBehaviour
         }
     }
 
-    public void Start()
-    {
-        CallAmountUpdate();
-    }
-
     public int CallAmountUpdate()
     {
         if (S_GameManager.Instance.currentTurn == TurnEmun.Player1Turn)
@@ -59,14 +49,21 @@ public class S_UnitCall : MonoBehaviour
             tile = grid.gridList;
         }
 
-        return callAmount = unitCapacity - grid.totalUnitAmount;
+        callAmount = unitCapacity - grid.totalUnitAmount;
+
+        TextUpdate(callAmount);
+
+        return callAmount;
     }
 
     public void UnitCalling(){ /* function that will call other functions, will be referenced in the button UI OnClick */
 
+        CallAmountUpdate();
+
+        Debug.Log("UnitCalling has been called");
+
         if (!firstUnitCalled)
         {
-            CallAmountUpdate();
             callAmount /= 2;
 
         }
@@ -125,13 +122,14 @@ public class S_UnitCall : MonoBehaviour
             }
         }
         grid.unitManager.UnitCombo(3);
-        TextUpdate();
+        CallAmountUpdate();
+
     }
 
-    public void TextUpdate()
+    public void TextUpdate(int p_amount)
     {
-        string buttonText = CallAmountUpdate().ToString();
-        text.SetText(buttonText);
+        Debug.Log("Text CallAmount updated to :" + p_amount);
+        text.SetText(p_amount.ToString());
     }
 
     private int ColumnSelector()

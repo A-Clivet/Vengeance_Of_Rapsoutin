@@ -185,7 +185,7 @@ public class S_GameManager : MonoBehaviour
             }
 
             // Call the start units for all players
-            _unitCallButtonHandler.CallUnitsForAllPlayers();
+            //_unitCallButtonHandler.CallUnitsForAllPlayers();
 
             // Updating the map according to the players points
             _gameBackgroundSpriteRenderer.sprite = mapSelection[__mapIndex];
@@ -412,6 +412,10 @@ public class S_GameManager : MonoBehaviour
            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
         }
         #endregion
+
+
+        S_GameManager.Instance.player1UnitCall.UnitCalling();
+        S_GameManager.Instance.player2UnitCall.UnitCalling();
     }
 
     private void Update()
@@ -478,6 +482,7 @@ public class S_GameManager : MonoBehaviour
 
         S_WeatherEvent.Instance.EventProbability();
         S_WeatherAnimation.Instance.PlayWeatherAnimation();
+
     }
 
     /// <summary> End the turn of the player who played and let the other player play,
@@ -592,9 +597,7 @@ public class S_GameManager : MonoBehaviour
         #endregion
 
         // Destroy all unit on all grids, and recall UnitCall for the two players
-        S_RemoveUnit.Instance.RemoveAllUnits();
-        _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
-        _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
+        //S_RemoveUnit.Instance.RemoveAllUnits();
 
         // Used to modify (increase / decrease) the mapIndex variable depending on the game mode
         int _mapIndexModifier = 1;
@@ -627,11 +630,6 @@ public class S_GameManager : MonoBehaviour
                 player2ScorePoint++;
             }
 
-            // Destroy all unit on all grids, and recall UnitCall for the two players
-            S_RemoveUnit.Instance.RemoveAllUnits();
-            _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
-            _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
-
             _mapIndex += _mapIndexModifier;
         }
         else
@@ -649,10 +647,6 @@ public class S_GameManager : MonoBehaviour
                 player1ScorePoint++;
             }
 
-            // Destroy all unit on all grids, and recall UnitCall for the two players
-            S_RemoveUnit.Instance.RemoveAllUnits();
-            _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
-            _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
 
             _mapIndex -= _mapIndexModifier;
         }
@@ -664,7 +658,6 @@ public class S_GameManager : MonoBehaviour
         // Call the start units for all players
         _unitCallButtonHandler.player1UnitCall.firstUnitCalled = false;
         _unitCallButtonHandler.player2UnitCall.firstUnitCalled = false;
-        _unitCallButtonHandler.CallUnitsForAllPlayers();
 
         #region Characters management
 
@@ -680,6 +673,8 @@ public class S_GameManager : MonoBehaviour
         player2CharacterAdrenaline.ResetAdrenalineStats();
         #endregion
 
+        S_RemoveUnit.Instance.RemoveAllUnits();
+
         swapCounterP1 = 3;
         swapCounterP2 = 3;
 
@@ -687,6 +682,19 @@ public class S_GameManager : MonoBehaviour
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = !p_isPlayer1Dead;
         S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
         S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
+
+
+        if (!p_isPlayer1Dead)
+        {
+            currentTurn = TurnEmun.Player2Turn;
+            isPlayer1Turn = false;
+        }
+        else
+        {
+            currentTurn = TurnEmun.Player1Turn;
+            isPlayer1Turn = true;
+        }
+        _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
         if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
         {
             StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
@@ -908,8 +916,13 @@ public class S_GameManager : MonoBehaviour
             S_RemoveUnit.Instance.removing = false;
         }
 
+
+        _unitCallButtonHandler.player1UnitCall.CallAmountUpdate();
+        _unitCallButtonHandler.player2UnitCall.CallAmountUpdate();
+
         // Action time cooldown
         StartCoroutine(LaunchActionCooldown());
+
 
         // Ends the player who played's turn if he doeasn't have any action points left
         if (_playerActionNumber <= 0)
