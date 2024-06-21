@@ -687,6 +687,11 @@ public class S_GameManager : MonoBehaviour
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = !p_isPlayer1Dead;
         S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
         S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
+
     }
 
     /// <summary> Handle the players's score, map changement, the launching the end game if the conditions are reached and if not, reloading of a new round </summary>

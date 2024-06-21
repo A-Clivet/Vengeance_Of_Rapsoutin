@@ -14,6 +14,8 @@ public class S_CheckCanComboNode : Node
 
     public override NodeState Evaluate()
     {
+        ClearData("k_comboColumn");
+        ClearData("k_comboLine");
         _unitManager.UnitCombo(2, true);
         parent.SetData("k_comboColumn", _unitManager.UnitColumn);
 
