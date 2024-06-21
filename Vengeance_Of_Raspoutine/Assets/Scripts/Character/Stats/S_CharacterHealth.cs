@@ -154,6 +154,7 @@ public class S_CharacterHealth : MonoBehaviour
 
     void CharacterDie()
     {
+        Debug.Log("Character died");
         S_GameManager.Instance.HandlePlayerLose(_isPlayer1Character);
     }
 

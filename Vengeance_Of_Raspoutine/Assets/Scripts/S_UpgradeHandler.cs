@@ -18,8 +18,12 @@ public class S_UpgradeHandler : MonoBehaviour
     public void Finished() //Button that manages the last troop upgrade canvas to start a new game
     {
         _player2UpgradeCanvas.SetActive(false);
+        S_RemoveUnit.Instance.RemoveAllUnits();
+        Debug.Log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         S_GameManager.Instance.HandlePlayerLose(S_GameManager.Instance.isLastPlayerDeadIsPlayer1);
         _animPlayerCanvas.SetActive(false);
+        S_GameManager.Instance.player1UnitCall.UnitCalling();
+        S_GameManager.Instance.player2UnitCall.UnitCalling();
         S_GameManager.Instance.isGameRunning = true;
         StartCoroutine(AnimSwitch());
     }

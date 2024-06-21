@@ -142,7 +142,10 @@ public class Unit : MonoBehaviour
 
     private void OnDestroy()
     {
+        Debug.Log("Got Destroyed");
         grid.totalUnitAmount -= 1;
+        S_GameManager.Instance.player1UnitCall.CallAmountUpdate();
+        S_GameManager.Instance.player2UnitCall.CallAmountUpdate();
     }
     //launch the attack of all formation and begin the recursion of the attack
 
