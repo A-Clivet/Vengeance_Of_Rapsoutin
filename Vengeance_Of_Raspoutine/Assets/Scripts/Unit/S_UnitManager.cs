@@ -49,22 +49,22 @@ public class S_UnitManager : MonoBehaviour
         {
             lineCounter = 0;
             currentColorLine = -1;
-            
+
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                if(gridList[j][i].unit == null)
+                if (gridList[j][i].unit == null)
                 {
                     currentColorLine = -1; // -1 is not a value that a unitColor will be 
                     lineCounter = 0;
                     continue;
                 }
-                if (gridList[j][i].unit.state != 0 )
+                if (gridList[j][i].unit.state != 0)
                 {
                     currentColorLine = -1;
                     lineCounter = 0;
                     continue;
                 }
-                if(gridList[j][i].unit.unitColor != currentColorLine)
+                if (gridList[j][i].unit.unitColor != currentColorLine)
                 {
                     currentColorLine = gridList[j][i].unit.unitColor;
                     lineCounter = 1;
@@ -85,7 +85,7 @@ public class S_UnitManager : MonoBehaviour
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
                     }
 
-                    for(int k = 0; k < p_formationNumber; k++)
+                    for (int k = 0; k < p_formationNumber; k++)
                     {
                         if (!p_isIAUsingThisFunction)
                         {
@@ -93,7 +93,7 @@ public class S_UnitManager : MonoBehaviour
                         }
                         UnitLine[UnitLine.Count - 1].Add(gridList[j - k][i].unit);
                     }
-                }    
+                }
                 else if (lineCounter >= p_formationNumber)
                 {
                     if (!p_isIAUsingThisFunction)
@@ -168,10 +168,12 @@ public class S_UnitManager : MonoBehaviour
                         gridList[i][j - 2].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
                     }
                     //temporary visual change to notices attacking units
-                    
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
+                    for (int k = 0; k < p_formationNumber; k++)
+                    {
+                        UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - k].unit);
+
+                    }
+
                     if (!p_isIAUsingThisFunction)
                     {
                         for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)

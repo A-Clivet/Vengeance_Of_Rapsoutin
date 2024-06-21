@@ -883,7 +883,10 @@ public class S_GameManager : MonoBehaviour
         {
             if (_playerActionNumber > 0)
             {
-                StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
             }
 
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
