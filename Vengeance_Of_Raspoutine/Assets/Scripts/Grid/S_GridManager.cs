@@ -220,7 +220,7 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, isSwapping);
-                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, false);
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(true, !isSwapping);
                 }
             }
             else
@@ -229,7 +229,7 @@ public class S_GridManager : MonoBehaviour
                 {
                     isSwapping = !isSwapping;
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
-                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, false);
+                    S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(false, !isSwapping);
                 }
             }
         }

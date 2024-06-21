@@ -331,7 +331,6 @@ public class Unit : MonoBehaviour
                 grid.AllUnitPerColumn[tileX].Remove(this);
                 actualTile = tile;
                 actualTile.unit = this;
-                grid.unitSelected = null;
                 tileX = tile.tileX;
                 tileY = tile.tileY;
                 _posToMove = tile.transform.position;
