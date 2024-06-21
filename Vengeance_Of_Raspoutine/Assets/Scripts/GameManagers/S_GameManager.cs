@@ -257,7 +257,7 @@ public class S_GameManager : MonoBehaviour
     S_EndMenuManager _endMenuManager;
 
     // Unit call button handler's reference
-    S_UnitCallButtonHandler _unitCallButtonHandler;
+    public S_UnitCallButtonHandler _unitCallButtonHandler;
 
     // -- Game background sprite renderer's reference -- //
     SpriteRenderer _gameBackgroundSpriteRenderer;
