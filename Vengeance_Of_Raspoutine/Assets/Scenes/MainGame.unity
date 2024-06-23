@@ -2935,9 +2935,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1173734904}
     - target: {fileID: 3283146852115246695, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: removeUnit
+      value: 
+      objectReference: {fileID: 770185369}
+    - target: {fileID: 3283146852115246695, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: gridManager
       value: 
       objectReference: {fileID: 530740733}
+    - target: {fileID: 3283146852115246695, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: unitManager
+      value: 
+      objectReference: {fileID: 2027425474}
     - target: {fileID: 3852901904450097775, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
