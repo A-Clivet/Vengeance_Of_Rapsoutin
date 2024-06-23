@@ -165,10 +165,12 @@ public class S_GridManager : MonoBehaviour
             {
                 OrganizedColumn.Add(u);
             }
+
             foreach (Unit u in StateAttackUnit)
             {
                 OrganizedColumn.Add(u);
             }
+
             foreach (Unit u in StateIdleUnit)
             {
                 OrganizedColumn.Add(u);

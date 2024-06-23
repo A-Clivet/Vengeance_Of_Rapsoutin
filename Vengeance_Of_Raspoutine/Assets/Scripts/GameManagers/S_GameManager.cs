@@ -399,7 +399,13 @@ public class S_GameManager : MonoBehaviour
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
+
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+           StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
         #endregion
 
 
@@ -519,6 +525,7 @@ public class S_GameManager : MonoBehaviour
             }
             _playerTurnAnimationGO.SetActive(true);
             _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+
         }
         else
         {
@@ -682,6 +689,10 @@ public class S_GameManager : MonoBehaviour
             isPlayer1Turn = true;
         }
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
 
     }
 
@@ -877,6 +888,14 @@ public class S_GameManager : MonoBehaviour
         }
         else if (currentTurn == TurnEmun.Player2Turn)
         {
+            if (_playerActionNumber > 0)
+            {
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
+            }
+
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
             player2unitManager.UnitCombo(3);
 
@@ -903,6 +922,10 @@ public class S_GameManager : MonoBehaviour
         if (_playerActionNumber <= 0)
         {
             EndTurn();
+            if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+            {
+                StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            }
         }
     }
 
