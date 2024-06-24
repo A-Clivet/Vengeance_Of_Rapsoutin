@@ -70,6 +70,7 @@ public class Unit : MonoBehaviour
 
         while (_distance >= 0.1f)
         {
+
             transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), t);
 
             // We re-calculate the distance
@@ -80,11 +81,11 @@ public class Unit : MonoBehaviour
             if (mustAttack)
             {
                 // Speed for one frame divided by the distance left
-                t = 5 * Time.deltaTime / _distance;
+                t = 2 * Time.deltaTime / _distance;
             }
             else
             {
-                t = 10 * Time.deltaTime / _distance;
+                t = 5 * Time.deltaTime / _distance;
             }
             
         }

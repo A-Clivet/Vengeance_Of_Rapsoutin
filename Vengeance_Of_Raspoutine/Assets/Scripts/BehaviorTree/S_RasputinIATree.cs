@@ -19,6 +19,8 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
     protected S_CharacterAdrenaline pr_characterAdrenaline;
 
     private GameObject _player2CharacterGameObject;
+    public int callTreeWaiting;
+    private bool _isCalling = false;
 
     private void Awake()
     {
@@ -80,8 +82,34 @@ public class S_RasputinIATree : S_BehaviorTree.S_Tree
     }
     public IEnumerator LaunchIa()
     {
-        yield return new WaitForSeconds(2f);
-        CallTree();
+        if (S_GameManager.Instance.currentTurn == S_GameManager.TurnEmun.Player2Turn)
+        {
+            if (!_isCalling)
+            {
+                callTreeWaiting = 1;
+                _isCalling = true;
+                while (callTreeWaiting > 0)
+                {
+                    yield return new WaitForSeconds(2f);
+                    CallTree();
+                    callTreeWaiting -= 1;
+
+                    
+                }
+                _isCalling=false;
+            }
+            else
+            {
+                callTreeWaiting += 1;
+            }
+        }
+        else
+        {
+            yield break;
+        }
+        
+        
+        yield break;
     }
 
 }
