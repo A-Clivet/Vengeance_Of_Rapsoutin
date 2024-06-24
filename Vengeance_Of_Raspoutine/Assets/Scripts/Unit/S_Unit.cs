@@ -178,7 +178,7 @@ public class Unit : MonoBehaviour
                         u.actualTile.unit = null;
                         grid.unitList.Remove(u);
                         grid.AllUnitPerColumn[u.tileX].Remove(u);
-                        u._posToMove = new Vector3(transform.position.x, grid.enemyGrid.gridList[tileX][grid.enemyGrid.gridList[tileX].Count-1].transform.position.y -transform.localScale.y, -1);
+                        u._posToMove = new Vector3(transform.position.x, -(grid.gridList[tileX][grid.enemyGrid.gridList[tileX].Count-1].transform.position.y + transform.localScale.y), -1);
                         u.StartCoroutine(LerpMove());
 
                     }

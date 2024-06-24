@@ -227,7 +227,7 @@ public class S_GameManager : MonoBehaviour
     Color _startTimer = new Color(0,1,144/255f);
     Color _middleTimer = new Color(1,196/255f,0);
     Color _endTimer = new Color(198/255f,4/255f,4/255f);
-    int _currentRoundNumber = 0;
+    public int currentRoundNumber = 0;
 
     // -- Text UIs who shows to the player informations -- //
     TextMeshProUGUI _playerActionsLeftTextUI;
@@ -506,6 +506,10 @@ public class S_GameManager : MonoBehaviour
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
             }
             else
             {
