@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static S_GameManager;
 
 public class S_UnitManager : MonoBehaviour
 {
@@ -225,6 +226,10 @@ public class S_UnitManager : MonoBehaviour
         {
             S_GameManager.Instance.IncreaseActionPointBy1();
             S_RemoveUnit.Instance.removing = false;
+            if (S_CrossSceneDataManager.Instance.vsIA && S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+            {
+                StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            }
         }
     }
 

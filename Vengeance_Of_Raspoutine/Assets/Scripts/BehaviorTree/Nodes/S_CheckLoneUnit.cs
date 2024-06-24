@@ -17,68 +17,67 @@ public class S_CheckLoneUnit : Node
     public override NodeState Evaluate()
     {
         bool _foundLoneUnitLine = false;
-        
-        
-        for(int i = 0; i < _gridManager.AllUnitPerColumn.Count; i++)    //Allows to go through the grid by Collumns
-        {
-            _foundLoneUnitLine = false;
 
-            for (int j = 1; j < 3; j++)
+
+        foreach (List<Unit> u in _gridManager.AllUnitPerColumn)
+        {
+            _foundLoneUnitLine = true;
+            if(u.Count <= 0) 
             {
-                if (_gridManager.AllUnitPerColumn[i].Count - j >= 0)        //Allows to go through the grid by Lines and avoid the get out of the list
+                continue;
+            }
+            if (u[u.Count - 1].tileX - 1 >= 0 )
+            {
+                for (int i = u[u.Count - 1].tileY - 1; i < u[u.Count - 1].tileY + 2; i++)
                 {
-                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].SO_Unit.unitType && _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor== _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].unitColor)     //Allows to Check if the last Unit has any Unit of the same type below it
+                    if(i<0 || i >= _gridManager.height)
                     {
                         continue;
                     }
-
-                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1] != null)      //Allows to check if the last unit tile of the column is not empty
+                    if (_gridManager.gridList[u[u.Count - 1].tileX - 1][i].unit != null)
                     {
-                        for (int h = 1; h < 3; h++)
+                        if (_gridManager.gridList[u[u.Count - 1].tileX - 1][i].unit.unitColor == u[u.Count - 1].unitColor)
                         {
-                            if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileX - h >= 0 && _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileX + h < _gridManager.width)     //Allows to check to grid line by line and avoid to get out of the grid
-                            {
-                                if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit != null)      //
-                                {
-                                    if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType && _gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.unitColor == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor)      //Checks if the unit Below the current unit that we are on is the same type
-                                    {
-                                        continue;
-                                    }
-
-                                    _foundLoneUnitLine = true;
-                                    _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];       //Allows _loneUnit to take the Values of the lone unit found
-                                    break;
-                                }
-
-                                if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit != null)      //Allows to check both sides of the unit we are checking and if they are not null
-                                {
-                                    if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType && _gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.unitColor == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor)      //Checks if the unit we are currently checking has any unit of of the same type next to it (Left and Right)
-                                    {
-                                        continue;
-                                    }
-
-                                    _foundLoneUnitLine = true;
-                                    _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];       //Allows _loneUnit to take the Values of the lone unit found
-                                    break;
-                                }
-
-                                _foundLoneUnitLine = true;
-                                _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];       //Allows _loneUnit to take the Values of the lone unit found
-                                break;
-                            }
-                        }
-
-                        if (_foundLoneUnitLine)
-                        {
-                            break;
+                            _foundLoneUnitLine = false; break;
                         }
                     }
-                }   
+                }
+                if (!_foundLoneUnitLine)
+                {
+                    continue;
+                }
             }
-            if (_foundLoneUnitLine)
+            if (u[u.Count - 1].tileX + 1 <_gridManager.width)
             {
-                break;
+                for (int i = u[u.Count - 1].tileY - 1; i < u[u.Count - 1].tileY + 2; i++)
+                {
+                    if (i < 0 || i >= _gridManager.height)
+                    {
+                        continue;
+                    }
+                    if (_gridManager.gridList[u[u.Count - 1].tileX + 1][i].unit != null)
+                    {
+                        if (_gridManager.gridList[u[u.Count - 1].tileX + 1][i].unit.unitColor == u[u.Count - 1].unitColor)
+                        {
+                            _foundLoneUnitLine = false; break;
+                        }
+                    }
+                }
+                if (!_foundLoneUnitLine)
+                {
+                    continue;
+                }
             }
+            if(u[u.Count - 1].tileY - 1 >= 0)
+            {
+                if(u[u.Count - 2].unitColor == u[u.Count - 1].unitColor)
+                {
+                    _foundLoneUnitLine = false;
+                    continue;
+                }
+            }
+            _loneUnit=u[u.Count - 1];
+            break;
         }
 
         if (_foundLoneUnitLine == true)

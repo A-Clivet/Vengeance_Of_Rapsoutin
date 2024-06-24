@@ -14,6 +14,7 @@ public class S_EnoughAttackingUnitRasputin : Node
 
     public override NodeState Evaluate()
     {
+        _unitManager.UnitCombo(3);
         if(_unitManager.UnitColumn.Count > 2)
         {
             pr_state = NodeState.SUCCESS;

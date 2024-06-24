@@ -44,7 +44,7 @@ public class S_GameManager : MonoBehaviour
                 isPlayer1Turn = true;
 
                 // Add one to the total number of turn passed in the round
-                _currentRoundNumber++;
+                currentRoundNumber++;
 
                 // Change the interactability of the unit call's buttons to the corresponding value
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
@@ -60,7 +60,7 @@ public class S_GameManager : MonoBehaviour
 
                 isPlayer1Turn = false;
 
-                _currentRoundNumber++;
+                currentRoundNumber++;
 
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
@@ -429,7 +429,7 @@ public class S_GameManager : MonoBehaviour
             }
 
             // Display the current round number
-            _playerActionsLeftTextUI.text = "Turn : " + _currentRoundNumber.ToString();
+            _playerActionsLeftTextUI.text = "Turn : " + currentRoundNumber.ToString();
 
             // Display the player's number of action left he have 
             _totalTurnsTextUI.text = "Remaining actions : " + _playerActionNumber;
@@ -876,18 +876,11 @@ public class S_GameManager : MonoBehaviour
             if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
                 _playerActionNumber +=1;
+
             }
         }
         else if (currentTurn == TurnEmun.Player2Turn)
         {
-            if (_playerActionNumber > 0)
-            {
-                if (S_CrossSceneDataManager.Instance.vsIA)
-                {
-                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
-                }
-            }
-
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
             player2unitManager.UnitCombo(3);
 
@@ -895,6 +888,13 @@ public class S_GameManager : MonoBehaviour
             if (S_RemoveUnit.Instance.NbCombo < player2unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
                 _playerActionNumber+=1;
+            }
+            if (_playerActionNumber > 0)
+            {
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
             }
         }
         if(S_RemoveUnit.Instance.removing)

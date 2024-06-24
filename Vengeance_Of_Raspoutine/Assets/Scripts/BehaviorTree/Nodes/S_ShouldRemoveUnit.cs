@@ -25,20 +25,16 @@ public class S_ShouldRemoveUnit : Node
         _unitComboLine = (List<List<Unit>>)GetData("k_comboLine");
         for (int i = 0; i < _unitComboColumn.Count; i++)
         {
-            if (_unitComboColumn[i][0].tileY - 2 < 0)
+            if (_unitComboColumn[i][0].tileY + 2 >= _gridManager.height)
             {
                 continue;
             }
 
-            if (_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 2 >= _gridManager.height)
+            if (_gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY + 2].unit != null && _gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY + 1].unit != null)
             {
-                continue;
-            }
-            if (_gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 2].unit != null && _gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY - 2].unit != null)
-            {
-                if (_unitComboColumn[i][0].unitColor == _gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY - 2].unit.unitColor)
+                if (_unitComboColumn[i][0].unitColor == _gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY +  2].unit.unitColor)
                 {
-                    _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY - 1]);
+                    _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboColumn[i][0].tileX][_unitComboColumn[i][0].tileY + 1]);
                     ClearData("k_LoneUnit");
                     ClearData("k_comboColumn");
                     ClearData("k_comboLine");
@@ -49,7 +45,7 @@ public class S_ShouldRemoveUnit : Node
                     return pr_state;
                 }
 
-                if (_unitComboColumn[i][_unitComboColumn[i].Count - 1].unitColor == _gridManager.gridList[_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 2].unit.unitColor)
+/*                if (_unitComboColumn[i][_unitComboColumn[i].Count - 1].unitColor == _gridManager.gridList[_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 2].unit.unitColor)
                 {
                     _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileX][_unitComboColumn[i][_unitComboColumn[i].Count - 1].tileY + 1]);
                     pr_state = NodeState.SUCCESS;
@@ -60,26 +56,26 @@ public class S_ShouldRemoveUnit : Node
                     _gridManager.unitManager.UnitColumn.Clear();
                     _gridManager.unitManager.UnitLine.Clear();
                     return pr_state;
-                }
+                }*/
             }
         }
 
         for (int i = 0; i <_unitComboLine.Count; i++)
         {
-            if (_unitComboLine[i][0].tileY + 1 > _gridManager.height || _unitComboLine[i][0].tileX - 1 < 0)
+            if (_unitComboLine[i][_unitComboLine[i].Count - 1].tileY + 1 >= _gridManager.height || _unitComboLine[i][_unitComboLine[i].Count-1].tileX - 1 < 0)
             {
                 continue;
             }
 
-            if (_unitComboLine[i][0].tileX + 1 > _gridManager.width )
+            if (_unitComboLine[i][0].tileX + 1 >= _gridManager.width )
             {
                 continue;
             }
-            if (_gridManager.gridList[_unitComboLine[i][0].tileX - 1][_unitComboLine[i][0].tileY + 1].unit != null)
+            if (_gridManager.gridList[_unitComboLine[i][0].tileX + 1][_unitComboLine[i][0].tileY + 1].unit != null)
             {
-                if (_unitComboLine[i][0].unitColor == _gridManager.gridList[_unitComboLine[i][0].tileX - 1][_unitComboLine[i][0].tileY + 1].unit.unitColor)
+                if (_unitComboLine[i][0].unitColor == _gridManager.gridList[_unitComboLine[i][0].tileX + 1][_unitComboLine[i][0].tileY + 1].unit.unitColor)
                 {
-                    _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboLine[i][0].tileX - 1][_unitComboLine[i][0].tileY]);
+                    _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboLine[i][0].tileX + 1][_unitComboLine[i][0].tileY]);
                     pr_state = NodeState.SUCCESS;
                     ClearData("k_LoneUnit");
                     ClearData("k_comboColumn");
@@ -90,11 +86,11 @@ public class S_ShouldRemoveUnit : Node
                     return pr_state;
                 }
             }
-            if (_gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX + 1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY + 1].unit != null)
+            else if (_gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX -1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY + 1].unit != null)
             {
-                if (_unitComboLine[i][0].unitColor == _gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX + 1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY + 1].unit.unitColor)
+                if (_unitComboLine[i][0].unitColor == _gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX -1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY + 1].unit.unitColor)
                 {
-                    _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX + 1][_unitComboLine[i][_unitComboLine[i].Count - 1].tileY]);
+                    _removeUnit.RemoveUnitOnSpecificTile(_gridManager.gridList[_unitComboLine[i][_unitComboLine[i].Count - 1].tileX - 1][_unitComboLine[i][0].tileY]);
                     pr_state = NodeState.SUCCESS;
                     ClearData("k_LoneUnit");
                     ClearData("k_comboColumn");

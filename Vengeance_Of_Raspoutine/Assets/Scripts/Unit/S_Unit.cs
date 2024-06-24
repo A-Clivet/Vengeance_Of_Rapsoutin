@@ -512,7 +512,7 @@ public class Unit : MonoBehaviour
                 }
                 if(attack <= 0)
                 {
-                    DestroyFormation();
+                    actualFormation[0].DestroyFormation();
                 }
             }
 
