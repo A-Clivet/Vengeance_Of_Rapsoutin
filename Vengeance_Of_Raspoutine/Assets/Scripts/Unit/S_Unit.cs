@@ -80,11 +80,11 @@ public class Unit : MonoBehaviour
             if (mustAttack)
             {
                 // Speed for one frame divided by the distance left
-                t = 2 * Time.deltaTime / _distance;
+                t = 5 * Time.deltaTime / _distance;
             }
             else
             {
-                t = 5 * Time.deltaTime / _distance;
+                t = 10 * Time.deltaTime / _distance;
             }
             
         }
