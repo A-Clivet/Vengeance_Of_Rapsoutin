@@ -93,7 +93,7 @@ public class Unit : MonoBehaviour
 
         transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
 
-        if (mustAttack && actualFormation[0])
+        if (mustAttack && actualFormation[actualFormation.Count-1] ==this)
         {
             AttackPlayer();
         }
@@ -128,10 +128,12 @@ public class Unit : MonoBehaviour
 
             }
         }
+        actualFormation.Clear();
         grid.AllUnitPerColumn[tileX].Remove(this);
+        StopAllCoroutines();
         for (int i = 0; i < unitManager.UnitColumn.Count; i++)
         {
-            if (unitManager.UnitColumn[i][0].turnCharge <= 0)
+            if (unitManager.UnitColumn[i][grid.unitManager.UnitColumn[i][0].actualFormation.Count - 1].turnCharge <= 0)
             {
                 Destroy(gameObject);
                 return;
@@ -139,7 +141,7 @@ public class Unit : MonoBehaviour
         }
         for (int i = 0; i < grid.enemyGrid.unitManager.UnitColumn.Count; i++)
         {
-            if (grid.enemyGrid.unitManager.UnitColumn[i][0].turnCharge <= 0)
+            if (grid.enemyGrid.unitManager.UnitColumn[i][grid.enemyGrid.unitManager.UnitColumn[i][0].actualFormation.Count - 1].turnCharge <= 0)
             {
                 Destroy(gameObject);
                 return;
@@ -190,7 +192,7 @@ public class Unit : MonoBehaviour
     public void AttackPlayer()
     {
         ReducePlayerHp();
-        actualFormation[0].DestroyFormation();
+        DestroyFormation();
     }
 
     /* is called by the UnitManager, can be used to define what happens for a unit if units are kill by the enemy attack*/
@@ -512,7 +514,7 @@ public class Unit : MonoBehaviour
                 }
                 if(attack <= 0)
                 {
-                    actualFormation[0].DestroyFormation();
+                    actualFormation[actualFormation.Count - 1].DestroyFormation();
                 }
             }
 
