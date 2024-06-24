@@ -60,7 +60,6 @@ public class S_UnitCall : MonoBehaviour
 
         CallAmountUpdate();
 
-        Debug.Log("UnitCalling has been called");
 
         if (!firstUnitCalled)
         {
@@ -128,7 +127,6 @@ public class S_UnitCall : MonoBehaviour
 
     public void TextUpdate(int p_amount)
     {
-        Debug.Log("Text CallAmount updated to :" + p_amount);
         text.SetText(p_amount.ToString());
     }
 

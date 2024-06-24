@@ -119,12 +119,10 @@ public class S_RemoveUnit : MonoBehaviour
 
         for(int i = _gridManagersHandler.player1GridManager.unitList.Count - 1; i >= 0; i--)
         {
-            Debug.Log("will be destroyed");
             HandleUnitDestruction(_gridManagersHandler.player1GridManager.unitList[i]);
         }
         for (int i = _gridManagersHandler.player2GridManager.unitList.Count - 1; i >= 0; i--)
         {
-            Debug.Log("will be destroyed");
             HandleUnitDestruction(_gridManagersHandler.player2GridManager.unitList[i]);
         }
 

@@ -50,8 +50,6 @@ public class S_GameManager : MonoBehaviour
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
-                // Change the player turn text to the corresponding value
-                _playerTurnTextUI.text = "Player 1 turn";
 
                 // Reset the number of actions
                 _playerActionNumber = 3;
@@ -66,8 +64,6 @@ public class S_GameManager : MonoBehaviour
 
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
-
-                _playerTurnTextUI.text = "Player 2 turn";
 
                 _playerActionNumber = 3;
             }
@@ -86,10 +82,6 @@ public class S_GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError(
-                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
-                    "' but it's not planned into the variable's code. UNITY IS PAUSED !"
-                );
                 Debug.Break();
                 return;
             }
@@ -235,11 +227,9 @@ public class S_GameManager : MonoBehaviour
     Color _startTimer = new Color(0,1,144/255f);
     Color _middleTimer = new Color(1,196/255f,0);
     Color _endTimer = new Color(198/255f,4/255f,4/255f);
-    int _currentRoundNumber = 0;
+    public int currentRoundNumber = 0;
 
     // -- Text UIs who shows to the player informations -- //
-    TextMeshProUGUI _turnTimerTextUI;
-    TextMeshProUGUI _playerTurnTextUI;
     TextMeshProUGUI _playerActionsLeftTextUI;
     TextMeshProUGUI _totalTurnsTextUI;
 
@@ -312,8 +302,6 @@ public class S_GameManager : MonoBehaviour
         // Creation of a local variable to avoid calling Instance 4 times
         S_BattleUIsReferencesHandler _battleUIsReferencesHandler = S_BattleUIsReferencesHandler.Instance;
 
-        _turnTimerTextUI = _battleUIsReferencesHandler.turnTimerTextUI;
-        _playerTurnTextUI = _battleUIsReferencesHandler.playerTurnTextUI;
         _playerActionsLeftTextUI = _battleUIsReferencesHandler.playerActionsLeftTextUI;
         _totalTurnsTextUI = _battleUIsReferencesHandler.totalTurnsTextUI;
 
@@ -411,6 +399,8 @@ public class S_GameManager : MonoBehaviour
 
         S_GameManager.Instance.player1UnitCall.UnitCalling();
         S_GameManager.Instance.player2UnitCall.UnitCalling();
+
+        DeactivateGrid();
     }
 
     private void Update()
@@ -420,8 +410,6 @@ public class S_GameManager : MonoBehaviour
             // Decrease of the turn timer
             _turnTimerTime -= Time.deltaTime;
 
-            // Display the rounded timer in seconds in a text
-            _turnTimerTextUI.text = "Remaining time : " + ((int)_turnTimerTime).ToString();
 
             // reduces the timer circle
             _fill.fillAmount = _turnTimerTime / _maxTime;
@@ -518,6 +506,10 @@ public class S_GameManager : MonoBehaviour
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
             }
             else
             {

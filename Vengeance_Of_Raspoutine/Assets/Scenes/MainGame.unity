@@ -188,11 +188,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4413773897906501074, guid: a147602cd33660d46bd54aac7266579f, type: 3}
   m_PrefabInstance: {fileID: 664087875}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &238187324 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5905715861692200051, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-  m_PrefabInstance: {fileID: 664087875}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &396072337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1327,10 +1322,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 755483773}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2119747438021580896, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+    - {fileID: 5905715861692200051, guid: a147602cd33660d46bd54aac7266579f, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1215639307098938880, guid: a147602cd33660d46bd54aac7266579f, type: 3}
-      insertIndex: 2
+      insertIndex: 1
       addedObject: {fileID: 1955503928}
     - targetCorrespondingSourceObject: {fileID: 749720528918431962, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       insertIndex: 0
@@ -3226,6 +3223,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8695542008079224647, guid: df3e8da3fea52724da36a8886bc64430, type: 3}
+      propertyPath: _animPlayerCanvas
+      value: 
+      objectReference: {fileID: 664087876}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4038,7 +4039,7 @@ PrefabInstance:
     - target: {fileID: 5920533083824793201, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
       propertyPath: timerUI
       value: 
-      objectReference: {fileID: 238187324}
+      objectReference: {fileID: 0}
     - target: {fileID: 5920533083824793201, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
       propertyPath: tileSprite
       value: 
@@ -4062,7 +4063,7 @@ PrefabInstance:
     - target: {fileID: 8275921660412898142, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
       propertyPath: timerUI
       value: 
-      objectReference: {fileID: 238187324}
+      objectReference: {fileID: 0}
     - target: {fileID: 8275921660412898142, guid: 00cf2134b29d8bb488201f60cfe7ec00, type: 3}
       propertyPath: tileSprite
       value: 
