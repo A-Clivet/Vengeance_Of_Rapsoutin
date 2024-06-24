@@ -31,6 +31,7 @@ MonoBehaviour:
   initialUnitState: 0
   newUnitState: 0
   numberOfUnitsToDestroy: 5
+  unitDestructionAnimationsFeedback: 1
   targetUnitState: 0
   damageCap: 0
   energyBallGameObject: {fileID: 0}

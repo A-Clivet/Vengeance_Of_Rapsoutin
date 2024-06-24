@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -13,8 +12,10 @@ public class S_RemoveUnit : MonoBehaviour
     [HideInInspector] public Unit hoveringUnit;
 
     [SerializeField] AnimatorController _explosionAnimatorController;
+    [SerializeField] GameObject _unitAnimationDestructionPrefab;
 
     S_GameManager _gameManager;
+    S_UnitDestructionAnimationManager _unitDestructionAnimationManager;
     S_GridManagersHandler _gridManagersHandler;
 
     private void Awake()
@@ -24,6 +25,7 @@ public class S_RemoveUnit : MonoBehaviour
 
     private void Start()
     {
+        _unitDestructionAnimationManager = S_UnitDestructionAnimationManager.Instance;
         _gameManager = S_GameManager.Instance;
         _gridManagersHandler = S_GridManagersHandler.Instance;
     }
@@ -36,23 +38,36 @@ public class S_RemoveUnit : MonoBehaviour
             if (hoveringUnit == null)
                 return;
 
-            // If the removing of the unit succeded
-            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile))
+            if (DoesPlayerHasActionPoint())
             {
-                //Used for verifying if the action of removing the unit has created a combo
-                NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
-                removing = true;
-                
-                // Reduces the number of Action Points of the player playing by one
-                _gameManager.ReduceActionPointBy1();
+                // If the removing of the unit succeded
+                if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile, S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf))
+                {
+                    //Used for verifying if the action of removing the unit has created a combo
+                    NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
+                    removing = true;
+
+                    // Reduces the number of Action Points of the player playing by one
+                    _gameManager.ReduceActionPointBy1();
+                }
             }
         }
+    }
+
+    bool DoesPlayerHasActionPoint()
+    {
+        if (_gameManager.playerActionNumber > 0)
+            return true;
+
+        return false;
     }
 
     /// <summary> Function used to remove a unit without having to give a player's input </summary>
     /// <param name = "p_tile"> Tile where is the unit you want to destroy </param>
     /// <returns> Return if the function succeded </returns>
-    public bool RemoveUnitOnSpecificTile(S_Tile p_tile)
+    public bool RemoveUnitOnSpecificTile(
+        S_Tile p_tile,
+        S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum p_unitDestructionAnimationsEnum = S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf)
     {
         // Security
         if (p_tile == null)
@@ -61,32 +76,24 @@ public class S_RemoveUnit : MonoBehaviour
         // Storing the unit inside p_tile into a variable
         Unit _unit = p_tile.unit;
 
+        // Security : Return false if there is not a unit under the mouse position, and if the unit is not in state 0, or 1 (idle, or wall)
+        if (!(_unit != null && (_unit.state == 0 || _unit.state == 1)))
+            return false;
+
         // Hidding unit (from the one that attacks)
         _unit.gameObject.GetComponent<BoxCollider2D>().enabled = false;
 
-        // Create an Animator, assign the _explosionAnimatorController to it, and start the animation
-        Animator _animator = _unit.gameObject.AddComponent<Animator>();
-        _animator.runtimeAnimatorController = _explosionAnimatorController;
+        // Create and handle unit animation destruction
+        StartCoroutine(_unitDestructionAnimationManager.HandleUnitAnimationDestruction(
+            p_unitDestructionAnimationsEnum,
+            _unit
+        ));
 
-        StartCoroutine(HandleDestructionAfterAnimation(_animator, _unit));
+        HandleUnitDestruction(_unit);
+
+        _unit.actualTile.grid.unitManager.UnitCombo(3);
 
         return true;
-    }
-
-    private IEnumerator HandleDestructionAfterAnimation(Animator p_animator, Unit p_unit)
-    {
-        // Wait until the animation is done
-
-        // CREATE BUG :
-        yield return new WaitUntil(() => p_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-
-        // Check if there is a unit under the mouse position, and if the unit is in state 0, or 1 (idle, or wall)
-        if (p_unit != null && (p_unit.state == 0 || p_unit.state == 1))
-        {
-            HandleUnitDestruction(p_unit);
-        }
-
-        p_unit.actualTile.grid.unitManager.UnitCombo(3);
     }
 
     public void HandleUnitDestruction(Unit p_unit)

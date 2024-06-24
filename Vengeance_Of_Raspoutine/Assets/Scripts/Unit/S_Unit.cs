@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -39,6 +38,7 @@ public class Unit : MonoBehaviour
     public bool mustAttack = false;
     private bool _willLoseActionPoints = false;
 
+    S_RemoveUnit _removeUnit;
 
     private void Awake()
     {
@@ -51,6 +51,11 @@ public class Unit : MonoBehaviour
         //defense = SO_Unit.defense;
         //turnCharge = SO_Unit.unitTurnCharge;
         speed = 10;
+    }
+
+    private void Start()
+    {
+        _removeUnit = S_RemoveUnit.Instance;
     }
 
     // destroy the formation in good order to avoid removing itself before the others
@@ -205,12 +210,18 @@ public class Unit : MonoBehaviour
                 {
                     if (actualFormation[j] != this)
                     {
-                        S_RemoveUnit.Instance.RemoveUnitOnSpecificTile(actualFormation[j].actualTile);
+                        _removeUnit.RemoveUnitOnSpecificTile(
+                            actualFormation[j].actualTile,
+                            S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak
+                        );
                     }
                 }
 
                 // Destruction of the unit who leads the formation (the one who is reading this code)
-                S_RemoveUnit.Instance.RemoveUnitOnSpecificTile(actualTile);
+                _removeUnit.RemoveUnitOnSpecificTile(
+                    actualTile,
+                    S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak
+                );
             }
             return;
         }
@@ -228,7 +239,10 @@ public class Unit : MonoBehaviour
                 S_GameManager.Instance.player2CharacterXP.GainXP(5);
             }
 
-            S_RemoveUnit.Instance.RemoveUnitOnSpecificTile(actualTile);
+            _removeUnit.RemoveUnitOnSpecificTile(
+                actualTile,
+                S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak
+            );
         }
     }
 
@@ -494,13 +508,13 @@ public class Unit : MonoBehaviour
         if (S_GameManager.Instance.currentTurn != S_GameManager.TurnEmun.TransitionTurn)
         {
             highlight.SetActive(true);
-            S_RemoveUnit.Instance.hoveringUnit = this;
+            _removeUnit.hoveringUnit = this;
         }
     }
     private void OnMouseExit()
     {
         highlight.SetActive(false);
-        S_RemoveUnit.Instance.hoveringUnit = null;
+        _removeUnit.hoveringUnit = null;
         highlight.SetActive(grid.isSwapping && this == grid.unitSelected);
     }
     private void OnMouseDown()

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +14,13 @@ public class S_CharacterAdrenaline : MonoBehaviour
     [SerializeField] Color _initialSpecialCapacityIconColor;
     [SerializeField] Color _newSpecialCapacityIconColor;
 
+    S_GameManager _gameManager;
+
     bool _isPlayer1Character;
     int _currentAdrenaline;
     int _maxAdrenaline;
+
+    Coroutine _launchSpecialCapacityCoroutine;
 
     #region Getter / Setter
     public int currentAdrenaline
@@ -50,6 +55,10 @@ public class S_CharacterAdrenaline : MonoBehaviour
     #endregion
 
     #region Methods
+    private void Start()
+    {
+        _gameManager = S_GameManager.Instance;
+    }
 
     public void RecieveCharacterAdrenalineStats(int p_maxAdrenaline, S_SpecialCapacityStats p_specialCapacity, bool p_isPlayer1Character)
     {
@@ -82,13 +91,36 @@ public class S_CharacterAdrenaline : MonoBehaviour
         // Check if the character has full adrenaline
         if (currentAdrenaline == _maxAdrenaline)
         {
+            // In the case that we destroy enemy's units (witch will gave us action points) we save the actual action point number
+            int previusActionPointsNumber = _gameManager.playerActionNumber;
+
             currentAdrenaline = 0;
 
-            S_GameManager.Instance.ReduceActionPointBy1();
+            S_GridManagersHandler.Instance.HandleAllUnitInteractions(false);
 
             // Launch special capacity
-            StartCoroutine(S_SpecialCapacityManager.Instance.LaunchSpecialCapacity(specialCapacity, _isPlayer1Character));
+            _launchSpecialCapacityCoroutine = StartCoroutine(S_SpecialCapacityManager.Instance.LaunchSpecialCapacity(specialCapacity, _isPlayer1Character));
+
+            if (!specialCapacity.isUltimateSpecialCapacity)
+            {
+                // Waits until the coroutine given ends
+                StartCoroutine(SpecialCapacityCooldown(previusActionPointsNumber));
+            }
         }
+    }
+
+    /// <summary> Waits until the coroutine "LaunchSpecialCapacity" ends, and reset correctly player's grid, and set the correct action point number </summary>
+    IEnumerator SpecialCapacityCooldown(int p_previusActionPointsNumber)
+    {
+        yield return _launchSpecialCapacityCoroutine;
+
+        // Will reactivate grids depending on the player who plays
+        _gameManager.DeactivateGrid();
+
+        // If we don't set directly the value into the variable is to pass through verifications
+        _gameManager.playerActionNumber = p_previusActionPointsNumber;
+
+        _gameManager.ReduceActionPointBy1();
     }
 
     public void ResetAdrenalineStats()

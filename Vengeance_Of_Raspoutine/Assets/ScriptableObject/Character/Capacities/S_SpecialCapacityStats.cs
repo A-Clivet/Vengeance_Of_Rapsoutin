@@ -10,15 +10,6 @@ public class S_SpecialCapacityStats : ScriptableObject
         TurnCharge
     }
 
-    public enum TypesOfFeedback
-    {
-        Explosion,
-        Pouf,
-        Pak,
-        Smoke,
-        Fire
-    }
-
     [HideInInspector] public bool isUnitsStatChangementSpecialCapacityHidden;
     [HideInInspector] public bool isUnitsMetamorphosisSpecialCapacityHidden;
     [HideInInspector] public bool isUnitsDestroySpecialCapacityHidden;
@@ -55,18 +46,20 @@ public class S_SpecialCapacityStats : ScriptableObject
     [ShowCondition("isUnitsMetamorphosisSpecialCapacity")]
         public int newUnitState;
 
-    [Header("How many units to destroy :")]
+    [Header("Units destroy special capacity :")]
     [ShowCondition("isUnitsDestroySpecialCapacity")]
         public int numberOfUnitsToDestroy;
+    [ShowCondition("isUnitsDestroySpecialCapacity")]
+        public S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum unitDestructionAnimationsFeedback;
 
-    [Header("Which unit type to turn into a Ball of Mega Death")]
+    [Header("Ultimate capacity :")]
     [Tooltip("Which unit state will be turn into the ultimate projectile")]
+    [ShowCondition("isUltimateSpecialCapacity")]
+        public GameObject ultimateCapacityProjectilePrefab;
     [ShowCondition("isUltimateSpecialCapacity")]
         public int targetUnitState;
     [ShowCondition("isUltimateSpecialCapacity")]
         public int damageCap;
-    [ShowCondition("isUltimateSpecialCapacity")]
-        public GameObject energyBallGameObject;
 
 #region Show and hide variables
 

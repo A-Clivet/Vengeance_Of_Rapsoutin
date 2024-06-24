@@ -25,13 +25,14 @@ MonoBehaviour:
   capacityDescription: Inactive troops go away launch a missile
   capacityEffectDescription: The attack stat is equal to the sum of everyone's stats
     (max 15), can be deployed in any row
-  isCapacityLocked: 1
+  isCapacityLocked: 0
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2
   unitStatsChangementValue: 3
   initialUnitState: 0
   newUnitState: 0
   numberOfUnitsToDestroy: 0
+  unitDestructionAnimationsFeedback: 0
+  ultimateCapacityProjectilePrefab: {fileID: 9218899875330706941, guid: 6746d9a4b243b534e980b86025d64c88, type: 3}
   targetUnitState: 0
   damageCap: 30
-  energyBallGameObject: {fileID: 9218899875330706941, guid: 6746d9a4b243b534e980b86025d64c88, type: 3}

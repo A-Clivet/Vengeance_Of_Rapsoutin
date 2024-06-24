@@ -567,8 +567,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 590199f0e6aca6644948fbcd7acc504e, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a7c299d4b62fce243b4dad027a0ae07b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.7607843}
   m_FlipX: 0
   m_FlipY: 0
@@ -1361,7 +1361,7 @@ GameObject:
   - component: {fileID: 7468898812993546532}
   - component: {fileID: 5276245118910377426}
   m_Layer: 0
-  m_Name: GO_EnergyBall
+  m_Name: GO_Amalgame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1428,7 +1428,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 590199f0e6aca6644948fbcd7acc504e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a7c299d4b62fce243b4dad027a0ae07b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   _posToMove: {x: 0, y: 0, z: 0}
-  SO_Unit: {fileID: 11400000, guid: f34607b4796cdb64fb44445172601aaf, type: 2}
+  SO_Unit: {fileID: 11400000, guid: 49c5b0f4a987ee540903cc9123cdecac, type: 2}
   attack: 0
   defense: 0
   state: 0
@@ -1461,7 +1461,7 @@ MonoBehaviour:
   actualFormation: []
   formationIndex: 0
   unitColor: 0
-  unitSprite: {fileID: 0}
+  unitSprite: {fileID: 21300000, guid: a7c299d4b62fce243b4dad027a0ae07b, type: 3}
   actualTile: {fileID: 0}
   highlight: {fileID: 6249884193706675659}
   grid: {fileID: 0}

@@ -23,6 +23,8 @@ public class S_SpecialCapacityManager : MonoBehaviour
     List<Unit> _allPlayer1Units { get { return _player1GridManager.unitList; } }
     List<Unit> _allPlayer2Units { get { return _player2GridManager.unitList; } }
 
+    S_GameManager _gameManager;
+
     S_RemoveUnit _removeUnitClass;
     GameObject _unitsParentGameObject;
     S_GridManagersHandler _gridManagersHandler;
@@ -36,6 +38,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
 
     private void Start()
     {
+        _gameManager = S_GameManager.Instance;
         _removeUnitClass = S_RemoveUnit.Instance;
         _unitsParentGameObject = S_UnitCallButtonHandler.Instance.unitsParentGameObject;
         _gridManagersHandler = S_GridManagersHandler.Instance;
@@ -76,16 +79,16 @@ public class S_SpecialCapacityManager : MonoBehaviour
         }
         else if (p_specialCapacityStats.isUnitsDestroySpecialCapacity)
         {
-            RandomUnitDestroyer(p_isPlayer1, p_specialCapacityStats.numberOfUnitsToDestroy);
+            RandomUnitDestroyer(p_isPlayer1, p_specialCapacityStats.numberOfUnitsToDestroy, p_specialCapacityStats.unitDestructionAnimationsFeedback);
         }
         else if (p_specialCapacityStats.isUltimateSpecialCapacity)
         {
-            UltimateCapacity(p_isPlayer1, p_specialCapacityStats.targetUnitState, p_specialCapacityStats.damageCap, p_specialCapacityStats.energyBallGameObject);
+            UltimateCapacity(p_isPlayer1, p_specialCapacityStats.ultimateCapacityProjectilePrefab, p_specialCapacityStats.targetUnitState, p_specialCapacityStats.damageCap);
         }
         else
         {
             Debug.LogError("ERROR ! No capacity have been selected in the [" + p_specialCapacityStats + "] Scriptable Object.");
-        }
+        }       
         #endregion
     }
 
@@ -169,7 +172,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
         }
     }
 
-    void RandomUnitDestroyer(bool p_isPlayer1Units, int p_numberOfUnitsToDestroy)
+    void RandomUnitDestroyer(bool p_isPlayer1Units, int p_numberOfUnitsToDestroy, S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum p_unitDestructionAnimation)
     {
         int unitsThatWillBeDestroyedNumber = 0;
 
@@ -201,18 +204,21 @@ public class S_SpecialCapacityManager : MonoBehaviour
             // If we haven't destroyed enough units and we've finished the ennemy grid, we repeat the process.
             if (unitsThatWillBeDestroyedNumber < p_numberOfUnitsToDestroy)
             {
-                RandomUnitDestroyer(p_isPlayer1Units, p_numberOfUnitsToDestroy - unitsThatWillBeDestroyedNumber);
+                RandomUnitDestroyer(p_isPlayer1Units, p_numberOfUnitsToDestroy - unitsThatWillBeDestroyedNumber, p_unitDestructionAnimation);
             }
 
             // Destruction of all the save units in allPlayerUnitsThatWillBeDestroyed
             for (int i = 0; i < allPlayerUnitsThatWillBeDestroyed.Count; i++)
             {
-                _removeUnitClass.RemoveUnitOnSpecificTile(allPlayerUnitsThatWillBeDestroyed[i].actualTile);
+                _removeUnitClass.RemoveUnitOnSpecificTile(
+                    allPlayerUnitsThatWillBeDestroyed[i].actualTile,
+                    p_unitDestructionAnimation
+                );
             }
         }
     }
 
-    void UltimateCapacity(bool p_isPlayer1Units, int p_unitsToChange, int p_damageLimit, GameObject p_energyBall)
+    void UltimateCapacity(bool p_isPlayer1Units, GameObject p_ultimateCapacityProjectilePrefab, int p_unitsToChange, int p_damageCap)
     {
         int damageIncrement = 0;
 
@@ -235,10 +241,10 @@ public class S_SpecialCapacityManager : MonoBehaviour
                 // We combine all the idle units while capping the damage increment.
                 if (unit.state == p_unitsToChange)
                 {
-                    if (damageIncrement + unit.attack <= p_damageLimit)
-                        damageIncrement += unit.attack;
-                    else
-                        damageIncrement = p_damageLimit;
+                    damageIncrement += unit.attack;
+
+                    if (damageIncrement > p_damageCap)
+                        damageIncrement = p_damageCap;
 
                     allPlayerUnitsThatWillBeDestroyed.Add(unit);
                 }
@@ -247,11 +253,14 @@ public class S_SpecialCapacityManager : MonoBehaviour
             // Removing all saved units
             for (int i = 0; i < allPlayerUnitsThatWillBeDestroyed.Count; i++)
             {
-                _removeUnitClass.RemoveUnitOnSpecificTile(allPlayerUnitsThatWillBeDestroyed[i].actualTile);
+                _removeUnitClass.RemoveUnitOnSpecificTile(
+                    allPlayerUnitsThatWillBeDestroyed[i].actualTile,
+                    S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Explosion
+                );
             }
 
             // We spawn the new projectile.
-            GameObject energyBall = Instantiate(p_energyBall, _unitsParentGameObject.transform);
+            GameObject energyBall = Instantiate(p_ultimateCapacityProjectilePrefab, _unitsParentGameObject.transform);
 
             Unit energyBallUnitComponent = energyBall.GetComponent<Unit>();
 
@@ -283,8 +292,9 @@ public class S_SpecialCapacityManager : MonoBehaviour
             energyBallUnitComponent.actualFormation.Add(energyBallUnitComponent);
             energyBallUnitComponent.grid.unitManager.UnitColumn.Add(energyBallUnitComponent.actualFormation);
 
-            // Make the energyBallGameObject selected
-            playerGridManager.unitSelected = energyBallUnitComponent;
+            // Make the energyBallGameObject selected, and give 1 action point because placing a unit cost 1 action point
+            _gameManager.IncreaseActionPointBy1();
+            energyBallUnitComponent.SelectUnit();
         }
     }
 
