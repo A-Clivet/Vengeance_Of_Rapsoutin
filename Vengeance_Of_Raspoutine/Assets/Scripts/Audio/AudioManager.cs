@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class AudioManager : MonoBehaviour
     private List<StudioEventEmitter> _eventEmitters;
 
     private EventInstance _musicEventInstance;
+
+    private string _sceneString = "MainMenu";
+    [SerializeField] Scene _mainMenu;
 
     public static AudioManager instance { get; private set; }
 
@@ -44,6 +48,14 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         InitializeMusic(FMODEvents.instance.Music);
+        if (_sceneString == SceneManager.GetActiveScene().name)
+        {
+            SetMusic(0);
+        }
+        else
+        {
+            SetMusic(1);
+        }
     }
 
     private void Update()
