@@ -86,10 +86,6 @@ public class S_GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError(
-                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
-                    "' but it's not planned into the variable's code. UNITY IS PAUSED !"
-                );
                 Debug.Break();
                 return;
             }
