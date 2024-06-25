@@ -2950,6 +2950,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1787634140}
     - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
+      propertyPath: _mainCam
+      value: 
+      objectReference: {fileID: 1869549172}
+    - target: {fileID: 5816893346780201565, guid: 5dd03e5ce8c8f7346ba3c88f82146e10, type: 3}
       propertyPath: weatherInfo
       value: 
       objectReference: {fileID: 0}

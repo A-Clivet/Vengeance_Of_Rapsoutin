@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -35,6 +36,7 @@ public class S_WeatherEvent : MonoBehaviour
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
+    [SerializeField] private GameObject _mainCam;
     [SerializeField] private TextMeshProUGUI weatherInfo;
 
     private int nbTurn = 0;
@@ -45,6 +47,21 @@ public class S_WeatherEvent : MonoBehaviour
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndDestructionOfTheSecondOne);
     }
 
+    private IEnumerator CameraShake()
+    {
+        float timer = 0;
+        Vector3 originalPos = _mainCam.transform.localPosition;
+        while (timer < 2)
+        {
+            _mainCam.transform.localPosition = originalPos + UnityEngine.Random.insideUnitSphere*0.1f;
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        _mainCam.transform.position = originalPos;
+
+        yield return null;
+    }
     public void EventProbability()
     {
         nbTurn = 0;
@@ -59,7 +76,7 @@ public class S_WeatherEvent : MonoBehaviour
 
             if (eventChosen == 0)
             {
-                nbTurn = 8;
+                nbTurn = 4;
                 ManageEvent = Event.Earthquake;
             }
             else if (eventChosen == 1)
@@ -84,6 +101,7 @@ public class S_WeatherEvent : MonoBehaviour
         if (nbTurn < 0)
         {
             nbTurn = 4;
+            StartCoroutine(CameraShake());
             List<Unit> unitToRemove = new List<Unit>();
             foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 1))
             {
