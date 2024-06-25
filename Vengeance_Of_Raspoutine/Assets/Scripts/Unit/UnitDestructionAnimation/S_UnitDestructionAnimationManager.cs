@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using UnityEditor.Animations;
+using UnityEngine.Animations;
 using UnityEngine;
 
 public class S_UnitDestructionAnimationManager : MonoBehaviour
@@ -19,10 +19,10 @@ public class S_UnitDestructionAnimationManager : MonoBehaviour
     [Serializable]
     struct UnitDestructionAnimatorControllers
     {
-        public AnimatorController Explosion;
-        public AnimatorController HellFireEffect;
-        public AnimatorController Pak;
-        public AnimatorController Pouf;
+        public RuntimeAnimatorController Explosion;
+        public RuntimeAnimatorController HellFireEffect;
+        public RuntimeAnimatorController Pak;
+        public RuntimeAnimatorController Pouf;
     }
 
     [Header("References :")]
@@ -58,8 +58,8 @@ public class S_UnitDestructionAnimationManager : MonoBehaviour
         // Change the created GameObject's position to the unit position
         _unitAnimationDestructionGameObject.transform.SetPositionAndRotation(p_unit.transform.position, Quaternion.identity);
 
-        // We get the correct animation (AnimatorController) form the given p_unitDestructionAnimationsEnum argument
-        AnimatorController _animatorController = GetCorrectAnimatorController(p_unitDestructionAnimationsEnum);
+        // We get the correct animation (RuntimeAnimatorController) form the given p_unitDestructionAnimationsEnum argument
+        RuntimeAnimatorController _animatorController = GetCorrectAnimatorController(p_unitDestructionAnimationsEnum);
 
         // Get the Animator of the created GameObject, assign the _animatorController to it, and start the animation
         Animator _animator = _unitAnimationDestructionGameObject.GetComponent<Animator>();
@@ -72,7 +72,7 @@ public class S_UnitDestructionAnimationManager : MonoBehaviour
         Destroy(_unitAnimationDestructionGameObject);
     }
 
-    AnimatorController GetCorrectAnimatorController(UnitDestructionAnimationsEnum p_unitDestructionAnimationsEnum)
+    RuntimeAnimatorController GetCorrectAnimatorController(UnitDestructionAnimationsEnum p_unitDestructionAnimationsEnum)
     {
         switch (p_unitDestructionAnimationsEnum)
         {

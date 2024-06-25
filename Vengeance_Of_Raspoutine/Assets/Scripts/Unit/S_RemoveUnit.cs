@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
+using UnityEngine.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +11,7 @@ public class S_RemoveUnit : MonoBehaviour
 
     [HideInInspector] public Unit hoveringUnit;
 
-    [SerializeField] AnimatorController _explosionAnimatorController;
+    [SerializeField] RuntimeAnimatorController _explosionAnimatorController;
     [SerializeField] GameObject _unitAnimationDestructionPrefab;
 
     S_GameManager _gameManager;
