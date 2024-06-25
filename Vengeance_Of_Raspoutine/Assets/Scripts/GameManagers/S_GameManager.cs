@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,7 +50,7 @@ public class S_GameManager : MonoBehaviour
 
 
                 // Reset the number of actions
-                _playerActionNumber = 3;
+                playerActionNumber = 3;
             }
             else if (_currentTurn == TurnEmun.Player2Turn)
             {
@@ -65,7 +63,9 @@ public class S_GameManager : MonoBehaviour
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
 
-                _playerActionNumber = 3;
+                _playerTurnTextUI.text = "Player 2 turn";
+
+                playerActionNumber = 3;
             }
             else if (_currentTurn == TurnEmun.TransitionTurn)
             {
@@ -95,6 +95,9 @@ public class S_GameManager : MonoBehaviour
     }
 
     public bool isPlayer1Turn { get; private set; } = true;
+
+    // -- Player's action point -- //
+    public int playerActionNumber { get; set; }
 
     // -- Player's score variables -- //
     public int player1ScorePoint { get; private set; }
@@ -219,7 +222,6 @@ public class S_GameManager : MonoBehaviour
 
     // -- Players's actions -- //
     int _startingPlayerActionNumber = 3;
-    int _playerActionNumber;
 
     // -- Informations showns to the player -- //
     float _turnTimerTime;
@@ -379,7 +381,7 @@ public class S_GameManager : MonoBehaviour
 
         #region First turn management
 
-        _playerActionNumber = _startingPlayerActionNumber;
+        playerActionNumber = _startingPlayerActionNumber;
 
         
         // Setting the initial map sprite index to the middle of the available maps
@@ -432,7 +434,7 @@ public class S_GameManager : MonoBehaviour
             _playerActionsLeftTextUI.text = "Turn : " + currentRoundNumber.ToString();
 
             // Display the player's number of action left he have 
-            _totalTurnsTextUI.text = "Remaining actions : " + _playerActionNumber;
+            _totalTurnsTextUI.text = "Remaining actions : " + playerActionNumber;
 
             // Check if the timer is equal or less to 0, if yes then end the turn
             if (_turnTimerTime <= 0.0f)
@@ -865,7 +867,7 @@ public class S_GameManager : MonoBehaviour
     /// <summary> Reduces the number of Action Points of the player playing by one </summary>
     public void ReduceActionPointBy1()
     {
-        _playerActionNumber -= 1;
+        playerActionNumber -= 1;
 
         if (currentTurn == TurnEmun.Player1Turn)
         {
@@ -875,8 +877,7 @@ public class S_GameManager : MonoBehaviour
             //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
             if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
-                _playerActionNumber +=1;
-
+                playerActionNumber +=1;
             }
         }
         else if (currentTurn == TurnEmun.Player2Turn)
@@ -887,7 +888,7 @@ public class S_GameManager : MonoBehaviour
             //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
             if (S_RemoveUnit.Instance.NbCombo < player2unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
-                _playerActionNumber+=1;
+                playerActionNumber+=1;
             }
             if (_playerActionNumber > 0)
             {
@@ -911,7 +912,7 @@ public class S_GameManager : MonoBehaviour
 
 
         // Ends the player who played's turn if he doeasn't have any action points left
-        if (_playerActionNumber <= 0)
+        if (playerActionNumber <= 0)
         {
             EndTurn();
             if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
@@ -923,7 +924,7 @@ public class S_GameManager : MonoBehaviour
 
     public void IncreaseActionPointBy1()
     {
-        _playerActionNumber += 1;
+        playerActionNumber += 1;
     }
     #endregion
 
