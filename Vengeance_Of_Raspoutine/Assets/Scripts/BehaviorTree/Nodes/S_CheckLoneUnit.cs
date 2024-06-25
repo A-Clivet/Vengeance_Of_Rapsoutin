@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using S_BehaviorTree;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,16 +18,27 @@ public class S_CheckLoneUnit : Node
     public override NodeState Evaluate()
     {
         bool _foundLoneUnitLine = false;
-
+        List<Unit> _inColumnUnit = new List<Unit>();
+        for (int i = 0; i < _gridManager.unitManager.UnitColumn.Count; i++)
+        {
+            foreach (Unit u in _gridManager.unitManager.UnitColumn[i])
+            {
+                _inColumnUnit.Add(u);
+            }
+        }
 
         foreach (Unit u in _gridManager.unitList)
         {
+            if (_inColumnUnit.Contains(u))
+            {
+                continue;
+            }
             _foundLoneUnitLine = true;
             for (int i = -1; i < 2; i++)
             {
                 if (u.CheckUnitInProximity(out var unit, -1, i))
                 {
-                    if (unit.unitColor == u.unitColor)
+                    if (unit.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit)))
                     {
                         _foundLoneUnitLine = false; break;
                     }
@@ -42,7 +54,7 @@ public class S_CheckLoneUnit : Node
 
                 if (u.CheckUnitInProximity(out var unit2, 1, i))
                 {
-                    if (unit2.unitColor == u.unitColor)
+                    if (unit2.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit2)))
                     {
                         _foundLoneUnitLine = false; break;
                     }
