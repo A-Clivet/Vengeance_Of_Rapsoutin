@@ -42,18 +42,14 @@ public class S_RemoveUnit : MonoBehaviour
                 return;
 
             // If the removing of the unit succeded
-            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile[0]))
+            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile[0], S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf))
             {
-                // If the removing of the unit succeded
-                if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile, S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf))
-                {
-                    //Used for verifying if the action of removing the unit has created a combo
-                    NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
-                    removing = true;
+                //Used for verifying if the action of removing the unit has created a combo
+                NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
+                removing = true;
 
-                    // Reduces the number of Action Points of the player playing by one
-                    _gameManager.ReduceActionPointBy1();
-                }
+                // Reduces the number of Action Points of the player playing by one
+                _gameManager.ReduceActionPointBy1();
             }
         }
     }
@@ -139,12 +135,12 @@ public class S_RemoveUnit : MonoBehaviour
     {
         foreach (Unit unit in _gridManagersHandler.player1GridManager.unitList)
         {
-            Destroy(unit);
+            Destroy(unit.gameObject);
         }
 
         foreach (Unit unit in _gridManagersHandler.player2GridManager.unitList)
         {
-            Destroy(unit);
+            Destroy(unit.gameObject);
         }
 
         // We clear all the existing attack formation
@@ -153,15 +149,5 @@ public class S_RemoveUnit : MonoBehaviour
         
         _gridManagersHandler.player1GridManager.unitList.Clear();
         _gridManagersHandler.player2GridManager.unitList.Clear();
-
-       //for(int i = _gridManagersHandler.player1GridManager.unitList.Count - 1; i >= 0; i--)
-       //{
-       //    HandleUnitDestruction(_gridManagersHandler.player1GridManager.unitList[i]);
-       //}
-
-       //for (int i = _gridManagersHandler.player2GridManager.unitList.Count - 1; i >= 0; i--)
-       //{
-       //    HandleUnitDestruction(_gridManagersHandler.player2GridManager.unitList[i]);
-       //}
     }
 }

@@ -251,7 +251,7 @@ public class Unit : MonoBehaviour
             }
 
             _removeUnit.RemoveUnitOnSpecificTile(
-                actualTile,
+                actualTile[0],
                 S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak
             );
         }
