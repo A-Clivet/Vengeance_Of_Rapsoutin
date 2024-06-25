@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using S_BehaviorTree;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,68 +18,69 @@ public class S_CheckLoneUnit : Node
     public override NodeState Evaluate()
     {
         bool _foundLoneUnitLine = false;
-
-
-        foreach (List<Unit> u in _gridManager.AllUnitPerColumn)
+        List<Unit> _inColumnUnit = new List<Unit>();
+        for (int i = 0; i < _gridManager.unitManager.UnitColumn.Count; i++)
         {
-            _foundLoneUnitLine = true;
-            if(u.Count <= 0) 
+            foreach (Unit u in _gridManager.unitManager.UnitColumn[i])
+            {
+                _inColumnUnit.Add(u);
+            }
+        }
+
+        foreach (Unit u in _gridManager.unitList)
+        {
+            if (_inColumnUnit.Contains(u))
             {
                 continue;
             }
-            if (u[u.Count - 1].tileX - 1 >= 0 )
+            _foundLoneUnitLine = true;
+            for (int i = -1; i < 2; i++)
             {
-                for (int i = u[u.Count - 1].tileY - 1; i < u[u.Count - 1].tileY + 2; i++)
+                if (u.CheckUnitInProximity(out var unit, -1, i))
                 {
-                    if(i<0 || i >= _gridManager.height)
+                    if (unit.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit)))
                     {
-                        continue;
+                        _foundLoneUnitLine = false; break;
                     }
-                    if (_gridManager.gridList[u[u.Count - 1].tileX - 1][i].unit != null)
-                    {
-                        if (_gridManager.gridList[u[u.Count - 1].tileX - 1][i].unit.unitColor == u[u.Count - 1].unitColor)
-                        {
-                            _foundLoneUnitLine = false; break;
-                        }
-                    }
-                }
-                if (!_foundLoneUnitLine)
-                {
-                    continue;
                 }
             }
-            if (u[u.Count - 1].tileX + 1 <_gridManager.width)
+            if (!_foundLoneUnitLine)
             {
-                for (int i = u[u.Count - 1].tileY - 1; i < u[u.Count - 1].tileY + 2; i++)
+                continue;
+            }
+
+            for (int i = -1; i < 2; i++)
+            {
+
+                if (u.CheckUnitInProximity(out var unit2, 1, i))
                 {
-                    if (i < 0 || i >= _gridManager.height)
+                    if (unit2.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit2)))
                     {
-                        continue;
+                        _foundLoneUnitLine = false; break;
                     }
-                    if (_gridManager.gridList[u[u.Count - 1].tileX + 1][i].unit != null)
-                    {
-                        if (_gridManager.gridList[u[u.Count - 1].tileX + 1][i].unit.unitColor == u[u.Count - 1].unitColor)
-                        {
-                            _foundLoneUnitLine = false; break;
-                        }
-                    }
-                }
-                if (!_foundLoneUnitLine)
-                {
-                    continue;
                 }
             }
-            if(u[u.Count - 1].tileY - 1 >= 0)
+            if (!_foundLoneUnitLine)
             {
-                if(u[u.Count - 2].unitColor == u[u.Count - 1].unitColor)
+                continue;
+            }
+
+
+            if (u.CheckUnitInProximity(out var unit3, 0, -1))
+            {
+                if (unit3.unitColor == u.unitColor)
                 {
                     _foundLoneUnitLine = false;
                     continue;
                 }
             }
-            _loneUnit=u[u.Count - 1];
+            _loneUnit = u;
             break;
         }
+        
+        
+
+
 
         if (_foundLoneUnitLine == true)
         {

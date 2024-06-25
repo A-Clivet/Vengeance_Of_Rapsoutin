@@ -486,8 +486,8 @@ public class S_GameManager : MonoBehaviour
         if (currentTurn == TurnEmun.TransitionTurn)
         {
             // Re-organize all the unit in each player grid (removes gaps in grids)
-            player1GridManager.AllUnitPerColumn = player1GridManager.UnitPriorityCheck();
-            player2GridManager.AllUnitPerColumn = player2GridManager.UnitPriorityCheck();
+            player1GridManager.UnitPriorityCheck();
+            player2GridManager.UnitPriorityCheck();
 
             #region Weather event handling
 
@@ -829,18 +829,13 @@ public class S_GameManager : MonoBehaviour
 
         if (currentTurn == TurnEmun.TransitionTurn)
         {
-            for (int i = 0; i < gridManager.AllUnitPerColumn.Count; i++)
+            foreach (Unit unit in gridManager.unitList)
             {
-                for (int j = 0; j < Mathf.Abs(gridManager.AllUnitPerColumn[i].Count); j++)
+                unit.ReturnToBaseTile();
+                if (unit.state == 3)
                 {
-                    Unit unit = gridManager.AllUnitPerColumn[i][j];
-
-                    unit.ReturnToBaseTile();
-                    if (unit.state == 3)
-                    {
-                        unit.freeze.SetActive(false);
-                        unit.state = 0;
-                    }
+                    unit.freeze.SetActive(false);
+                    unit.state = 0;
                 }
             }
             bool formationAttacking = false;

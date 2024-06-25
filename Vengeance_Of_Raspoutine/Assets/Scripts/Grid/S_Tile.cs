@@ -4,7 +4,6 @@ public class S_Tile : MonoBehaviour
 {
     public int tileX;
     public int tileY;
-    public Unit unit;
     public S_GridManager grid;
 
     //get the parent gridManager for future uses

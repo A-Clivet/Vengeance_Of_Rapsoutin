@@ -38,7 +38,11 @@ public class S_RemoveUnit : MonoBehaviour
             if (hoveringUnit == null)
                 return;
 
-            if (DoesPlayerHasActionPoint())
+            if (!DoesPlayerHasActionPoint())
+                return;
+
+            // If the removing of the unit succeded
+            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile[0]))
             {
                 // If the removing of the unit succeded
                 if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile, S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf))
@@ -73,27 +77,30 @@ public class S_RemoveUnit : MonoBehaviour
         if (p_tile == null)
             return false;
 
-        // Storing the unit inside p_tile into a variable
-        Unit _unit = p_tile.unit;
+        // Check if there is a unit under the mouse position, and return us the unit 
+        if (p_tile.grid.TryFindUnitOntile(p_tile, out var unit))
+        {
+            // Check if the unit is in state 0, or 1 (idle, or wall)
+            if (unit.state == 0 || unit.state == 1)
+            {
+                // Hidding unit (from the one that attacks)
+                unit.gameObject.GetComponent<BoxCollider2D>().enabled = false;
 
-        // Security : Return false if there is not a unit under the mouse position, and if the unit is not in state 0, or 1 (idle, or wall)
-        if (!(_unit != null && (_unit.state == 0 || _unit.state == 1)))
-            return false;
+                // Create and handle unit animation destruction
+                StartCoroutine(_unitDestructionAnimationManager.HandleUnitAnimationDestruction(
+                    p_unitDestructionAnimationsEnum,
+                    unit
+                ));
+                
+                HandleUnitDestruction(unit);
 
-        // Hidding unit (from the one that attacks)
-        _unit.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                p_tile.grid.unitManager.UnitCombo(3);
 
-        // Create and handle unit animation destruction
-        StartCoroutine(_unitDestructionAnimationManager.HandleUnitAnimationDestruction(
-            p_unitDestructionAnimationsEnum,
-            _unit
-        ));
+                return true;
+            }
+        } 
 
-        HandleUnitDestruction(_unit);
-
-        _unit.actualTile.grid.unitManager.UnitCombo(3);
-
-        return true;
+        return false;
     }
 
     public void HandleUnitDestruction(Unit p_unit)
@@ -103,24 +110,17 @@ public class S_RemoveUnit : MonoBehaviour
         // We remove the unit from the unitList
         p_unit.grid.unitList.Remove(p_unit);
 
-        // We remove the unit from the AllUnitPerColumn unit's column
-        p_unit.grid.AllUnitPerColumn[p_unit.tileX].Remove(p_unit);
-
-
-
-        // We set the unit's grid tile's local variable "unit" (store what unit is on the tile) to nothing
-        p_unit.actualTile.unit = null;
         #endregion
 
         #region Updating of the other units position on the same column than the futur destroyed unit
 
         // Loop throw every tiles on the same column than unit's tile (from Y 0 to Y max)
-        foreach (S_Tile tile in p_unit.grid.gridList[p_unit.tileX])
+        foreach (S_Tile tile in p_unit.grid.gridList[p_unit.actualTile[0].tileX])
         {
             // If there is a unit on the tile, we handle other units positions to avoid gaps in the column
-            if (tile.unit != null)
+            if (p_unit.grid.TryFindUnitOntile(tile, out var unit))
             {
-                tile.unit.MoveToTile(p_unit.actualTile);
+                unit.MoveToTile(tile);
             }
         }
         #endregion
@@ -137,34 +137,31 @@ public class S_RemoveUnit : MonoBehaviour
     /// <summary> Remove all units in the two player's grid | WARNING WORKS ONLY WITH NORMAL UNIT, NOT ELITE ONE </summary>
     public void RemoveAllUnits()
     {
+        foreach (Unit unit in _gridManagersHandler.player1GridManager.unitList)
+        {
+            Destroy(unit);
+        }
+
+        foreach (Unit unit in _gridManagersHandler.player2GridManager.unitList)
+        {
+            Destroy(unit);
+        }
+
         // We clear all the existing attack formation
         _gridManagersHandler.player1GridManager.unitManager.UnitColumn.Clear();
         _gridManagersHandler.player2GridManager.unitManager.UnitColumn.Clear();
+        
+        _gridManagersHandler.player1GridManager.unitList.Clear();
+        _gridManagersHandler.player2GridManager.unitList.Clear();
 
-        // We create a copy of the unitLists
-        //List<Unit> _player1UnitList = new(_gridManagersHandler.player1GridManager.unitList);
-        //List<Unit> _player2UnitList = new(_gridManagersHandler.player2GridManager.unitList);
+       //for(int i = _gridManagersHandler.player1GridManager.unitList.Count - 1; i >= 0; i--)
+       //{
+       //    HandleUnitDestruction(_gridManagersHandler.player1GridManager.unitList[i]);
+       //}
 
-        for(int i = _gridManagersHandler.player1GridManager.unitList.Count - 1; i >= 0; i--)
-        {
-            HandleUnitDestruction(_gridManagersHandler.player1GridManager.unitList[i]);
-        }
-        for (int i = _gridManagersHandler.player2GridManager.unitList.Count - 1; i >= 0; i--)
-        {
-            HandleUnitDestruction(_gridManagersHandler.player2GridManager.unitList[i]);
-        }
-
-        //foreach (Unit _unit in _player1UnitList)
-        //{
-        //    Debug.Log("will be destroyed");
-        //    HandleUnitDestruction(_unit);
-        //}
-
-        //foreach (Unit _unit in _player2UnitList)
-        //{
-        //    Debug.Log("will be destroyed");
-        //    HandleUnitDestruction(_unit);
-        //}
-
+       //for (int i = _gridManagersHandler.player2GridManager.unitList.Count - 1; i >= 0; i--)
+       //{
+       //    HandleUnitDestruction(_gridManagersHandler.player2GridManager.unitList[i]);
+       //}
     }
 }
