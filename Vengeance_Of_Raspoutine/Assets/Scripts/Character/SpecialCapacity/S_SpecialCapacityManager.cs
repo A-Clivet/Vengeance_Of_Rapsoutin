@@ -207,7 +207,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
             // Destruction of all the save units in allPlayerUnitsThatWillBeDestroyed
             for (int i = 0; i < allPlayerUnitsThatWillBeDestroyed.Count; i++)
             {
-                _removeUnitClass.RemoveUnitOnSpecificTile(allPlayerUnitsThatWillBeDestroyed[i].actualTile);
+                _removeUnitClass.RemoveUnitOnSpecificTile(allPlayerUnitsThatWillBeDestroyed[i].actualTile[0]);
             }
         }
     }
@@ -247,7 +247,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
             // Removing all saved units
             for (int i = 0; i < allPlayerUnitsThatWillBeDestroyed.Count; i++)
             {
-                _removeUnitClass.RemoveUnitOnSpecificTile(allPlayerUnitsThatWillBeDestroyed[i].actualTile);
+                _removeUnitClass.RemoveUnitOnSpecificTile(allPlayerUnitsThatWillBeDestroyed[i].actualTile[0]);
             }
 
             // We spawn the new projectile.
@@ -259,12 +259,12 @@ public class S_SpecialCapacityManager : MonoBehaviour
 
             energyBall.transform.position = new Vector3(
                 // X coordonate
-                energyBallUnitComponent.actualTile.transform.position.x,
+                energyBallUnitComponent.actualTile[0].transform.position.x,
 
                 // Y coordonate
                 energyBallUnitComponent.grid.startY +
                 energyBallUnitComponent.grid.height +
-                energyBallUnitComponent.actualTile.transform.position.y
+                energyBallUnitComponent.actualTile[0].transform.position.y
             );
 
             playerGridManager.totalUnitAmount++;

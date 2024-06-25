@@ -33,7 +33,7 @@ public class S_RemoveUnit : MonoBehaviour
                 return;
 
             // If the removing of the unit succeded
-            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile))
+            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile[0]))
             {
                 //Used for verifying if the action of removing the unit has created a combo
                 NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
@@ -54,16 +54,17 @@ public class S_RemoveUnit : MonoBehaviour
         if (p_tile == null)
             return false;
 
-        // Storing the unit inside p_tile into a variable
-        Unit _unit = p_tile.unit;
-
         // Check if there is a unit under the mouse position, and if the unit is in state 0, or 1 (idle, or wall)
-        if (_unit != null && (_unit.state == 0 || _unit.state == 1))
+        if (p_tile.grid.TryFindUnitOntile(p_tile,out var unit))
         {
-            HandleUnitDestruction(_unit);
+            if (unit.state == 0 || unit.state == 1)
+            {
+                HandleUnitDestruction(unit);
 
-            return true;
-        }
+                return true;
+
+            }
+        } 
         p_tile.grid.unitManager.UnitCombo(3);
         return false;
     }
@@ -75,24 +76,17 @@ public class S_RemoveUnit : MonoBehaviour
         // We remove the unit from the unitList
         p_unit.grid.unitList.Remove(p_unit);
 
-        // We remove the unit from the AllUnitPerColumn unit's column
-        p_unit.grid.AllUnitPerColumn[p_unit.tileX].Remove(p_unit);
-
-
-
-        // We set the unit's grid tile's local variable "unit" (store what unit is on the tile) to nothing
-        p_unit.actualTile.unit = null;
         #endregion
 
         #region Updating of the other units position on the same column than the futur destroyed unit
 
         // Loop throw every tiles on the same column than unit's tile (from Y 0 to Y max)
-        foreach (S_Tile tile in p_unit.grid.gridList[p_unit.tileX])
+        foreach (S_Tile tile in p_unit.grid.gridList[p_unit.actualTile[0].tileX])
         {
             // If there is a unit on the tile, we handle other units positions to avoid gaps in the column
-            if (tile.unit != null)
+            if (p_unit.grid.TryFindUnitOntile(tile, out var unit))
             {
-                tile.unit.MoveToTile(p_unit.actualTile);
+                unit.MoveToTile(tile);
             }
         }
         #endregion

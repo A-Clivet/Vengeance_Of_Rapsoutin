@@ -92,9 +92,7 @@ public class S_WeatherEvent : MonoBehaviour
             foreach (Unit u in unitToRemove)
             {
 
-                u.actualTile.unit = null;
                 _player1GridManager.unitList.Remove(u);
-                _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
             }
             unitToRemove.Clear();
@@ -105,14 +103,11 @@ public class S_WeatherEvent : MonoBehaviour
             }
             foreach (Unit u in unitToRemove)
             {
-
-                u.actualTile.unit = null;
                 _player2GridManager.unitList.Remove(u);
-                _player2GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
             }
-            _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
-            _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
+            _player1GridManager.UnitPriorityCheck();
+            _player2GridManager.UnitPriorityCheck();
 
         }
         return;
