@@ -48,7 +48,6 @@ public class S_GameManager : MonoBehaviour
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
-
                 // Reset the number of actions
                 playerActionNumber = 3;
             }
@@ -63,25 +62,21 @@ public class S_GameManager : MonoBehaviour
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
 
-                _playerTurnTextUI.text = "Player 2 turn";
 
                 playerActionNumber = 3;
             }
             else if (_currentTurn == TurnEmun.TransitionTurn)
             {
                 // In case if this turn is too long we disable all possible interactions for all players
-
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
-
-                // NOTE : You can uncomment the code below if you see that the player can, for exemple, grap a unit after he finish his turn
-                // (WARNING THO : That make the screen flash thats why it's currently commented)
-
-                //_player1ActionPreventerVisualGameObject.SetActive(true);
-                //_player2ActionPreventerVisualGameObject.SetActive(true);
             }
             else
             {
+                Debug.LogError(
+                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() +
+                    "' but it's not planned into the variable's code. UNITY IS PAUSED !"
+                );
                 Debug.Break();
                 return;
             }
@@ -168,12 +163,16 @@ public class S_GameManager : MonoBehaviour
             // Check if any player won
             if (player1ScorePoint >= _pointsNeededToWin)
             {
+                _doesOnePlayerWonTheGame = true;
+
                 _endMenuManager.WhoWin(true);
                 return;
             }
 
             if (player2ScorePoint >= _pointsNeededToWin)
             {
+                _doesOnePlayerWonTheGame = true;
+
                 _endMenuManager.WhoWin(false);
                 return;
             }
@@ -235,15 +234,13 @@ public class S_GameManager : MonoBehaviour
     TextMeshProUGUI _playerActionsLeftTextUI;
     TextMeshProUGUI _totalTurnsTextUI;
 
-    // -- Players action preventer visual game objects's references -- //
-    GameObject _player1ActionPreventerVisualGameObject;
-    GameObject _player2ActionPreventerVisualGameObject;
-
     // -- Score management -- //
     // ("_loseCoefficient" is used to manage score point on the Classic game mode)
     int _loseCoefficient = 1;
 
     int _pointsNeededToWin = 3;
+
+    bool _doesOnePlayerWonTheGame = false;
 
     // -- End menu manager's reference -- //
     S_EndMenuManager _endMenuManager;
@@ -319,36 +316,6 @@ public class S_GameManager : MonoBehaviour
         
         #endregion
 
-        #region Characters management
-        // Setting up character manager reference
-        _characterManager = S_CharacterManager.Instance;
-
-        // Creating the player's character
-        _characterManager.SpawnCharacter(_character1Stats, true);
-        _characterManager.SpawnCharacter(_character2Stats, false);
-
-        // Setting up character's adrenaline, health, money and xp script references
-        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-
-        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
-        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
-
-        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
-        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
-
-        player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
-        player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
-
-        // Enable / disable special capacity button's interaction
-        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-
-        // Updates the character's score visuals
-        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
-        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
-        #endregion
-
         #endregion
 
         #region Game mode management
@@ -398,6 +365,35 @@ public class S_GameManager : MonoBehaviour
         }
         #endregion
 
+        #region Characters management
+        // Setting up character manager reference
+        _characterManager = S_CharacterManager.Instance;
+
+        // Creating the player's character
+        _characterManager.SpawnCharacter(_character1Stats, true);
+        _characterManager.SpawnCharacter(_character2Stats, false);
+
+        // Setting up character's adrenaline, health, money and xp script references
+        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+
+        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+
+        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
+        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
+
+        player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
+        player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
+
+        // Enable / disable special capacity button's interaction
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+
+        // Updates the character's score visuals
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+        #endregion
 
         S_GameManager.Instance.player1UnitCall.UnitCalling();
         S_GameManager.Instance.player2UnitCall.UnitCalling();
@@ -620,6 +616,10 @@ public class S_GameManager : MonoBehaviour
             }
 
             _mapIndex += _mapIndexModifier;
+
+            // Will stop the execution if one player won the game
+            if (_doesOnePlayerWonTheGame)
+                return;
         }
         else
         {
@@ -636,8 +636,11 @@ public class S_GameManager : MonoBehaviour
                 player1ScorePoint++;
             }
 
-
             _mapIndex -= _mapIndexModifier;
+
+            // Will stop the execution if one player won the game
+            if (_doesOnePlayerWonTheGame)
+                return;
         }
 
         currentTurn = TurnEmun.TransitionTurn;
@@ -890,7 +893,7 @@ public class S_GameManager : MonoBehaviour
             {
                 playerActionNumber+=1;
             }
-            if (_playerActionNumber > 0)
+            if (playerActionNumber > 0)
             {
                 if (S_CrossSceneDataManager.Instance.vsIA)
                 {

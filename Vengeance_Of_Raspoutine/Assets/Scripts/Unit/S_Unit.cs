@@ -98,7 +98,7 @@ public class Unit : MonoBehaviour
 
         transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
 
-        if (mustAttack && actualFormation[actualFormation.Count-1] ==this)
+        if (mustAttack && actualFormation[actualFormation.Count - 1] == this)
         {
             AttackPlayer();
         }
