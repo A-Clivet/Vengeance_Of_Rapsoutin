@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class S_SnowStorm : MonoBehaviour
@@ -13,39 +14,34 @@ public class S_SnowStorm : MonoBehaviour
 
     [SerializeField] private Vector3 spawnPos;
 
-    //Randomness to get different visuals and make the effect prettier
-    [SerializeField] private int size;
-    [SerializeField] private int opacity;
-    [SerializeField] private int speed;
-
     //When and if snow should spawn
     [SerializeField] private float spawnTimer;
     [SerializeField] private bool stormActive;
 
 
-    //Visuals
+    //GameObject
     [SerializeField] private GameObject snow;
-    [SerializeField] private Sprite snowSprite;
-    [SerializeField] private SpriteRenderer snowRenderer;
 
-    public void Start()
-    {
-        snowRenderer.sprite = snowSprite;
-    }
+    [SerializeField] private float spawnRate;
 
     public Vector3 SpawnPosition()
     {
-        startingPosX = Random.Range( startingPosX, 0); //  creates a snowflake on the upper-left corner of the screen
+        return spawnPos = new Vector3(Random.Range(startingPosX, -startingPosX), startEndPosY, 0.0f );
+    }
 
-        startingPosX = startEndPosY; // just above the maximum Y for the camera view to make sure the snow flake can't be seen appearing
+    public IEnumerator DisableSnowstrom()
+    {
+        yield return new WaitForSeconds(3f);
 
-        return spawnPos = new Vector3(startingPosX, startEndPosY, 0.0f );
+        StopSnowstorm();
     }
 
     //strats the snow cycle
     public void StartSnowstorm() // function to turn on the snow, made in case more needs to be added
     {
         stormActive = true;
+
+        StartCoroutine(DisableSnowstrom());
     }
 
     //end the snow cycle
@@ -55,17 +51,19 @@ public class S_SnowStorm : MonoBehaviour
     }
 
     void Update()
-    {
+    { 
         if (stormActive)
         {
             spawnTimer -= Time.deltaTime;
 
             if(spawnTimer < 0)
             {
-                GameObject spawnedSnow = Instantiate(snow);
+                SpawnPosition();
+
+                GameObject spawnedSnow = Instantiate(snow, SpawnPosition(), Quaternion.AngleAxis(Mathf.Atan2(startingPosX - finishingPosX, startEndPosY + startEndPosY) * Mathf.Rad2Deg, Vector3.forward));
                 S_Snowflake snowScript = spawnedSnow.GetComponent<S_Snowflake>();
 
-                spawnedSnow.transform.position = SpawnPosition();
+                spawnTimer = Random.Range(spawnRate / 10f, spawnRate);
 
                 snowScript.endPosX = finishingPosX;
                 snowScript.endPosY = -startEndPosY;

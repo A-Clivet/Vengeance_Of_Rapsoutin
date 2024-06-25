@@ -44,3 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4f22f41277d1b4b8bacd328cc6fe0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingPosX: 10
+  finishingPosX: 10
+  startEndPosY: 10
+  spawnPos: {x: 0, y: 0, z: 0}
+  spawnTimer: 0
+  stormActive: 0
+  snow: {fileID: 1453306851509527817, guid: 2aff34b2e929b0e41af945214df140c6, type: 3}
+  spawnRate: 0.001

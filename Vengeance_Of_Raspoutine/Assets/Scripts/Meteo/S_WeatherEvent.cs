@@ -37,6 +37,7 @@ public class S_WeatherEvent : MonoBehaviour
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
     [SerializeField] private GameObject _mainCam;
+    [SerializeField] private S_SnowStorm snowStormManager;
     [SerializeField] private TextMeshProUGUI weatherInfo;
 
     private int nbTurn = 0;
@@ -156,6 +157,7 @@ public class S_WeatherEvent : MonoBehaviour
         nbTurn--;
         if (nbTurn < 0)
         {
+            snowStormManager.StartSnowstorm();
             nbTurn = 5;
             List<Unit> listOfIdle;
             listOfIdle = new List<Unit>();
@@ -189,6 +191,7 @@ public class S_WeatherEvent : MonoBehaviour
         return;
     }
 }
+
 public class EventStocker
 {
     private Action _eventToStore { get; set; }

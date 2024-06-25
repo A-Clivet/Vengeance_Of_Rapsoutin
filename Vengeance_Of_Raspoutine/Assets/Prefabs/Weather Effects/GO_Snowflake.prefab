@@ -93,6 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4874294155851860778}
+  - component: {fileID: 1337278221729149552}
   m_Layer: 0
   m_Name: GO_Snowflake
   m_TagString: Untagged
@@ -116,3 +117,19 @@ Transform:
   - {fileID: 5124342983950458420}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1337278221729149552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453306851509527817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5def043786186b841a5f79842f38e64b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPosX: 0
+  endPosY: 0
+  speed: 0
+  snowRenderer: {fileID: 397832895146545447}
