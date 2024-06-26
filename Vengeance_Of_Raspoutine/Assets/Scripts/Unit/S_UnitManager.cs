@@ -186,6 +186,8 @@ public class S_UnitManager : MonoBehaviour
                         }
                         UnitColumn[UnitColumn.Count - 1].Add(atkUnit);
                     }
+                    columnCounter = 0;
+                    currentColorColumn = -1;
 
                     if (!p_isIAUsingThisFunction)
                     {
@@ -208,8 +210,6 @@ public class S_UnitManager : MonoBehaviour
                             S_GameManager.Instance.player2CharacterXP.GainXP(5);
                         }
                     }
-                    columnCounter = 0;
-                    currentColorColumn = -1;
                 }
             }
         }

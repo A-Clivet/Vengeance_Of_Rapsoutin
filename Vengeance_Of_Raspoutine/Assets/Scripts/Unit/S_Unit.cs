@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -299,28 +300,19 @@ public class Unit : MonoBehaviour
   then deselect the collidedUnit*/
     public void MoveToTile(S_Tile p_tile)
     {
-        S_Tile tempoTile = actualTile[0];
         actualTile.Clear();
-        for (int i = Mathf.Abs(grid.height) - 1; i >= 0; i--)
+        foreach (S_Tile tile in grid.gridList[p_tile.tileX])
         {
-            if (grid.TryFindUnitOntile(grid.gridList[p_tile.tileX][i], out var unit))
+            if (!grid.TryFindUnitOntile(tile, out var unit))
             {
-                if (i == Mathf.Abs(grid.height) - 1)
-                {
-                    actualTile.Add(tempoTile);
-                    return;
-                }
-                actualTile.Add(grid.gridList[p_tile.tileX][i + 1]);
-                _posToMove = grid.gridList[p_tile.tileX][i + 1].transform.position;
+                actualTile.Add(tile);
+                _posToMove = tile.transform.position;
                 StartCoroutine(LerpMove());
                 return;
             }
         }
-        actualTile.Add(grid.gridList[p_tile.tileX][0]);
-        _posToMove = grid.gridList[p_tile.tileX][0].transform.position;
-        StartCoroutine(LerpMove());
-        return;
     }
+
     //Used to reorganize the Units by state
     public void SwitchUnit(S_Tile p_tile)
     {

@@ -19,10 +19,6 @@ public class S_CrossSceneDataManager : MonoBehaviour
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.DestructionOfTheSecondOne);
         DontDestroyOnLoad(transform.parent);
     }
-    private void OnEnable()
-    {
-        vsIA = false;
-    }
     public void VsIAOrPlayer(bool p_IsVsIA)
     {
         vsIA = p_IsVsIA;
