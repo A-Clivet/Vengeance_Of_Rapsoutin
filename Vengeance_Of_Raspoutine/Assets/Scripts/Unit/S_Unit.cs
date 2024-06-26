@@ -25,6 +25,7 @@ public class Unit : MonoBehaviour
     public List<S_Tile> actualTile=new List<S_Tile>();
     public GameObject highlight;
     public S_GridManager grid;
+    public GameObject statsChangementGameObject;
     public GameObject statsCanvas;
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
@@ -54,11 +55,14 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         _removeUnit = S_RemoveUnit.Instance;
+        
+        // WARNING ! Using "GetChild" can lead to problem if the GameObject children's order are changed
+        statsChangementGameObject = gameObject.transform.GetChild(5).gameObject;
+        
         EventReference = FMODEvents.instance.Claws;
+        
         if (SO_Unit.name == "Sniper" ||  SO_Unit.name == "Duelist")
-        {
             EventReference = FMODEvents.instance.Impact;
-        }
     }
 
     // destroy the formation in good order to avoid removing itself before the others

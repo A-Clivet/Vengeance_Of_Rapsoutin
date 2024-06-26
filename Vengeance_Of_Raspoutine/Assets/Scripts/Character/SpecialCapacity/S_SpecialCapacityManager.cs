@@ -20,10 +20,22 @@ public class S_SpecialCapacityManager : MonoBehaviour
     [Header("Banner stats :")]
     [SerializeField] int _specialCapacityBannerTimeShowedValue = 2;
 
+    [Header("Stat changement references :")]
+    [SerializeField] Sprite _healthStatSprite;
+    [SerializeField] Sprite _attackStatSprite;
+    [SerializeField] Sprite _turnChargeStatSprite;
+
+    [Header("Stat changement stats :")]
+    [SerializeField] float _timeBeforeAnimationStart = 0.5f;
+    [SerializeField] float _animationDuration = 3;
+    [SerializeField] Color _goodStatChangementColor = new(0, 0.55f, 0);
+    [SerializeField] Color _badStatChangementColor = new(0.55f, 0, 0);
+
     List<Unit> _allPlayer1Units { get { return _player1GridManager.unitList; } }
     List<Unit> _allPlayer2Units { get { return _player2GridManager.unitList; } }
 
-    S_GameManager _gameManager;
+    S_GameManager _gameManager; 
+    AudioManager _audioManager;
 
     S_RemoveUnit _removeUnitClass;
     GameObject _unitsParentGameObject;
@@ -39,6 +51,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
     private void Start()
     {
         _gameManager = S_GameManager.Instance;
+        _audioManager = AudioManager.instance;
         _removeUnitClass = S_RemoveUnit.Instance;
         _unitsParentGameObject = S_UnitCallButtonHandler.Instance.unitsParentGameObject;
         _gridManagersHandler = S_GridManagersHandler.Instance;
@@ -110,57 +123,69 @@ public class S_SpecialCapacityManager : MonoBehaviour
                 switch (p_unitStatToChange)
                 {
                     case S_SpecialCapacityStats.UnitStatsEnum.HP:
-                        AudioManager.instance.PlayOneShot(FMODEvents.instance.VodkaSprinklers, Camera.main.transform.position);
 
-                        // Security
-                        unit.defense = (int)HandleStatChangement(unit.defense, 0);
+                        // Check if the unit is in state 0, or 1 (idle, or wall)
+                        if (unit.state == 0 || unit.state == 1)
+                        {
+                            unit.defense += p_value;
+                            
+                            // Play the right SFX according to the special capacity stats
+                            _audioManager.PlayOneShot(FMODEvents.instance.VodkaSprinklers, Camera.main.transform.position);
+
+                            // Security
+                            unit.defense = (int)HandleStatChangement(unit.defense, 0);
+
+                            // Show stats changement
+                            StartCoroutine(ShowStatsChangement(unit, p_value, p_unitStatToChange));
+                        }
+
                         break;
 
                     case S_SpecialCapacityStats.UnitStatsEnum.Attack:
+                        
+                        // Play the right SFX according to the special capacity stats
                         if (p_isPlayer1Units)
-                        {
-                            AudioManager.instance.PlayOneShot(FMODEvents.instance.Gas, Camera.main.transform.position);
-                        }
+                            _audioManager.PlayOneShot(FMODEvents.instance.Gas, Camera.main.transform.position);
                         else
                         {
                             if (p_value > 0)
-                            {
-                                AudioManager.instance.PlayOneShot(FMODEvents.instance.DarkMagic, Camera.main.transform.position);
-                            }
+                                _audioManager.PlayOneShot(FMODEvents.instance.DarkMagic, Camera.main.transform.position);
                             else
-                            {
-                                AudioManager.instance.PlayOneShot(FMODEvents.instance.Curse, Camera.main.transform.position);
-                            }
+                                _audioManager.PlayOneShot(FMODEvents.instance.Curse, Camera.main.transform.position);
                         }
-                        unit.attack += p_value;
+                        
+                        // Check if the unit is in state 2 (attack formation)
+                        if (unit.state == 2)
+                        {
+                            unit.attack += p_value;
 
-                        // Security
-                        unit.attack = (int)HandleStatChangement(unit.attack, 0);
+                            // Security
+                            unit.attack = (int)HandleStatChangement(unit.attack, 0);
+
+                            // Show stats changement
+                            StartCoroutine(ShowStatsChangement(unit, p_value, p_unitStatToChange));
+                        }
+
                         break;
 
                     case S_SpecialCapacityStats.UnitStatsEnum.TurnCharge:
+                        
+                        // Play the right SFX according to the special capacity stats
                         if (!p_isPlayer1Units)
                         {
                             if (p_value > 0)
-                            {
-                                AudioManager.instance.PlayOneShot(FMODEvents.instance.BearTrap, Camera.main.transform.position);
-                            }
+                                _audioManager.PlayOneShot(FMODEvents.instance.BearTrap, Camera.main.transform.position);
                             else
-                            {
-                                AudioManager.instance.PlayOneShot(FMODEvents.instance.Doping, Camera.main.transform.position);
-                            }
+                                _audioManager.PlayOneShot(FMODEvents.instance.Doping, Camera.main.transform.position);
                         }
                         else
                         {
                             if (p_value > 0)
-                            {
-                                AudioManager.instance.PlayOneShot(FMODEvents.instance.SpeedUp, Camera.main.transform.position);
-                            }
+                                _audioManager.PlayOneShot(FMODEvents.instance.SpeedUp, Camera.main.transform.position);
                             else
-                            {
-                                AudioManager.instance.PlayOneShot(FMODEvents.instance.SlowDown, Camera.main.transform.position);
-                            }
+                                _audioManager.PlayOneShot(FMODEvents.instance.SlowDown, Camera.main.transform.position);
                         }
+                        
                         unit.turnCharge += p_value;
 
                         // Security
@@ -183,10 +208,109 @@ public class S_SpecialCapacityManager : MonoBehaviour
         return p_statValue;
     }
 
+    IEnumerator ShowStatsChangement(Unit p_unit, int p_value, S_SpecialCapacityStats.UnitStatsEnum p_unitStatChanged)
+    {
+        // Getting the images
+        SpriteRenderer statChangementSpriteBackgroundImage = p_unit.statsChangementGameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        SpriteRenderer statChangementEffectOutlineImage = p_unit.statsChangementGameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
+        SpriteRenderer statChangementEffectImage = p_unit.statsChangementGameObject.transform.GetChild(2).GetComponent<SpriteRenderer>();
+
+        Color backgroundColor;
+        Color outlineColor;
+        Color effectColor;
+
+        // Changing the sprites accordingly to the capacity used
+        switch (p_unitStatChanged)
+        {
+            case S_SpecialCapacityStats.UnitStatsEnum.HP:
+                statChangementEffectImage.sprite = _healthStatSprite;
+                break;
+
+            case S_SpecialCapacityStats.UnitStatsEnum.Attack:
+                statChangementEffectImage.sprite = _attackStatSprite;
+                break;
+
+            case S_SpecialCapacityStats.UnitStatsEnum.TurnCharge:
+                statChangementEffectImage.sprite = _turnChargeStatSprite;
+                break;
+
+            default:
+                Debug.LogError("The unit stats to change type given [" + p_unitStatChanged.ToString() + "] is not planned in the switch.");
+                break;
+        }
+
+        // Detect if the stat changement is benefic or not
+        bool isStatChangementGood = p_value >= 0;
+
+        // The TurnCharge stat is inverted witch means decrease TurnCharge is a good thing
+        if (p_unitStatChanged == S_SpecialCapacityStats.UnitStatsEnum.TurnCharge)
+            isStatChangementGood = !isStatChangementGood;
+
+        // Changing the color accordingly to the type of changement done
+        if (isStatChangementGood)
+        {
+            effectColor = new(_goodStatChangementColor.r, _goodStatChangementColor.g, _goodStatChangementColor.b, 1);
+            outlineColor = new(_goodStatChangementColor.r, _goodStatChangementColor.g - 0.15f, _goodStatChangementColor.b, 1);
+        }
+        else
+        {
+            effectColor = new(_badStatChangementColor.r, _badStatChangementColor.g, _badStatChangementColor.b, 1);
+            outlineColor = new(_badStatChangementColor.r - 0.15f, _badStatChangementColor.g, _badStatChangementColor.b, 1);
+        }
+
+        backgroundColor = new(1, 1, 1, 1);
+
+        // Apply the new color
+        statChangementSpriteBackgroundImage.color = backgroundColor;
+        statChangementEffectOutlineImage.color = outlineColor;
+        statChangementEffectImage.color = effectColor;
+
+        // Animation time
+        float duration = _animationDuration;
+        float elapsedTime = 0f;
+
+        yield return new WaitForSeconds(_timeBeforeAnimationStart);
+
+        while (elapsedTime < duration)
+        {
+            // Security : Check if the unit has not been destroyed, if yes stop the coroutine
+            if (p_unit == null)
+                yield break;
+
+            // Calculate alpha (transparency) according to elapsed time
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+
+            // Apply the new alpha into the color variable
+            backgroundColor.a = alpha;
+            outlineColor.a = alpha;
+            effectColor.a = alpha;
+
+            // Apply the new color
+            statChangementSpriteBackgroundImage.color = backgroundColor;
+            statChangementEffectOutlineImage.color = outlineColor;
+            statChangementEffectImage.color = effectColor;
+
+            // Wait the next frame
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Security to be sure than the alpha (transparency) is at 0
+        backgroundColor.a = 0f;
+        outlineColor.a = 0f;
+        effectColor.a = 0f;
+
+        statChangementSpriteBackgroundImage.color = backgroundColor;
+        statChangementEffectOutlineImage.color = outlineColor;
+        statChangementEffectImage.color = effectColor;
+    }
+
     /// <summary> Transform all allied unit in p_baseStats, in p_newState </summary>
     void UnitsMetamorphosis(bool p_isPlayer1Units, int p_baseState, int p_newState)
     {
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.Anti_Material, Camera.main.transform.position);
+        // Play the right SFX according to the special capacity stats
+        _audioManager.PlayOneShot(FMODEvents.instance.Anti_Material, Camera.main.transform.position);
+        
         List<Unit> allPlayerUnits = _allPlayer1Units;
 
         if (!p_isPlayer1Units)
@@ -212,8 +336,11 @@ public class S_SpecialCapacityManager : MonoBehaviour
 
     void RandomUnitDestroyer(bool p_isPlayer1Units, int p_numberOfUnitsToDestroy, S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum p_unitDestructionAnimation)
     {
+        // Play the right SFX according to the special capacity stats
+        _audioManager.PlayOneShot(FMODEvents.instance.Mortar, Camera.main.transform.position);
+        
         int unitsThatWillBeDestroyedNumber = 0;
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.Mortar, Camera.main.transform.position);
+
         // We save all the units we will destroy (they will be destroyed when unitsThatWillBeDestroyedNumber = p_numberOfUnitsToDestroy)
         List<Unit> allPlayerUnitsThatWillBeDestroyed = new();
 
@@ -255,8 +382,11 @@ public class S_SpecialCapacityManager : MonoBehaviour
 
     void UltimateCapacity(bool p_isPlayer1Units, GameObject p_ultimateCapacityProjectilePrefab, int p_unitsToChange, int p_damageCap)
     {
+        // Play the right SFX according to the special capacity stats
+        _audioManager.PlayOneShot(FMODEvents.instance.Missile, Camera.main.transform.position);
+        
         int damageIncrement = 0;
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.Missile, Camera.main.transform.position);
+        
         // We save all the units we will destroy
         List<Unit> allPlayerUnitsThatWillBeDestroyed = new();
 
