@@ -42,6 +42,7 @@ public class S_UpgradeHandler : MonoBehaviour
 
         S_GameManager.Instance.player1UnitCall.UnitCalling();
         S_GameManager.Instance.player2UnitCall.UnitCalling();
+        S_GameManager.Instance.DeactivateGrid();
 
         S_SwapButtonsHandler.Instance.HandleSwapUnitButtonInteraction(S_GameManager.Instance.isPlayer1Turn, true);
 

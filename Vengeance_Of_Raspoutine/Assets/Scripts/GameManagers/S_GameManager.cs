@@ -470,6 +470,7 @@ public class S_GameManager : MonoBehaviour
     /// reset the timer to 60s and adds 1 to the current round number </summary>
     public void EndTurn()
     {
+        S_RemoveUnit.Instance.removing = false;
         if (player1GridManager.unitSelected != null)
         {
             player1GridManager.unitSelected.highlight.SetActive(false);
