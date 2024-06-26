@@ -32,29 +32,31 @@ public class S_RemoveUnit : MonoBehaviour
 
     public void RemoveUnit(InputAction.CallbackContext p_context)
     {
-        if (!hoveringUnit.grid.isSwapping)
+
+        if (p_context.started)
         {
-            if (p_context.started)
+            // Security, if the player doesn't click on a unit we stop the function
+            if (hoveringUnit == null)
+                return;
+
+            if (!hoveringUnit.grid.isSwapping)
+                return;
+
+            if (!DoesPlayerHasActionPoint())
+                return;
+
+            // If the removing of the unit succeded
+            if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile[0], S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf))
             {
-                // Security, if the player doesn't click on a unit we stop the function
-                if (hoveringUnit == null)
-                    return;
+                //Used for verifying if the action of removing the unit has created a combo
+                NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
+                removing = true;
 
-                if (!DoesPlayerHasActionPoint())
-                    return;
-
-                // If the removing of the unit succeded
-                if (RemoveUnitOnSpecificTile(hoveringUnit.actualTile[0], S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pouf))
-                {
-                    //Used for verifying if the action of removing the unit has created a combo
-                    NbCombo = hoveringUnit.grid.unitManager.UnitColumn.Count;
-                    removing = true;
-
-                    // Reduces the number of Action Points of the player playing by one
-                    _gameManager.ReduceActionPointBy1();
-                }
+                // Reduces the number of Action Points of the player playing by one
+                _gameManager.ReduceActionPointBy1();
             }
         }
+        
     }
 
     bool DoesPlayerHasActionPoint()
