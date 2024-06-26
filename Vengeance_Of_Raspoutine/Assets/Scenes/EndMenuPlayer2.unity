@@ -155,6 +155,22 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6945018937810596807, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4381aae73562aa04fa3ecbc90af178b2, type: 3}
+    - target: {fileID: 6945018937810596807, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945018937810596807, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945018937810596807, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7481523712861560972, guid: 0c8342eff8caa9343bfe2e3025c5de1b, type: 3}
       propertyPath: m_IsActive
       value: 0
