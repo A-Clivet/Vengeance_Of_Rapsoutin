@@ -101,6 +101,7 @@ public class S_WeatherEvent : MonoBehaviour
         nbTurn--;
         if (nbTurn < 0)
         {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.Earthquake, Camera.main.transform.position);
             nbTurn = 4;
             StartCoroutine(CameraShake());
             List<Unit> unitToRemove = new List<Unit>();
@@ -157,6 +158,7 @@ public class S_WeatherEvent : MonoBehaviour
         nbTurn--;
         if (nbTurn < 0)
         {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SnowStorm, Camera.main.transform.position);
             snowStormManager.StartSnowstorm();
             nbTurn = 5;
             List<Unit> listOfIdle;
