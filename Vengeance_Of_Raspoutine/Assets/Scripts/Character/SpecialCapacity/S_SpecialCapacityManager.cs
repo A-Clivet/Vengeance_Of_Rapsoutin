@@ -107,6 +107,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
 
     void ChangeAllFactionUnitStats(bool p_isPlayer1Units, S_SpecialCapacityStats.UnitStatsEnum p_unitStatToChange, int p_value)
     {
+        
         // To avoid having to manage two Unit list variables
         // we create a local variable nammed "allPlayerUnits" it contain the Unit list we will use later,
         // this variable will change depending if the player given is the first or the second. 
@@ -144,7 +145,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
                     case S_SpecialCapacityStats.UnitStatsEnum.Attack:
                         
                         // Play the right SFX according to the special capacity stats
-                        if (p_isPlayer1Units)
+                        if (S_GameManager.Instance.isPlayer1Turn)
                             _audioManager.PlayOneShot(FMODEvents.instance.Gas, Camera.main.transform.position);
                         else
                         {
@@ -171,7 +172,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
                     case S_SpecialCapacityStats.UnitStatsEnum.TurnCharge:
                         
                         // Play the right SFX according to the special capacity stats
-                        if (!p_isPlayer1Units)
+                        if (S_GameManager.Instance.isPlayer1Turn)
                         {
                             if (p_value > 0)
                                 _audioManager.PlayOneShot(FMODEvents.instance.BearTrap, Camera.main.transform.position);
