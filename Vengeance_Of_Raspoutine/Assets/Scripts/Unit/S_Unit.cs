@@ -222,6 +222,15 @@ public class Unit : MonoBehaviour
                 {
                     grid.unitList.Remove(actualFormation[j]);
 
+                    if (S_GameManager.Instance.isPlayer1Turn)
+                    {
+                        S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                    }
+                    else
+                    {
+                        S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                    }
+                    
                     // Since destroyFormation Stop All Units Coroutines we need to launch it in an extern Script     NB : REALLY SHLAG
                     grid.StartCoroutine(S_UnitDestructionAnimationManager.Instance.HandleUnitAnimationDestruction(
                         S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak,
@@ -244,7 +253,7 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                S_GameManager.Instance.player2CharacterXP.GainXP(5); 
             }
 
             _removeUnit.RemoveUnitOnSpecificTile(

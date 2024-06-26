@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_Unit_Commando
   m_EditorClassIdentifier: 
   UnitName: Commando
-  attack: 5
+  attack: 4
   defense: 3
   sizeX: 1
   sizeY: 1

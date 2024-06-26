@@ -5944,6 +5944,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: GO_UnitSelection
       objectReference: {fileID: 0}
+    - target: {fileID: 4882166080703145313, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
+      propertyPath: m_text
+      value: 'Atk : 5'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6217701005974765319, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
+      propertyPath: m_text
+      value: 'Atk : 6'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6258011702350050297, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
+      propertyPath: m_text
+      value: 'Atk : 4'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811924381716899359, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
+      propertyPath: m_text
+      value: 'Atk : 5'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7048439138055592383, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
+      propertyPath: m_text
+      value: 'Atk : 4'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7431344664399170224, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
+      propertyPath: m_text
+      value: 'Atk : 6'
+      objectReference: {fileID: 0}
     - target: {fileID: 8495525487708259513, guid: a654a652f3a59944594dd467a9a08e44, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

@@ -35,4 +35,4 @@ MonoBehaviour:
   unitDestructionAnimationsFeedback: 0
   ultimateCapacityProjectilePrefab: {fileID: 9218899875330706941, guid: 7b6cd6e86791cba48906f6995fe50929, type: 3}
   targetUnitState: 0
-  damageCap: 30
+  damageCap: 15

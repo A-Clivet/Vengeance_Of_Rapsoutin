@@ -476,7 +476,7 @@ MonoBehaviour:
   speed: 10
   _posToMove: {x: 0, y: 0, z: 0}
   SO_Unit: {fileID: 11400000, guid: 44211fdaff1e4eb4f99023d07c345856, type: 2}
-  attack: 7
+  attack: 6
   defense: 1
   state: 0
   turnCharge: 2

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,6 +39,17 @@ public class S_SkillTree : MonoBehaviour
         UpdateThresholdDisplay(false);
     }
 
+    public void Price(int p_price)
+    {
+        if(_isPlayer1SkillTree)
+        {
+            S_GameManager.Instance.player1CharacterXP.LoseXP(p_price);
+        }
+        else
+        {
+            S_GameManager.Instance.player2CharacterXP.LoseXP(p_price);
+        }
+    }
     void ChangeAbility(int p__specialCapacitiesIndex)
     {
         if (_isPlayer1SkillTree)
@@ -231,7 +243,6 @@ public class S_SkillTree : MonoBehaviour
     //To reset the tree.
     public void ResetSkillTree()
     {
-        S_GameManager.Instance.player1CharacterXP.ResetAmmount();
         _threshold = _baseThreshold;
 
         ChangeAbility(0);
