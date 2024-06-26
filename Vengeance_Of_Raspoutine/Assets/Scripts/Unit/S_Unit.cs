@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ public class Unit : MonoBehaviour
     public GameObject statsCanvas;
     private S_GridManager enemyGrid;
     private S_UnitManager unitManager;
+    private EventReference EventReference;
 
     public GameObject shadow;
     public GameObject freeze;
@@ -52,6 +54,11 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         _removeUnit = S_RemoveUnit.Instance;
+        EventReference = FMODEvents.instance.Claws;
+        if (SO_Unit.name == "Sniper" ||  SO_Unit.name == "Duelist")
+        {
+            EventReference = FMODEvents.instance.Impact;
+        }
     }
 
     // destroy the formation in good order to avoid removing itself before the others
@@ -193,7 +200,7 @@ public class Unit : MonoBehaviour
     /* is called by the UnitManager, can be used to define what happens for a collidedUnit if units are kill by the enemy attack*/
     public void ReducePlayerHp(){ // needs rework
 
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.Impact, this.transform.position);
+        AudioManager.instance.PlayOneShot(EventReference, Camera.main.transform.position);
 
         if (S_GameManager.Instance.isPlayer1Turn)
         {
@@ -347,6 +354,7 @@ public class Unit : MonoBehaviour
                 if (grid.TryFindUnitOntile(tile, out var unit))
                 {
                     grid.unitSelected = unit;
+                    AudioManager.instance.PlayOneShot(FMODEvents.instance.UnitDeployed, Camera.main.transform.position);
                 }
             }
             foreach (Unit unit in grid.unitList)
@@ -361,6 +369,7 @@ public class Unit : MonoBehaviour
             if (grid.unitSelected == null)
             {
                 grid.unitSelected = this;
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.UnitDeployed, Camera.main.transform.position);
             }
             else if (grid.unitSelected != this)
             {

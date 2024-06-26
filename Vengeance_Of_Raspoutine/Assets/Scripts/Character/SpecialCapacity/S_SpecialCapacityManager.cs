@@ -110,13 +110,28 @@ public class S_SpecialCapacityManager : MonoBehaviour
                 switch (p_unitStatToChange)
                 {
                     case S_SpecialCapacityStats.UnitStatsEnum.HP:
-                        unit.defense += p_value;
+                        AudioManager.instance.PlayOneShot(FMODEvents.instance.VodkaSprinklers, Camera.main.transform.position);
 
                         // Security
                         unit.defense = (int)HandleStatChangement(unit.defense, 0);
                         break;
 
                     case S_SpecialCapacityStats.UnitStatsEnum.Attack:
+                        if (p_isPlayer1Units)
+                        {
+                            AudioManager.instance.PlayOneShot(FMODEvents.instance.Gas, Camera.main.transform.position);
+                        }
+                        else
+                        {
+                            if (p_value > 0)
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.DarkMagic, Camera.main.transform.position);
+                            }
+                            else
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.Curse, Camera.main.transform.position);
+                            }
+                        }
                         unit.attack += p_value;
 
                         // Security
@@ -124,6 +139,28 @@ public class S_SpecialCapacityManager : MonoBehaviour
                         break;
 
                     case S_SpecialCapacityStats.UnitStatsEnum.TurnCharge:
+                        if (p_isPlayer1Units)
+                        {
+                            if (p_value > 0)
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.BearTrap, Camera.main.transform.position);
+                            }
+                            else
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.Doping, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            if (p_value > 0)
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.SpeedUp, Camera.main.transform.position);
+                            }
+                            else
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.SlowDown, Camera.main.transform.position);
+                            }
+                        }
                         unit.turnCharge += p_value;
 
                         // Security
@@ -149,6 +186,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
     /// <summary> Transform all allied unit in p_baseStats, in p_newState </summary>
     void UnitsMetamorphosis(bool p_isPlayer1Units, int p_baseState, int p_newState)
     {
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Anti_Material, Camera.main.transform.position);
         List<Unit> allPlayerUnits = _allPlayer1Units;
 
         if (!p_isPlayer1Units)
@@ -175,7 +213,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
     void RandomUnitDestroyer(bool p_isPlayer1Units, int p_numberOfUnitsToDestroy, S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum p_unitDestructionAnimation)
     {
         int unitsThatWillBeDestroyedNumber = 0;
-
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Mortar, Camera.main.transform.position);
         // We save all the units we will destroy (they will be destroyed when unitsThatWillBeDestroyedNumber = p_numberOfUnitsToDestroy)
         List<Unit> allPlayerUnitsThatWillBeDestroyed = new();
 
@@ -218,7 +256,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
     void UltimateCapacity(bool p_isPlayer1Units, GameObject p_ultimateCapacityProjectilePrefab, int p_unitsToChange, int p_damageCap)
     {
         int damageIncrement = 0;
-
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.Missile, Camera.main.transform.position);
         // We save all the units we will destroy
         List<Unit> allPlayerUnitsThatWillBeDestroyed = new();
 

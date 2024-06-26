@@ -24,7 +24,7 @@ public class AudioManager : MonoBehaviour
 
     private EventInstance _musicEventInstance;
 
-    private string _sceneString = "MainMenu";
+    public string _sceneString = "MainMenu";
     [SerializeField] Scene _mainMenu;
 
     public static AudioManager instance { get; private set; }
@@ -47,14 +47,16 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeMusic(FMODEvents.instance.Music);
+        
         if (_sceneString == SceneManager.GetActiveScene().name)
         {
-            SetMusic(0);
+            _masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            PlayOneShot(FMODEvents.instance.MainMenuMusic, Camera.main.transform.position);
         }
         else
         {
-            SetMusic(1);
+            _masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            PlayOneShot(FMODEvents.instance.MainGameMusic, Camera.main.transform.position);
         }
     }
 
@@ -78,8 +80,8 @@ public class AudioManager : MonoBehaviour
     }
     public void SetAdaptativeMusic(int p_Music)
     {
-        //set p_Music to 0 for the short loop, 1 for the tense loop (only in domination)
-        //set p_Music to 2 for the long loop 
+        //set p_Music to 1 for the short loop, 2 for the tense loop (only in domination)
+        //set p_Music to 0 for the long loop 
         _musicEventInstance.setParameterByName("AdaptativeMusic", p_Music);
     }
 

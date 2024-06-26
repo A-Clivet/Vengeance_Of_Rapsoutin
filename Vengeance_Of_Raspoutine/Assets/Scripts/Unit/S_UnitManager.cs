@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections.Generic;
 using UnityEngine;
 using static S_GameManager;
@@ -150,6 +151,23 @@ public class S_UnitManager : MonoBehaviour
                     if (!p_isIAUsingThisFunction)
                     {
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
+                        if (S_GameManager.Instance.isPlayer1Turn)
+                        {
+                            if (!(unit.SO_Unit.name == "Commando"))
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.RifleReload, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            EventInstance MonsterNoise = AudioManager.instance.CreateInstance(FMODEvents.instance.MonsterNoise);
+                            PLAYBACK_STATE playbackState;
+                            MonsterNoise.getPlaybackState(out playbackState);
+                            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+                            {
+                                MonsterNoise.start();
+                            }
+                        }
                     }
 
                     for (int k = 0; k < p_formationNumber; k++)

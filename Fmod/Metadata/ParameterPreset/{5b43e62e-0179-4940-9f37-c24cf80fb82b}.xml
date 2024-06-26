@@ -19,15 +19,15 @@
 			<value>3</value>
 		</property>
 		<property name="enumerationLabels">
+			<value>Full Loop</value>
 			<value>Normal</value>
 			<value>NearFromVictory</value>
-			<value>Full Loop</value>
 		</property>
 		<property name="isGlobal">
 			<value>true</value>
 		</property>
 		<property name="initialValue">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<property name="isExposedRecursively">
 			<value>false</value>
