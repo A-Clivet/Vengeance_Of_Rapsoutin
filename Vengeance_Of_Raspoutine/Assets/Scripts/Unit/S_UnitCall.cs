@@ -121,6 +121,7 @@ public class S_UnitCall : MonoBehaviour
         }
         grid.UnitPriorityCheck();
         grid.unitManager.UnitCombo(3);
+        grid.unitManager.UnitCombo(3);
         CallAmountUpdate();
 
     }
