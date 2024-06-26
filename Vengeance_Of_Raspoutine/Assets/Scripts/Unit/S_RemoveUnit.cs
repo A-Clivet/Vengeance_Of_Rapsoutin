@@ -92,6 +92,7 @@ public class S_RemoveUnit : MonoBehaviour
                 removing = true;
 
                 p_tile.grid.unitManager.UnitCombo(3);
+                p_tile.grid.unitManager.UnitCombo(3);
 
                 return true;
             }
