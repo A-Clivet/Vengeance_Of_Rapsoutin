@@ -154,6 +154,8 @@ public class Unit : MonoBehaviour
                 return;
             }
         }
+        grid.UnitPriorityCheck();
+        grid.enemyGrid.UnitPriorityCheck();
         grid.unitManager.UnitCombo(3);
         grid.enemyGrid.unitManager.UnitCombo(3);
         S_GameManager.Instance.EndTurn();
