@@ -18,6 +18,7 @@ public class S_MainMenu : MonoBehaviour
         _canvasOption.SetActive(false);
         _canvasCredits.SetActive(false);
         _canvasTuto.SetActive(false);
+        S_CrossSceneDataManager.Instance.vsIA = false;
         _tutoManager = S_TutoManager.Instance;
     }
 
