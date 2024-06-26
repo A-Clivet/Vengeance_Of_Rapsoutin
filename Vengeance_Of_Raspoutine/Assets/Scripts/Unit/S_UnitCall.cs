@@ -119,6 +119,7 @@ public class S_UnitCall : MonoBehaviour
                 firstUnitCalled = true;
             }
         }
+        grid.UnitPriorityCheck();
         grid.unitManager.UnitCombo(3);
         CallAmountUpdate();
 
