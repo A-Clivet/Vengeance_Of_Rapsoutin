@@ -131,6 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2547385459739081816, guid: c52eef20594176844a61d34e9e50dcc2, type: 3}
+      propertyPath: stormActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5005475216429965295, guid: c52eef20594176844a61d34e9e50dcc2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

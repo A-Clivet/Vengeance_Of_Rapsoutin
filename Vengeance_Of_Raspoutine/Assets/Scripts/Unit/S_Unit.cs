@@ -185,7 +185,7 @@ public class Unit : MonoBehaviour
                         u.mustAttack = true;
                         u.turnCharge = 0;
                         grid.unitList.Remove(u);
-                        u._posToMove = new Vector3(transform.position.x, grid.enemyGrid.gridList[actualTile[0].tileX][grid.enemyGrid.gridList[actualTile[0].tileX].Count-1].transform.position.y - transform.localScale.y, -1);
+                        u._posToMove = new Vector3(transform.position.x, (grid.enemyGrid.gridList[actualTile[0].tileX][grid.enemyGrid.gridList[actualTile[0].tileX].Count-1].transform.position.y * 1.1f) - transform.localScale.y, -1);
                         u.StartCoroutine(LerpMove());
 
                     }
@@ -421,13 +421,20 @@ public class Unit : MonoBehaviour
         {
             foreach (S_Tile tile in grid.gridList[p_tile.tileX])
             {
+                if((tile.tileY == Mathf.Abs(grid.height) - 1 && grid.TryFindUnitOntile(tile, out var unit1)) || (tile.tileX == actualTile[0].tileX))
+                {
+                    Debug.Log("Column full");
+                    shadow.GetComponent<SpriteRenderer>().color = new Color(shadow.GetComponent<SpriteRenderer>().color.r, shadow.GetComponent<SpriteRenderer>().color.g, shadow.GetComponent<SpriteRenderer>().color.b, 0);
+                    return;
+                }
                 if (!grid.TryFindUnitOntile(tile, out var unit))
                 {
+                    Debug.Log("Units found");
+                    shadow.GetComponent<SpriteRenderer>().color = new Color(shadow.GetComponent<SpriteRenderer>().color.r, shadow.GetComponent<SpriteRenderer>().color.g, shadow.GetComponent<SpriteRenderer>().color.b, 0.75f);
                     shadow.transform.position = tile.transform.position;
                     return;
                 }
             }
-            shadow.transform.position = new Vector3(p_tile.transform.position.x, grid.gridList[p_tile.tileX][Mathf.Abs(grid.height)-1].transform.position.y - transform.localScale.y,-1);
 
         }
         
