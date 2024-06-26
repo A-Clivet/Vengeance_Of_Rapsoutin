@@ -39,7 +39,7 @@ public class S_RemoveUnit : MonoBehaviour
             if (hoveringUnit == null)
                 return;
 
-            if (!hoveringUnit.grid.isSwapping)
+            if (hoveringUnit.grid.isSwapping)
                 return;
 
             if (!DoesPlayerHasActionPoint())
