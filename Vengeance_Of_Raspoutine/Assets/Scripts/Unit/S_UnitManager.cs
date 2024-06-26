@@ -13,6 +13,9 @@ public class S_UnitManager : MonoBehaviour
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
+    public List<Sprite> commandoAttackImg = new();
+    public List<Sprite> duelistAttackImg = new();
+    public List<Sprite> sniperAttackImg = new();
 
     // - Private variables - //
     // References
@@ -183,6 +186,18 @@ public class S_UnitManager : MonoBehaviour
                             atkUnit.state = 2;
                             //temporary visual change to notices attacking units
                             atkUnit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                            if (atkUnit.SO_Unit.UnitName == "Commando")
+                            {
+                                atkUnit.spriteChange(commandoAttackImg[atkUnit.unitColor]);
+                            }
+                            else if (atkUnit.SO_Unit.UnitName == "Duelist")
+                            {
+                                atkUnit.spriteChange(duelistAttackImg[atkUnit.unitColor]);
+                            }
+                            else if (atkUnit.SO_Unit.UnitName == "Sniper")
+                            {
+                                atkUnit.spriteChange(sniperAttackImg[atkUnit.unitColor]);
+                            }
                         }
                         UnitColumn[UnitColumn.Count - 1].Add(atkUnit);
                     }
