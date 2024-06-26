@@ -4,7 +4,6 @@ public class S_Tile : MonoBehaviour
 {
     public int tileX;
     public int tileY;
-    public Unit unit;
     public S_GridManager grid;
 
     //get the parent gridManager for future uses
@@ -22,9 +21,11 @@ public class S_Tile : MonoBehaviour
     //Move the unit if one is selected
     private void OnMouseDown()
     {
-        if (grid.unitSelected != null && S_GameManager.Instance.currentTurn!=S_GameManager.TurnEmun.TransitionTurn)
+        if (grid.unitSelected != null && S_GameManager.Instance.currentTurn!=S_GameManager.TurnEmun.TransitionTurn && !grid.isSwapping)
         {
+            grid.unitSelected.shadow.SetActive(false);
             grid.unitSelected.ActionMoveToTile(this);
+
         }
     }
 }

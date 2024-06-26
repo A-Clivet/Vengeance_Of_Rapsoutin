@@ -1,223 +1,234 @@
-using System.Collections;
+using FMOD.Studio;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+using static S_GameManager;
 
 public class S_UnitManager : MonoBehaviour
 {
+    [Header("Stats :")]
+    [Tooltip("The number of Adrenaline had to the player who create a new formation (Attack & Defense), the number is multiplied by the number of unit there are in the formation")]
+    public int numberOfAdrenalineToHadForEachUnitInFormation = 1;
+
     public S_GridManager grid;
-    private List<List<S_Tile>> gridList;
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
+    public List<Sprite> commandoAttackImg = new();
+    public List<Sprite> duelistAttackImg = new();
+    public List<Sprite> sniperAttackImg = new();
 
+    // - Private variables - //
+    // References
+    S_GameManager _gameManager;
+    S_CharacterAdrenaline _player1CharacterAdrenaline;
+    S_CharacterAdrenaline _player2CharacterAdrenaline;
 
-    public void Awake()
+    private List<List<S_Tile>> gridList;
+
+    private void Awake()
     {
         gridList = grid.gridList;
+
+        // Setting up private variables
+        _gameManager = S_GameManager.Instance;
     }
 
-    public void UnitCombo(int p_formationNumber)
+    private void Start()
     {
+        // Setting up private variables
+        _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+        _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+    }
 
+    public void UnitCombo(int p_formationNumber, bool p_isIAUsingThisFunction = false)
+    {
         int columnCounter = 0;
-        int lineCounter = 0;
+        int lineCounter;
 
         int currentColorColumn = -1;
-        int currentColorLine = -1;
+        int currentColorLine;
 
         //SO_Unit actualType = null;
-
-        //for pour la grille, tu check si une untié à ça sizeY > 1 , if ( sur la sizeX  == 1 || 2 )
-
-        for (int i = 0; i < grid.width; i++)//check list largeur
-        {
-            for (int j = 0; j < Mathf.Abs(grid.height); j++)//check list hauteur
-            {
-                if (gridList[i][j].unit == null) //si la case est vide, continue
-                {
-                    continue;
-                }
-                else // si la case contient une unité
-                {
-                    if (gridList[i][j].unit.sizeY > 1)// si l'unité prends plus d'une case de hauteur ce n'est pas un mur
-                    {
-                        if (gridList[i][j].unit.sizeX == 1 && gridList[i][j].unit.isChecked == false) //check si l'unite prends une ou deux case de large, ici l'unité en prends qu'une ( case )
-                        {
-                            gridList[i][j].unit.isChecked = true; // met le boolean à true pour dire que l'unité à été check et ne pas repasser dessus
-
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
-                            {
-                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
-                                {
-                                    if (columnCounter == p_formationNumber) // mode attack 
-                                    {
-                                        UnitColumn.Add(new());
-
-                                        gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyFormation();
-                                        gridList[i][j + 3].unit.DestroyFormation();
-
-                                        grid.UnitPriorityCheck();
-                                        columnCounter = 0;
-                                    }
-                                }
-
-                            }
-                        }
-                        else // size x = 2
-                        {
-                            gridList[i][j].unit.isChecked = true;
-
-                            if (j + 3 < grid.height && (gridList[i][j + 2].unit != null && gridList[i][j + 3].unit != null)) //Comparaison des prochaines case de la grille pour éviter le Out of Index
-                            {
-                                if (gridList[i][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i][j + 3].unit.unitColor == gridList[i][j].unit.unitColor && gridList[i + 1][j].unit.unitColor == gridList[i][j + 2].unit.unitColor && gridList[i + 1][j + 3].unit.unitColor == gridList[i][j].unit.unitColor)
-                                {
-                                    if (columnCounter == p_formationNumber) // mode attack 
-                                    {
-                                        UnitColumn.Add(new());
-
-                                        gridList[i][j].unit.state = 2;
-                                        gridList[i][j + 2].unit.DestroyFormation();
-                                        gridList[i][j + 3].unit.DestroyFormation();
-                                        gridList[i + 1][j + 2].unit.DestroyFormation();
-                                        gridList[i + 1][j + 3].unit.DestroyFormation();
-
-                                        grid.UnitPriorityCheck();
-                                        columnCounter = 0;
-                                    }
-                                }
-
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
+        UnitLine.Clear();
         for (int i = 0; i < Mathf.Abs(grid.height); i++) // hateur
         {
+            lineCounter = 0;
+            currentColorLine = -1;
+            if (!p_isIAUsingThisFunction)
+            {
+                UnitLine.Clear();
+            }
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                if(gridList[j][i].unit == null)
+                if (grid.TryFindUnitOntile(gridList[j][i], out var unit))
                 {
-                    currentColorLine = -1; // -1 is not a value that a unitColor will be 
-                    lineCounter = 0;
-                    continue;
-                }
-                if (gridList[j][i].unit.state != 0)
-                {
-                    currentColorLine = -1;
-                    lineCounter = 0;
-                    continue;
-                }
-                if(gridList[j][i].unit.unitColor != currentColorLine)
-                {
-                    currentColorLine = gridList[j][i].unit.unitColor;
-                    lineCounter = 1;
-                    continue;
+                    if (unit.state != 0)
+                    {
+                        currentColorLine = -1;// -1 is not a value that a unitColor will be 
+                        lineCounter = 0;
+                        continue;
+                    }
+                    if (unit.unitColor != currentColorLine)
+                    {
+                        currentColorLine = unit.unitColor;
+                        lineCounter = 1;
+                        continue;
+                    }
+                    else
+                    {
+                        lineCounter++;
+                    }
                 }
                 else
                 {
-                    lineCounter++;
+                    currentColorLine = -1;
+                    lineCounter = 0;
                 }
-
                 if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
-                    gridList[j][i].unit.state = 1;
-                    gridList[j - 1][i].unit.state = 1;
-                    gridList[j - 2][i].unit.state = 1;
 
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 2][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j - 1][i].unit);
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-                    currentColorLine = -1;
-                    lineCounter = 0;
+                    // We had Adrenaline to the player who created this formation
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
+                    }
+
+                    for (int k = 0; k < p_formationNumber; k++)
+                    {
+                        grid.TryFindUnitOntile(gridList[j - k][i], out var defendUnit);
+                        if (!p_isIAUsingThisFunction)
+                        {
+
+                            defendUnit.state = 1;
+
+                        }
+                        UnitLine[UnitLine.Count - 1].Add(defendUnit);
+                    }
                 }
-                if (UnitLine.Count >= 1)
+                else if (lineCounter >= p_formationNumber)
                 {
-                    Defend(UnitLine);
+                    unit.state = 1;
+                    UnitLine[UnitLine.Count - 1].Add(unit);
                 }
-                UnitLine.Clear();
             }
-            currentColorLine = -1;
-            lineCounter = 0;
+            if (UnitLine.Count >= 1 && !p_isIAUsingThisFunction)
+            {
+                Defend(UnitLine);
+            }
         }
-
         for (int i = 0; i < grid.width; i++) // largeur
         {
+            currentColorColumn = -1; // -1 is not a value that a unitColor will be 
+            columnCounter = 0;
+
+
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
 
-                if (gridList[i][j].unit == null)
+                if (grid.TryFindUnitOntile(gridList[i][j], out var unit))
                 {
-                    currentColorColumn = -1; // -1 is not a value that a unitColor will be 
-                    columnCounter = 0;
-                    continue;
-                }
-                if (gridList[i][j].unit.state != 0)
-                {
-                    currentColorColumn = -1; 
-                    columnCounter = 0;
-                    continue;
-                }
-                if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
-                {
-                    currentColorColumn = gridList[i][j].unit.unitColor;
-                    columnCounter = 1;
-                    continue;
-                }
-                else
-                {
-                    columnCounter++;
-                }
+                    if (unit.state != 0)
+                    {
+                        currentColorColumn = -1;
+                        columnCounter = 0;
+                        continue;
+                    }
+                    if (unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
+                    {
+                        currentColorColumn = unit.unitColor;
+                        columnCounter = 1;
+                        continue;
+                    }
+                    else
+                    {
+                        columnCounter++;
+                    }
 
+                }
                 if (columnCounter == p_formationNumber) // mode attack 
                 {
                     UnitColumn.Add(new());
 
-                    gridList[i][j].unit.state = 2;
-                    gridList[i][j - 1].unit.state = 2;
-                    gridList[i][j - 2].unit.state = 2;
-                    
-                    //temporary visual change to notices attacking units
-
-                    gridList[i][j].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 1].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    gridList[i][j - 2].unit.gameObject.transform.localScale = new Vector3(0.6f,0.6f,1f);
-                    
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 2].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - 1].unit);
-                    UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j].unit);
-                    for (int k=0;k< UnitColumn[UnitColumn.Count-1].Count;k++)
+                    // We had Adrenaline to the player who created this formation
+                    if (!p_isIAUsingThisFunction)
                     {
-                        UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
-                        UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
+                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
+                        if (S_GameManager.Instance.isPlayer1Turn)
+                        {
+                            if (!(unit.SO_Unit.name == "Commando"))
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.RifleReload, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            EventInstance MonsterNoise = AudioManager.instance.CreateInstance(FMODEvents.instance.MonsterNoise);
+                            PLAYBACK_STATE playbackState;
+                            MonsterNoise.getPlaybackState(out playbackState);
+                            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+                            {
+                                MonsterNoise.start();
+                            }
+                        }
+                        if (S_RemoveUnit.Instance.removing)
+                        {
+                            _gameManager.IncreaseActionPointBy1();
+                            S_RemoveUnit.Instance.removing = false;
+                        }
                     }
-                    grid.AllUnitPerColumn = grid.UnitPriorityCheck();
 
-                    if (S_GameManager.Instance.isPlayer1Turn)
+                    for (int k = 0; k < p_formationNumber; k++)
                     {
-                        S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                        grid.TryFindUnitOntile(gridList[i][j - k], out var atkUnit);
+                        if (!p_isIAUsingThisFunction)
+                        {
+                            atkUnit.state = 2;
+                            //temporary visual change to notices attacking units
+                            atkUnit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                            if (atkUnit.SO_Unit.UnitName == "Commando")
+                            {
+                                atkUnit.spriteChange(commandoAttackImg[atkUnit.unitColor]);
+                            }
+                            else if (atkUnit.SO_Unit.UnitName == "Duelist")
+                            {
+                                atkUnit.spriteChange(duelistAttackImg[atkUnit.unitColor]);
+                            }
+                            else if (atkUnit.SO_Unit.UnitName == "Sniper")
+                            {
+                                atkUnit.spriteChange(sniperAttackImg[atkUnit.unitColor]);
+                            }
+                        }
+                        UnitColumn[UnitColumn.Count - 1].Add(atkUnit);
                     }
-                    else
-                    {
-                        S_GameManager.Instance.player2CharacterXP.GainXP(5);
-                    }
-
                     columnCounter = 0;
                     currentColorColumn = -1;
+
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        for (int k = 0; k < UnitColumn[UnitColumn.Count - 1].Count; k++)
+                        {
+
+                            UnitColumn[UnitColumn.Count - 1][k].actualFormation = UnitColumn[UnitColumn.Count - 1];
+                            UnitColumn[UnitColumn.Count - 1][k].formationIndex = k;
+
+                        }
+                    }
+                    if (!p_isIAUsingThisFunction)
+                    {
+                        if (S_GameManager.Instance.isPlayer1Turn)
+                        {
+                            S_GameManager.Instance.player1CharacterXP.GainXP(5);
+                        }
+                        else
+                        {
+                            S_GameManager.Instance.player2CharacterXP.GainXP(5);
+                        }
+                    }
                 }
             }
-            currentColorColumn = -1;
-            columnCounter = 0;
         }
-        
+        grid.UnitPriorityCheck();
     }
 
 
@@ -228,6 +239,7 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < p_defendingUnit[i].Count; j++)
             {
                 p_defendingUnit[i][j].spriteChange(defendImg);
+                p_defendingUnit[i][j].transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 0);
 
                 p_defendingUnit[i][j].defense = 4;
                 p_defendingUnit[i][j].attack = 0;
@@ -240,6 +252,10 @@ public class S_UnitManager : MonoBehaviour
         {
             S_GameManager.Instance.IncreaseActionPointBy1();
             S_RemoveUnit.Instance.removing = false;
+            if (S_CrossSceneDataManager.Instance.vsIA && S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+            {
+                StartCoroutine(S_GameManager.Instance.gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            }
         }
     }
 
@@ -253,15 +269,20 @@ public class S_UnitManager : MonoBehaviour
         GOunit.GetComponent<Unit>().defense += 1;
     }
 
-    //public struct UnitOnLine{
-    //    public List<Unit> units;
-    //    public List<int> Y; // 3
-    //    public List<Vector2Int> bounds; // (3,6) 
-    //}
+    void AddAdrenalineToThePlayerWhoForm(int p_adrenalineToHad)
+    {
+        // Security
+        if (_player1CharacterAdrenaline == null || _player2CharacterAdrenaline == null)
+        {
+            _player1CharacterAdrenaline = _gameManager.player1CharacterAdrenaline;
+            _player2CharacterAdrenaline = _gameManager.player2CharacterAdrenaline;
+        }
 
-    //public struct UnitOnColumn{
-    //    public List<Unit> units;
-    //    public List<int> X;
-    //    public List<Vector2Int> bounds;
-    //}
+        // Adding adrenaline for the player who played
+        if (_gameManager.currentTurn == S_GameManager.TurnEmun.Player1Turn)
+            _player1CharacterAdrenaline.currentAdrenaline += p_adrenalineToHad;
+
+        else if (_gameManager.currentTurn == S_GameManager.TurnEmun.Player2Turn)
+            _player2CharacterAdrenaline.currentAdrenaline += p_adrenalineToHad;
+    }
 }

@@ -25,6 +25,8 @@ public class S_CharacterHealth : MonoBehaviour
     [SerializeField] Image _healthBarFillSprite;
     [SerializeField] TextMeshProUGUI _healthText;
 
+    S_GameManager _gameManager;
+
     bool _isPlayer1Character;
     int _maxHP;
     int _currentHP;
@@ -39,6 +41,15 @@ public class S_CharacterHealth : MonoBehaviour
         get { return _currentHP; }
         set
         {
+            if (value < _currentHP)
+            {
+                if (_isPlayer1Character)
+                    _gameManager.player1CharacterAdrenaline.currentAdrenaline += _currentHP - value;
+                    
+                else
+                    _gameManager.player2CharacterAdrenaline.currentAdrenaline += _currentHP - value;
+            }
+
             _currentHP = value;
 
             if (_currentHP <= 0)
@@ -64,6 +75,11 @@ public class S_CharacterHealth : MonoBehaviour
 
     #region Methods
 
+    private void Start()
+    {
+        _gameManager = S_GameManager.Instance;
+    }
+
     public void RecieveCharacterHealthStats(int p_maxHP, bool p_isPlayer1Character, Sprite p_emptyScorePoint, Sprite p_scorePointFilled)
     {
         // Setting up class variables
@@ -82,7 +98,6 @@ public class S_CharacterHealth : MonoBehaviour
         // Security
         if (p_isPlayer1Character != _isPlayer1Character || !p_isPlayer1Character != !_isPlayer1Character)
         {
-            Debug.LogError("ERROR ! You said that the first character should have the second character score");
             return;
         }
 
@@ -114,7 +129,6 @@ public class S_CharacterHealth : MonoBehaviour
                 break;
 
             default:
-                Debug.LogError("The score given [" + p_score + "] is not planned in the switch.");
                 break;
         }
     }

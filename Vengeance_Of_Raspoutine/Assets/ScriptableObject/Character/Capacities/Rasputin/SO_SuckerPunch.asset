@@ -12,21 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80e18d3964412844a1f2fdbb756d0c3, type: 3}
   m_Name: SO_SuckerPunch
   m_EditorClassIdentifier: 
+  isUnitsStatChangementSpecialCapacityHidden: 1
+  isUnitsMetamorphosisSpecialCapacityHidden: 0
+  isUnitsDestroySpecialCapacityHidden: 1
+  isUltimateSpecialCapacityHidden: 1
   isUnitsStatChangementSpecialCapacity: 0
   isUnitsMetamorphosisSpecialCapacity: 1
   isUnitsDestroySpecialCapacity: 0
   isUltimateSpecialCapacity: 0
-  capacityName: SockerPunch
-  capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
+  capacityName: Sucker Punch
+  capacitySprite: {fileID: 21300000, guid: 8df5246b81590584e8f6eb022c1e0e22, type: 3}
   capacityDescription: Turns a wall into an powerfull strike
-  capacityEffectDescription: (attack stats equal to remaining hp)
+  capacityEffectDescription: Wall's attack stats equal their remaining hp
   isCapacityLocked: 1
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2
   unitStatsChangementValue: 3
-  baseState: 1
-  newState: 2
-  unitsToDestroy: 0
-  affectedState: 0
-  dmgLimit: 0
-  EnergyBall: {fileID: 0}
+  initialUnitState: 1
+  newUnitState: 2
+  numberOfUnitsToDestroy: 0
+  unitDestructionAnimationsFeedback: 0
+  ultimateCapacityProjectilePrefab: {fileID: 0}
+  targetUnitState: 0
+  damageCap: 0

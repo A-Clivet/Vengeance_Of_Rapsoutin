@@ -10,11 +10,20 @@ public class S_SpecialCapacityStats : ScriptableObject
         TurnCharge
     }
 
+    [HideInInspector] public bool isUnitsStatChangementSpecialCapacityHidden;
+    [HideInInspector] public bool isUnitsMetamorphosisSpecialCapacityHidden;
+    [HideInInspector] public bool isUnitsDestroySpecialCapacityHidden;
+    [HideInInspector] public bool isUltimateSpecialCapacityHidden;
+
     [Header("Special capacities :")]
-    public bool isUnitsStatChangementSpecialCapacity;
-    public bool isUnitsMetamorphosisSpecialCapacity;
-    public bool isUnitsDestroySpecialCapacity;
-    public bool isUltimateSpecialCapacity;
+    [HideCondition("isUnitsStatChangementSpecialCapacityHidden")]
+        public bool isUnitsStatChangementSpecialCapacity;
+    [HideCondition("isUnitsMetamorphosisSpecialCapacityHidden")]
+        public bool isUnitsMetamorphosisSpecialCapacity;
+    [HideCondition("isUnitsDestroySpecialCapacityHidden")]
+        public bool isUnitsDestroySpecialCapacity;
+    [HideCondition("isUltimateSpecialCapacityHidden")]
+        public bool isUltimateSpecialCapacity;
 
     [Header("Basic statistics :")]
     public string capacityName;
@@ -31,45 +40,123 @@ public class S_SpecialCapacityStats : ScriptableObject
     [ShowCondition("isUnitsStatChangementSpecialCapacity")]
         public int unitStatsChangementValue;
 
-    [Header("Unit types changements variables :")]
+    [Header("Unit types changements capacity's statistics :")]
     [ShowCondition("isUnitsMetamorphosisSpecialCapacity")]
-    public int baseState;
+        public int initialUnitState;
     [ShowCondition("isUnitsMetamorphosisSpecialCapacity")]
-    public int newState;
+        public int newUnitState;
 
-    [Header("How many units to destroy :")]
+    [Header("Units destroy special capacity :")]
     [ShowCondition("isUnitsDestroySpecialCapacity")]
-    public int unitsToDestroy;
+        public int numberOfUnitsToDestroy;
+    [ShowCondition("isUnitsDestroySpecialCapacity")]
+        public S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum unitDestructionAnimationsFeedback;
 
-    [Header("Which unit type to turn into a Ball Of Mega Death")]
+    [Header("Ultimate capacity :")]
+    [Tooltip("Which unit state will be turn into the ultimate projectile")]
     [ShowCondition("isUltimateSpecialCapacity")]
-    public int affectedState;
+        public GameObject ultimateCapacityProjectilePrefab;
     [ShowCondition("isUltimateSpecialCapacity")]
-    public int dmgLimit;
+        public int targetUnitState;
     [ShowCondition("isUltimateSpecialCapacity")]
-    public GameObject EnergyBall;
+        public int damageCap;
 
-/*#if UNITY_EDITOR
+#region Show and hide variables
+
+#if UNITY_EDITOR
 
     private void OnValidate()
     {
-        // Bad code - TODO : Change it
-        if (isUnitsStatChangementSpecialCapacity == true)
+        // NOTE : This code don't works and the code after the OnValidate, it was created to avoid the following code 
+
+        /*// We create a dictionary that store for each special capacity type the function SetSpecialCapacityState() with specific argument in it
+        Dictionary<bool, System.Action> specialCapacityTypes = new()
         {
+            { isUnitsStatChangementSpecialCapacity, () => SetSpecialCapacityState(ref isUnitsStatChangementSpecialCapacityHidden, true, false, false, false) },
+            { isUnitsMetamorphosisSpecialCapacity, () => SetSpecialCapacityState(ref isUnitsMetamorphosisSpecialCapacityHidden, false, true, false, false) },
+            { isUnitsDestroySpecialCapacity, () => SetSpecialCapacityState(ref isUnitsDestroySpecialCapacityHidden, false, false, true, false) },
+            { isUltimateSpecialCapacity, () => SetSpecialCapacityState(ref isUltimateSpecialCapacityHidden, false, false, false, true) }
+        };
+
+        // We loop through special capacity types dictionary's keys until we find one there is one key to bool
+        foreach (KeyValuePair<bool, System.Action> specialCapacityType in specialCapacityTypes)
+        {
+            if (specialCapacityType.Key)
+            {
+                specialCapacityType.Value();
+                break;
+            }
+        }*/
+
+        // Due to the lack of time (priorization) this code will surely remain bad (RIP)
+        if (isUnitsStatChangementSpecialCapacity)
+        {
+            isUnitsStatChangementSpecialCapacityHidden = false;
+            isUnitsMetamorphosisSpecialCapacityHidden = true;
+            isUnitsDestroySpecialCapacityHidden = true;
+            isUltimateSpecialCapacityHidden = true;
+
+            isUnitsMetamorphosisSpecialCapacity = false;
+            isUnitsDestroySpecialCapacity = false;
+            isUltimateSpecialCapacity = false;
+        }
+        else if (isUnitsMetamorphosisSpecialCapacity)
+        {
+            isUnitsStatChangementSpecialCapacityHidden = true;
+            isUnitsMetamorphosisSpecialCapacityHidden = false;
+            isUnitsDestroySpecialCapacityHidden = true;
+            isUltimateSpecialCapacityHidden = true;
+
+            isUnitsStatChangementSpecialCapacity = false;
+            isUnitsDestroySpecialCapacity = false;
+            isUltimateSpecialCapacity = false;
+        }
+        else if (isUnitsDestroySpecialCapacity)
+        {
+            isUnitsStatChangementSpecialCapacityHidden = true;
+            isUnitsMetamorphosisSpecialCapacityHidden = true;
+            isUnitsDestroySpecialCapacityHidden = false;
+            isUltimateSpecialCapacityHidden = true;
+
+            isUnitsStatChangementSpecialCapacity = false;
+            isUnitsMetamorphosisSpecialCapacity = false;
+            isUltimateSpecialCapacity = false;
+        }
+        else if (isUltimateSpecialCapacity)
+        {
+            isUnitsStatChangementSpecialCapacityHidden = true;
+            isUnitsMetamorphosisSpecialCapacityHidden = true;
+            isUnitsDestroySpecialCapacityHidden = true;
+            isUltimateSpecialCapacityHidden = false;
+
+            isUnitsStatChangementSpecialCapacity = false;
             isUnitsMetamorphosisSpecialCapacity = false;
             isUnitsDestroySpecialCapacity = false;
         }
-        else if (isUnitsMetamorphosisSpecialCapacity == true)
+        else
         {
-            isUnitsStatChangementSpecialCapacity = false;
-            isUnitsDestroySpecialCapacity = false;
-        }
-        else if (isUnitsDestroySpecialCapacity == true)
-        {
-            isUnitsMetamorphosisSpecialCapacity = false;
-            isUnitsStatChangementSpecialCapacity = false;
+            isUnitsStatChangementSpecialCapacityHidden = false;
+            isUnitsMetamorphosisSpecialCapacityHidden = false;
+            isUnitsDestroySpecialCapacityHidden = false;
+            isUltimateSpecialCapacityHidden = false;
         }
     }
 
-#endif*/
+    /*    private void SetSpecialCapacityState(ref bool targetHiddenState, bool statChangement, bool metamorphosis, bool destroy, bool ultimate)
+        {
+            isUnitsStatChangementSpecialCapacityHidden = statChangement;
+            isUnitsMetamorphosisSpecialCapacityHidden = metamorphosis;
+            isUnitsDestroySpecialCapacityHidden = destroy;
+            isUltimateSpecialCapacityHidden = ultimate;
+
+            isUnitsStatChangementSpecialCapacity = statChangement;
+            isUnitsMetamorphosisSpecialCapacity = metamorphosis;
+            isUnitsDestroySpecialCapacity = destroy;
+            isUltimateSpecialCapacity = ultimate;
+
+            targetHiddenState = false;
+        }*/
+#endif
 }
+
+#endregion

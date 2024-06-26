@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: "SO_Unit_Gl\xF6rbr"
   m_EditorClassIdentifier: 
   UnitName: "Gl\xF6rbr"
-  attack: 5
+  attack: 4
   defense: 3
   sizeX: 1
   sizeY: 1
   unitSprite:
   - {fileID: 21300000, guid: 60555f92fff1d804f9ee5680a84e796f, type: 3}
+  - {fileID: 21300000, guid: 47bc996d6724db843974d95d446363b3, type: 3}
+  - {fileID: 21300000, guid: e146ab270e305fc49bee8a4bff4be81b, type: 3}
   unitType: 1
   unitColor: 1
   unitTurnCharge: 2

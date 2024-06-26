@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: SO_Unit_Commando
   m_EditorClassIdentifier: 
   UnitName: Commando
-  attack: 5
+  attack: 4
   defense: 3
   sizeX: 1
   sizeY: 1
   unitSprite:
   - {fileID: 21300000, guid: 7e2d05ab8ac28794f8b18185e963b3dd, type: 3}
+  - {fileID: 21300000, guid: 50696f936f845cc43873a97ba4dea85e, type: 3}
+  - {fileID: 21300000, guid: bbaef5b3a1513f648a31836d53b35ba5, type: 3}
   unitType: 1
   unitColor: 1
   unitTurnCharge: 2
