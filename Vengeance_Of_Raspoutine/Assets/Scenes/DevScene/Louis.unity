@@ -376,13 +376,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2669092909967689363, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
+      propertyPath: m_text
+      value: "In sudden death, players only play one round, it is meant to be a quick
+        match between players. \n\nWith this mode being done in a single round, players
+        won't have access to the skill tree."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669092909967689363, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
+      propertyPath: m_fontSize
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669092909967689363, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 4130643905682628789, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
       propertyPath: m_Name
       value: Sudden Death
       objectReference: {fileID: 0}
     - target: {fileID: 4130643905682628789, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4800153599722168170, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
       propertyPath: m_Camera
@@ -491,7 +505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2215813781847612994, guid: 2567aa503040ddc4a89e672fd7819221, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -506,13 +520,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3582667518488982679, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
+      propertyPath: m_text
+      value: 'The goal of the rounds is to deplete your opponent''s hp pool
+
+
+        this
+        can be achieved by creating attack formations while also creating defences
+        of your own
+
+
+        At the end of turns, skills in a skill tree can be
+        obtained.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582667518488982679, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582667518488982679, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 5186425849128046436, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
       propertyPath: m_Name
       value: main goal
       objectReference: {fileID: 0}
     - target: {fileID: 5186425849128046436, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7099308881989080645, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
       propertyPath: m_Pivot.x
@@ -617,7 +652,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1062145353975498079, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4350009896440214519, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
+      propertyPath: m_text
+      value: "In classic mode, the objective is to win 3 our of 5 rounds. \n\nBetween
+        each rounds, a skill tree corresponding to the character will appear and
+        an option can be choosen to have more power on the next rounds."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4350009896440214519, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
+      propertyPath: m_fontSize
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4350009896440214519, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5642520601625651254, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
       propertyPath: m_Pivot.x
@@ -726,7 +775,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3089927665274705533, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6881877419960097753, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
       propertyPath: m_Pivot.x
@@ -806,6 +855,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6881877419960097753, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7903134279665395157, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -911,7 +964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5633623752931722068, guid: 5e19fea5f16746e438ad36563910515b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
