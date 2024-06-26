@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
-    public int speed;
+    public float speed = 10;
     private bool _isMoving = false;
     public Vector3 _posToMove;
 
@@ -50,7 +50,6 @@ public class Unit : MonoBehaviour
         //attack = SO_Unit.attack;
         //defense = SO_Unit.defense;
         //turnCharge = SO_Unit.unitTurnCharge;
-        speed = 10;
     }
 
     private void Start()
@@ -73,33 +72,23 @@ public class Unit : MonoBehaviour
     calling attackAnotherUnit() to see the next position to go.*/
     private IEnumerator LerpMove()
     {
-        float t = 0;
+        _isMoving = true;
 
-        if (!_isMoving)
-        {
-            _isMoving = true;
-        }
+        float distanceToTravel = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
 
         while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1f)
         {
+            float step = speed * Time.deltaTime;
 
-            transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), t);
+            // Reduce the speed for attacking formation
+            if (mustAttack)
+                step *= 0.05f; 
 
-
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), step);
 
             yield return new WaitForEndOfFrame();
-
-            if (mustAttack)
-            {
-                // Speed for one frame divided by the distance left
-                t = t + Time.deltaTime * 0.04f;
-            }
-            else
-            {
-                t = t + Time.deltaTime * 0.1f;
-            }
-            
         }
+
         _isMoving = false;
 
         transform.position = new Vector3(_posToMove.x, _posToMove.y, -1);
