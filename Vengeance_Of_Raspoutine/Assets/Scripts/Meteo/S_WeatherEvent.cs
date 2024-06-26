@@ -128,6 +128,10 @@ public class S_WeatherEvent : MonoBehaviour
             }
             _player1GridManager.UnitPriorityCheck();
             _player2GridManager.UnitPriorityCheck();
+            _player1GridManager.unitManager.UnitCombo(3);
+            _player1GridManager.unitManager.UnitCombo(3);
+            _player2GridManager.unitManager.UnitCombo(3);
+            _player2GridManager.unitManager.UnitCombo(3);
 
         }
         return;
