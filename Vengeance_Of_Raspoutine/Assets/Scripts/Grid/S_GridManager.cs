@@ -232,6 +232,7 @@ public class S_GridManager : MonoBehaviour
         {
             unitSelected.ReturnToBaseTile();
             unitSelected.highlight.SetActive(false);
+            unitSelected.shadow.SetActive(false);
             unitSelected = null;
             if (S_GameManager.Instance.isPlayer1Turn)
             {
