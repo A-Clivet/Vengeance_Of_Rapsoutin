@@ -139,7 +139,7 @@ public class S_SpecialCapacityManager : MonoBehaviour
                         break;
 
                     case S_SpecialCapacityStats.UnitStatsEnum.TurnCharge:
-                        if (p_isPlayer1Units)
+                        if (!p_isPlayer1Units)
                         {
                             if (p_value > 0)
                             {
