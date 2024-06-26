@@ -4,10 +4,20 @@ using UnityEngine.UI;
 
 public class S_StatsCanvas : MonoBehaviour
 {
-    [SerializeField] private Unit _unit;
-    [SerializeField] private GameObject _atkSpriteBackground;
-    [SerializeField] private GameObject _defSpriteBackground;
-    [SerializeField] private GameObject _turnChargeSpriteBackground;
+    Unit _unit;
+
+    GameObject _attackSpriteBackground;
+    GameObject _defenseSpriteBackground;
+    GameObject _turnChargeSpriteBackground;
+
+    private void Awake()
+    {
+        _unit = gameObject.transform.parent.GetComponent<Unit>();
+
+        _attackSpriteBackground = gameObject.transform.GetChild(0).gameObject;
+        _defenseSpriteBackground = gameObject.transform.GetChild(1).gameObject;
+        _turnChargeSpriteBackground = gameObject.transform.GetChild(2).gameObject;
+    }
 
     private void OnEnable()
     {
@@ -21,21 +31,21 @@ public class S_StatsCanvas : MonoBehaviour
 
     public void UpdateStatsDisplay()
     {
-        _atkSpriteBackground.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _unit.attack.ToString();
-        _defSpriteBackground.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _unit.defense.ToString();
+        _attackSpriteBackground.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _unit.attack.ToString();
+        _defenseSpriteBackground.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _unit.defense.ToString();
         _turnChargeSpriteBackground.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _unit.turnCharge.ToString();
 
         if (_unit.state == 2)
         {
-            _atkSpriteBackground.SetActive(true);
+            _attackSpriteBackground.SetActive(true);
             _turnChargeSpriteBackground.SetActive(true);
-            _defSpriteBackground.SetActive(false);
+            _defenseSpriteBackground.SetActive(false);
         }
         else
         {
-            _atkSpriteBackground.SetActive(false);
+            _attackSpriteBackground.SetActive(false);
             _turnChargeSpriteBackground.SetActive(false);
-            _defSpriteBackground.SetActive(true);
+            _defenseSpriteBackground.SetActive(true);
         }
     }
 }

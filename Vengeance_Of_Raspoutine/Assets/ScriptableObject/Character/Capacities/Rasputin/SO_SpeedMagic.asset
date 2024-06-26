@@ -23,14 +23,15 @@ MonoBehaviour:
   capacityName: SpeedMagic
   capacitySprite: {fileID: 21300000, guid: 246866485522901499d7546233697271, type: 3}
   capacityDescription: Casts a spell that speeds up enemy troops
-  capacityEffectDescription: 'Ally charge time : - 2'
-  isCapacityLocked: 1
+  capacityEffectDescription: 'Ally charge time : - 1'
+  isCapacityLocked: 0
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2
-  unitStatsChangementValue: 3
+  unitStatsChangementValue: -1
   initialUnitState: 0
   newUnitState: 0
   numberOfUnitsToDestroy: 0
+  unitDestructionAnimationsFeedback: 0
+  ultimateCapacityProjectilePrefab: {fileID: 0}
   targetUnitState: 0
   damageCap: 0
-  energyBallGameObject: {fileID: 0}

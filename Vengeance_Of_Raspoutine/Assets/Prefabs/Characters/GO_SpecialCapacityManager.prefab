@@ -44,5 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3475ac9cdfd6c84ab0c777d81f15bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _specialCapacityBannerSpecialCapacityImage: {fileID: 0}
+  _specialCapacityBannerSpecialCapacityName: {fileID: 0}
   _player1GridManager: {fileID: 0}
   _player2GridManager: {fileID: 0}
+  _specialCapacityBannerTimeShowedValue: 2
+  _healthStatSprite: {fileID: 21300000, guid: ef5bdb56618a9784980df633327b2ca9, type: 3}
+  _attackStatSprite: {fileID: 21300000, guid: 776e19e7b9e641344a2b4a88e1c88331, type: 3}
+  _turnChargeStatSprite: {fileID: 21300000, guid: b51333b50d0823c4b87dc10b0197cd2c, type: 3}
+  _timeBeforeAnimationStart: 0.5
+  _animationDuration: 3
+  _goodStatChangementColor: {r: 0, g: 0.7, b: 0, a: 1}
+  _badStatChangementColor: {r: 0.7, g: 0, b: 0, a: 1}
