@@ -148,7 +148,6 @@ public class S_GridManager : MonoBehaviour
 
     public List<List<Unit>> UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
     {
-
         List<List<Unit>> GridUnit = new();
         List<Unit> StateIdleUnit = new();
         List<Unit> StateDefendUnit = new();
