@@ -49,6 +49,9 @@ MonoBehaviour:
   masterVolume: 1
   musicVolume: 1
   SFXVolume: 1
+  _sceneString: MainMenu
+  _mainMenu:
+    m_Handle: 0
 --- !u!1 &5448377068992043726
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +68,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3015451587496035080
 Transform:
   m_ObjectHideFlags: 0
@@ -138,13 +141,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e40f5dfc276473b49984e1389a1570e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Music>k__BackingField:
+  <MainMenuMusic>k__BackingField:
     Guid:
-      Data1: 1651442917
-      Data2: 1335403193
-      Data3: -1812480870
-      Data4: 1589161302
-    Path: event:/Music Event/Musics
+      Data1: 114834211
+      Data2: 1239532843
+      Data3: 719096216
+      Data4: 1248331431
+    Path: event:/Music Event/Main Menu Music
+  <MainGameMusic>k__BackingField:
+    Guid:
+      Data1: 1365282354
+      Data2: 1319571576
+      Data3: 1018933900
+      Data4: -377557714
+    Path: event:/Music Event/Adaptative Battle Music
   <Claws>k__BackingField:
     Guid:
       Data1: 1901997926
@@ -180,13 +190,6 @@ MonoBehaviour:
       Data3: -383061347
       Data4: 1237259589
     Path: event:/SFX Events/Environment/Snow Storm
-  <DarkMagic>k__BackingField:
-    Guid:
-      Data1: 1291828059
-      Data2: 1339743797
-      Data3: -703455860
-      Data4: 1334990591
-    Path: event:/SFX Events/Monsters/Dark Magic
   <MonsterNoise>k__BackingField:
     Guid:
       Data1: 1322055153
@@ -201,13 +204,13 @@ MonoBehaviour:
       Data3: 865809336
       Data4: -146046526
     Path: event:/SFX Events/Monsters/Monster War Horn
-  <ClickUI_SFX>k__BackingField:
+  <ClickUI>k__BackingField:
     Guid:
-      Data1: 772327285
-      Data2: 1084763396
-      Data3: 373976981
-      Data4: 604915023
-    Path: event:/SFX Events/UI/Click UI
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   <UnitDeployed>k__BackingField:
     Guid:
       Data1: 1168122736
@@ -271,3 +274,73 @@ MonoBehaviour:
       Data3: 1015422652
       Data4: -577941681
     Path: event:/SFX Events/USSR/vodka sprinklers
+  <DarkMagic>k__BackingField:
+    Guid:
+      Data1: 1291828059
+      Data2: 1339743797
+      Data3: -703455860
+      Data4: 1334990591
+    Path: event:/SFX Events/Monsters/Dark Magic
+  <Anti_Material>k__BackingField:
+    Guid:
+      Data1: 1009774518
+      Data2: 1093028880
+      Data3: -1019350122
+      Data4: 1904651980
+    Path: event:/SFX Events/Skills/Anti-Material Rifle
+  <BearTrap>k__BackingField:
+    Guid:
+      Data1: -1742095597
+      Data2: 1140439784
+      Data3: 1600363679
+      Data4: 1498145204
+    Path: event:/SFX Events/Skills/Bear Trap
+  <Curse>k__BackingField:
+    Guid:
+      Data1: 144033878
+      Data2: 1111357918
+      Data3: 68873361
+      Data4: -740809584
+    Path: event:/SFX Events/Skills/Curse
+  <Doping>k__BackingField:
+    Guid:
+      Data1: 1119177575
+      Data2: 1285032423
+      Data3: 2097390003
+      Data4: 739295508
+    Path: event:/SFX Events/Skills/doping
+  <Gas>k__BackingField:
+    Guid:
+      Data1: -667673880
+      Data2: 1136278728
+      Data3: 1257279649
+      Data4: 2093826611
+    Path: event:/SFX Events/Skills/Gas
+  <Missile>k__BackingField:
+    Guid:
+      Data1: 2007017555
+      Data2: 1196392683
+      Data3: -1250054233
+      Data4: 1699392676
+    Path: event:/SFX Events/Skills/ICBM
+  <Mortar>k__BackingField:
+    Guid:
+      Data1: -1384249562
+      Data2: 1315095663
+      Data3: -1351787597
+      Data4: -23924091
+    Path: event:/SFX Events/Skills/Mortar land
+  <SlowDown>k__BackingField:
+    Guid:
+      Data1: 888302074
+      Data2: 1128704981
+      Data3: -181211459
+      Data4: 1781836029
+    Path: event:/SFX Events/Skills/Slow Down
+  <SpeedUp>k__BackingField:
+    Guid:
+      Data1: -1978918756
+      Data2: 1210070204
+      Data3: -2091825758
+      Data4: -1152859129
+    Path: event:/SFX Events/Skills/Speed Up

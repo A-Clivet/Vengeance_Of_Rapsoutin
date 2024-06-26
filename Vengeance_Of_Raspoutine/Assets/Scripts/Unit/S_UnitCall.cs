@@ -60,7 +60,6 @@ public class S_UnitCall : MonoBehaviour
 
         CallAmountUpdate();
 
-        Debug.Log("UnitCalling has been called");
 
         if (!firstUnitCalled)
         {
@@ -83,7 +82,7 @@ public class S_UnitCall : MonoBehaviour
             {
                 int X = ColumnSelector();
 
-                while (tile[X][5].unit != null) // peut crash à casue du nombre d'unité sur le board non définie 
+                while (grid.TryFindUnitOntile(tile[X][5], out var unit)) // peut crash à casue du nombre d'unité sur le board non définie 
                 {
                     X = ColumnSelector();
                 }
@@ -97,12 +96,11 @@ public class S_UnitCall : MonoBehaviour
                 unitComponent.unitColor = units[unitIndex].unitColor;
 
                 //unitToSpawn.GetComponent<Unit>().SO_Unit.unitColor = ColorSelector();
-                unitComponent.tileX = X;
 
                 //function to move the unitComponent on the _grid to the right spots
                 unitComponent.OnSpawn(grid.gridList[X][Mathf.Abs(grid.height) - 1]);
-                unitToSpawn.transform.position = new Vector3(unitComponent.actualTile.transform.position.x, unitComponent.grid.startY + unitComponent.grid.height+ unitComponent.actualTile.transform.position.y);
-                unitComponent.MoveToTile(unitComponent.actualTile);
+                unitToSpawn.transform.position = new Vector3(unitComponent.actualTile[0].transform.position.x, unitComponent.grid.startY + unitComponent.grid.height+ unitComponent.actualTile[0].transform.position.y);
+                unitComponent.MoveToTile(unitComponent.actualTile[0]);
 
                 grid.totalUnitAmount++;
 
@@ -121,6 +119,8 @@ public class S_UnitCall : MonoBehaviour
                 firstUnitCalled = true;
             }
         }
+        grid.UnitPriorityCheck();
+        grid.unitManager.UnitCombo(3);
         grid.unitManager.UnitCombo(3);
         CallAmountUpdate();
 
@@ -128,7 +128,6 @@ public class S_UnitCall : MonoBehaviour
 
     public void TextUpdate(int p_amount)
     {
-        Debug.Log("Text CallAmount updated to :" + p_amount);
         text.SetText(p_amount.ToString());
     }
 

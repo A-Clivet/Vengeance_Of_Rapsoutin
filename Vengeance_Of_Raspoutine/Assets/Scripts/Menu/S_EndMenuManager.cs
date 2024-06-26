@@ -14,11 +14,11 @@ public class S_EndMenuManager : MonoBehaviour
     {
         if (p_isPlayer1Win)
         {
-            SceneManager.LoadSceneAsync("EndMenuPlayer1");
+            SceneManager.LoadScene("EndMenuPlayer1");
         }
         else
         {
-            SceneManager.LoadSceneAsync("EndMenuPlayer2");
+            SceneManager.LoadScene("EndMenuPlayer2");
         }
     }
 

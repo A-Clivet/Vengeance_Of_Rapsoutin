@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,9 @@ public class S_SkillTree : MonoBehaviour
 
     private int _baseThreshold;
 
+    private Color _transparentColor = new Color(0, 0, 0, -0.5f);
+    private Color _opacColor = new Color(0, 0, 0, 1f);
+
     private void Start()
     {
         _gameManager = S_GameManager.Instance;
@@ -35,6 +39,17 @@ public class S_SkillTree : MonoBehaviour
         UpdateThresholdDisplay(false);
     }
 
+    public void Price(int p_price)
+    {
+        if(_isPlayer1SkillTree)
+        {
+            S_GameManager.Instance.player1CharacterXP.LoseXP(p_price);
+        }
+        else
+        {
+            S_GameManager.Instance.player2CharacterXP.LoseXP(p_price);
+        }
+    }
     void ChangeAbility(int p__specialCapacitiesIndex)
     {
         if (_isPlayer1SkillTree)
@@ -80,9 +95,12 @@ public class S_SkillTree : MonoBehaviour
                 ChangeAbility(1);
 
                 _buttons[2].interactable = false;
+                _buttons[2].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
                 _buttons[3].interactable = false;
+                _buttons[3].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
                 _threshold *= 2;
                 _buttons[4].interactable = true;
+                _buttons[4].GetComponentInChildren<TextMeshProUGUI>().color += _opacColor;
 
                 UpdateXpDisplay();
                 UpdateThresholdDisplay(false);
@@ -106,9 +124,12 @@ public class S_SkillTree : MonoBehaviour
                 ChangeAbility(2);
 
                 _buttons[1].interactable = false;
+                _buttons[1].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
                 _buttons[3].interactable = false;
+                _buttons[3].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
                 _threshold *= 2;
                 _buttons[5].interactable = true;
+                _buttons[5].GetComponentInChildren<TextMeshProUGUI>().color += _opacColor;
 
                 UpdateXpDisplay();
                 UpdateThresholdDisplay(false);
@@ -132,9 +153,12 @@ public class S_SkillTree : MonoBehaviour
                 ChangeAbility(3);
 
                 _buttons[1].interactable = false;
+                _buttons[1].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
                 _buttons[2].interactable = false;
+                _buttons[2].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
                 _threshold *= 2;
                 _buttons[5].interactable = true;
+                _buttons[5].GetComponentInChildren<TextMeshProUGUI>().color += _opacColor;
 
                 UpdateXpDisplay();
                 UpdateThresholdDisplay(false);
@@ -159,6 +183,7 @@ public class S_SkillTree : MonoBehaviour
 
                 _threshold *= 2;
                 _buttons[6].interactable = true;
+                _buttons[6].GetComponentInChildren<TextMeshProUGUI>().color += _opacColor;
 
                 UpdateXpDisplay();
                 UpdateThresholdDisplay(false);
@@ -183,6 +208,7 @@ public class S_SkillTree : MonoBehaviour
 
                 _threshold *= 2;
                 _buttons[6].interactable = true;
+                _buttons[6].GetComponentInChildren<TextMeshProUGUI>().color += _opacColor;
 
                 UpdateXpDisplay();
                 UpdateThresholdDisplay(false);
@@ -217,22 +243,31 @@ public class S_SkillTree : MonoBehaviour
     //To reset the tree.
     public void ResetSkillTree()
     {
-        S_GameManager.Instance.player1CharacterXP.ResetAmmount();
         _threshold = _baseThreshold;
 
         ChangeAbility(0);
 
-        for (int i = 1; i < _specialCapacities.Count; i++)
-        {
-            _specialCapacities[i].isCapacityLocked = true;
-        }
         for (int i = 4; i < _buttons.Count; i++)
         {
             _buttons[i].interactable = false;
+            float buttonTransparency = _buttons[i].GetComponentInChildren<TextMeshProUGUI>().color.a;
+            if (buttonTransparency > 0.6f)
+            {
+                _buttons[i].GetComponentInChildren<TextMeshProUGUI>().color += _transparentColor;
+            }
         }
         for (int i = 1; i <= 3; i++)
         {
             _buttons[i].interactable = true;
+            float buttonTransparency = _buttons[i].GetComponentInChildren<TextMeshProUGUI>().color.a;
+            if (buttonTransparency < 1f)
+            {
+                _buttons[i].GetComponentInChildren<TextMeshProUGUI>().color += _opacColor;
+            }
+        }
+        for (int i = 1; i < _specialCapacities.Count; i++)
+        {
+            _specialCapacities[i].isCapacityLocked = true;
         }
 
         UpdateXpDisplay();

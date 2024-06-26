@@ -9,7 +9,6 @@ public class S_GridManager : MonoBehaviour
 
     public List<List<S_Tile>> gridList = new();
     public List<Unit> unitList = new();
-    public List<List<Unit>> AllUnitPerColumn = new();
     public Unit unitSelected;
     public int totalUnitAmount = 0;
     public S_GridManager enemyGrid;
@@ -29,19 +28,13 @@ public class S_GridManager : MonoBehaviour
     public bool isGridVisible = false;
 
     [Header("UI :")] 
-    public GameObject skipTurnButton;
     public GameObject turnCounter;
-    public GameObject timerUI;
     
     private void Awake()
     {
         _gridScale = _tile.transform.localScale;
 
         GenerateGrid(startX,startY);
-        for (int i = 0; i < width; i++) 
-        {
-            AllUnitPerColumn.Add(new List<Unit>());
-        }
     }
 
     // Generate the grid
@@ -100,9 +93,7 @@ public class S_GridManager : MonoBehaviour
             isGridVisible = !isGridVisible;
             if (isGridVisible)
             {
-                skipTurnButton.SetActive(true);
                 turnCounter.SetActive(true);
-                //timerUI.SetActive(true);
                 for (int i = 0; i < gridList.Count; i++)
                 {
                     for (int j = 0; j < gridList[i].Count; j++)
@@ -117,9 +108,7 @@ public class S_GridManager : MonoBehaviour
             }
             else
             {
-                skipTurnButton.SetActive(false);
                 turnCounter.SetActive(false);
-                //timerUI.SetActive(false);
                 for (int i = 0; i < gridList.Count; i++)
                 {
                     for (int j = 0; j < gridList[i].Count; j++)
@@ -134,14 +123,36 @@ public class S_GridManager : MonoBehaviour
             }
         }
     }
-    
+    public bool IsOutOfIndex(int p_x, int p_y)
+    {
+        if(p_x<0 || p_x >=width || p_y<0 || p_y >= height)
+        {
+            return true;
+        }
+        return false;
+    }
+    public bool TryFindUnitOntile(S_Tile p_tile, out Unit p_unit)
+    {
+        p_unit = null;
+        foreach (Unit u in unitList)
+        {
+            if (u.actualTile.Contains(p_tile))
+            {
+                p_unit = u;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public List<List<Unit>> UnitPriorityCheck() // check the units priority, order is : wall (1), charging(2), idle(0)
     {
-        //Debug.Log("Starting UnitPriorityCheck");
         List<List<Unit>> GridUnit = new();
         List<Unit> StateIdleUnit = new();
         List<Unit> StateDefendUnit = new();
         List<Unit> StateAttackUnit = new();
+
 
         for (int x = 0; x < width; x++)
         {
@@ -153,44 +164,32 @@ public class S_GridManager : MonoBehaviour
 
             for (int y = 0; y < Mathf.Abs(height); y++)
             {
-                if (gridList[x][y].unit == null) continue; 
-                if (gridList[x][y].unit.state == 0 || gridList[x][y].unit.state == 3) StateIdleUnit.Add(gridList[x][y].unit);
-                if (gridList[x][y].unit.state == 1) StateDefendUnit.Add(gridList[x][y].unit);
-                if (gridList[x][y].unit.state == 2) StateAttackUnit.Add(gridList[x][y].unit);
-
-                gridList[x][y].unit.actualTile = null;
-                gridList[x][y].unit = null;
-                print("AUSCOUR");
+                if (TryFindUnitOntile(gridList[x][y], out var unit))
+                {
+                    if (unit.state == 0 || unit.state == 3) StateIdleUnit.Add(unit);
+                    if (unit.state == 1) StateDefendUnit.Add(unit);
+                    if (unit.state == 2) StateAttackUnit.Add(unit);
+                    unit.actualTile = new List<S_Tile>();
+                }
             }
-
-            print("StateIdleUnit" + StateIdleUnit.Count);
-            print("StateDefendUnit" + StateDefendUnit.Count);
-            print("StateAttackUnit" + StateAttackUnit.Count);
-            print("OrganizedColumn" + OrganizedColumn.Count);
-
             foreach (Unit u in StateDefendUnit)
             {
                 OrganizedColumn.Add(u);
-                print("AUSCOUR");
             }
 
             foreach (Unit u in StateAttackUnit)
             {
                 OrganizedColumn.Add(u);
-                print("AUSCOUR");
             }
 
             foreach (Unit u in StateIdleUnit)
             {
                 OrganizedColumn.Add(u);
-                print("AUSCOUR");
             }
 
             for(int y = 0; y < OrganizedColumn.Count; y++)
             {
-                //Debug.Log($"Switching unit in OrganizedColumn at index {y}");
-                OrganizedColumn[y].SwitchUnit(gridList[x][y]);
-                print("AUSCOUR");
+                OrganizedColumn[y].SwitchUnit(gridList[x][0]);
             }
             GridUnit.Add(OrganizedColumn);
         }
@@ -199,14 +198,10 @@ public class S_GridManager : MonoBehaviour
 
     public void SwapUnits(S_Tile p_tile1, S_Tile p_tile2, Unit p_unit1, Unit p_unit2)
     {
-        p_tile1.unit = p_unit2;
-        p_unit2.actualTile = p_tile1;
-        p_unit2.tileX = p_tile1.tileX;
-        p_unit2.tileY = p_tile1.tileY;
-        p_tile2.unit = p_unit1;
-        p_unit1.actualTile = p_tile2;
-        p_unit1.tileX = p_tile2.tileX;
-        p_unit1.tileY = p_tile2.tileY;
+        p_unit1.actualTile.Clear();
+        p_unit2.actualTile.Clear();
+        p_unit1.actualTile.Add(p_tile2);
+        p_unit2.actualTile.Add(p_tile1);
         isSwapping = false;
     }
 
@@ -237,6 +232,7 @@ public class S_GridManager : MonoBehaviour
         {
             unitSelected.ReturnToBaseTile();
             unitSelected.highlight.SetActive(false);
+            unitSelected.shadow.SetActive(false);
             unitSelected = null;
             if (S_GameManager.Instance.isPlayer1Turn)
             {

@@ -1,5 +1,7 @@
+using FMOD.Studio;
 using System.Collections.Generic;
 using UnityEngine;
+using static S_GameManager;
 
 public class S_UnitManager : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class S_UnitManager : MonoBehaviour
     public List<List<Unit>> UnitLine = new();
     public List<List<Unit>> UnitColumn = new();
     public Sprite defendImg;
+    public List<Sprite> commandoAttackImg = new();
+    public List<Sprite> duelistAttackImg = new();
+    public List<Sprite> sniperAttackImg = new();
 
     // - Private variables - //
     // References
@@ -49,33 +54,37 @@ public class S_UnitManager : MonoBehaviour
         {
             lineCounter = 0;
             currentColorLine = -1;
-
+            if (!p_isIAUsingThisFunction)
+            {
+                UnitLine.Clear();
+            }
             for (int j = 0; j < grid.width; j++) // largeur
             {
-                if (gridList[j][i].unit == null)
+                if (grid.TryFindUnitOntile(gridList[j][i], out var unit))
                 {
-                    currentColorLine = -1; // -1 is not a value that a unitColor will be 
-                    lineCounter = 0;
-                    continue;
-                }
-                if (gridList[j][i].unit.state != 0)
-                {
-                    currentColorLine = -1;
-                    lineCounter = 0;
-                    continue;
-                }
-                if (gridList[j][i].unit.unitColor != currentColorLine)
-                {
-                    currentColorLine = gridList[j][i].unit.unitColor;
-                    lineCounter = 1;
-                    continue;
+                    if (unit.state != 0)
+                    {
+                        currentColorLine = -1;// -1 is not a value that a unitColor will be 
+                        lineCounter = 0;
+                        continue;
+                    }
+                    if (unit.unitColor != currentColorLine)
+                    {
+                        currentColorLine = unit.unitColor;
+                        lineCounter = 1;
+                        continue;
+                    }
+                    else
+                    {
+                        lineCounter++;
+                    }
                 }
                 else
                 {
-                    lineCounter++;
+                    currentColorLine = -1;
+                    lineCounter = 0;
                 }
-
-                if (lineCounter >= p_formationNumber)
+                if (lineCounter == p_formationNumber)
                 {
                     UnitLine.Add(new());
 
@@ -87,34 +96,26 @@ public class S_UnitManager : MonoBehaviour
 
                     for (int k = 0; k < p_formationNumber; k++)
                     {
+                        grid.TryFindUnitOntile(gridList[j - k][i], out var defendUnit);
                         if (!p_isIAUsingThisFunction)
                         {
-                            gridList[j - k][i].unit.state = 1;
+
+                            defendUnit.state = 1;
+
                         }
-                        UnitLine[UnitLine.Count - 1].Add(gridList[j - k][i].unit);
+                        UnitLine[UnitLine.Count - 1].Add(defendUnit);
                     }
                 }
                 else if (lineCounter >= p_formationNumber)
                 {
-                    if (!p_isIAUsingThisFunction)
-                    {
-                        gridList[j][i].unit.state = 1;
-                    }
-                    UnitLine[UnitLine.Count - 1].Add(gridList[j][i].unit);
-                    if (!p_isIAUsingThisFunction)
-                    {
-                        AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation);
-                    }
+                    unit.state = 1;
+                    UnitLine[UnitLine.Count - 1].Add(unit);
                 }
             }
             if (UnitLine.Count >= 1 && !p_isIAUsingThisFunction)
             {
                 Defend(UnitLine);
             }
-        }
-        if (!p_isIAUsingThisFunction)
-        {
-            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
         }
         for (int i = 0; i < grid.width; i++) // largeur
         {
@@ -125,29 +126,26 @@ public class S_UnitManager : MonoBehaviour
             for (int j = 0; j < Mathf.Abs(grid.height); j++) // hauteur
             {
 
-                if (gridList[i][j].unit == null)
+                if (grid.TryFindUnitOntile(gridList[i][j], out var unit))
                 {
-                    currentColorColumn = -1;
-                    columnCounter = 0;
-                    continue;
-                }
-                if (gridList[i][j].unit.state != 0)
-                {
-                    currentColorColumn = -1;
-                    columnCounter = 0;
-                    continue;
-                }
-                if (gridList[i][j].unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
-                {
-                    currentColorColumn = gridList[i][j].unit.unitColor;
-                    columnCounter = 1;
-                    continue;
-                }
-                else
-                {
-                    columnCounter++;
-                }
+                    if (unit.state != 0)
+                    {
+                        currentColorColumn = -1;
+                        columnCounter = 0;
+                        continue;
+                    }
+                    if (unit.unitColor != currentColorColumn)// add gridList[i][j].unt.unitType check
+                    {
+                        currentColorColumn = unit.unitColor;
+                        columnCounter = 1;
+                        continue;
+                    }
+                    else
+                    {
+                        columnCounter++;
+                    }
 
+                }
                 if (columnCounter == p_formationNumber) // mode attack 
                 {
                     UnitColumn.Add(new());
@@ -156,23 +154,55 @@ public class S_UnitManager : MonoBehaviour
                     if (!p_isIAUsingThisFunction)
                     {
                         AddAdrenalineToThePlayerWhoForm(numberOfAdrenalineToHadForEachUnitInFormation * p_formationNumber);
+                        if (S_GameManager.Instance.isPlayer1Turn)
+                        {
+                            if (!(unit.SO_Unit.name == "Commando"))
+                            {
+                                AudioManager.instance.PlayOneShot(FMODEvents.instance.RifleReload, Camera.main.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            EventInstance MonsterNoise = AudioManager.instance.CreateInstance(FMODEvents.instance.MonsterNoise);
+                            PLAYBACK_STATE playbackState;
+                            MonsterNoise.getPlaybackState(out playbackState);
+                            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+                            {
+                                MonsterNoise.start();
+                            }
+                        }
+                        if (S_RemoveUnit.Instance.removing)
+                        {
+                            _gameManager.IncreaseActionPointBy1();
+                            S_RemoveUnit.Instance.removing = false;
+                        }
                     }
-                    if (!p_isIAUsingThisFunction)
-                    {
-                        gridList[i][j].unit.state = 2;
-                        gridList[i][j - 1].unit.state = 2;
-                        gridList[i][j - 2].unit.state = 2;
 
-                        gridList[i][j].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-                        gridList[i][j - 1].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-                        gridList[i][j - 2].unit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-                    }
-                    //temporary visual change to notices attacking units
                     for (int k = 0; k < p_formationNumber; k++)
                     {
-                        UnitColumn[UnitColumn.Count - 1].Add(gridList[i][j - k].unit);
-
+                        grid.TryFindUnitOntile(gridList[i][j - k], out var atkUnit);
+                        if (!p_isIAUsingThisFunction)
+                        {
+                            atkUnit.state = 2;
+                            //temporary visual change to notices attacking units
+                            atkUnit.gameObject.transform.GetChild(3).GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                            if (atkUnit.SO_Unit.UnitName == "Commando")
+                            {
+                                atkUnit.spriteChange(commandoAttackImg[atkUnit.unitColor]);
+                            }
+                            else if (atkUnit.SO_Unit.UnitName == "Duelist")
+                            {
+                                atkUnit.spriteChange(duelistAttackImg[atkUnit.unitColor]);
+                            }
+                            else if (atkUnit.SO_Unit.UnitName == "Sniper")
+                            {
+                                atkUnit.spriteChange(sniperAttackImg[atkUnit.unitColor]);
+                            }
+                        }
+                        UnitColumn[UnitColumn.Count - 1].Add(atkUnit);
                     }
+                    columnCounter = 0;
+                    currentColorColumn = -1;
 
                     if (!p_isIAUsingThisFunction)
                     {
@@ -198,10 +228,7 @@ public class S_UnitManager : MonoBehaviour
                 }
             }
         }
-        if (!p_isIAUsingThisFunction)
-        {
-            grid.AllUnitPerColumn = grid.UnitPriorityCheck();
-        }
+        grid.UnitPriorityCheck();
     }
 
 
@@ -225,6 +252,10 @@ public class S_UnitManager : MonoBehaviour
         {
             S_GameManager.Instance.IncreaseActionPointBy1();
             S_RemoveUnit.Instance.removing = false;
+            if (S_CrossSceneDataManager.Instance.vsIA && S_GameManager.Instance.currentTurn == TurnEmun.Player2Turn)
+            {
+                StartCoroutine(S_GameManager.Instance.gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            }
         }
     }
 

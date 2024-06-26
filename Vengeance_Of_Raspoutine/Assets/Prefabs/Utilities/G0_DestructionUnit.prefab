@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37027996e2c4ea4c9da79e8fb9221e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NbCombo: 0
+  removing: 0
   hoveringUnit: {fileID: 0}
+  _explosionAnimatorController: {fileID: 9100000, guid: 41681e206af42f647853eaea17662d27, type: 2}
+  _unitAnimationDestructionPrefab: {fileID: 942082023412815481, guid: b9501f23e077bdb4f844109c7d214a38, type: 3}

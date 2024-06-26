@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,51 +42,39 @@ public class S_GameManager : MonoBehaviour
                 isPlayer1Turn = true;
 
                 // Add one to the total number of turn passed in the round
-                _currentRoundNumber++;
+                currentRoundNumber++;
 
                 // Change the interactability of the unit call's buttons to the corresponding value
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, true);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
 
-                // Change the player turn text to the corresponding value
-                _playerTurnTextUI.text = "Player 1 turn";
-
                 // Reset the number of actions
-                _playerActionNumber = 3;
+                playerActionNumber = 3;
             }
             else if (_currentTurn == TurnEmun.Player2Turn)
             {
-
                 // Same as for the player1 but for the player2
 
                 isPlayer1Turn = false;
 
-                _currentRoundNumber++;
+                currentRoundNumber++;
 
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, true);
 
-                _playerTurnTextUI.text = "Player 2 turn";
 
-                _playerActionNumber = 3;
+                playerActionNumber = 3;
             }
             else if (_currentTurn == TurnEmun.TransitionTurn)
             {
                 // In case if this turn is too long we disable all possible interactions for all players
-
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(true, false);
                 _unitCallButtonHandler.HandleUnitCallButtonInteraction(false, false);
-
-                // NOTE : You can uncomment the code below if you see that the player can, for exemple, grap a unit after he finish his turn
-                // (WARNING THO : That make the screen flash thats why it's currently commented)
-
-                //_player1ActionPreventerVisualGameObject.SetActive(true);
-                //_player2ActionPreventerVisualGameObject.SetActive(true);
             }
             else
             {
                 Debug.LogError(
-                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() + 
+                    "ERROR ! You tried to change the variable '" + currentTurn.ToString() + "' to '" + value.ToString() +
                     "' but it's not planned into the variable's code. UNITY IS PAUSED !"
                 );
                 Debug.Break();
@@ -104,6 +90,9 @@ public class S_GameManager : MonoBehaviour
     }
 
     public bool isPlayer1Turn { get; private set; } = true;
+
+    // -- Player's action point -- //
+    public int playerActionNumber { get; set; }
 
     // -- Player's score variables -- //
     public int player1ScorePoint { get; private set; }
@@ -174,12 +163,16 @@ public class S_GameManager : MonoBehaviour
             // Check if any player won
             if (player1ScorePoint >= _pointsNeededToWin)
             {
+                _doesOnePlayerWonTheGame = true;
+
                 _endMenuManager.WhoWin(true);
                 return;
             }
 
             if (player2ScorePoint >= _pointsNeededToWin)
             {
+                _doesOnePlayerWonTheGame = true;
+
                 _endMenuManager.WhoWin(false);
                 return;
             }
@@ -228,7 +221,6 @@ public class S_GameManager : MonoBehaviour
 
     // -- Players's actions -- //
     int _startingPlayerActionNumber = 3;
-    int _playerActionNumber;
 
     // -- Informations showns to the player -- //
     float _turnTimerTime;
@@ -236,17 +228,11 @@ public class S_GameManager : MonoBehaviour
     Color _startTimer = new Color(0,1,144/255f);
     Color _middleTimer = new Color(1,196/255f,0);
     Color _endTimer = new Color(198/255f,4/255f,4/255f);
-    int _currentRoundNumber = 0;
+    public int currentRoundNumber = 0;
 
     // -- Text UIs who shows to the player informations -- //
-    TextMeshProUGUI _turnTimerTextUI;
-    TextMeshProUGUI _playerTurnTextUI;
     TextMeshProUGUI _playerActionsLeftTextUI;
     TextMeshProUGUI _totalTurnsTextUI;
-
-    // -- Players action preventer visual game objects's references -- //
-    GameObject _player1ActionPreventerVisualGameObject;
-    GameObject _player2ActionPreventerVisualGameObject;
 
     // -- Score management -- //
     // ("_loseCoefficient" is used to manage score point on the Classic game mode)
@@ -254,11 +240,13 @@ public class S_GameManager : MonoBehaviour
 
     int _pointsNeededToWin = 3;
 
+    bool _doesOnePlayerWonTheGame = false;
+
     // -- End menu manager's reference -- //
     S_EndMenuManager _endMenuManager;
 
     // Unit call button handler's reference
-    S_UnitCallButtonHandler _unitCallButtonHandler;
+    public S_UnitCallButtonHandler _unitCallButtonHandler;
 
     // -- Game background sprite renderer's reference -- //
     SpriteRenderer _gameBackgroundSpriteRenderer;
@@ -278,11 +266,6 @@ public class S_GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndDestructionOfTheSecondOne);
-    }
-
-    private void OnEnable()
-    {
-        
     }
 
     private void Start()
@@ -318,8 +301,6 @@ public class S_GameManager : MonoBehaviour
         // Creation of a local variable to avoid calling Instance 4 times
         S_BattleUIsReferencesHandler _battleUIsReferencesHandler = S_BattleUIsReferencesHandler.Instance;
 
-        _turnTimerTextUI = _battleUIsReferencesHandler.turnTimerTextUI;
-        _playerTurnTextUI = _battleUIsReferencesHandler.playerTurnTextUI;
         _playerActionsLeftTextUI = _battleUIsReferencesHandler.playerActionsLeftTextUI;
         _totalTurnsTextUI = _battleUIsReferencesHandler.totalTurnsTextUI;
 
@@ -333,36 +314,6 @@ public class S_GameManager : MonoBehaviour
         _gameBackgroundSpriteRenderer = S_GameBackgroundSizeUpdaterManager.Instance.GetComponent<SpriteRenderer>();
 
         
-        #endregion
-
-        #region Characters management
-        // Setting up character manager reference
-        _characterManager = S_CharacterManager.Instance;
-
-        // Creating the player's character
-        _characterManager.SpawnCharacter(_character1Stats, true);
-        _characterManager.SpawnCharacter(_character2Stats, false);
-
-        // Setting up character's adrenaline, health, money and xp script references
-        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
-
-        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
-        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
-
-        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
-        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
-
-        player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
-        player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
-
-        // Enable / disable special capacity button's interaction
-        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
-
-        // Updates the character's score visuals
-        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
-        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
         #endregion
 
         #endregion
@@ -397,25 +348,56 @@ public class S_GameManager : MonoBehaviour
 
         #region First turn management
 
-        _playerActionNumber = _startingPlayerActionNumber;
+        playerActionNumber = _startingPlayerActionNumber;
 
+        
         // Setting the initial map sprite index to the middle of the available maps
         _mapIndex = (int)(mapSelection.Count/ 2f);
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
-
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
-
         if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
         {
-           StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
         }
+
         #endregion
 
+        #region Characters management
+        // Setting up character manager reference
+        _characterManager = S_CharacterManager.Instance;
+
+        // Creating the player's character
+        _characterManager.SpawnCharacter(_character1Stats, true);
+        _characterManager.SpawnCharacter(_character2Stats, false);
+
+        // Setting up character's adrenaline, health, money and xp script references
+        player1CharacterAdrenaline = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+        player2CharacterAdrenaline = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterAdrenaline>();
+
+        player1CharacterHealth = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterHealth>();
+        player2CharacterHealth = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterHealth>();
+
+        player1CharacterMoney = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterMoney>();
+        player2CharacterMoney = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterMoney>();
+
+        player1CharacterXP = _characterManager.player1CharacterGameObject.GetComponent<S_CharacterXP>();
+        player2CharacterXP = _characterManager.player2CharacterGameObject.GetComponent<S_CharacterXP>();
+
+        // Enable / disable special capacity button's interaction
+        player1CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+        player2CharacterAdrenaline.RecieveNewTurnInfo(isPlayer1Turn);
+
+        // Updates the character's score visuals
+        player1CharacterHealth.RecieveScoreInfo(player1ScorePoint, true);
+        player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
+        #endregion
 
         S_GameManager.Instance.player1UnitCall.UnitCalling();
         S_GameManager.Instance.player2UnitCall.UnitCalling();
+
+        DeactivateGrid();
     }
 
     private void Update()
@@ -425,8 +407,6 @@ public class S_GameManager : MonoBehaviour
             // Decrease of the turn timer
             _turnTimerTime -= Time.deltaTime;
 
-            // Display the rounded timer in seconds in a text
-            _turnTimerTextUI.text = "Remaining time : " + ((int)_turnTimerTime).ToString();
 
             // reduces the timer circle
             _fill.fillAmount = _turnTimerTime / _maxTime;
@@ -446,10 +426,10 @@ public class S_GameManager : MonoBehaviour
             }
 
             // Display the current round number
-            _playerActionsLeftTextUI.text = "Turn : " + _currentRoundNumber.ToString();
+            _playerActionsLeftTextUI.text = "Turn : " + currentRoundNumber.ToString();
 
             // Display the player's number of action left he have 
-            _totalTurnsTextUI.text = "Remaining actions : " + _playerActionNumber;
+            _totalTurnsTextUI.text = "Remaining actions : " + playerActionNumber;
 
             // Check if the timer is equal or less to 0, if yes then end the turn
             if (_turnTimerTime <= 0.0f)
@@ -489,6 +469,7 @@ public class S_GameManager : MonoBehaviour
     /// reset the timer to 60s and adds 1 to the current round number </summary>
     public void EndTurn()
     {
+        S_RemoveUnit.Instance.removing = false;
         if (player1GridManager.unitSelected != null)
         {
             player1GridManager.unitSelected.highlight.SetActive(false);
@@ -505,8 +486,8 @@ public class S_GameManager : MonoBehaviour
         if (currentTurn == TurnEmun.TransitionTurn)
         {
             // Re-organize all the unit in each player grid (removes gaps in grids)
-            player1GridManager.AllUnitPerColumn = player1GridManager.UnitPriorityCheck();
-            player2GridManager.AllUnitPerColumn = player2GridManager.UnitPriorityCheck();
+            player1GridManager.UnitPriorityCheck();
+            player2GridManager.UnitPriorityCheck();
 
             #region Weather event handling
 
@@ -523,6 +504,10 @@ public class S_GameManager : MonoBehaviour
             if (isPlayer1Turn)
             {
                 currentTurn = TurnEmun.Player2Turn;
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                }
             }
             else
             {
@@ -631,6 +616,10 @@ public class S_GameManager : MonoBehaviour
             }
 
             _mapIndex += _mapIndexModifier;
+
+            // Will stop the execution if one player won the game
+            if (_doesOnePlayerWonTheGame)
+                return;
         }
         else
         {
@@ -647,8 +636,11 @@ public class S_GameManager : MonoBehaviour
                 player1ScorePoint++;
             }
 
-
             _mapIndex -= _mapIndexModifier;
+
+            // Will stop the execution if one player won the game
+            if (_doesOnePlayerWonTheGame)
+                return;
         }
 
         currentTurn = TurnEmun.TransitionTurn;
@@ -682,7 +674,6 @@ public class S_GameManager : MonoBehaviour
         S_SwapButtonsHandler.Instance.player2SwapButton.interactable = !p_isPlayer1Dead;
         S_SwapButtonsHandler.Instance.player1ButtonText.text = swapCounterP1.ToString();
         S_SwapButtonsHandler.Instance.player2ButtonText.text = swapCounterP2.ToString();
-
 
         if (!p_isPlayer1Dead)
         {
@@ -838,18 +829,13 @@ public class S_GameManager : MonoBehaviour
 
         if (currentTurn == TurnEmun.TransitionTurn)
         {
-            for (int i = 0; i < gridManager.AllUnitPerColumn.Count; i++)
+            foreach (Unit unit in gridManager.unitList)
             {
-                for (int j = 0; j < Mathf.Abs(gridManager.AllUnitPerColumn[i].Count); j++)
+                unit.ReturnToBaseTile();
+                if (unit.state == 3)
                 {
-                    Unit unit = gridManager.AllUnitPerColumn[i][j];
-
-                    unit.ReturnToBaseTile();
-                    if (unit.state == 3)
-                    {
-                        unit.freeze.SetActive(false);
-                        unit.state = 0;
-                    }
+                    unit.freeze.SetActive(false);
+                    unit.state = 0;
                 }
             }
             bool formationAttacking = false;
@@ -879,36 +865,41 @@ public class S_GameManager : MonoBehaviour
     /// <summary> Reduces the number of Action Points of the player playing by one </summary>
     public void ReduceActionPointBy1()
     {
-        _playerActionNumber -= 1;
+        playerActionNumber -= 1;
 
         if (currentTurn == TurnEmun.Player1Turn)
         {
             // Detect in the player1 grid if there are at least three units that are aligned vertically or horizontally
             player1unitManager.UnitCombo(3);
+            player1unitManager.UnitCombo(3);
 
             //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
             if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
-                _playerActionNumber +=1;
+                playerActionNumber +=1;
             }
         }
         else if (currentTurn == TurnEmun.Player2Turn)
         {
-            if (_playerActionNumber > 0)
-            {
-                if (S_CrossSceneDataManager.Instance.vsIA)
-                {
-                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
-                }
-            }
-
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
+            player2unitManager.UnitCombo(3);
             player2unitManager.UnitCombo(3);
 
             //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
             if (S_RemoveUnit.Instance.NbCombo < player2unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
             {
-                _playerActionNumber+=1;
+                playerActionNumber+=1;
+            }
+            if (playerActionNumber > 0)
+            {
+                if (S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                    foreach (Unit u in player2GridManager.unitList)
+                    {
+                        u.GetComponent<BoxCollider2D>().enabled = false;
+                    }
+                }
             }
         }
         if(S_RemoveUnit.Instance.removing)
@@ -925,7 +916,7 @@ public class S_GameManager : MonoBehaviour
 
 
         // Ends the player who played's turn if he doeasn't have any action points left
-        if (_playerActionNumber <= 0)
+        if (playerActionNumber <= 0)
         {
             EndTurn();
             if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
@@ -937,7 +928,7 @@ public class S_GameManager : MonoBehaviour
 
     public void IncreaseActionPointBy1()
     {
-        _playerActionNumber += 1;
+        playerActionNumber += 1;
     }
     #endregion
 
@@ -994,7 +985,14 @@ public class S_GameManager : MonoBehaviour
             }
             foreach (Unit unit in player2GridManager.unitList)
             {
-                unit.GetComponent<BoxCollider2D>().enabled = true;
+                if (!S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                }
+                else
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = false;
+                }
             }
         }
         else

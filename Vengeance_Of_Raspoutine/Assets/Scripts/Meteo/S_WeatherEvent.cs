@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -35,6 +36,8 @@ public class S_WeatherEvent : MonoBehaviour
     [SerializeField] private S_GridManager _player1GridManager;
     [SerializeField] private S_GridManager _player2GridManager;
     [SerializeField] private Image fog;
+    [SerializeField] private GameObject _mainCam;
+    [SerializeField] private S_SnowStorm snowStormManager;
     [SerializeField] private TextMeshProUGUI weatherInfo;
 
     private int nbTurn = 0;
@@ -45,6 +48,21 @@ public class S_WeatherEvent : MonoBehaviour
         Instance = S_Instantiator.Instance.ReturnInstance(this, Instance, S_Instantiator.InstanceConflictResolutions.WarningAndDestructionOfTheSecondOne);
     }
 
+    private IEnumerator CameraShake()
+    {
+        float timer = 0;
+        Vector3 originalPos = _mainCam.transform.localPosition;
+        while (timer < 2)
+        {
+            _mainCam.transform.localPosition = originalPos + UnityEngine.Random.insideUnitSphere*0.1f;
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        _mainCam.transform.position = originalPos;
+
+        yield return null;
+    }
     public void EventProbability()
     {
         nbTurn = 0;
@@ -59,7 +77,7 @@ public class S_WeatherEvent : MonoBehaviour
 
             if (eventChosen == 0)
             {
-                nbTurn = 8;
+                nbTurn = 4;
                 ManageEvent = Event.Earthquake;
             }
             else if (eventChosen == 1)
@@ -83,7 +101,9 @@ public class S_WeatherEvent : MonoBehaviour
         nbTurn--;
         if (nbTurn < 0)
         {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.Earthquake, Camera.main.transform.position);
             nbTurn = 4;
+            StartCoroutine(CameraShake());
             List<Unit> unitToRemove = new List<Unit>();
             foreach (Unit u in _player1GridManager.unitList.Where(a => a.state == 1))
             {
@@ -92,9 +112,7 @@ public class S_WeatherEvent : MonoBehaviour
             foreach (Unit u in unitToRemove)
             {
 
-                u.actualTile.unit = null;
                 _player1GridManager.unitList.Remove(u);
-                _player1GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
             }
             unitToRemove.Clear();
@@ -105,14 +123,15 @@ public class S_WeatherEvent : MonoBehaviour
             }
             foreach (Unit u in unitToRemove)
             {
-
-                u.actualTile.unit = null;
                 _player2GridManager.unitList.Remove(u);
-                _player2GridManager.AllUnitPerColumn[u.tileX].Remove(u);
                 Destroy(u.gameObject);
             }
-            _player1GridManager.AllUnitPerColumn = _player1GridManager.UnitPriorityCheck();
-            _player2GridManager.AllUnitPerColumn = _player2GridManager.UnitPriorityCheck();
+            _player1GridManager.UnitPriorityCheck();
+            _player2GridManager.UnitPriorityCheck();
+            _player1GridManager.unitManager.UnitCombo(3);
+            _player1GridManager.unitManager.UnitCombo(3);
+            _player2GridManager.unitManager.UnitCombo(3);
+            _player2GridManager.unitManager.UnitCombo(3);
 
         }
         return;
@@ -143,6 +162,8 @@ public class S_WeatherEvent : MonoBehaviour
         nbTurn--;
         if (nbTurn < 0)
         {
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.SnowStorm, Camera.main.transform.position);
+            snowStormManager.StartSnowstorm();
             nbTurn = 5;
             List<Unit> listOfIdle;
             listOfIdle = new List<Unit>();
@@ -176,6 +197,7 @@ public class S_WeatherEvent : MonoBehaviour
         return;
     }
 }
+
 public class EventStocker
 {
     private Action _eventToStore { get; set; }

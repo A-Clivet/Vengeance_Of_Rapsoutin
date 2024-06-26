@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "SO_Unit_F\xF9z"
   m_EditorClassIdentifier: 
   UnitName: "F\xF9z"
-  attack: 6
+  attack: 5
   defense: 2
   sizeX: 1
   sizeY: 1

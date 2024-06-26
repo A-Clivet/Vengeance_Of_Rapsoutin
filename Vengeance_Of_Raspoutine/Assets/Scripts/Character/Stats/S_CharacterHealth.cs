@@ -98,7 +98,6 @@ public class S_CharacterHealth : MonoBehaviour
         // Security
         if (p_isPlayer1Character != _isPlayer1Character || !p_isPlayer1Character != !_isPlayer1Character)
         {
-            Debug.LogError("ERROR ! You said that the first character should have the second character score");
             return;
         }
 
@@ -130,7 +129,6 @@ public class S_CharacterHealth : MonoBehaviour
                 break;
 
             default:
-                Debug.LogError("The score given [" + p_score + "] is not planned in the switch.");
                 break;
         }
     }
@@ -154,7 +152,6 @@ public class S_CharacterHealth : MonoBehaviour
 
     void CharacterDie()
     {
-        Debug.Log("Character died");
         S_GameManager.Instance.HandlePlayerLose(_isPlayer1Character);
     }
 

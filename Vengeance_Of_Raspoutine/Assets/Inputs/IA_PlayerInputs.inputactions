@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Show Special Capacity Description",
-                    "type": "Button",
-                    "id": "03fb3e2b-fef9-444f-ab93-f1593b04029e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press(pressPoint=0.15)",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "d82cdb2d-1d64-47b4-bc6f-347f43886999",
@@ -120,17 +111,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Show Grid",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4c75487f-fab8-4a5a-9ef4-09eb1d9b816d",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Show Special Capacity Description",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -210,15 +190,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Show Special Capacity Description",
-                    "type": "Button",
-                    "id": "b36578ef-fc5d-4c44-9b19-accaded8f8a0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Skip Animation",
                     "type": "Button",
                     "id": "5782a4df-7781-437a-b8c0-39095558374d",
@@ -288,17 +259,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Show Grid",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c9e268da-8941-4783-8e03-ac21a2376a5d",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Show Special Capacity Description",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

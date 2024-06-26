@@ -12,21 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80e18d3964412844a1f2fdbb756d0c3, type: 3}
   m_Name: SO_SpeedMagic
   m_EditorClassIdentifier: 
+  isUnitsStatChangementSpecialCapacityHidden: 0
+  isUnitsMetamorphosisSpecialCapacityHidden: 1
+  isUnitsDestroySpecialCapacityHidden: 1
+  isUltimateSpecialCapacityHidden: 1
   isUnitsStatChangementSpecialCapacity: 1
   isUnitsMetamorphosisSpecialCapacity: 0
   isUnitsDestroySpecialCapacity: 0
   isUltimateSpecialCapacity: 0
-  capacityName: SpeedMagic
-  capacitySprite: {fileID: 21300000, guid: bf34b3cf31a7917439544c7d43d48db6, type: 3}
-  capacityDescription: Casts a spell that speeds up enemy troops
-  capacityEffectDescription: 'Ally charge time : - 2'
-  isCapacityLocked: 1
+  capacityName: Speed Magic
+  capacitySprite: {fileID: 21300000, guid: 246866485522901499d7546233697271, type: 3}
+  capacityDescription: Casts a spell that speeds up your troops
+  capacityEffectDescription: 'Ally charge time : - 1'
+  isCapacityLocked: 0
   isPlayer1UnitsChanged: 0
   unitStatChanged: 2
-  unitStatsChangementValue: 3
-  baseState: 0
-  newState: 0
-  unitsToDestroy: 0
-  affectedState: 0
-  dmgLimit: 0
-  EnergyBall: {fileID: 0}
+  unitStatsChangementValue: -1
+  initialUnitState: 0
+  newUnitState: 0
+  numberOfUnitsToDestroy: 0
+  unitDestructionAnimationsFeedback: 0
+  ultimateCapacityProjectilePrefab: {fileID: 0}
+  targetUnitState: 0
+  damageCap: 0

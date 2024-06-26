@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class S_CharacterXP : MonoBehaviour
 {
-    private int _ammount;
+    private int _ammount = 0;
 
     public int ammount
     {
@@ -14,8 +14,8 @@ public class S_CharacterXP : MonoBehaviour
         _ammount += p_value;
     }
 
-    public void ResetAmmount()
+    public void LoseXP(int p_quantity)
     {
-        _ammount = 0;
+        _ammount -= p_quantity;
     }
 }

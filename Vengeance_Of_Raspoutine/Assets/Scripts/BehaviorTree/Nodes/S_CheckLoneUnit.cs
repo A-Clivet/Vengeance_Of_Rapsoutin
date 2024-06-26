@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using S_BehaviorTree;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,69 +18,68 @@ public class S_CheckLoneUnit : Node
     public override NodeState Evaluate()
     {
         bool _foundLoneUnitLine = false;
-        
-        
-        for(int i = 0; i < _gridManager.AllUnitPerColumn.Count; i++)    //Allows to go through the grid by Collumns
+        List<Unit> _inColumnUnit = new List<Unit>();
+        for (int i = 0; i < _gridManager.unitManager.UnitColumn.Count; i++)
         {
-            _foundLoneUnitLine = false;
-
-            for (int j = 1; j < 3; j++)
+            foreach (Unit u in _gridManager.unitManager.UnitColumn[i])
             {
-                if (_gridManager.AllUnitPerColumn[i].Count - j >= 0)        //Allows to go through the grid by Lines and avoid the get out of the list
-                {
-                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].SO_Unit.unitType && _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor== _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - j].unitColor)     //Allows to Check if the last Unit has any Unit of the same type below it
-                    {
-                        continue;
-                    }
-
-                    if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1] != null)      //Allows to check if the last unit tile of the column is not empty
-                    {
-                        for (int h = 1; h < 3; h++)
-                        {
-                            if (_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileX - h >= 0 && _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileX + h < _gridManager.width)     //Allows to check to grid line by line and avoid to get out of the grid
-                            {
-                                if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit != null)      //
-                                {
-                                    if (_gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType && _gridManager.gridList[i - h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.unitColor == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor)      //Checks if the unit Below the current unit that we are on is the same type
-                                    {
-                                        continue;
-                                    }
-
-                                    _foundLoneUnitLine = true;
-                                    _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];       //Allows _loneUnit to take the Values of the lone unit found
-                                    break;
-                                }
-
-                                if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit != null)      //Allows to check both sides of the unit we are checking and if they are not null
-                                {
-                                    if (_gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.SO_Unit.unitType == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].SO_Unit.unitType && _gridManager.gridList[i + h][_gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].tileY].unit.unitColor == _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1].unitColor)      //Checks if the unit we are currently checking has any unit of of the same type next to it (Left and Right)
-                                    {
-                                        continue;
-                                    }
-
-                                    _foundLoneUnitLine = true;
-                                    _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];       //Allows _loneUnit to take the Values of the lone unit found
-                                    break;
-                                }
-
-                                _foundLoneUnitLine = true;
-                                _loneUnit = _gridManager.AllUnitPerColumn[i][_gridManager.AllUnitPerColumn[i].Count - 1];       //Allows _loneUnit to take the Values of the lone unit found
-                                break;
-                            }
-                        }
-
-                        if (_foundLoneUnitLine)
-                        {
-                            break;
-                        }
-                    }
-                }   
-            }
-            if (_foundLoneUnitLine)
-            {
-                break;
+                _inColumnUnit.Add(u);
             }
         }
+
+        foreach (Unit u in _gridManager.unitList)
+        {
+            int yOfUnit = -1;
+            if (_inColumnUnit.Contains(u))
+            {
+                continue;
+            }
+            _foundLoneUnitLine = true;
+            for (int i = -1; i < 2; i++)
+            {
+                if (u.CheckUnitInProximity(out var unit, -1, i))
+                {
+                    if (unit.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit)))
+                    {
+                        yOfUnit=i; break;
+                    }
+                }
+            }
+            for (int i = -1; i < 2; i++)
+            {
+
+                if (u.CheckUnitInProximity(out var unit2, 1, i))
+                {
+                    if (unit2.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit2)))
+                    {
+                        if (yOfUnit==i)
+                        {
+                            _foundLoneUnitLine = false; break;
+                        }
+                    }
+                }
+            }
+            if (!_foundLoneUnitLine)
+            {
+                continue;
+            }
+
+
+            if (u.CheckUnitInProximity(out var unit3, 0, -1))
+            {
+                if (unit3.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit3)))
+                {
+                    _foundLoneUnitLine = false;
+                    continue;
+                }
+            }
+            _loneUnit = u;
+            break;
+        }
+        
+        
+
+
 
         if (_foundLoneUnitLine == true)
         {
