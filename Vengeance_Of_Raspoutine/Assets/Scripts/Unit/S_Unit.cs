@@ -297,48 +297,51 @@ public class Unit : MonoBehaviour
   then deselect the collidedUnit*/
     public void MoveToTile(S_Tile p_tile)
     {
-
-        for (int i = Mathf.Abs(grid.height) - 2; i >= 0; i--)
+        S_Tile tempoTile = actualTile[0];
+        actualTile.Clear();
+        for (int i = Mathf.Abs(grid.height) - 1; i >= 0; i--)
         {
             if (grid.TryFindUnitOntile(grid.gridList[p_tile.tileX][i], out var unit))
             {
-                actualTile.Clear();
-                if (!(unit == this))
+                if (i == Mathf.Abs(grid.height) - 1)
                 {
-                    actualTile.Add(grid.gridList[p_tile.tileX][i + 1]);
-                    _posToMove = grid.gridList[p_tile.tileX][i + 1].transform.position;
-                    StartCoroutine(LerpMove());
+                    actualTile.Add(tempoTile);
                     return;
                 }
-                else
-                {
-                    actualTile.Add(grid.gridList[p_tile.tileX][i]);
-                    return;
-                }
-            }
-            else if (i == 0)
-            {
-                actualTile.Clear();
-                actualTile.Add(grid.gridList[p_tile.tileX][i]);
-                _posToMove = grid.gridList[p_tile.tileX][i].transform.position;
+                actualTile.Add(grid.gridList[p_tile.tileX][i + 1]);
+                _posToMove = grid.gridList[p_tile.tileX][i + 1].transform.position;
                 StartCoroutine(LerpMove());
                 return;
             }
         }
+        actualTile.Add(grid.gridList[p_tile.tileX][0]);
+        _posToMove = grid.gridList[p_tile.tileX][0].transform.position;
+        StartCoroutine(LerpMove());
+        return;
     }
     //Used to reorganize the Units by state
     public void SwitchUnit(S_Tile p_tile)
     {
-        foreach (S_Tile tile in grid.gridList[p_tile.tileX])
+        for (int i = Mathf.Abs(grid.height) - 1; i >= 0; i--)
         {
-            if (!grid.TryFindUnitOntile(tile, out var unit))
+            if (grid.TryFindUnitOntile(grid.gridList[p_tile.tileX][i], out var unit))
             {
-                actualTile.Add(tile);
-                _posToMove = tile.transform.position;
+                if (i == Mathf.Abs(grid.height) - 1)
+                {
+                    return;
+                }
+                actualTile.Add(grid.gridList[p_tile.tileX][i + 1]);
+                _posToMove = grid.gridList[p_tile.tileX][i + 1].transform.position;
                 StartCoroutine(LerpMove());
                 return;
+
+
             }
         }
+        actualTile.Add(grid.gridList[p_tile.tileX][0]);
+        _posToMove = grid.gridList[p_tile.tileX][0].transform.position;
+        StartCoroutine(LerpMove());
+        return;
 
     }
 
