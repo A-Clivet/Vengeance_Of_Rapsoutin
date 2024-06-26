@@ -28,9 +28,7 @@ public class S_GridManager : MonoBehaviour
     public bool isGridVisible = false;
 
     [Header("UI :")] 
-    public GameObject skipTurnButton;
     public GameObject turnCounter;
-    public GameObject timerUI;
     
     private void Awake()
     {
@@ -95,9 +93,7 @@ public class S_GridManager : MonoBehaviour
             isGridVisible = !isGridVisible;
             if (isGridVisible)
             {
-                skipTurnButton.SetActive(true);
                 turnCounter.SetActive(true);
-                //timerUI.SetActive(true);
                 for (int i = 0; i < gridList.Count; i++)
                 {
                     for (int j = 0; j < gridList[i].Count; j++)
@@ -112,9 +108,7 @@ public class S_GridManager : MonoBehaviour
             }
             else
             {
-                skipTurnButton.SetActive(false);
                 turnCounter.SetActive(false);
-                //timerUI.SetActive(false);
                 for (int i = 0; i < gridList.Count; i++)
                 {
                     for (int j = 0; j < gridList[i].Count; j++)

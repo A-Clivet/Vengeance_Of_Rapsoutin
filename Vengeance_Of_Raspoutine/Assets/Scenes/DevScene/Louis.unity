@@ -380,6 +380,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sudden Death
       objectReference: {fileID: 0}
+    - target: {fileID: 4130643905682628789, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4800153599722168170, guid: 7a1ae92fda476e4409d94c10216404f1, type: 3}
       propertyPath: m_Camera
       value: 
@@ -485,6 +489,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: player ui
       objectReference: {fileID: 0}
+    - target: {fileID: 2215813781847612994, guid: 2567aa503040ddc4a89e672fd7819221, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -501,6 +509,10 @@ PrefabInstance:
     - target: {fileID: 5186425849128046436, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
       propertyPath: m_Name
       value: main goal
+      objectReference: {fileID: 0}
+    - target: {fileID: 5186425849128046436, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7099308881989080645, guid: 77f3c5bf8487a6e4cabf73a360789001, type: 3}
       propertyPath: m_Pivot.x
@@ -602,6 +614,10 @@ PrefabInstance:
     - target: {fileID: 1062145353975498079, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
       propertyPath: m_Name
       value: Classique
+      objectReference: {fileID: 0}
+    - target: {fileID: 1062145353975498079, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5642520601625651254, guid: b35dbb596b874fc4bac410f1ed0a1dc4, type: 3}
       propertyPath: m_Pivot.x
@@ -707,6 +723,10 @@ PrefabInstance:
     - target: {fileID: 3089927665274705533, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
       propertyPath: m_Name
       value: Domination
+      objectReference: {fileID: 0}
+    - target: {fileID: 3089927665274705533, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6881877419960097753, guid: e43b7e64efd16d74795858aeeac3685b, type: 3}
       propertyPath: m_Pivot.x
@@ -888,6 +908,10 @@ PrefabInstance:
     - target: {fileID: 5633623752931722068, guid: 5e19fea5f16746e438ad36563910515b, type: 3}
       propertyPath: m_Name
       value: unit
+      objectReference: {fileID: 0}
+    - target: {fileID: 5633623752931722068, guid: 5e19fea5f16746e438ad36563910515b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

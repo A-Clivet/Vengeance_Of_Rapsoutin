@@ -1168,6 +1168,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4527552425521107450, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4527552425521107450, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 03561187e4ccf79409647fede9e0d259, type: 3}
     - target: {fileID: 5185606285880984440, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: unitsParentGameObject
       value: 
@@ -1213,6 +1221,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 530740733}
     - target: {fileID: 5905715861692200051, guid: a147602cd33660d46bd54aac7266579f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6903722949852906644, guid: a147602cd33660d46bd54aac7266579f, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

@@ -6,13 +6,13 @@ public class S_TutoManager : MonoBehaviour
 {
 
     [HideInInspector] public int intTuto;
-    private Canvas _currentTuto;
+    private Sprite _currentTuto;
     private int _heightMaxListTuto;
 
     public GameObject buttonPrevious;
     public GameObject buttonNext;
-    public List<Canvas> tutoSelection = new(new Canvas[10]);
-    [SerializeField] private Canvas _currentSprite;
+    public List<Sprite> tutoSelection = new(new Sprite[10]);
+    [SerializeField] private Image _currentSprite;
 
     public static S_TutoManager Instance;
 
@@ -63,7 +63,7 @@ public class S_TutoManager : MonoBehaviour
             buttonPrevious.SetActive(false);
         }
 
-        if (intTuto == _heightMaxListTuto - 1)
+        if (intTuto >= 9)
         {
             buttonNext.SetActive(false);
         }
@@ -80,6 +80,6 @@ public class S_TutoManager : MonoBehaviour
             return;
         }
         _currentTuto = tutoSelection[x];
-        _currentSprite = tutoSelection[x];   
+        _currentSprite.sprite = tutoSelection[x];   
     }
 }
