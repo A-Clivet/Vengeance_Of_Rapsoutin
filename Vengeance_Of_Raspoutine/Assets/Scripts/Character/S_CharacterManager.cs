@@ -101,13 +101,15 @@ public class S_CharacterManager : MonoBehaviour
         {
             player1CharacterGameObject = character;
 
-            _gameManager.player1InputsGameObject.GetComponent<PlayerInput>().actions["Show Special Capacity Description"].performed += characterSpecialCapacity.ShowSpecialCapacityDescriptionUIs;
+            // COMMENTED BECAUSE THE SPECIAL CAPACITY INPUT WAS DELETED
+            // _gameManager.player1InputsGameObject.GetComponent<PlayerInput>().actions["Show Special Capacity Description"].performed += characterSpecialCapacity.ShowSpecialCapacityDescriptionUIs;
         }
         else
         {
             player2CharacterGameObject = character;
 
-            _gameManager.player2InputsGameObject.GetComponent<PlayerInput>().actions["Show Special Capacity Description"].performed += characterSpecialCapacity.ShowSpecialCapacityDescriptionUIs;
+            // COMMENTED BECAUSE THE SPECIAL CAPACITY INPUT WAS DELETED
+            // _gameManager.player2InputsGameObject.GetComponent<PlayerInput>().actions["Show Special Capacity Description"].performed += characterSpecialCapacity.ShowSpecialCapacityDescriptionUIs;
         }
 
         #endregion
