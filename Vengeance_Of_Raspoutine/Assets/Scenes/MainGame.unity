@@ -1968,6 +1968,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 528837932}
     m_Modifications:
+    - target: {fileID: 3464943052447950445, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464943052447950445, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464943052447950445, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464943052447950445, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3888666915133639844, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1993,20 +2009,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6009641776751243284, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6009641776751243284, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c79bd40d29780d441973c380e1fda55c, type: 3}
+    - target: {fileID: 6009641776751243284, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6009641776751243284, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
       propertyPath: m_Color.b
-      value: 0.5660378
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6009641776751243284, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
       propertyPath: m_Color.g
-      value: 0.5660378
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6009641776751243284, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
       propertyPath: m_Color.r
-      value: 0.5660378
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6710556880214044925, guid: c45b9565636ed8143b74dcda8c3e10d1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
