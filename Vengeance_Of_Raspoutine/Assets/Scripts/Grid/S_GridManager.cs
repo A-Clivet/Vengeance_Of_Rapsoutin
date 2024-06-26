@@ -169,10 +169,7 @@ public class S_GridManager : MonoBehaviour
                     if (unit.state == 0 || unit.state == 3) StateIdleUnit.Add(unit);
                     if (unit.state == 1) StateDefendUnit.Add(unit);
                     if (unit.state == 2) StateAttackUnit.Add(unit);
-                    if (unit.actualTile[unit.actualTile.Count-1]== gridList[x][y])
-                    {
-                        unit.actualTile = new List<S_Tile>();
-                    }
+                    unit.actualTile = new List<S_Tile>();
                 }
             }
             foreach (Unit u in StateDefendUnit)
