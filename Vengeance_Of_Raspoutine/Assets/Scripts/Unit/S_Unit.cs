@@ -423,13 +423,11 @@ public class Unit : MonoBehaviour
             {
                 if((tile.tileY == Mathf.Abs(grid.height) - 1 && grid.TryFindUnitOntile(tile, out var unit1)) || (tile.tileX == actualTile[0].tileX))
                 {
-                    Debug.Log("Column full");
                     shadow.GetComponent<SpriteRenderer>().color = new Color(shadow.GetComponent<SpriteRenderer>().color.r, shadow.GetComponent<SpriteRenderer>().color.g, shadow.GetComponent<SpriteRenderer>().color.b, 0);
                     return;
                 }
                 if (!grid.TryFindUnitOntile(tile, out var unit))
                 {
-                    Debug.Log("Units found");
                     shadow.GetComponent<SpriteRenderer>().color = new Color(shadow.GetComponent<SpriteRenderer>().color.r, shadow.GetComponent<SpriteRenderer>().color.g, shadow.GetComponent<SpriteRenderer>().color.b, 0.75f);
                     shadow.transform.position = tile.transform.position;
                     return;
