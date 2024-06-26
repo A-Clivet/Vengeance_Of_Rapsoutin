@@ -227,22 +227,16 @@ public class Unit : MonoBehaviour
                 // Destruction of all the unit in formation except the leader of the formation (the one who is reading this code)
                 for (int j = 0; j < actualFormation.Count; j++)
                 {
-                    if (actualFormation[j] != this)
-                    {
-                        _removeUnit.RemoveUnitOnSpecificTile(
-                            actualFormation[j].actualTile[0],
-                            S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak
-                        );
-                    }
+                    grid.unitList.Remove(actualFormation[j]);
+
+                    // Since destroyFormation Stop All Units Coroutines we need to launch it in an extern Script     NB : REALLY SHLAG
+                    grid.StartCoroutine(S_UnitDestructionAnimationManager.Instance.HandleUnitAnimationDestruction(
+                        S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak,
+                        actualFormation[j]
+                    ));
                 }
 
-                // Destruction of the unit who leads the formation (the one who is reading this code)
-                _removeUnit.RemoveUnitOnSpecificTile(
-                    actualTile[0],
-                    S_UnitDestructionAnimationManager.UnitDestructionAnimationsEnum.Pak
-                );
-
-                unitManager.UnitColumn.Remove(actualFormation);
+                actualFormation[actualFormation.Count - 1].DestroyFormation();
             }
             return;
         }
