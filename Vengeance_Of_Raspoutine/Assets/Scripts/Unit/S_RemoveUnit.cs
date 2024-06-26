@@ -89,6 +89,7 @@ public class S_RemoveUnit : MonoBehaviour
                 ));
                 
                 HandleUnitDestruction(unit);
+                removing = true;
 
                 p_tile.grid.unitManager.UnitCombo(3);
 

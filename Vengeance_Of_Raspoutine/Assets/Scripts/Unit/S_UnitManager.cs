@@ -168,6 +168,11 @@ public class S_UnitManager : MonoBehaviour
                                 MonsterNoise.start();
                             }
                         }
+                        if (S_RemoveUnit.Instance.removing)
+                        {
+                            _gameManager.IncreaseActionPointBy1();
+                            S_RemoveUnit.Instance.removing = false;
+                        }
                     }
 
                     for (int k = 0; k < p_formationNumber; k++)

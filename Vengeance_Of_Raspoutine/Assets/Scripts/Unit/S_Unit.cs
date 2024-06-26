@@ -297,24 +297,32 @@ public class Unit : MonoBehaviour
   then deselect the collidedUnit*/
     public void MoveToTile(S_Tile p_tile)
     {
-        actualTile.Clear();
-        foreach (S_Tile tile in grid.gridList[p_tile.tileX])
+
+        for (int i = Mathf.Abs(grid.height) - 2; i >= 0; i--)
         {
-            if (!grid.TryFindUnitOntile(tile, out var unit))
+            if (grid.TryFindUnitOntile(grid.gridList[p_tile.tileX][i], out var unit))
             {
-                actualTile.Add(tile);
-                _posToMove = tile.transform.position;
+                actualTile.Clear();
+                if (!(unit == this))
+                {
+                    actualTile.Add(grid.gridList[p_tile.tileX][i + 1]);
+                    _posToMove = grid.gridList[p_tile.tileX][i + 1].transform.position;
+                    StartCoroutine(LerpMove());
+                    return;
+                }
+                else
+                {
+                    actualTile.Add(grid.gridList[p_tile.tileX][i]);
+                    return;
+                }
+            }
+            else if (i == 0)
+            {
+                actualTile.Clear();
+                actualTile.Add(grid.gridList[p_tile.tileX][i]);
+                _posToMove = grid.gridList[p_tile.tileX][i].transform.position;
                 StartCoroutine(LerpMove());
                 return;
-            }
-            else
-            {
-                if (unit == this)
-                {
-                    actualTile.Add(tile);
-                    _posToMove = tile.transform.position;
-                    StartCoroutine(LerpMove());
-                }
             }
         }
     }
@@ -348,23 +356,25 @@ public class Unit : MonoBehaviour
 
         if (!grid.isSwapping)
         {
-            grid.unitSelected = this;
-            foreach (S_Tile tile in grid.gridList[actualTile[0].tileX].Where(x => x.tileX > actualTile[0].tileX))
+            for (int i = Mathf.Abs(grid.height) - 1; i >= 0; i--)
             {
-                if (grid.TryFindUnitOntile(tile, out var unit))
+                if (grid.TryFindUnitOntile(grid.gridList[actualTile[0].tileX][i], out var unit))
                 {
                     grid.unitSelected = unit;
                     AudioManager.instance.PlayOneShot(FMODEvents.instance.UnitDeployed, Camera.main.transform.position);
+                    unit.shadow.SetActive(true);
+                    break;
                 }
             }
             foreach (Unit unit in grid.unitList)
             {
                 unit.GetComponent<BoxCollider2D>().enabled = false;
             }
-            shadow.SetActive(true);
+            
 
             return;
         }
+        else 
         {
             if (grid.unitSelected == null)
             {
