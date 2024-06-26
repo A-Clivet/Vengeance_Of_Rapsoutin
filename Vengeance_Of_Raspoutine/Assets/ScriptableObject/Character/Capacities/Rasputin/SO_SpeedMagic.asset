@@ -20,9 +20,9 @@ MonoBehaviour:
   isUnitsMetamorphosisSpecialCapacity: 0
   isUnitsDestroySpecialCapacity: 0
   isUltimateSpecialCapacity: 0
-  capacityName: SpeedMagic
+  capacityName: Speed Magic
   capacitySprite: {fileID: 21300000, guid: 246866485522901499d7546233697271, type: 3}
-  capacityDescription: Casts a spell that speeds up enemy troops
+  capacityDescription: Casts a spell that speeds up your troops
   capacityEffectDescription: 'Ally charge time : - 1'
   isCapacityLocked: 0
   isPlayer1UnitsChanged: 0
