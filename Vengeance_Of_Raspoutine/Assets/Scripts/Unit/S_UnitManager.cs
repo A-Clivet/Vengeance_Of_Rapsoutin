@@ -209,6 +209,7 @@ public class S_UnitManager : MonoBehaviour
                         }
                     }
                     columnCounter = 0;
+                    currentColorColumn = -1;
                 }
             }
         }

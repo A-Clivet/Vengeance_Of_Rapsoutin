@@ -73,31 +73,29 @@ public class Unit : MonoBehaviour
     private IEnumerator LerpMove()
     {
         float t = 0;
-        float _distance = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
 
         if (!_isMoving)
         {
             _isMoving = true;
         }
 
-        while (_distance >= 0.1f)
+        while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1f)
         {
 
             transform.position = Vector3.Lerp(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), t);
 
-            // We re-calculate the distance
-            _distance = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
+
 
             yield return new WaitForEndOfFrame();
 
             if (mustAttack)
             {
                 // Speed for one frame divided by the distance left
-                t = 2 * Time.deltaTime / _distance;
+                t = t + Time.deltaTime * 0.04f;
             }
             else
             {
-                t = 5 * Time.deltaTime / _distance;
+                t = t + Time.deltaTime * 0.1f;
             }
             
         }
@@ -326,26 +324,16 @@ public class Unit : MonoBehaviour
     //Used to reorganize the Units by state
     public void SwitchUnit(S_Tile p_tile)
     {
-        for (int i = Mathf.Abs(grid.height) - 1; i >= 0; i--)
+        foreach (S_Tile tile in grid.gridList[p_tile.tileX])
         {
-            if (grid.TryFindUnitOntile(grid.gridList[p_tile.tileX][i], out var unit))
+            if (!grid.TryFindUnitOntile(tile, out var unit))
             {
-                if (i == Mathf.Abs(grid.height) - 1)
-                {
-                    return;
-                }
-                actualTile.Add(grid.gridList[p_tile.tileX][i + 1]);
-                _posToMove = grid.gridList[p_tile.tileX][i + 1].transform.position;
+                actualTile.Add(tile);
+                _posToMove = tile.transform.position;
                 StartCoroutine(LerpMove());
                 return;
-
-
             }
         }
-        actualTile.Add(grid.gridList[p_tile.tileX][0]);
-        _posToMove = grid.gridList[p_tile.tileX][0].transform.position;
-        StartCoroutine(LerpMove());
-        return;
 
     }
 
