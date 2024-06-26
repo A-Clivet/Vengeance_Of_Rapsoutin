@@ -356,13 +356,12 @@ public class S_GameManager : MonoBehaviour
 
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
-
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
-
         if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
         {
-           StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
         }
+
         #endregion
 
         #region Characters management
@@ -980,7 +979,14 @@ public class S_GameManager : MonoBehaviour
             }
             foreach (Unit unit in player2GridManager.unitList)
             {
-                unit.GetComponent<BoxCollider2D>().enabled = true;
+                if (!S_CrossSceneDataManager.Instance.vsIA)
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = true;
+                }
+                else
+                {
+                    unit.GetComponent<BoxCollider2D>().enabled = false;
+                }
             }
         }
         else
