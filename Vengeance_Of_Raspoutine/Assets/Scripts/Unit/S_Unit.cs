@@ -154,6 +154,8 @@ public class Unit : MonoBehaviour
                 return;
             }
         }
+        grid.unitManager.UnitCombo(3);
+        grid.enemyGrid.unitManager.UnitCombo(3);
         S_GameManager.Instance.EndTurn();
         Destroy(gameObject);
         
@@ -294,6 +296,7 @@ public class Unit : MonoBehaviour
   then deselect the collidedUnit*/
     public void MoveToTile(S_Tile p_tile)
     {
+        S_Tile tempoTile = actualTile[0];
         actualTile.Clear();
         foreach (S_Tile tile in grid.gridList[p_tile.tileX])
         {
@@ -305,6 +308,7 @@ public class Unit : MonoBehaviour
                 return;
             }
         }
+        actualTile.Add(tempoTile);
     }
 
     //Used to reorganize the Units by state
