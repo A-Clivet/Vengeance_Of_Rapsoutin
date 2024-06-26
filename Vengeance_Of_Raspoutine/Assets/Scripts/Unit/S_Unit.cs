@@ -374,7 +374,7 @@ public class Unit : MonoBehaviour
                 _posToMove = actualTile[0].transform.position;
                 grid.unitSelected._posToMove = grid.unitSelected.actualTile[0].transform.position;
                 StartCoroutine(LerpMove());
-                StartCoroutine(grid.unitSelected.LerpMove());
+                grid.unitSelected.StartCoroutine(grid.unitSelected.LerpMove());
                 S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(S_GameManager.Instance.isPlayer1Turn, true);
                 grid.unitSelected.highlight.SetActive(false);
                 grid.unitSelected = null;

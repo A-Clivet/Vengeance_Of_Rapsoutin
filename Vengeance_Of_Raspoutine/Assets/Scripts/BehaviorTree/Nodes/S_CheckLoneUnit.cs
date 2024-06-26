@@ -29,6 +29,7 @@ public class S_CheckLoneUnit : Node
 
         foreach (Unit u in _gridManager.unitList)
         {
+            int yOfUnit = -1;
             if (_inColumnUnit.Contains(u))
             {
                 continue;
@@ -40,15 +41,10 @@ public class S_CheckLoneUnit : Node
                 {
                     if (unit.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit)))
                     {
-                        _foundLoneUnitLine = false; break;
+                        yOfUnit=i; break;
                     }
                 }
             }
-            if (!_foundLoneUnitLine)
-            {
-                continue;
-            }
-
             for (int i = -1; i < 2; i++)
             {
 
@@ -56,7 +52,10 @@ public class S_CheckLoneUnit : Node
                 {
                     if (unit2.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit2)))
                     {
-                        _foundLoneUnitLine = false; break;
+                        if (yOfUnit==i)
+                        {
+                            _foundLoneUnitLine = false; break;
+                        }
                     }
                 }
             }
@@ -68,7 +67,7 @@ public class S_CheckLoneUnit : Node
 
             if (u.CheckUnitInProximity(out var unit3, 0, -1))
             {
-                if (unit3.unitColor == u.unitColor)
+                if (unit3.unitColor == u.unitColor && !(_inColumnUnit.Contains(unit3)))
                 {
                     _foundLoneUnitLine = false;
                     continue;

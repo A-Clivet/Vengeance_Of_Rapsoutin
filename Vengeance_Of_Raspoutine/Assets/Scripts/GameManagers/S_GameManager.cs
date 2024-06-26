@@ -871,6 +871,7 @@ public class S_GameManager : MonoBehaviour
         {
             // Detect in the player1 grid if there are at least three units that are aligned vertically or horizontally
             player1unitManager.UnitCombo(3);
+            player1unitManager.UnitCombo(3);
 
             //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
             if (S_RemoveUnit.Instance.NbCombo < player1unitManager.UnitColumn.Count && S_RemoveUnit.Instance.removing)
@@ -881,6 +882,7 @@ public class S_GameManager : MonoBehaviour
         else if (currentTurn == TurnEmun.Player2Turn)
         {
             // Detect in the player2 grid if there are at least three units that are aligned vertically or horizontally
+            player2unitManager.UnitCombo(3);
             player2unitManager.UnitCombo(3);
 
             //We now check if the action of removing a unit created a combo, if yes then we cancel the decrease of actionUnitPoint
@@ -893,6 +895,10 @@ public class S_GameManager : MonoBehaviour
                 if (S_CrossSceneDataManager.Instance.vsIA)
                 {
                     StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+                    foreach (Unit u in player2GridManager.unitList)
+                    {
+                        u.GetComponent<BoxCollider2D>().enabled = false;
+                    }
                 }
             }
         }
