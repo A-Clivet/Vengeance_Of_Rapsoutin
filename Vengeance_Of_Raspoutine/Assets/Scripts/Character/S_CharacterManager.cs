@@ -77,10 +77,25 @@ public class S_CharacterManager : MonoBehaviour
         character.transform.GetChild(0).GetComponent<Image>().sprite = p_characterStats.sprite;
 
         // Transfert health stats
-        character.GetComponent<S_CharacterHealth>().RecieveCharacterHealthStats(p_characterStats.maxHP, p_isPlayer1Character, _emptyScorePoint, _scorePointFilled);
+        character.GetComponent<S_CharacterHealth>().RecieveCharacterHealthStats(
+            p_characterStats.maxHP,
+            p_isPlayer1Character,
+            _emptyScorePoint,
+            _scorePointFilled,
+            // Cheat code's part
+            _gameManager.areCheatCodesEnable,
+            _gameManager.cheatCodes.healthStatsChangement
+        );
 
         // Transfert adrenaline stats
-        character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(p_characterStats.maxAdrenaline, p_characterStats.specialCapacity, p_isPlayer1Character);
+        character.GetComponent<S_CharacterAdrenaline>().RecieveCharacterAdrenalineStats(
+            p_characterStats.maxAdrenaline,
+            p_characterStats.specialCapacity,
+            p_isPlayer1Character,
+            // Cheat code's part
+            _gameManager.areCheatCodesEnable,
+            _gameManager.cheatCodes.adrenalineStatsChangement
+        );
 
         //Transfert money stats
         character.GetComponent<S_CharacterMoney>().RecieveCharacterMoneyStats(p_characterStats.money);

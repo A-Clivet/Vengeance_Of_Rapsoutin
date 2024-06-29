@@ -4038,6 +4038,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 664087876}
     - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
+      propertyPath: areCheatCodesEnable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4603387464598115885, guid: 0b59474fb72f08c42964ded3a769c501, type: 3}
       propertyPath: _playerTurnAnimationGO
       value: 
       objectReference: {fileID: 664087876}
