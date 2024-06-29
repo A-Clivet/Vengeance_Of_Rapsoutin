@@ -20,6 +20,10 @@ public class S_CharacterAdrenaline : MonoBehaviour
     int _currentAdrenaline;
     int _maxAdrenaline;
 
+    // Cheat code's part
+    bool _areCheatCodesEnable;
+    S_GameManager.StatChangementCheatCodes _adrenalineStatsChangementCheatCodes;
+
     Coroutine _launchSpecialCapacityCoroutine;
 
     #region Getter / Setter
@@ -60,12 +64,22 @@ public class S_CharacterAdrenaline : MonoBehaviour
         _gameManager = S_GameManager.Instance;
     }
 
-    public void RecieveCharacterAdrenalineStats(int p_maxAdrenaline, S_SpecialCapacityStats p_specialCapacity, bool p_isPlayer1Character)
+    public void RecieveCharacterAdrenalineStats(
+        int p_maxAdrenaline,
+        S_SpecialCapacityStats p_specialCapacity,
+        bool p_isPlayer1Character,
+
+        // Cheat code part
+        bool p_areCheatCodesEnable,
+        S_GameManager.StatChangementCheatCodes p_adrenalineStatsChangementCheatCodes)
     {
         // Setting up class variables
         _maxAdrenaline = p_maxAdrenaline;
         specialCapacity = p_specialCapacity;
         _isPlayer1Character = p_isPlayer1Character;
+
+        _areCheatCodesEnable = p_areCheatCodesEnable;
+        _adrenalineStatsChangementCheatCodes = p_adrenalineStatsChangementCheatCodes;
 
         // Setting up character Adrenaline to 0
         currentAdrenaline = 0;
@@ -143,16 +157,28 @@ public class S_CharacterAdrenaline : MonoBehaviour
             _specialCapacityIcon.color = _initialSpecialCapacityIconColor;
     }
 
-    // -- TO DEBUG -- //
-    #region TO DEBUG
+    // -- Cheat codes -- //
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-            currentAdrenaline += 5;
+        if (_areCheatCodesEnable)
+        {
+            if (_isPlayer1Character)
+            {
+                if (Input.GetKeyDown(_adrenalineStatsChangementCheatCodes.firstPlayer1StatsChangement.input))
+                    currentAdrenaline += _adrenalineStatsChangementCheatCodes.firstPlayer1StatsChangement.statChangementValue;
 
-        if (Input.GetKeyDown(KeyCode.J))
-            currentAdrenaline -= 5;
+                if (Input.GetKeyDown(_adrenalineStatsChangementCheatCodes.secondPlayer1StatsChangement.input))
+                    currentAdrenaline += _adrenalineStatsChangementCheatCodes.secondPlayer1StatsChangement.statChangementValue;
+            }
+            else
+            {
+                if (Input.GetKeyDown(_adrenalineStatsChangementCheatCodes.firstPlayer2StatsChangement.input))
+                    currentAdrenaline += _adrenalineStatsChangementCheatCodes.firstPlayer2StatsChangement.statChangementValue;
+
+                if (Input.GetKeyDown(_adrenalineStatsChangementCheatCodes.secondPlayer2StatsChangement.input))
+                    currentAdrenaline += _adrenalineStatsChangementCheatCodes.secondPlayer2StatsChangement.statChangementValue;
+            }
+        }
     }
-    #endregion
     #endregion
 }

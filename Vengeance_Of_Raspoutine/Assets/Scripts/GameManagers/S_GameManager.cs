@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,6 +15,38 @@ public class S_GameManager : MonoBehaviour
 
         // Used to let the visuels, animations finished
         TransitionTurn,
+    }
+    #endregion
+
+    #region Structs
+
+    [Serializable]
+    public struct CheatCodes
+    {
+        // Players Health variables
+        public StatChangementCheatCodes healthStatsChangement;
+
+        // Players Adrenaline variables
+        public StatChangementCheatCodes adrenalineStatsChangement;
+    }
+
+    [Serializable]
+    public struct StatChangementCheatCodes
+    {
+        // Affects Player 1
+        public PlayerCharacterStatChangementCheatCode firstPlayer1StatsChangement;
+        public PlayerCharacterStatChangementCheatCode secondPlayer1StatsChangement;
+
+        // Affects Player 2
+        public PlayerCharacterStatChangementCheatCode firstPlayer2StatsChangement;
+        public PlayerCharacterStatChangementCheatCode secondPlayer2StatsChangement;
+    }
+
+    [Serializable]
+    public struct PlayerCharacterStatChangementCheatCode
+    {
+        [SerializeField] public KeyCode input;
+        public int statChangementValue;
     }
     #endregion
 
@@ -188,10 +221,25 @@ public class S_GameManager : MonoBehaviour
     }
     #endregion
 
-    #region Serialized variables
+    #region Public variables
+
+    // -- Cheat codes handling -- //
+
+    [Header("Cheat codes handling :")]
+    [Tooltip("Enableling cheat codes give you access to : " +
+        "\n - Changing Health of specific player's character by pressing a key " +
+        "\n - Changing Adrenaline of specific player's character by pressing a key ")]
+    public bool areCheatCodesEnable;
+
+    public CheatCodes cheatCodes;
+
+    // -- Map background sprite's references -- //
 
     [Header("Background references :")]
     public List<Sprite> mapSelection = new(new Sprite[5]);
+    #endregion
+
+    #region Serialized variables
 
     [Header("Characters stats's references :")]
     [SerializeField] S_CharacterStats _character1Stats;
@@ -394,8 +442,8 @@ public class S_GameManager : MonoBehaviour
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
         #endregion
 
-        S_GameManager.Instance.player1UnitCall.UnitCalling();
-        S_GameManager.Instance.player2UnitCall.UnitCalling();
+        player1UnitCall.UnitCalling();
+        player2UnitCall.UnitCalling();
 
         DeactivateGrid();
     }

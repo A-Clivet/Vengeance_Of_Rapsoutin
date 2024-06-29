@@ -45,6 +45,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbc95b9cd83ef8419da955d1478ce95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  areCheatCodesEnable: 0
+  cheatCodes:
+    healthStatsChangement:
+      firstPlayer1StatsChangement:
+        input: 118
+        statChangementValue: 5
+      secondPlayer1StatsChangement:
+        input: 98
+        statChangementValue: -5
+      firstPlayer2StatsChangement:
+        input: 102
+        statChangementValue: 5
+      secondPlayer2StatsChangement:
+        input: 103
+        statChangementValue: -5
+    adrenalineStatsChangement:
+      firstPlayer1StatsChangement:
+        input: 104
+        statChangementValue: 5
+      secondPlayer1StatsChangement:
+        input: 106
+        statChangementValue: -5
+      firstPlayer2StatsChangement:
+        input: 121
+        statChangementValue: 5
+      secondPlayer2StatsChangement:
+        input: 117
+        statChangementValue: -5
   mapSelection:
   - {fileID: 21300000, guid: 1cf0a7786073c7241ac28fe8110d3ffa, type: 3}
   - {fileID: 21300000, guid: 0479d0d4e14e2ca4ea4dff6ce9556250, type: 3}
@@ -58,6 +86,9 @@ MonoBehaviour:
   _characterImage: {fileID: 0}
   _playerTurnAnimationGO: {fileID: 0}
   _canvasAnimPlayer: {fileID: 0}
+  _fill: {fileID: 0}
+  currentRoundNumber: 0
+  _unitCallButtonHandler: {fileID: 0}
 --- !u!114 &3283146852115246695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,3 +106,4 @@ MonoBehaviour:
   gridManager: {fileID: 0}
   unitCall: {fileID: 0}
   removeUnit: {fileID: 0}
+  callTreeWaiting: 0

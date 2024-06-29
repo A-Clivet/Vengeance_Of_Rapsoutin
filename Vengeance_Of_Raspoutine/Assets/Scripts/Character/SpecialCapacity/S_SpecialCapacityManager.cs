@@ -107,7 +107,6 @@ public class S_SpecialCapacityManager : MonoBehaviour
 
     void ChangeAllFactionUnitStats(bool p_isPlayer1Units, S_SpecialCapacityStats.UnitStatsEnum p_unitStatToChange, int p_value)
     {
-        
         // To avoid having to manage two Unit list variables
         // we create a local variable nammed "allPlayerUnits" it contain the Unit list we will use later,
         // this variable will change depending if the player given is the first or the second. 
