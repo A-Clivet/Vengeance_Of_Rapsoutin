@@ -31,6 +31,10 @@ public class S_CharacterHealth : MonoBehaviour
     int _maxHP;
     int _currentHP;
 
+    // Cheat code's part
+    bool _areCheatCodesEnable;
+    S_GameManager.StatChangementCheatCodes _healthStatsChangementCheatCodes;
+
     Sprite _emptyScorePoint;
     Sprite _scorePointFilled;
     #endregion
@@ -80,13 +84,24 @@ public class S_CharacterHealth : MonoBehaviour
         _gameManager = S_GameManager.Instance;
     }
 
-    public void RecieveCharacterHealthStats(int p_maxHP, bool p_isPlayer1Character, Sprite p_emptyScorePoint, Sprite p_scorePointFilled)
+    public void RecieveCharacterHealthStats(
+        int p_maxHP,
+        bool p_isPlayer1Character,
+        Sprite p_emptyScorePoint,
+        Sprite p_scorePointFilled,
+
+        // Cheat code's part
+        bool p_areCheatCodesEnable,
+        S_GameManager.StatChangementCheatCodes p_healthStatsChangementCheatCodes)
     {
         // Setting up class variables
         _maxHP = p_maxHP;
         _isPlayer1Character = p_isPlayer1Character;
         _emptyScorePoint = p_emptyScorePoint;
         _scorePointFilled = p_scorePointFilled;
+
+        _healthStatsChangementCheatCodes = p_healthStatsChangementCheatCodes;
+        _areCheatCodesEnable = p_areCheatCodesEnable;
 
         // Setting up character HP to the max
         currentHP = _maxHP;
@@ -159,23 +174,25 @@ public class S_CharacterHealth : MonoBehaviour
     #region TO DEBUG
     private void Update()
     {
-        if (!_isPlayer1Character)
+        if (_areCheatCodesEnable)
         {
-            if (Input.GetKeyDown(KeyCode.F))
-                currentHP += 5;
+            if (_isPlayer1Character)
+            {
+                if (Input.GetKeyDown(_healthStatsChangementCheatCodes.firstPlayer1StatsChangement.input))
+                    currentHP += _healthStatsChangementCheatCodes.firstPlayer1StatsChangement.statChangementValue;
 
-            if (Input.GetKeyDown(KeyCode.G))
-                currentHP -= 5;
+                if (Input.GetKeyDown(_healthStatsChangementCheatCodes.secondPlayer1StatsChangement.input))
+                    currentHP += _healthStatsChangementCheatCodes.secondPlayer1StatsChangement.statChangementValue;
+            }
+            else
+            {
+                if (Input.GetKeyDown(_healthStatsChangementCheatCodes.firstPlayer2StatsChangement.input))
+                    currentHP += _healthStatsChangementCheatCodes.firstPlayer2StatsChangement.statChangementValue;
+
+                if (Input.GetKeyDown(_healthStatsChangementCheatCodes.secondPlayer2StatsChangement.input))
+                    currentHP += _healthStatsChangementCheatCodes.secondPlayer2StatsChangement.statChangementValue;
+            }
         }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.V))
-                currentHP += 5;
-
-            if (Input.GetKeyDown(KeyCode.B))
-                currentHP -= 5;
-        }
-
     }
     #endregion
     #endregion
