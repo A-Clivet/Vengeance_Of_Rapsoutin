@@ -357,10 +357,6 @@ public class S_GameManager : MonoBehaviour
         // Randomly determine the player who will play first in the initial turn
         RandomStartTurn();
         _playerTurnAnimationScript.PlayTurnAnimation(_characterImage);
-        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
-        {
-            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
-        }
 
         #endregion
 
@@ -394,10 +390,15 @@ public class S_GameManager : MonoBehaviour
         player2CharacterHealth.RecieveScoreInfo(player2ScorePoint, false);
         #endregion
 
-        S_GameManager.Instance.player1UnitCall.UnitCalling();
-        S_GameManager.Instance.player2UnitCall.UnitCalling();
+        player1UnitCall.UnitCalling();
+        player2UnitCall.UnitCalling();
 
         DeactivateGrid();
+
+        if (S_CrossSceneDataManager.Instance.vsIA && currentTurn == TurnEmun.Player2Turn)
+        {
+            StartCoroutine(gameObject.GetComponent<S_RasputinIATree>().LaunchIa());
+        }
     }
 
     private void Update()
