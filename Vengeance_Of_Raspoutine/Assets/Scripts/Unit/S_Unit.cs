@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
-    private float speed = 2;
+    private float _speed = 2;
     private bool _isMoving = false;
     public Vector3 _posToMove;
 
@@ -72,13 +72,20 @@ public class Unit : MonoBehaviour
     calling attackAnotherUnit() to see the next position to go.*/
     private IEnumerator LerpMove()
     {
-        _isMoving = true;
+        if (!_isMoving)
+        {
+            _isMoving = true;
+        }
+        else
+        {
+            yield return null;
+        }
 
         //float distanceToTravel = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
 
         while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1f)
         {
-            float step = speed * Time.deltaTime;
+            float step = _speed * Time.deltaTime;
 
             // Reduce the speed for attacking formation
             if (mustAttack)
@@ -178,8 +185,9 @@ public class Unit : MonoBehaviour
                         u.mustAttack = true;
                         u.turnCharge = 0;
                         grid.unitList.Remove(u);
-                        u._posToMove = new Vector3(transform.position.x, (grid.enemyGrid.gridList[actualTile[0].tileX][grid.enemyGrid.gridList[actualTile[0].tileX].Count-1].transform.position.y * 1.1f) - transform.localScale.y, -1);
+                        u._posToMove = new Vector3(transform.position.x, (grid.enemyGrid.gridList[actualTile[0].tileX][grid.enemyGrid.gridList[actualTile[0].tileX].Count - 1].transform.position.y * 1.1f) - transform.localScale.y, -1);
                         u.StartCoroutine(LerpMove());
+
 
                     }
                 }
