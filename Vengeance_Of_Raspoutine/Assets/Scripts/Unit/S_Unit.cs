@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
-    public float speed = 10;
+    private float speed = 2;
     private bool _isMoving = false;
     public Vector3 _posToMove;
 
@@ -74,7 +74,7 @@ public class Unit : MonoBehaviour
     {
         _isMoving = true;
 
-        float distanceToTravel = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
+        //float distanceToTravel = Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1));
 
         while (Vector3.Distance(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1)) >= 0.1f)
         {
@@ -82,7 +82,7 @@ public class Unit : MonoBehaviour
 
             // Reduce the speed for attacking formation
             if (mustAttack)
-                step *= 0.05f; 
+                step *= 0.6f; 
 
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(_posToMove.x, _posToMove.y, -1), step);
 
