@@ -252,6 +252,7 @@ public class S_GridManager : MonoBehaviour
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, isSwapping);
                 }
             }
+            S_GameManager.Instance.DeactivateGrid();
         }
     }
 }

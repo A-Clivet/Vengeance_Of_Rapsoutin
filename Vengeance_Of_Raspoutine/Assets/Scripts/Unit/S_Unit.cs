@@ -376,9 +376,9 @@ public class Unit : MonoBehaviour
                 S_UnitCallButtonHandler.Instance.HandleUnitCallButtonInteraction(S_GameManager.Instance.isPlayer1Turn, true);
                 grid.unitSelected.highlight.SetActive(false);
                 grid.unitSelected = null;
-                S_GameManager.Instance.ReduceSwapCounter(S_GameManager.Instance.isPlayer1Turn);
                 if (S_GameManager.Instance.isPlayer1Turn)
                 {
+                    S_GameManager.Instance.ReduceSwapCounter(S_GameManager.Instance.isPlayer1Turn);
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(true, false);
                     S_SwapButtonsHandler.Instance.player1ButtonText.text = S_GameManager.Instance.swapCounterP1.ToString();
                     if (S_GameManager.Instance.swapCounterP1 == 0)
@@ -388,6 +388,7 @@ public class Unit : MonoBehaviour
                 }
                 else
                 {
+                    S_GameManager.Instance.ReduceSwapCounter(S_GameManager.Instance.isPlayer1Turn);
                     S_SwapButtonsHandler.Instance.HandleSwapUnitButtonEffects(false, false);
                     S_SwapButtonsHandler.Instance.player2ButtonText.text = S_GameManager.Instance.swapCounterP2.ToString();
                     if (S_GameManager.Instance.swapCounterP2 == 0)
