@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     [Header("Movements :")]
-    private float _speed = 2;
+    private readonly float _speed = 1.5f;
     private bool _isMoving = false;
     public Vector3 _posToMove;
 
