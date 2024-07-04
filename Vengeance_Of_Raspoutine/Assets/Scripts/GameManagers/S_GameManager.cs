@@ -970,6 +970,12 @@ public class S_GameManager : MonoBehaviour
         {
             foreach (Unit unit in player1GridManager.unitList)
             {
+                if (player1GridManager.unitSelected)
+                {
+                    player1GridManager.unitSelected.ReturnToBaseTile();
+                    player1GridManager.unitSelected.highlight.SetActive(false);
+                    player1GridManager.unitSelected.shadow.SetActive(false);
+                }
                 unit.GetComponent<BoxCollider2D>().enabled = true;
             }
             foreach (Unit unit in player2GridManager.unitList)
@@ -985,6 +991,12 @@ public class S_GameManager : MonoBehaviour
             }
             foreach (Unit unit in player2GridManager.unitList)
             {
+                if (player2GridManager.unitSelected)
+                {
+                    player2GridManager.unitSelected.ReturnToBaseTile();
+                    player2GridManager.unitSelected.highlight.SetActive(false);
+                    player2GridManager.unitSelected.shadow.SetActive(false);
+                }
                 if (!S_CrossSceneDataManager.Instance.vsIA)
                 {
                     unit.GetComponent<BoxCollider2D>().enabled = true;
